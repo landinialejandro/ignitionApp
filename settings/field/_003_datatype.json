@@ -1,0 +1,35 @@
+{
+    "text": "Data Type",
+    "data": {
+        "text":"",
+        "option": true,
+        "options": [
+            "Tiny Integer",
+            "Small Integer",
+            "Medium Integer",
+            "Integer",
+            "Big Integer",
+            "Float",
+            "Double",
+            "Decimal",
+            "Date",
+            "DateTime",
+            "Time",
+            "Time Stamp",
+            "Year",
+            "Char",
+            "VarChar",
+            "Tiny Blob",
+            "Tiny Text",
+            "Text",
+            "BLOB",
+            "Medium BLOB",
+            "Medium Text",
+            "Long BLOB",
+            "Long Text"
+        ]
+    },
+    "type": "field-settings",
+    "icon": "fas fa-stream",
+    "order": 3
+}

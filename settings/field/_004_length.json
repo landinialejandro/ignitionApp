@@ -1,0 +1,13 @@
+{
+    "text": "Lenght",
+    "data": {
+        "placeholder": "Lenght string o value",
+        "text": ""
+    },
+    "type":"field-settings",
+    "icon": "fa fa-cog",
+    "li_attr": {
+        "type": "integer"
+    },
+    "order":4
+}

@@ -1,0 +1,10 @@
+{
+    "text": "Technical report",
+    "data": {
+        "placeholder": "Tech report",
+        "text": ""
+    },
+    "type": "field-settings",
+    "icon": "fa fa-cog",
+    "order": 20
+}

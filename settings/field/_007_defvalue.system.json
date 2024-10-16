@@ -1,0 +1,22 @@
+{
+    "text": "System default value",
+    "data": {
+        "text":"",
+        "option": true,
+        "options": [
+            "Create by user Name",
+            "Creation Date",
+            "Creation Time",
+            "Creation TimeStamp",
+            "Edited by user Name",
+            "Edition Date",
+            "Edition Time",
+            "Edition TimeStamp"
+        ],
+        "type":"html-control"
+
+    },
+    "type": "field-settings",
+    "icon": "fas fa-stream",
+    "order": 7
+}

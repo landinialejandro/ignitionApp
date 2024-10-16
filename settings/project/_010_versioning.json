@@ -1,0 +1,43 @@
+{
+    "text": "Versioning numbering system",
+    "data": {
+        "description":{
+            "text": "You can define your versioning number",
+            "class": "text-primary"
+            },
+        "properties": [
+            {
+                "id": "Major",
+                "usershelper":"Major changes break compatibility",
+                "placeholder": "Major version",
+                "text": "0"
+            },
+            {
+                "id": "Minor",
+                "usershelper":"Minor changes does no break compatibility",
+                "placeholder": "Minor version",
+                "text": "1"
+            },
+            {
+                "id": "Build",
+                "usershelper":"Build counter",
+                "placeholder": "Build number counter",
+                "text": "0"
+            },
+            {
+                "id": "Release",
+                "usershelper":"Release label",
+                "placeholder": "Add your release label",
+                "text": ""
+            }
+        ]
+    },
+    "type": "prj-settings",
+    "icon": "fas fa-code-branch",
+    "li_attr": {
+        "type": "text",
+        "lang": "en"
+    },
+    "order":10
+    
+}

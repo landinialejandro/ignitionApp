@@ -1,0 +1,16 @@
+{
+    "menu": [
+        {
+            "caption": "Home",
+            "url": "#",
+            "li_class": "d-none d-md-block",
+            "type": "system"
+        },
+        {
+            "caption": "Support",
+            "url": "pages/support_page.html",
+            "li_class": "d-none d-md-block",
+            "type": "page"
+        }
+    ]
+}

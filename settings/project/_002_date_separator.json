@@ -1,0 +1,15 @@
+{
+    "text": "Separator",
+    "data": {
+        "description": {
+            "text": "Change to your own date separator, puede cambiar su propio separador de fecha",
+            "class": "text-primary"
+        },
+        "placeholder": "/",
+        "text": "/",
+        "usershelper": "Write a date saparator"
+    },
+    "type": "prj-settings",
+    "icon": "fas fa-font",
+    "order": 2
+}

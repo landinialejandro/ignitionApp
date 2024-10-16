@@ -1,0 +1,24 @@
+{
+    "text": "Description",
+    "data": {
+        "placeholder": "Description user helper",
+        "properties": [
+            {
+                "id": "en",
+                "text": "",
+                "default":true
+            },
+            {
+                "id": "es",
+                "text": ""
+            }
+        ]
+    },
+    "type":"tbl-setting",
+    "icon": "fa fa-cog",
+    "li_attr": {
+        "type": "text",
+        "lang":"en"
+    },
+    "order":3
+}

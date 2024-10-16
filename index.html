@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <title>IngnitionApp | Dashboard</title>
+    <link id="browser_favicon" rel="shortcut icon" href="dist/logo/logo.png">
+    <!-- Meta Tags -->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="title" content="IgnitionApp | Dashboard">
+    <meta name="author" content="Landini">
+    <meta name="description" content="IgnitionApp es una aplicación para el facil desarrollo de aplicaciones">
+    <meta name="keywords" content="bootstrap 5, dashboard, admin template, vanilla JS">
+
+    <!-- CSS Links -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fontsource/source-sans-3@5.0.12/index.css"
+        integrity="sha256-tXJfXfp6Ewt1ilPzLDtQnJV4hclT9XuaZUKyUvmyr+Q=" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/overlayscrollbars@2.3.0/styles/overlayscrollbars.min.css"
+        integrity="sha256-dSokZseQNT08wYEWiz5iLI8QPlKxG+TswNRD8k35cpg=" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.min.css"
+        integrity="sha256-Qsx5lrStHZyR9REqhUF8iQt73X06c8LGIUPzpOhwRrI=" crossorigin="anonymous">
+    <link rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/limonte-sweetalert2/11.4.22/sweetalert2.min.css">
+    <link rel="stylesheet"
+        href="https://cdn.jsdelivr.net/npm/wunderbaum@0/dist/wunderbaum.min.css">
+    
+    <link rel="stylesheet" href="dist/adminlte4/css/adminlte.min.css">
+    <link rel="stylesheet" href="css/ingnitionApp.css">
+</head>
+
+<body class="layout-fixed sidebar-expand-lg bg-body-tertiary">
+
+    <div id="preloader">
+        <div class="spinner-grow" role="status"></div>
+        <div class="spinner-grow" role="status"></div>
+        <div class="spinner-grow" role="status"></div>
+    </div>
+
+    <!-- App Wrapper -->
+    <div class="app-wrapper">
+        <!-- Header -->
+        <nav class="app-header navbar navbar-expand bg-body">
+            <div class="container-fluid">
+                <ul class="navbar-nav">
+                    <li class="nav-item">
+                        <a class="nav-link" data-lte-toggle="sidebar" href="#" role="button" data-type="system">
+                            <i class="bi bi-list"></i>
+                        </a>
+                    </li>
+                </ul>
+                <ul  id="main-headerbar" class="navbar-nav"> 
+                    <!-- HeaderBar -->
+                </ul>
+
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item">
+                        <a class="nav-link" data-widget="navbar-search" href="#" role="button" data-type="system">
+                            <i class="bi bi-search"></i>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#" data-lte-toggle="fullscreen" data-type="system">
+                            <i data-lte-icon="maximize" class="bi bi-arrows-fullscreen"></i>
+                            <i data-lte-icon="minimize" class="bi bi-fullscreen-exit" style="display: none;"></i>
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </nav>
+        <!-- Sidebar -->
+        <aside class="app-sidebar bg-body-secondary shadow" data-bs-theme="dark">
+            <div class="sidebar-brand">
+                <a href="./index.html" class="brand-link">
+                    <img src="dist/logo/logo.png" alt="Landini Logo" class="brand-image opacity-75 shadow">
+                    <span class="brand-text fw-light">IgnitionApp</span>
+                </a>
+            </div>
+            <div class="sidebar-wrapper">
+                <nav class="mt-2">
+                    <ul id="main-sidebar" class="nav sidebar-menu flex-column" data-lte-toggle="treeview" role="menu"
+                        data-accordion="false">
+                        <!-- sidebar -->
+                    </ul>
+                </nav>
+            </div>
+        </aside>
+        <!-- Main Content -->
+        <main class="app-main">
+            <div class="app-content-header">
+                <div class="container-fluid">
+                    <div class="row">
+                        <div class="col-sm-6">
+                            <h3 id="app-content-header-caption" class="app-title mb-0">
+                                <span class="title-ignition">Ignition</span><span class="title-app">App</span>
+                            </h3>
+                        </div>
+                        <div class="col-sm-6">
+                            <ol class="breadcrumb float-sm-end">
+                                <li class="breadcrumb-item"><a href="#">Home</a></li>
+                                <li class="breadcrumb-item active" aria-current="page">Dashboard</li>
+                            </ol>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="app-content">
+                <div id="content-preloader" style="display: none;">
+                    <div class="spinner-wrapper">
+                        <div class="spinner-grow" role="status">
+                            <span class="visually-hidden">Cargando...</span>
+                        </div>
+                    </div>
+                </div>
+                <div id="main-content" class="container-fluid">
+                    <!-- Add your content here -->
+                    hola mundo
+                </div>
+            </div>
+        </main>
+        <!-- Footer -->
+        <footer class="app-footer">
+            <strong>
+                Copyright &copy; 2014-2024&nbsp;
+                <a href="http://landini.com.ar" class="text-decoration-none">Landini</a>.
+            </strong> version <span class="starter-version"></span>
+            <div class="float-end d-none d-sm-inline">Anything you want</div>
+        </footer>
+    </div>
+    <!-- Scripts -->
+    <script src="https://cdn.jsdelivr.net/npm/overlayscrollbars@2.3.0/browser/overlayscrollbars.browser.es6.min.js"
+        integrity="sha256-H2VM7BKda+v2Z4+DRy69uknwxjyDRhszjXFhsL4gD3w=" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js"
+        integrity="sha256-whL0tQWoY1Ku1iskqPFvmZ+CHsvmRWx/PIoEvIeWh4I=" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.min.js"
+        integrity="sha256-YMa+wAM6QkVyz999odX7lPRxkoYAan8suedu4k2Zur8=" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/handlebars@latest/dist/handlebars.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/limonte-sweetalert2/11.4.22/sweetalert2.all.min.js"></script>
+    <script src="dist/adminlte4/js/adminlte.min.js"></script>
+    <!-- App-specific JavaScript (Modules) -->
+    <script type="module" src="js/app.js"></script>
+</body>
+
+</html>

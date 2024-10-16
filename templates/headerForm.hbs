@@ -1,0 +1,37 @@
+{{#*inline "childrens"}}
+    {{#getchildren id}}{{/getchildren}}
+    {{#if this.children}}
+    <div class="card card-outline card-primary">
+        <div class="card-header">
+            <h3 class="card-title">{{text}}</h3>
+            <div class="card-tools">
+                <button type="button" class="btn btn-tool" data-card-widget="collapse">
+                    <i class="fas fa-minus"></i>
+                </button>
+            </div>
+        </div>
+        <div class="card-body">
+            {{#each this.children}}
+                {{> childrens}}
+            {{/each}}
+        </div>
+    </div>
+    {{/if}}
+{{/inline}}
+
+<div class="row float-right">
+    <span class="badge badge-info" title="Selected node type">{{type}}</span>
+    <span class="badge badge-danger" title="Selected node Name">{{text}}</span>
+    <span class="badge badge-warning" title="Selected node ID">{{id}}</span>
+</div>
+<br />
+<form class="{{id}}" role="form">
+            {{> childrens}}
+    <div class="callout callout-secondary">
+        <div class="form-group">
+            <label for="{{id}}" class="">Set {{text}} {{type}} icon:</label>
+            <input type="text" class="form-control form-node node-setting node-icon" data-index="{{@index}}" data-nodeid="{{id}}" name="icon" placeholder="set new icon" value="{{icon}}" title="Change icon to selected node" />
+        </div>
+      </div>
+</form>
+

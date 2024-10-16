@@ -1,0 +1,19 @@
+[
+    {
+        "id": "1",
+        "text": "New_Project",
+        "icon": "fas fa-project-diagram",
+        "li_attr": {
+            "id": "1"
+        },
+        "a_attr": {
+            "href": "#",
+            "id": "1_anchor"
+        },
+        "state": {
+            "opened": true
+        },
+        "data": {},
+        "type": "#"
+    }
+]

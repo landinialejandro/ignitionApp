@@ -1,0 +1,33 @@
+{
+  "name": "prjgen",
+  "title": "project generator",
+  "description": "app",
+  "version": "0",
+  "homepage": "http://landini.com.ar",
+  "main": "",
+  "author": {
+    "name": "Alejandro Landini",
+    "email": "alejandro@landini.com.ar",
+    "url": "http://landini.com.ar"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/"
+  },
+  "bugs": {
+    "url": "https://github.com/"
+  },
+  "license": "MIT",
+  "licenses": [
+    {
+      "type": "MIT",
+      "url": "https://github.com/"
+    }
+  ],
+  "keywords": [],
+  "devDependencies": {
+  },
+  "dependencies": {
+    "jquery": ">=1.9.1"
+  }
+}

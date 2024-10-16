@@ -1,0 +1,36 @@
+<!-- partials/menuitem.hbs -->
+{{#if (eq type "component")}}
+    <li class="nav-item">
+        <div id="{{component_id}}"></div>
+    </li>
+{{else}}
+    <li class="nav-item{{#if menu_open}} menu-open{{/if}} {{li_class}}"  {{#each li_attr}} {{@key}} = "{{this}}" {{/each}}>
+        <a href="{{url}}" class="nav-link {{#if active}}active{{/if}} {{a_class}}" data-name="{{caption}}" data-type="{{type}}" {{#each a_attr}} {{@key}} = "{{this}}" {{/each}}>
+            {{#if icon}}
+                <i class="nav-icon {{icon}}"></i>
+            {{/if}}
+            {{#if caption}}
+                <p>
+                    <!-- Truncado a 20 caracteres -->
+                    <span title="{{caption}}">{{truncate caption 20}}</span>
+                    {{#if children}}
+                        <i class="nav-arrow bi bi-chevron-right"></i>
+                    {{/if}}
+                </p>
+            {{/if}}
+            {{#if badge}}
+                <span class="nav-badge badge text-bg-{{badge.color}} me-3">
+                    <i class="{{badge.icon}}"> </i>{{badge.text}}
+                </span>
+            {{/if}}
+        </a>
+
+        {{#if children}}
+        <ul class="ms-2 nav nav-treeview">
+            {{#each children}}
+                {{> menuItem }}
+            {{/each}}
+        </ul>
+        {{/if}}
+    </li>
+{{/if}}

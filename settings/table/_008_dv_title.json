@@ -1,0 +1,28 @@
+{
+    "text": "Detail view title",
+    "data": {
+        "placeholder": "Detail view title",
+        "properties": [
+            {
+                "id": "en",
+                "placeholder": "Detail view title",
+                "usershelper":"This value is used to identify the title of the deatil view, it appears in the menu",
+                "text": "",
+                "default":true
+            },
+            {
+                "id": "es",
+                "placeholder": "Detail view title",
+                "usershelper":"This value is used to identify the title of the deatil view, it appears in the menu",
+                "text": ""
+            }
+        ]
+    },
+    "type": "tbl-setting",
+    "icon": "fas fa-font",
+    "li_attr": {
+        "type": "text",
+        "lang": "en"
+    },
+    "order":8
+}

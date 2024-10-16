@@ -1,0 +1,64 @@
+{
+  "root": {
+    "max_children": 8,
+    "icon": "bi bi-archive",
+    "rename": true,
+    "delete": false,
+    "valid_children": ["group", "root-settings"],
+    "description": "nodo principal y nombre del proyecto, no se puede borrar, si se puede renombrar"
+  },
+  "root-settings": {
+    "max_children": 20,
+    "icon": "bi bi-wrench-adjustable-circle",
+    "valid_children": ["prj-settings"],
+    "rename": false,
+    "delete": false,
+    "a_attr": { "style": "background-color: #fff59d" }
+  },
+  "group": {
+    "max_children": 30,
+    "icon": "bi bi-collection",
+    "rename": true,
+    "delete": true,
+    "valid_children": ["table", "group-settings"]
+  },
+  "group-settings": {
+    "max_children": 20,
+    "icon": "bi bi-wrench-adjustable-circle",
+    "valid_children": ["grp-settings"],
+    "rename": false,
+    "delete": false,
+    "a_attr": { "style": "background-color:#fff59d" }
+  },
+  "table": {
+    "max_children": 20,
+    "icon": "bi bi-table",
+    "rename": true,
+    "delete": true,
+    "valid_children": ["field", "table-settings"]
+  },
+  "table-settings": {
+    "max_children": 20,
+    "icon": "bi bi-wrench-adjustable-circle",
+    "valid_children": ["tbl-setting"],
+    "rename": false,
+    "delete": false,
+    "a_attr": { "style": "background-color: #fff59d" },
+    "description": "nodo agrupador de settings de tabla"
+  },
+  "field": {
+    "max_children": 20,
+    "icon": "bi bi-card-heading",
+    "rename": true,
+    "delete": true,
+    "valid_children": ["field-settings"]
+  },
+  "field-settings": {
+    "max_children": 20,
+    "max_depth": 20,
+    "icon": "bi bi-wrench-adjustable-circle",
+    "rename": false,
+    "delete": false,
+    "valid_children": ["none"]
+  }
+}

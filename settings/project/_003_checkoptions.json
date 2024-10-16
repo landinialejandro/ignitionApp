@@ -1,0 +1,40 @@
+{
+  "text": "Check options value",
+  "data": {
+    "description": {
+      "text": "You can add your own options in _xxx_checkoptions.json file",
+      "class": "text-success"
+    },
+    "check": true,
+    "options": [
+      {
+        "text": "Use 24Hs time format",
+        "checked": false,
+        "usershelper": "Enable this function to show time in 24 Hs format"
+      },
+      {
+        "text": "Don't enforce MYSQL encoding",
+        "checked": false,
+        "usershelper": "Enable this option to Don't enforce MYSQL encoding"
+      },
+      {
+        "text": "Hide the login/menbership system",
+        "checked": false,
+        "usershelper": "Enable this option to Hide the login/menbership system"
+      },
+      {
+        "text": "Allow admin access to server status page",
+        "checked": false,
+        "usershelper": "Enable this option to Allow admin access to server status page"
+      },
+      {
+        "text": "Show technical documentation page in the admin area",
+        "checked": false,
+        "usershelper": "Enable this option to Show technical documentation page in the admin area"
+      }
+    ]
+  },
+  "type": "prj-settings",
+  "icon": "fas fa-stream",
+  "order": 3
+}

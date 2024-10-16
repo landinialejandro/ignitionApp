@@ -1,0 +1,22 @@
+{
+    "projectItems": [
+        {
+            "id": "1",
+            "title": "New Project",
+            "icon": "bi bi-diagram-3",
+            "li_attr": {
+                "id": "root-project"
+            },
+            "a_attr": {
+                "href": "#",
+                "id": "a-root-project"
+            },
+            "state": {
+                "opened": true
+            },
+            "data": {},
+            "children": [],
+            "type": "root"
+        }
+    ]
+}

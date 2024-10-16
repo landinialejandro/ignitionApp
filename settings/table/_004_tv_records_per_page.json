@@ -1,0 +1,13 @@
+{
+    "text": "Records per page",
+    "data": {
+        "placeholder": "Records per page",
+        "text": ""
+    },
+    "type":"tbl-setting",
+    "icon": "fa fa-cog",
+    "li_attr": {
+        "type": "integer"
+    },
+    "order":4
+}

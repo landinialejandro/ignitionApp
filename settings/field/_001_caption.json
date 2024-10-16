@@ -1,0 +1,28 @@
+{
+    "text": "Multilingual Captions",
+    "data": {
+        "properties": [
+            {
+                "id": "en",
+                "placeholder": "Caption Field",
+                "usershelper": "This value is used to identify the title of the field in the database, it appears in the detail form and in the table view",
+                "text": ""
+            },
+            {
+                "id": "es",
+                "default": true,
+                "placeholder": "Subtitulo en español",
+                "usershelper": "Identifica el título en español",
+                "text": ""
+            }
+        ],
+        "type": "html-control"
+    },
+    "type": "field-settings",
+    "icon": "fas fa-font",
+    "li_attr": {
+        "type": "text",
+        "lang": "en"
+    },
+    "order": 1
+}

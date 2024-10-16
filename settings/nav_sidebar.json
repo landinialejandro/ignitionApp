@@ -1,0 +1,58 @@
+{
+    "menu": [
+        {
+            "caption": "Proyectos",
+            "url": "pages/projects_dash_page.html",
+            "active": true,
+            "icon": "bi bi-speedometer",
+            "a_class": "project-page",
+            "menu_open": true,
+            "type": "dash",
+            "children": [
+                {
+                    "type": "component",
+                    "component_id": "projects-list"
+                }
+            ]
+        },
+        {
+            "caption": "Documentación",
+            "url": "pages/docs_page.html",
+            "active": false,
+            "icon": "bi bi-book",
+            "a_class": "docs-page",
+            "type": "page",
+            "badge": {
+                "text": "New",
+                "color": "danger"
+            }
+        },
+        {
+            "caption": "Icons List",
+            "url": "https://icons.getbootstrap.com/?q=uni#icons",
+            "active": false,
+            "icon": "bi bi-image",
+            "a_class": "docs-page",
+            "type": "page",
+            "badge": {
+                "icon": "bi bi-bootstrap",
+                "color": "info"
+            }
+        },
+        {
+            "caption": "Debug settings",
+            "url": "pages/settings_dash_page.html",
+            "active": false,
+            "icon": "bi bi-tools",
+            "a_class": "debug-page",
+            "menu_open": false,
+            "type": "dash",
+            "children": [
+                {
+                    "type": "component",
+                    "component_id": "settings-list"
+                }
+            ]
+        }
+    ]
+}

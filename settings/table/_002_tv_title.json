@@ -1,0 +1,31 @@
+{
+    "text": "Table view title",
+    "data": {
+        "description": {
+            "text": "Es posible indicar el título de la vista de tabla en varios idiomas",
+            "class": "text-purple"
+          },
+        "properties": [
+            {
+                "id": "en",
+                "placeholder": "Table view title",
+                "usershelper":"This value is used to identify the title of the deatil view, it appears in the menu",
+                "text": "",
+                "default":true
+            },
+            {
+                "id": "es",
+                "placeholder": "Table view title",
+                "usershelper":"This value is used to identify the title of the deatil view, it appears in the menu",
+                "text": ""
+            }
+        ]
+    },
+    "type": "tbl-setting",
+    "icon": "fas fa-font",
+    "li_attr": {
+        "type": "text",
+        "lang": "en"
+    },
+    "order":2
+}

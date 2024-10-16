@@ -1,0 +1,13 @@
+{
+    "text": "Default sortby",
+    "data": {
+        "text":"",
+        "option": true,
+        "options": [
+            "None"
+        ]
+    },
+    "type": "tbl-setting",
+    "icon": "fas fa-stream",
+    "order": 5
+}

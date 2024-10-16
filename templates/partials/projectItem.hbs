@@ -1,0 +1,31 @@
+<!-- partials/projectIem.hbs -->
+<li id="{{id}}" class="nav-item {{#if state.menu_open}}menu-open{{/if}} {{li_class}}" 
+    {{#each li_attr}} {{@key}}="{{this}}" {{/each}}>
+    <a  class="nav-link {{#if active}}active{{/if}} {{a_class}}"
+        data-name="{{caption}}" 
+        data-type="{{type}}" 
+        {{#each a_attr}} {{@key}}="{{this}}" {{/each}}>
+        {{#if caption}}
+            <p>
+                {{#if icon}}
+                    <i class="nav-icon {{icon}}"></i>
+                {{/if}}
+                <!-- Truncado a 20 caracteres -->
+                <span title="{{caption}}">{{truncate caption 20}}</span>
+            </p>
+        {{/if}}
+        {{#if badge}}
+            <span class="nav-badge badge text-bg-{{badge.color}} me-3">
+                <i class="{{badge.icon}}"> </i>{{badge.text}}
+            </span>
+        {{/if}}
+    </a>
+
+    {{#if children}}
+    <ul class="project-tree flex-column">
+        {{#each children}}
+            {{> projectItem }}
+        {{/each}}
+    </ul>
+    {{/if}}
+</li>

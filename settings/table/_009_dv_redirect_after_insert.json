@@ -1,0 +1,13 @@
+{
+    "text": "Redirect after insert",
+    "data": {
+        "placeholder": "Redirect after insert",
+        "text": "?SelectedID=#ID#"
+    },
+    "type":"tbl-setting",
+    "icon": "fa fa-cog",
+    "li_attr": {
+        "type": "integer"
+    },
+    "order":9
+}

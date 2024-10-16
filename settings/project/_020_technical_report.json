@@ -1,0 +1,11 @@
+{
+    "text": "Technical report",
+    "data": {
+        "placeholder": "Tech report",
+        "text": "",
+        "type":"textarea"
+    },
+    "type": "prj-settings",
+    "icon": "fa fa-cog",
+    "order": 20
+}

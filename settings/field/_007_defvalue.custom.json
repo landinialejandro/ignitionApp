@@ -1,0 +1,13 @@
+{
+    "text": "Custom default value",
+    "data": {
+        "placeholder": "Your custom string o value",
+        "text": ""
+    },
+    "type":"field-settings",
+    "icon": "fa fa-cog",
+    "li_attr": {
+        "type": "text"
+    },
+    "order":7
+}

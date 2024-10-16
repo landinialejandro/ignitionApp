@@ -1,0 +1,13 @@
+{
+    "text": "Max character in table view",
+    "data": {
+        "placeholder": "Max character in table view value",
+        "text": ""
+    },
+    "type":"field-settings",
+    "icon": "fa fa-cog",
+    "li_attr": {
+        "type": "integer"
+    },
+    "order":5
+}

@@ -1,0 +1,12 @@
+{
+    "text": "Check options value",
+    "data": {
+        "check": true,
+        "options": [
+            {"text":"Show Only in admin group?", "checked":false}
+        ]
+    },
+    "type": "grp-settings",
+    "icon": "fas fa-stream",
+    "order": 3
+}

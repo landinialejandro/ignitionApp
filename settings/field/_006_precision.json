@@ -1,0 +1,14 @@
+{
+    "text": "Precision",
+    "data": {
+        "placeholder": "Presicion value",
+        "usershelper": "Set the presicion value",
+        "text": ""
+    },
+    "type":"field-settings",
+    "icon": "fa fa-cog",
+    "li_attr": {
+        "type": "integer"
+    },
+    "order":6
+}

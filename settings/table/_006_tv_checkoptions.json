@@ -1,0 +1,23 @@
+{
+    "text": "Check options value",
+    "data": {
+        "check": true,
+        "options": [
+            {"text":"Descendingly", "checked":false},
+            {"text":"Show quick search box", "checked":false},
+            {"text":"Allow Sorting", "checked":false},
+            {"text":"Allow filters", "checked":false},
+            {"text":"Allow saving data to CSV files", "checked":false},
+            {"text":"Allow print-view", "checked":false},
+            {"text":"Allow user to save filters", "checked":false},
+            {"text":"Hide link in home page", "checked":false},
+            {"text":"Allow mass delete", "checked":false},
+            {"text":"Filter before showing table view", "checked":false},
+            {"text":"Hide link in navigation menu", "checked":false},
+            {"text":"Show record count in home page", "checked":false}
+        ]
+    },
+    "type": "tbl-setting",
+    "icon": "fas fa-stream",
+    "order": 6
+}

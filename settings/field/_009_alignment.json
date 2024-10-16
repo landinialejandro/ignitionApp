@@ -1,0 +1,16 @@
+{
+    "text": "Alignment",
+    "data": {
+        "text":"Left",
+        "option": true,
+        "options": [
+            "Left",
+            "Right",
+            "Center"
+        ],
+        "type":"html-control"
+    },
+    "type": "field-settings",
+    "icon": "fas fa-stream",
+    "order": 9
+}

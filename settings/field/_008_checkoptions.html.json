@@ -1,0 +1,22 @@
+{
+    "text": "Check options value",
+    "data": {
+        "check": true,
+        "options": [
+            {"text":"Read only", "checked":false},
+            {"text":"Required", "checked":false},
+            {"text":"Rich (HTML) area", "checked":false},
+            {"text":"Unique", "checked":false},
+            {"text":"Show column sum", "checked":false},
+            {"text":"Text area", "checked":false},
+            {"text":"Do not filter", "checked":false},
+            {"text":"Check box", "checked":false},
+            {"text":"Hide in table view", "checked":false},
+            {"text":"Hide detal view", "checked":false}
+        ],
+        "type":"html-control"
+    },
+    "type": "field-settings",
+    "icon": "fas fa-stream",
+    "order": 8
+}
