@@ -1,1 +1,5 @@
-{"name":"IgnitioApp","version":"0.0.1-12.10.24","release":"egg"}
+{
+    "name": "IgnitioApp",
+    "version": "0.0.1-12.10.24",
+    "release": "egg"
+}

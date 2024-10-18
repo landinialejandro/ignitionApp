@@ -109,7 +109,7 @@ class fs
         $path = $this->getPath($id);
         if (is_dir($path)) {
             return [
-                'type' => 'folder', 
+                'type' => 'folder',
                 'content' => $id
             ];
         }

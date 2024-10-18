@@ -1,13 +1,13 @@
 import { get_data, LoadModule, Msglog } from './common.js';
-import { get_setting, preloader } from './helpers.js';
+import { preloader } from './helpers.js';
 import { $$ } from './selector.js';
+import {handleProjectTree } from './project.js';
 
 const maiPreloader = new preloader("preloader");
 
 window.msg = new Msglog();
 const modules = [
     "js/hbs.js",
-    "js/project.js",
 ];
 
 window.onload = async function () {
@@ -16,7 +16,7 @@ window.onload = async function () {
         await Promise.all(modules.map(LoadModule));
 
         // Obtener la configuración de la aplicación
-        const setting = await get_setting();
+        const setting = await get_data({ url: "settings/settings.json" });
         const version = setting.version || "0.0.0";
         const release = setting.release || "bad file";
         const text = `${version} - ${release}`;
@@ -58,6 +58,15 @@ const navLinkListener = () => {
         const data = $$(this).allData();
         await handleContentLoading(data, url);
     });
+    $$("#main-content").on("click", function (e) {
+        // Delegar el evento click en todos los elementos con la clase `a.node-link` en un proyecto abierto
+        const anchor = e.target.closest('a.node-link');
+        if (anchor) {
+            e.preventDefault();
+            handleProjectTree(anchor);
+        }
+    });
+
 };
 
 // Función para manejar el contenido según el tipo
@@ -141,10 +150,8 @@ const loadNavBar = async (selector, url, data = {}) => {
     try {
         // Obtener los datos del servidor
         const responseData = await get_data({ url, data });
-        console.log(responseData);
         // Preparar el objeto para Handlebars si es necesario
         const content = data.id ? { menu: responseData } : responseData;
-        console.log(content);
         const container = document.querySelector(selector);
         // Actualizar el DOM
         container.innerHTML = await renderTemplate("templates/nav_bar.hbs", content);

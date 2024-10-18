@@ -1,4 +1,5 @@
 <?php
+
 require_once('class_fs_.php');
 
 // Leer y decodificar el cuerpo de la solicitud JSON
@@ -71,10 +72,6 @@ function realizarOperacion($fs, $operation, $id, $text, $content, $type, $parent
             return $fs->create($id, null, false, $content);
         case 'get_json':
             return obtenerConfiguracionJson($fs, $text, $settingsDir, $id);
-        case 'settings-data':
-            $data = $fs->data("settings/settings.json");
-            $content = json_decode($data['content'], true);
-            return ['id' => $id, 'content' => $content];
         case 'test':
             return ['id' => $id, 'content' => $text ?: 'TEST'];
         default:

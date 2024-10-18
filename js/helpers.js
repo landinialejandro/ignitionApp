@@ -1,25 +1,6 @@
-import { get_data } from './common.js';
-
-/**
- * hidePreloader - Función para ocultar un preloader/spinner con una animación suave.
- * 
- * Esta función espera 600ms antes de comenzar la transición de opacidad del preloader.
- * Luego, reduce la opacidad a 0 en 500ms y finalmente establece 'display: none' 
- * para ocultar completamente el elemento después de que la animación termine.
- * 
- * Uso:
- * - Asegúrate de que el elemento con la clase .spinner-wrapper esté presente en el DOM.
- * - Llama a esta función una vez que la página se haya cargado completamente.
- * 
- * Ejemplo:
- * window.addEventListener('load', () => hidePreloader());
- * 
- * @returns {void}
- */
-
 
 //enable or disable containers
-function Container(enable = true) {
+export function Container(enable = true) {
     if (enable) {
         setTimeout(() => $(".container-disabled").removeClass("container-disabled"), 200)
     } else {
@@ -27,25 +8,6 @@ function Container(enable = true) {
     }
 };
 
-/**
- * get date for last starter version
- */
-export const get_setting = async () => {
-    let data = {
-        operation: "settings-data",
-        id: "#",
-    }
-    return new Promise((resolve, reject) => {
-        get_data({ url: "ignitionApp.php", data })
-            .then(({ content }) => {
-                if (!content) {
-                    reject(new error(`error to get version`))
-                } else {
-                    resolve(content)
-                }
-            })
-    })
-};
 
 export const setBreadCrum = (newBreadCrum) => {
     $$(".breadcrumb-item.active").text(newBreadCrum)
@@ -101,5 +63,3 @@ export class preloader {
         //this.preloader.style.display = "none";
     }
 }
-
-
