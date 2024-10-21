@@ -5,11 +5,9 @@
         data-name="{{caption}}" 
         data-type="{{type}}" 
         {{#each a_attr}} {{@key}}="{{this}}" {{/each}}>
+        {{> component_i}}
         {{#if caption}}
             <p>
-                {{#if icon}}
-                    <i class="nav-icon {{icon}}"></i>
-                {{/if}}
                 <!-- Truncado a 20 caracteres -->
                 <span title="{{caption}}">{{truncate caption 20}}</span>
             </p>

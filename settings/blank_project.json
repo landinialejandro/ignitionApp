@@ -1,9 +1,12 @@
 {
-    "projectItems": [
+    "nodes": [
         {
             "id": "1",
-            "title": "New Project",
-            "icon": "bi bi-diagram-3",
+            "caption": "New Project",
+            "icon": {
+                "type": "class", 
+                "value": "bi bi-diagram-3"
+              },
             "li_attr": {
                 "id": "root-project"
             },
@@ -14,7 +17,7 @@
             "state": {
                 "opened": true
             },
-            "data": {},
+            "properties": [],
             "children": [],
             "type": "root"
         }

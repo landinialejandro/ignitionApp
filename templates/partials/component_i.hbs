@@ -1,0 +1,16 @@
+{{!-- "icon": {
+      "type": "class", 
+      "value": "bi bi-table"
+    }
+    o 
+    "icon": {
+      "type": "svg",
+      "value": "<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'><path d='M...'></path></svg>"
+    },--}}
+{{#if (eq icon.type "class")}}
+    <i class="node-icon {{icon.value}}"></i>
+{{else if (eq icon.type "svg")}}
+  <div class="node-icon svg-icon">
+    {{{icon.value}}}
+  </div>
+{{/if}}

@@ -32,7 +32,7 @@ const RegisterHelpers = () => {
 
 const RegisterPartials = () => {
 	msg.info("registering partials...")
-	const partials = ["modalHeader", "modalFooter", "menuItem", "projectItem"]
+	const partials = ["modalHeader", "modalFooter", "menuItem", "projectItem", "component_i"]
 	partials.forEach(async (e) => {
 		var url = `templates/partials/${e}.hbs`
 		var t = await get_data({ url, isJson: false })
