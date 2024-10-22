@@ -127,46 +127,6 @@
  *   }
  * });
  * 
- * @method show - Muestra el menú contextual basado en el nodo seleccionado.
- * @param {Event} event - El evento del clic derecho que activa el menú contextual.
- * @param {HTMLElement} anchor - El elemento anchor que fue clickeado y contiene el atributo `data-type`.
- * @returns {void}
- * 
- * @method hide - Oculta el menú contextual.
- * @returns {void}
- * 
- * @method createMenuItem - Crea y agrega un ítem de menú contextual con su acción e ícono.
- * @param {Object} option - Opción que contiene el label, ícono y la acción (callback) del ítem de menú.
- * @returns {void}
- * 
- * @method addNewGroup - Agrega un nuevo grupo como hijo de un nodo de tipo `root`.
- * @param {string} parentType - El tipo del nodo padre.
- * @param {HTMLElement} anchor - El elemento HTML del nodo que será el padre del nuevo nodo.
- * @returns {void}
- * 
- * @method addNewTable - Agrega una nueva tabla como hijo de un nodo de tipo `group`.
- * @param {string} parentType - El tipo del nodo padre.
- * @param {HTMLElement} anchor - El elemento HTML del nodo que será el padre del nuevo nodo.
- * @returns {void}
- * 
- * @method addNewField - Agrega un nuevo campo como hijo de un nodo de tipo `table`.
- * @param {string} parentType - El tipo del nodo padre.
- * @param {HTMLElement} anchor - El elemento HTML del nodo que será el padre del nuevo nodo.
- * @returns {void}
- * 
- * @method renameNode - Renombra el nodo seleccionado.
- * @param {string} nodeType - Tipo del nodo que se va a renombrar.
- * @param {HTMLElement} anchor - El elemento del nodo que se va a renombrar.
- * @returns {void}
- * 
- * @method deleteNode - Elimina el nodo seleccionado.
- * @param {string} nodeType - Tipo del nodo que se va a eliminar.
- * @param {HTMLElement} anchor - El elemento del nodo que se va a eliminar.
- * @returns {void}
- * 
- * @method initializeEventListeners - Configura un evento para ocultar el menú contextual cuando se hace clic fuera de él.
- * @returns {void}
- * 
  * @example
  ** // Ejemplo de uso:
  * const anchor = document.querySelector('a.node-link[data-type="group"]');
@@ -231,16 +191,13 @@ export class ContextMenu {
     createMenuItem(option) {
         const li = document.createElement('li');
 
-        // Crear el ícono (puede ser una clase o un SVG)
-        if (option.icon.type === 'class') {
-            const iconElement = document.createElement('i');
-            iconElement.className = option.icon.value;
-            li.appendChild(iconElement);
-        } else if (option.icon.type === 'svg') {
-            const svgElement = document.createElement('span');
-            svgElement.innerHTML = option.icon.value; // Asignar SVG directamente
-            li.appendChild(svgElement);
-        }
+        // Renderizar el ícono utilizando el template partial 'component_i.hbs'
+        li.innerHTML = Handlebars.partials['component_i']({
+            icon: {
+                type: option.icon.type,
+                value: option.icon.value
+            }
+        });
 
         // Crear el texto de la opción
         const textNode = document.createTextNode(` ${option.label}`);
