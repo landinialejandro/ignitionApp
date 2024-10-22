@@ -174,13 +174,13 @@ export class NodeTypeManager {
      * Verificar si una acción está permitida en un nodo de un tipo específico.
      * 
      * @param {string} type - El tipo de nodo.
-     * @param {string} action - La acción a verificar (por ejemplo, 'delete', 'rename').
+     * @param {string} action - La acción a verificar (por ejemplo, 'delete', 'rename', 'add').
      * @returns {boolean} True si la acción está permitida, false si no.
      * @throws {Error} Si el tipo de nodo no existe.
      */
     isActionAllowed(type, action) {
         const nodeType = this.getType(type);
-        return nodeType[action] || false;  // Retorna `false` si no está permitido
+        return nodeType.actions && nodeType.actions[action] || false;  // Retorna `false` si la acción no está permitida
     }
 
     /**

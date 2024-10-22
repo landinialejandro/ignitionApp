@@ -14,4 +14,4 @@
  * @property {string} [type] - Tipo de nodo (root, group, table, field).
  */
 
-export {}
+export { };

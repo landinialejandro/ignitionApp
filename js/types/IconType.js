@@ -5,4 +5,4 @@
  */
 
 // Exportar la definición de IconType
-export {};
+export { };
