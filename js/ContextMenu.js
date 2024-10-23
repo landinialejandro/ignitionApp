@@ -182,36 +182,41 @@ export class ContextMenu {
         this.menu.style.display = 'block';
     }
 
-    /**
-     * Crea y agrega un ítem de menú contextual con su acción e ícono.
-     * 
-     * @param {Object} option - Opción que contiene el label, icono y la acción (callback) del ítem de menú.
-     * @returns {void}
-     */
-    createMenuItem(option) {
-        const li = document.createElement('li');
+/**
+ * Crea y agrega un ítem de menú contextual utilizando el partial 'menuitem.hbs'.
+ * 
+ * @param {Object} option - Opción que contiene el label, icono y la acción (callback) del ítem de menú.
+ * @returns {void}
+ */
+createMenuItem(option) {
+    // Renderizar el 'li' utilizando el template partial 'menuitem.hbs'
+    const menuItemHtml = Handlebars.partials['projectItem']({
+        caption: option.label,
+        type: option.type || 'ContextMenuOption', // Puedes cambiarlo según el tipo de opción
+        url: '#',                       // Puedes ajustar el URL según la lógica que tengas
+        icon: {
+            type: option.icon.type,
+            value: option.icon.value
+        }
+    });
 
-        // Renderizar el ícono utilizando el template partial 'component_i.hbs'
-        li.innerHTML = Handlebars.partials['component_i']({
-            icon: {
-                type: option.icon.type,
-                value: option.icon.value
-            }
-        });
+    // Crear un div temporal para insertar el HTML
+    const tempDiv = document.createElement('div');
+    tempDiv.innerHTML = menuItemHtml;
 
-        // Crear el texto de la opción
-        const textNode = document.createTextNode(` ${option.label}`);
-        li.appendChild(textNode);
+    // Obtener el 'li' generado por el partial
+    const li = tempDiv.firstElementChild;
 
-        // Asignar la acción (callback)
-        li.addEventListener('click', () => {
-            option.callback(); // Ejecutar la acción asociada
-            this.hide(); // Ocultar el menú después de seleccionar una opción
-        });
+    // Asignar la acción (callback)
+    li.addEventListener('click', () => {
+        option.callback(); // Ejecutar la acción asociada
+        this.hide(); // Ocultar el menú después de seleccionar una opción
+    });
 
-        // Añadir la opción al contenedor del menú
-        this.optionsContainer.appendChild(li);
-    }
+    // Añadir la opción al contenedor del menú
+    this.optionsContainer.appendChild(li);
+}
+
 
     /**
      * Callback para agregar un nuevo nodo como hijo del nodo actual, según las reglas de nodeTypeManager.
