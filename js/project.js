@@ -1,11 +1,13 @@
-import { get_data, Msglog } from './common.js';
+import { get_data } from './common.js';
+import { Msglog } from "./MsgLog.js";
 import { preloader, renderTemplate } from './helpers.js';
 import { $$ } from './selector.js';
 
 import { NodeTypeManager } from './NodeTypeManager.js';
 import { ContextMenu } from './ContextMenu.js';
 
-window.msg = new Msglog();
+msg = new Msglog();
+let nodeTypeManager = null;
 
 export const initializeProject = async (url) => {
 
@@ -15,6 +17,7 @@ export const initializeProject = async (url) => {
     const content = await get_data({ url });
     $$(".project-card-body").html(await renderTemplate("templates/project_tree.hbs", content));
 
+    await initializeNodeTypes();
     addEventsListener();
 }
 
@@ -74,27 +77,41 @@ const addEventsListener = () => {
     contextMenuListener();
     // Aquí puedes agregar más listeners si es necesario en el futuro
 };
-const contextMenuListener = () =>{
-    // Evento delegado para mostrar el menú contextual al hacer clic en un anchor con clase .node-link
-    document.addEventListener('contextmenu', function (e) {
-        // Verificar si el clic fue en un anchor con la clase .node-link
-        const anchor = e.target.closest('a.node-link');
-        if (anchor) {
-            e.preventDefault(); // Evitar el comportamiento predeterminado del anchor
-            async function initializeNodeTypes() {
-                const nodeTypeManager = new NodeTypeManager();
-                await nodeTypeManager.loadFromFile('./settings/types.json');
-                // Ahora puedes usar nodeTypeManager con los tipos cargados
-                const contextMenu = new ContextMenu('context-menu', 'menu-options', nodeTypeManager);
-                contextMenu.show(e, anchor);
-            }
-    
-            initializeNodeTypes();
-        }
-    });
-}
 
-const projectNodesListener = () =>{
+// Función para inicializar NodeTypeManager
+const initializeNodeTypes = async () => {
+    try {
+        nodeTypeManager = new NodeTypeManager();
+        await nodeTypeManager.loadFromFile('./settings/types.json');
+    } catch (error) {
+        console.error('Error al cargar los tipos de nodos:', error);
+        throw new Error('No se pudieron cargar los tipos de nodos');
+    }
+};
+
+// Función para manejar el menú contextual
+const contextMenuListener = async () => {
+    try {
+        // Evento delegado para mostrar el menú contextual al hacer clic en un anchor con clase .node-link
+        document.addEventListener('contextmenu', (e) => {
+            const anchor = e.target.closest('a.node-link');
+            if (anchor) {
+                e.preventDefault(); // Evitar comportamiento predeterminado del anchor
+
+                if (nodeTypeManager) {
+                    const contextMenu = new ContextMenu('context-menu', 'menu-options', nodeTypeManager);
+                    contextMenu.show(e, anchor);
+                } else {
+                    console.error('NodeTypeManager no está inicializado.');
+                }
+            }
+        });
+    } catch (error) {
+        console.error('Error al inicializar el menú contextual:', error);
+    }
+};
+
+const projectNodesListener = () => {
     $$("#main-content").on("click", function (e) {
         // Delegar el evento click en todos los elementos con la clase `a.node-link` en un proyecto abierto
         const anchor = e.target.closest('a.node-link');

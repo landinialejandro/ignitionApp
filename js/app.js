@@ -1,11 +1,12 @@
-import { get_data, Msglog } from './common.js';
+import { get_data } from './common.js';
+import { Msglog } from "./MsgLog.js";
 import { preloader, renderTemplate, getDirCollectionJson } from './helpers.js';
 import { $$ } from './selector.js';
 import { initializeProject } from './project.js';
 
-const maiPreloader = new preloader("preloader");
-
 window.msg = new Msglog();
+msg.success("Iniciando app.js", true);
+const maiPreloader = new preloader("preloader");
 
 window.onload = async function () {
     try {

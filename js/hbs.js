@@ -1,4 +1,6 @@
-import { get_data, Msglog } from './common.js';
+import { get_data } from './common.js';
+import { Msglog } from "./MsgLog.js";
+
 window.msg = new Msglog();
 
 export const RegisterHelpers = () => {
