@@ -1,20 +1,14 @@
-import { get_data, LoadModule, Msglog } from './common.js';
-import { preloader } from './helpers.js';
+import { get_data, Msglog } from './common.js';
+import { preloader, renderTemplate, getDirCollectionJson } from './helpers.js';
 import { $$ } from './selector.js';
-import {handleProjectTree } from './project.js';
+import { initializeProject } from './project.js';
 
 const maiPreloader = new preloader("preloader");
 
 window.msg = new Msglog();
-const modules = [
-    "js/hbs.js",
-];
 
 window.onload = async function () {
     try {
-        // Cargar todos los módulos necesarios en paralelo
-        await Promise.all(modules.map(LoadModule));
-
         // Obtener la configuración de la aplicación
         const setting = await get_data({ url: "settings/settings.json" });
         const version = setting.version || "0.0.0";
@@ -26,10 +20,10 @@ window.onload = async function () {
         $$(".starter-version").html(text);
 
         // Cargar las diferentes secciones del navBar
-        await loadNavBar('#main-sidebar', "settings/nav_sidebar.json");
-        await loadNavBar('#main-headerbar', "settings/nav_headerbar.json");
-        await loadNavBar('#projects-list', "ignitionApp.php", { id: "projects", operation: "get_node" });
-        await loadNavBar('#settings-list', "ignitionApp.php", { id: "settings", operation: "get_node" });
+        loadNavBar('#main-sidebar', await get_data({ url: "settings/nav_sidebar.json" }));
+        loadNavBar('#main-headerbar', await get_data({ url: "settings/nav_headerbar.json" }));
+        loadNavBar('#projects-list', await getDirCollectionJson("projects"));
+        loadNavBar('#settings-list', await getDirCollectionJson("settings"));
 
     } catch (error) {
         // Registrar el error y notificar al usuario
@@ -58,15 +52,6 @@ const navLinkListener = () => {
         const data = $$(this).allData();
         await handleContentLoading(data, url);
     });
-    $$("#main-content").on("click", function (e) {
-        // Delegar el evento click en todos los elementos con la clase `a.node-link` en un proyecto abierto
-        const anchor = e.target.closest('a.node-link');
-        if (anchor) {
-            e.preventDefault();
-            handleProjectTree(anchor);
-        }
-    });
-
 };
 
 // Función para manejar el contenido según el tipo
@@ -86,9 +71,7 @@ const handleContentLoading = async ({ type, name }, url) => {
                 loadPageContent(url, mainContent);
                 break;
 
-            case "file-settings":
-
-            case "file-projects":
+            case "file":
                 await loadJsonContent(url, mainContent);
                 break;
 
@@ -115,20 +98,13 @@ const handleContentLoading = async ({ type, name }, url) => {
 
 // Cargar contenido de una página en un iframe
 const loadPageContent = (url, container) => {
-
     container.innerHTML = `<iframe src="${url}" style="width:100%; height:100vh; border:none;"></iframe>`;
     msg.info(`Cargando página: ${url}`);
 };
 
 // Cargar y mostrar contenido JSON formateado
 const loadJsonContent = async (url, container) => {
-
-    const projectPage = await get_data({ url: "pages/project_page.html", isJson: false })
-    $$("#main-content").html(projectPage)
-
-    const content = await get_data({ url });
-    $$(".project-card-body").html(await renderTemplate("templates/project_tree.hbs", content));
-
+    initializeProject(url);
     msg.info(`Mostrando archivo JSON: ${url}`);
 };
 
@@ -146,16 +122,11 @@ const loadImageContent = (url, container) => {
  * @param {Object} [data] - Parámetros adicionales para la solicitud (opcional).
  * @returns {Promise<void>} - Una promesa que indica la finalización del proceso.
  */
-const loadNavBar = async (selector, url, data = {}) => {
+const loadNavBar = async (selector, content) => {
     try {
-        // Obtener los datos del servidor
-        const responseData = await get_data({ url, data });
-        // Preparar el objeto para Handlebars si es necesario
-        const content = data.id ? { menu: responseData } : responseData;
-        const container = document.querySelector(selector);
-        // Actualizar el DOM
-        container.innerHTML = await renderTemplate("templates/nav_bar.hbs", content);
-        // Mensaje de éxito
+        // Preparar el objeto para Handlebars templates/nav_bar.hbs si es necesario
+        content = content.menu ? content : { menu: content };
+        $$(selector).html(await renderTemplate("templates/nav_bar.hbs", content));
         msg.secondary(`${selector} cargado correctamente.`, true);
     } catch (error) {
         console.error(`Error al cargar ${selector}:`, error);
@@ -163,7 +134,3 @@ const loadNavBar = async (selector, url, data = {}) => {
     }
 }
 
-const renderTemplate = async (template, content) => {
-    const tmp = Handlebars.compile(await get_data({ url: template, isJson: false }));
-    return tmp(content);
-}

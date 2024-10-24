@@ -77,7 +77,7 @@ class fs
             return [
                 'caption' => ucfirst($item),
                 'url' => $this->getId($itemPath),
-                'type' => is_dir($itemPath) ? 'folder' : 'file-'. $id,
+                'type' => is_dir($itemPath) ? 'folder' : 'file',
                 'a_class' => is_dir($itemPath) ? 'folder-page' : 'file-page',
                 'icon' => is_dir($itemPath) ? 'bi bi-folder' : 'bi bi-file-earmark',
                 'children' => is_dir($itemPath) ? $this->lst($this->getId($itemPath)) : false,

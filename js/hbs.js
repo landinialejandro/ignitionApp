@@ -1,6 +1,7 @@
-import { get_data } from './common.js';
+import { get_data, Msglog } from './common.js';
+window.msg = new Msglog();
 
-const RegisterHelpers = () => {
+export const RegisterHelpers = () => {
 	msg.info("registering helpers...")
 	Handlebars.registerHelper("when", function (operand_1, operator, operand_2, options) {
 		var operators = {
@@ -30,7 +31,7 @@ const RegisterHelpers = () => {
 
 }
 
-const RegisterPartials = () => {
+export const RegisterPartials = () => {
 	msg.info("registering partials...")
 	const partials = ["modalHeader", "modalFooter", "menuItem", "projectItem", "component_i"]
 	partials.forEach(async (e) => {
@@ -38,29 +39,6 @@ const RegisterPartials = () => {
 		var t = await get_data({ url, isJson: false })
 		Handlebars.registerPartial(e, t)
 	})
-}
-
-const getChildrenHelper = (form) => {
-	Handlebars.registerHelper('getchildren', function (id, options) {
-		return process_template(id, options, form)
-	});
-}
-
-const properties_template = (form) => {
-	Handlebars.registerHelper('properties_template', function (id, options) {
-		return process_template(id, options, form)
-	})
-}
-
-const process_template = (id, options, form) => {
-	var nodeid = prjTree().get_json(id)
-	var template = Handlebars.compile(form)
-	var type = options.data.root.type
-	if (type != 'filed' && type != 'field-settings') {
-		nodeid['readonly'] = true
-	}
-	var res = template(nodeid)
-	return res;
 }
 
 RegisterHelpers()

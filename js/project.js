@@ -1,8 +1,22 @@
+import { get_data, Msglog } from './common.js';
+import { preloader, renderTemplate } from './helpers.js';
 import { $$ } from './selector.js';
+
 import { NodeTypeManager } from './NodeTypeManager.js';
 import { ContextMenu } from './ContextMenu.js';
 
+window.msg = new Msglog();
 
+export const initializeProject = async (url) => {
+
+    const projectPage = await get_data({ url: "pages/project_page.html", isJson: false })
+    $$("#main-content").html(projectPage)
+
+    const content = await get_data({ url });
+    $$(".project-card-body").html(await renderTemplate("templates/project_tree.hbs", content));
+
+    addEventsListener();
+}
 
 // Función para manejar el contenido según el tipo
 export const handleProjectTree = async (node) => {
@@ -53,25 +67,40 @@ export const handleProjectTree = async (node) => {
     }
 };
 
-// Evento delegado para mostrar el menú contextual al hacer clic en un anchor con clase .node-link
-document.addEventListener('contextmenu', function (e) {
-    // Verificar si el clic fue en un anchor con la clase .node-link
-    const anchor = e.target.closest('a.node-link');
-    if (anchor) {
-        e.preventDefault(); // Evitar el comportamiento predeterminado del anchor
-        const type = anchor.getAttribute('data-type');
-        async function initializeNodeTypes() {
-            const nodeTypeManager = new NodeTypeManager();
-            await nodeTypeManager.loadFromFile('./settings/types.json');
-            // Ahora puedes usar nodeTypeManager con los tipos cargados
-            const contextMenu = new ContextMenu('context-menu', 'menu-options', nodeTypeManager);
-            contextMenu.show(e, anchor);
+// Función principal para añadir todos los event listeners
+const addEventsListener = () => {
+    msg.secondary("addEventsListenerProject", true);
+    projectNodesListener();
+    contextMenuListener();
+    // Aquí puedes agregar más listeners si es necesario en el futuro
+};
+const contextMenuListener = () =>{
+    // Evento delegado para mostrar el menú contextual al hacer clic en un anchor con clase .node-link
+    document.addEventListener('contextmenu', function (e) {
+        // Verificar si el clic fue en un anchor con la clase .node-link
+        const anchor = e.target.closest('a.node-link');
+        if (anchor) {
+            e.preventDefault(); // Evitar el comportamiento predeterminado del anchor
+            async function initializeNodeTypes() {
+                const nodeTypeManager = new NodeTypeManager();
+                await nodeTypeManager.loadFromFile('./settings/types.json');
+                // Ahora puedes usar nodeTypeManager con los tipos cargados
+                const contextMenu = new ContextMenu('context-menu', 'menu-options', nodeTypeManager);
+                contextMenu.show(e, anchor);
+            }
+    
+            initializeNodeTypes();
         }
-        
-        initializeNodeTypes();
+    });
+}
 
-
-        // Verificar si el tipo permite agregar nodos y cargar las opciones correspondientes
-        //contextMenu.populateOptions(options); // Mostrar las opciones de agregar nodos
-    }
-});
+const projectNodesListener = () =>{
+    $$("#main-content").on("click", function (e) {
+        // Delegar el evento click en todos los elementos con la clase `a.node-link` en un proyecto abierto
+        const anchor = e.target.closest('a.node-link');
+        if (anchor) {
+            e.preventDefault();
+            handleProjectTree(anchor);
+        }
+    });
+}

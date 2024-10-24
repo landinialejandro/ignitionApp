@@ -1,6 +1,6 @@
 <?php
 
-require_once('class_fs_.php');
+require_once('class_fs.php');
 
 // Leer y decodificar el cuerpo de la solicitud JSON
 $body = trim(file_get_contents("php://input"));
@@ -20,38 +20,38 @@ $defaults = [
 // Mezclar los datos recibidos con los valores predeterminados
 $request = array_merge($defaults, $_REQUEST, $decoded);
 
-// Desestructurar los valores del request
-[
-    'operation' => $operation,
-    'id' => $id,
-    'folder' => $folder,
-    'text' => $text,
-    'content' => $content,
-    'type' => $type,
-    'parent' => $parent,
-] = $request;
-
-// Verificar si se especificó una operación
-if (!$operation) {
-    enviarRespuesta(400, ['error' => 'Operación no especificada.']);
-    exit;
-}
-
 try {
-    $fs = new fs($folder);
-    $id = $id && $id !== '#' ? $id : '/';
-    $resultado = realizarOperacion($fs, $operation, $id, $text, $content, $type, $parent);
-    enviarRespuesta(200, $resultado);
+    validarDatos($request); // Aplicamos validación
+    enviarRespuesta(200, realizarOperacion($request));
+} catch (InvalidArgumentException $e) {
+    enviarRespuesta(400, ['error' => $e->getMessage()]);
 } catch (Exception $e) {
     enviarRespuesta(500, ['error' => $e->getMessage()]);
 }
 
+//////////////////////////////////////////////////////////////////////
+//////////////////////////////////////////////////////////////////////
+//////////////////////////////////////////////////////////////////////
+
 /**
  * Realiza la operación solicitada sobre el sistema de archivos.
  */
-function realizarOperacion($fs, $operation, $id, $text, $content, $type, $parent)
+function realizarOperacion($request)
 {
+    // Desestructurar los valores del request
+    [
+        'operation' => $operation,
+        'id' => $id,
+        'folder' => $folder,
+        'text' => $text,
+        'content' => $content,
+        'type' => $type,
+        'parent' => $parent,
+    ] = $request;
+
+    $id = $id && $id !== '#' ? $id : '/';
     $settingsDir = dirname(__FILE__) . "/settings/";
+    $fs = new fs($folder);
 
     switch ($operation) {
         case 'get_node':
@@ -75,8 +75,35 @@ function realizarOperacion($fs, $operation, $id, $text, $content, $type, $parent
         case 'test':
             return ['id' => $id, 'content' => $text ?: 'TEST'];
         default:
-            throw new Exception("Operación no soportada: {$operation}");
+            throw new InvalidArgumentException("Operación no soportada: {$operation}");
     }
+}
+
+/**
+ * Valida los datos recibidos en el request.
+ */
+function validarDatos($request)
+{
+    // Validamos que la operación sea una cadena no vacía
+    if (!isset($request['operation']) || !is_string($request['operation'])) {
+        throw new InvalidArgumentException("La operación es requerida y debe ser una cadena.");
+    }
+
+    // Validamos que 'id' y 'folder' sean cadenas
+    if (isset($request['id']) && !is_string($request['id'])) {
+        throw new InvalidArgumentException("El campo 'id' debe ser una cadena.");
+    }
+
+    if (isset($request['folder']) && !is_string($request['folder'])) {
+        throw new InvalidArgumentException("El campo 'folder' debe ser una cadena.");
+    }
+
+    // Validamos que 'type' sea cadena
+    if (isset($request['type']) && !is_string($request['type'])) {
+        throw new InvalidArgumentException("El campo 'type' debe ser una cadena.");
+    }
+
+    // Si hubiera más campos críticos, añadir más validaciones aquí...
 }
 
 /**
@@ -101,7 +128,7 @@ function obtenerConfiguracionJson($fs, $text, $settingsDir, $id)
         case 'file':
             return json_decode($fs->getContent($id), true);
         default:
-            throw new Exception("Operación JSON no soportada: {$text}");
+            throw new InvalidArgumentException("Operación JSON no soportada: {$text}");
     }
 }
 
@@ -137,6 +164,7 @@ function enviarRespuesta($status, $data)
 {
     http_response_code($status);
     header('Content-Type: application/json; charset=utf-8');
-    echo json_encode($data);
+    // Codificación mejorada para manejar caracteres Unicode correctamente
+    echo json_encode($data, JSON_UNESCAPED_UNICODE);
     exit;
 }
