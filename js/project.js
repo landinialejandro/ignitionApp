@@ -1,7 +1,7 @@
-import { get_data } from './common.js';
-import { Msglog } from "./MsgLog.js";
-import { preloader, renderTemplate } from './helpers.js';
-import { $$ } from './selector.js';
+import { get_data } from './libraries/common.js';
+import { Msglog } from "./libraries/MsgLog.js";
+import { preloader, renderTemplate } from './libraries/helpers.js';
+import { $$ } from './libraries/selector.js';
 
 import { NodeTypeManager } from './NodeTypeManager.js';
 import { ContextMenu } from './ContextMenu.js';
@@ -22,7 +22,7 @@ export const initializeProject = async (url) => {
 }
 
 // Función para manejar el contenido según el tipo
-export const handleProjectTree = async (node) => {
+export const handleProjectTree = (node) => {
 
     const { type, name } = $$(node).allData();
     msg.info(`NODElink clicked: ${name}`, true);
@@ -90,7 +90,7 @@ const initializeNodeTypes = async () => {
 };
 
 // Función para manejar el menú contextual
-const contextMenuListener = async () => {
+const contextMenuListener = () => {
     try {
         // Evento delegado para mostrar el menú contextual al hacer clic en un anchor con clase .node-link
         document.addEventListener('contextmenu', (e) => {

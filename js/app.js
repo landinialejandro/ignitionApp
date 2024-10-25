@@ -1,7 +1,8 @@
-import { get_data } from './common.js';
-import { Msglog } from "./MsgLog.js";
-import { preloader, renderTemplate, getDirCollectionJson } from './helpers.js';
-import { $$ } from './selector.js';
+import { get_data } from './libraries/common.js';
+import { Msglog } from "./libraries/MsgLog.js";
+import { preloader, renderTemplate, getDirCollectionJson } from './libraries/helpers.js';
+import { $$ } from './libraries/selector.js';
+
 import { initializeProject } from './project.js';
 
 window.msg = new Msglog();
@@ -25,14 +26,14 @@ window.onload = async function () {
         loadNavBar('#main-headerbar', await get_data({ url: "settings/nav_headerbar.json" }));
         loadNavBar('#projects-list', await getDirCollectionJson("projects"));
         loadNavBar('#settings-list', await getDirCollectionJson("settings"));
-
+        
+        addEventsListener();
     } catch (error) {
         // Registrar el error y notificar al usuario
         console.error("Error al inicializar la aplicación:", error);
         msg.danger("Ocurrió un problema al iniciar la aplicación. Por favor, inténtalo de nuevo más tarde.");
     } finally {
         // Ocultar el preloader siempre, incluso si ocurrió un error
-        addEventsListener();
         maiPreloader.hide();
     }
 };

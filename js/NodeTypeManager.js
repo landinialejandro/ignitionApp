@@ -1,4 +1,4 @@
-import { get_data } from './common.js';  // Importamos el método para obtener datos de JSON
+import { get_data } from './libraries/common.js';  // Importamos el método para obtener datos de JSON
 
 /**
  * @typedef {import('./types/IconType').IconType} IconType
@@ -32,8 +32,7 @@ export class NodeTypeManager {
      */
     async loadFromFile(filePath) {
         try {
-            const data = await get_data({ url: filePath, isJson: true });
-            this.types = data;
+            this.types = await get_data({ url: filePath, isJson: true });
             console.log(`Tipos de nodos cargados desde ${filePath}`);
         } catch (error) {
             console.error(`Error al cargar tipos de nodos desde ${filePath}:`, error);
