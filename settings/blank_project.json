@@ -1,25 +1,23 @@
-{
-    "nodes": [
-        {
-            "id": "1",
-            "caption": "New Project",
-            "icon": {
-                "type": "class", 
-                "value": "bi bi-diagram-3"
-              },
-            "li_attr": {
-                "id": "root-project"
-            },
-            "a_attr": {
-                "href": "#",
-                "id": "a-root-project"
-            },
-            "state": {
-                "opened": true
-            },
-            "properties": [],
-            "children": [],
-            "type": "root"
-        }
-    ]
-}
+[
+    {
+        "id": "1",
+        "caption": "New Project",
+        "icon": {
+            "type": "class",
+            "value": "bi bi-diagram-3"
+        },
+        "li_attr": {
+            "id": "root-project"
+        },
+        "a_attr": {
+            "href": "#",
+            "id": "a-root-project"
+        },
+        "state": {
+            "opened": true
+        },
+        "properties": [],
+        "children": [],
+        "type": "root"
+    }
+]

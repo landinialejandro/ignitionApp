@@ -17,11 +17,15 @@
       },
       "add": {
         "label": "Agregar nuevo grupo",
-        "callback": "addNewGroup"
+        "callback": "addNewNode"
+      },
+      "SettingsAdd": {
+        "label": "Agregar propiedades",
+        "callback": "addNewNode"
       }
     },
     "validChildren": [
-      "group"
+      "group","settings"
     ],
     "description": "nodo principal y nombre del proyecto, no se puede borrar, si se puede renombrar"
   },
@@ -43,11 +47,15 @@
       },
       "add": {
         "label": "Agregar nueva tabla",
-        "callback": "addNewTable"
+        "callback": "addNewNode"
+      },
+      "SettingsAdd": {
+        "label": "Agregar propiedades",
+        "callback": "addNewNode"
       }
     },
     "validChildren": [
-      "table"
+      "table","settings"
     ],
     "description": "Agrupa las tablas para dar un formato a la pagina principal"
   },
@@ -69,11 +77,15 @@
       },
       "add": {
         "label": "Agregar nuevo campo",
-        "callback": "addNewField"
+        "callback": "addNewNode"
+      },
+      "SettingsAdd": {
+        "label": "Agregar propiedades",
+        "callback": "addNewNode"
       }
     },
     "validChildren": [
-      "field"
+      "field", "settings"
     ],
     "description": "tabla asociada a un grupo"
   },
@@ -92,9 +104,25 @@
       "delete": {
         "label": "Eliminar campo",
         "callback": "deleteNode"
+      },
+      "SettingsAdd": {
+        "label": "Agregar propiedades",
+        "callback": "addNewNode"
       }
     },
-    "validChildren": [],
+    "validChildren": ["settings"],
     "description": "Campos de una tabla"
+  },
+  "settings": {
+    "maxChildren": 30,
+    "maxDepth": 50,
+    "icon": {
+      "type": "class",
+      "value": "bi bi-cog"
+    },
+    "actions": {
+    },
+    "validChildren": [],
+    "description": "Settings de un nodo"
   }
 }

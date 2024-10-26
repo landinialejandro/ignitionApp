@@ -1,13 +1,14 @@
 import { get_data } from './libraries/common.js';
 import { Msglog } from "./libraries/MsgLog.js";
-import { preloader, renderTemplate } from './libraries/helpers.js';
 import { $$ } from './libraries/selector.js';
 
 import { NodeTypeManager } from './NodeTypeManager.js';
 import { ContextMenu } from './ContextMenu.js';
+import { Nodes } from './Nodes.js';
 
 msg = new Msglog();
 let nodeTypeManager = null;
+let project = null;
 
 export const initializeProject = async (url) => {
 
@@ -15,19 +16,25 @@ export const initializeProject = async (url) => {
     $$("#main-content").html(projectPage)
 
     const content = await get_data({ url });
-    $$(".project-card-body").html(await renderTemplate("templates/project_tree.hbs", content));
+
+    project = new Nodes(".project-card-body");
+    project.setNodes(content);
+
+    console.log(project.toJSON());
+
+    await project.render();
 
     await initializeNodeTypes();
     addEventsListener();
 }
 
 // Función para manejar el contenido según el tipo
-export const handleProjectTree = (node) => {
+const handleProjectTree = (node) => {
 
     const { type, name } = $$(node).allData();
     msg.info(`NODElink clicked: ${name}`, true);
 
-    $$(".editor-card > div.card-header > h3.card-title").text(name);
+    $$(".caption-selected").text(name);
 
     try {
         // Instanciar el preloader para #main-content
@@ -108,6 +115,7 @@ const contextMenuListener = () => {
         });
     } catch (error) {
         console.error('Error al inicializar el menú contextual:', error);
+        msg.danger("Error al cargar el contenido del menu contextual. Verifica la consola para más detalles.");
     }
 };
 

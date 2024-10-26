@@ -1,5 +1,5 @@
 /**
- * @typedef {import('./types/IconType').IconType} IconType
+ * @typedef {import('./IconType').IconType} IconType
  */
 /**
  * @typedef {Object} NodeOptions

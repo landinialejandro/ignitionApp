@@ -1,5 +1,4 @@
-{
-    "menu": [
+[
         {
             "caption": "Home",
             "url": "#",
@@ -13,4 +12,3 @@
             "type": "page"
         }
     ]
-}
