@@ -5,23 +5,26 @@
             {
                 "id": "en",
                 "placeholder": "Caption Field",
-                "usershelper":"This value is used to identify the title of the field in the database, it appears in the detail form and in the table view",
+                "usershelper": "This value is used to identify the title of the field in the database, it appears in the detail form and in the table view",
                 "text": "",
-                "default":true
+                "default": true
             },
             {
                 "id": "es",
                 "placeholder": "Subtitulo en español",
-                "usershelper":"Identifica el título en español",
+                "usershelper": "Identifica el título en español",
                 "text": ""
             }
         ]
     },
     "type": "grp-settings",
-    "icon": "fas fa-font",
+    "icon": {
+        "value": "bi bi-type",
+        "type": "class"
+    },
     "li_attr": {
         "type": "text",
         "lang": "en"
     },
-    "order":1
+    "order": 1
 }

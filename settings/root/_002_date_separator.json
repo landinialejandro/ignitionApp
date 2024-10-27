@@ -10,6 +10,9 @@
         "usershelper": "Write a date saparator"
     },
     "type": "prj-settings",
-    "icon": "fas fa-font",
+    "icon": {
+    "value": "bi bi-type",
+    "type": "class"
+  },
     "order": 2
 }

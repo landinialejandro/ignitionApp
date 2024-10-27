@@ -1,0 +1,23 @@
+{
+  "text": "Select you charset value",
+  "data": {
+    "description": {
+      "text": "You can add your own charset in _xxx_charsets.json file",
+      "class": "text-warning"
+    },
+    "text": "utf8",
+    "option": true,
+    "options": [
+      "utf8",
+      "utf16",
+      "ascii"
+    ],
+    "usershelper": "Select your charset"
+  },
+  "type": "prj-settings",
+  "icon": {
+    "value": "bi bi-wrench-adjustable-circle",
+    "type": "class"
+  },
+  "order": 3
+}

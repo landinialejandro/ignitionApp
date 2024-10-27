@@ -7,6 +7,9 @@
         ]
     },
     "type": "grp-settings",
-    "icon": "fas fa-stream",
+    "icon": {
+    "value": "bi bi-wrench-adjustable-circle",
+    "type": "class"
+  },
     "order": 3
 }

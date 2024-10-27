@@ -19,7 +19,10 @@
         "type": "html-control"
     },
     "type": "field-settings",
-    "icon": "fas fa-font",
+    "icon": {
+    "value": "bi bi-type",
+    "type": "class"
+  },
     "li_attr": {
         "type": "text",
         "lang": "en"

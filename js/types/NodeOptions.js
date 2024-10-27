@@ -9,7 +9,7 @@
  * @property {Object} [li_attr] - Atributos personalizados para la etiqueta `<li>`.
  * @property {Object} [a_attr] - Atributos personalizados para la etiqueta `<a>`.
  * @property {Object} [state] - Estado del nodo (por ejemplo, si está abierto).
- * @property {Object} [data] - Datos adicionales del nodo.
+ * @property {Object} [properties] - Datos adicionales del nodo.
  * @property {Node[]} [children] - Nodos hijos.
  * @property {string} [type] - Tipo de nodo (root, group, table, field).
  */

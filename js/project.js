@@ -1,6 +1,7 @@
 import { get_data, saveFileToServer } from './libraries/common.js';
 import { Msglog } from "./libraries/MsgLog.js";
 import { $$ } from './libraries/selector.js';
+import { getDirCollectionJson } from './libraries/helpers.js';
 
 import { NodeTypeManager } from './NodeTypeManager.js';
 import { ContextMenu } from './ContextMenu.js';
@@ -11,7 +12,7 @@ let nodeTypeManager = null;
 let project = null;
 
 const actionCallbacks = {
-    addNewNode: (parentType, anchor, nodeId, typeToAdd) => {
+    addNewNode: async (parentType, anchor, nodeId, typeToAdd) => {
         console.log(`Intentando agregar un nuevo nodo de tipo ${typeToAdd} como hijo de ${parentType} con data-id ${nodeId}`);
 
         // Busca el nodo padre en el proyecto
@@ -20,6 +21,21 @@ const actionCallbacks = {
         if (!parentNode) {
             msg.danger("Nodo padre no encontrado. No se pudo agregar el nuevo nodo.");
             console.error("Nodo padre no encontrado, no se pudo agregar el nuevo nodo.");
+            return;
+        }
+
+        // Validación 1: Verificar si ya existe un nodo "settings" como hijo
+        const childrenTypes = project.getChildrenTypes(nodeId);
+        if (typeToAdd === "settings" && childrenTypes.includes(typeToAdd)) {
+            msg.danger("Ya existe un nodo de tipo 'settings' como hijo de este nodo. Solo puede haber uno.");
+            console.error("Ya existe un nodo de tipo 'settings' como hijo de este nodo.");
+            return;
+        }
+
+        // Validación 2: Verificar si ya existe un nodo "root" en todo el proyecto
+        if (typeToAdd === "root" && project.hasNodeOfType("root")) {
+            msg.danger("Ya existe un nodo de tipo 'root' en el proyecto. Solo puede haber uno.");
+            console.error("Ya existe un nodo de tipo 'root' en el proyecto.");
             return;
         }
 
@@ -39,20 +55,51 @@ const actionCallbacks = {
             return;
         }
 
-        // Construye el objeto de opciones del nuevo nodo sin especificar ID
+        // Construye el objeto de opciones del nuevo nodo, incluyendo el arreglo de hijos vacío inicialmente
         const newNodeOptions = {
             ...baseOptions,
-            type: typeToAdd,                 // Incluye las opciones específicas del tipo de nodo
-            caption: `Nuevo ${typeToAdd}`   // Título provisional para el nuevo nodo
+            type: typeToAdd,
+            caption: `Nuevo ${typeToAdd}`,
+            children: []
         };
 
-        // Agrega el nuevo nodo al nodo padre usando el método addChild
+        // Si el nodo es de tipo "settings", cargar los archivos del directorio y añadir como hijos antes de agregar el nodo
+        if (typeToAdd === "settings") {
+            try {
+                const settingsPath = `settings/${parentType}`;
+                const filesContent = await getDirCollectionJson(settingsPath);
+
+                // Itera sobre cada archivo en el objeto `filesContent`
+                for (const [key, fileInfo] of Object.entries(filesContent)) {
+                    const content = await get_data({ url: fileInfo.url });
+                    console.log(content);
+                    const childNode = {
+                        caption: content.text || "Elemento de configuración",
+                        url: fileInfo.url,
+                        type: "settingItem",  // Asignamos un tipo específico para cada archivo
+                        a_class: fileInfo.a_class,
+                        icon: content.icon,
+                        children: fileInfo.children || false,
+                        properties: content
+                    };
+                    newNodeOptions.children.push(childNode);
+                }
+
+                msg.success("Elementos de configuración cargados y agregados al nodo 'settings'.");
+            } catch (error) {
+                msg.danger("Error al cargar los elementos de configuración.");
+                console.error("Error al cargar los elementos de configuración:", error);
+                return;
+            }
+        }
+
+        // Agrega el nuevo nodo completo al nodo padre
         const success = project.addChild(nodeId, newNodeOptions);
 
         if (success) {
             project.render();  // Renderiza el proyecto actualizado en el DOM
             msg.success(`Nodo de tipo ${typeToAdd} agregado exitosamente como hijo de ${parentType}.`);
-            // console.log("Estado del proyecto actualizado:", project.toJSON());
+            console.log("Estado del proyecto actualizado:", project.toJSON());
         } else {
             msg.danger("No se pudo agregar el nodo. Verifique el ID proporcionado.");
             console.error("No se pudo agregar el nodo.");
@@ -79,9 +126,9 @@ const actionCallbacks = {
         const confirmation = confirm("¿Está seguro de que desea eliminar este nodo?");
         if (confirmation) {
             console.log(`Intentando eliminar el nodo de tipo ${nodeType} con ID ${nodeId}`);
-            const deleted = project.removeNode(nodeId);  // Remueve el nodo hijo
+            const deleted = project.removeNode(nodeId);
             if (deleted) {
-                project.render();  // Renderiza el proyecto actualizado en el DOM
+                project.render();
                 msg.success(`Nodo de tipo ${nodeType} eliminado exitosamente.`);
                 console.log("Estado del proyecto actualizado:", project.toJSON());
             } else {
@@ -127,8 +174,11 @@ const handleProjectTree = (node) => {
                 break;
             case "settings":
                 break;
+            case "settingItem":
+                
+                break;
             default:
-                msg.warning("Tipo de enlace no soportado.");
+                msg.warning("Tipo de enlace no soportado: " + type);
                 break;
         }
     } catch (error) {

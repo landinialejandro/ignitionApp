@@ -5,7 +5,10 @@
         "text": ""
     },
     "type":"tbl-setting",
-    "icon": "fa fa-cog",
+    "icon": {
+    "value": "bi bi-journal-bookmark",
+    "type": "class"
+  },
     "li_attr": {
         "type": "integer"
     },

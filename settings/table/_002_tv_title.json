@@ -22,7 +22,10 @@
         ]
     },
     "type": "tbl-setting",
-    "icon": "fas fa-font",
+    "icon": {
+    "value": "bi bi-type",
+    "type": "class"
+  },
     "li_attr": {
         "type": "text",
         "lang": "en"

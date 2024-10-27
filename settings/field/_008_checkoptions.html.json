@@ -17,6 +17,9 @@
         "type":"html-control"
     },
     "type": "field-settings",
-    "icon": "fas fa-stream",
+    "icon": {
+    "value": "bi bi-wrench-adjustable-circle",
+    "type": "class"
+  },
     "order": 8
 }

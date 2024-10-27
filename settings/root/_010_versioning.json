@@ -33,7 +33,10 @@
         ]
     },
     "type": "prj-settings",
-    "icon": "fas fa-code-branch",
+    "icon": {
+    "value": "bi bi-git",
+    "type": "class"
+  },
     "li_attr": {
         "type": "text",
         "lang": "en"

@@ -203,4 +203,17 @@ export class Nodes {
         const html = await renderTemplate(this.template, content);
         $$(`${this.container}`).html(html);
     }
+    
+    /**
+    * Obtiene un arreglo de los tipos de todos los nodos hijos directos de un nodo específico.
+    * @param {string} parentId - El ID del nodo padre.
+    * @returns {string[]} - Un arreglo con los tipos de los nodos hijos.
+    */
+    getChildrenTypes(parentId) {
+        const parentNode = this.findChildById(parentId);
+        if (!parentNode) return []; // Si no se encuentra el nodo padre, retorna un arreglo vacío
+
+        // Retorna un arreglo con los tipos de los nodos hijos
+        return parentNode.children.map(child => child.type);
+    }
 }
