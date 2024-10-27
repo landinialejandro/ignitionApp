@@ -41,6 +41,63 @@ export const get_data = async ({ url, data = null, method = null, isJson = true,
     }
 };
 
+/**
+ * Guarda un archivo en el servidor utilizando una llamada AJAX a través de MyFetch.
+ *
+ * @param {string} url - La URL del script PHP que manejará la subida y guardado del archivo en el servidor.
+ * @param {File} file - El archivo que se desea guardar en el servidor.
+ * @param {Object} [extraData={}] - Datos adicionales que se enviarán junto al archivo (opcional).
+ * @param {Function} [callback=null] - Función opcional que se ejecutará después de guardar el archivo.
+ *
+ * @returns {Promise<any>} - Una promesa que se resuelve si el archivo se guarda exitosamente o se rechaza si ocurre un error.
+ *
+ * @example
+ * saveFileToServer('https://tu-servidor.com/save_file.php', archivo, { userId: 123 })
+ *   .then((response) => {
+ *     console.log('Archivo guardado exitosamente en el servidor:', response);
+ *   })
+ *   .catch((error) => {
+ *     console.error('Error al guardar el archivo:', error);
+ *   });
+ */
+export const saveFileToServer = async (url, file, extraData = {}, callback = null) => {
+    // if (!(file instanceof File)) {
+    //     throw new Error("El parámetro 'file' debe ser un objeto de tipo File.");
+    // }
+
+    // Crear un FormData y añadir el archivo y datos adicionales
+    const formData = new FormData();
+    formData.append("file", file);
+
+    // Agregar datos adicionales al FormData
+    for (const key in extraData) {
+        formData.append(key, extraData[key]);
+    }
+
+    // Realizar la solicitud usando MyFetch
+    try {
+        const response = await MyFetch(
+            {
+                url,
+                method: "POST",
+                body: formData
+            },
+            true
+        );
+
+        // Ejecutar el callback si se proporciona
+        if (typeof callback === "function") {
+            callback(response);
+        }
+
+        return response;
+    } catch (error) {
+        console.error("Error en saveFileToServer:", error);
+        throw error;
+    }
+};
+
+
 
 /**
  ** Realiza una petición HTTP utilizando la API Fetch y devuelve una promesa con los datos de la respuesta.

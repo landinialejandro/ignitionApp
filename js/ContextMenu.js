@@ -4,144 +4,20 @@
  * La clase `ContextMenu` genera un menú contextual dinámico basado en las configuraciones proporcionadas 
  * por un `nodeTypeManager`. Las acciones disponibles (como agregar, renombrar, eliminar) y los íconos que 
  * las acompañan están definidos por el tipo de nodo seleccionado. Los ítems del menú incluyen sus correspondientes
- * íconos y ejecutan los callbacks asignados a cada acción.
+ * íconos y ejecutan los callbacks asignados a cada acción, que pueden ser proporcionados externamente.
  * 
  * @param {string} menuId - El ID del elemento HTML que actúa como el menú contextual.
  * @param {string} optionsContainerId - El ID del elemento HTML que contiene las opciones del menú contextual.
  * @param {Object} nodeTypeManager - Un objeto que gestiona los tipos de nodos, sus acciones permitidas, iconos y las relaciones entre ellos.
- * 
- * @example
- ** // Ejemplo de estructura de nodeTypeManager:
- * const nodeTypeManager = {
- *   root: {
- *     maxChildren: 8,
- *     maxDepth: 50,
- *     icon: { 
- *       type: "class", 
- *       value: "bi bi-archive" 
- *     },
- *     actions: {
- *       rename: { 
- *         label: "Renombrar nodo", 
- *         callback: "renameNode" 
- *       },
- *       delete: { 
- *         label: "Eliminar nodo", 
- *         callback: "deleteNode" 
- *       },
- *       add: { 
- *         label: "Agregar nuevo grupo", 
- *         callback: "addNewGroup" 
- *       }
- *     },
- *     validChildren: ["group"],
- *     description: "Nodo principal y nombre del proyecto, no se puede borrar, pero sí se puede renombrar."
- *   },
- *   group: {
- *     maxChildren: 30,
- *     maxDepth: 50,
- *     icon: { 
- *       type: "svg", 
- *       value: "<svg viewBox='...' />" 
- *     },
- *     actions: {
- *       rename: { 
- *         label: "Renombrar grupo", 
- *         callback: "renameNode" 
- *       },
- *       delete: { 
- *         label: "Eliminar grupo", 
- *         callback: "deleteNode" 
- *       },
- *       add: { 
- *         label: "Agregar nueva tabla", 
- *         callback: "addNewTable" 
- *       }
- *     },
- *     validChildren: ["table"],
- *     description: "Agrupa las tablas para dar formato a la página principal."
- *   },
- *   table: {
- *     maxChildren: 20,
- *     maxDepth: 50,
- *     icon: { 
- *       type: "class", 
- *       value: "bi bi-table" 
- *     },
- *     actions: {
- *       rename: { 
- *         label: "Renombrar tabla", 
- *         callback: "renameNode" 
- *       },
- *       delete: { 
- *         label: "Eliminar tabla", 
- *         callback: "deleteNode" 
- *       },
- *       add: { 
- *         label: "Agregar nuevo campo", 
- *         callback: "addNewField" 
- *       }
- *     },
- *     validChildren: ["field"],
- *     description: "Tabla asociada a un grupo."
- *   },
- *   field: {
- *     maxChildren: 0,
- *     maxDepth: 50,
- *     icon: { 
- *       type: "class", 
- *       value: "bi bi-card-heading" 
- *     },
- *     actions: {
- *       rename: { 
- *         label: "Renombrar campo", 
- *         callback: "renameNode" 
- *       },
- *       delete: { 
- *         label: "Eliminar campo", 
- *         callback: "deleteNode" 
- *       }
- *     },
- *     validChildren: [],
- *     description: "Campos de una tabla."
- *   }
- * };
- * 
- ** // En tu archivo HTML:
- * <ul id="context-menu" style="display:none; position:absolute; z-index:1000;">
- *   <li id="menu-options"></li>
- * </ul>
- * 
- ** // En tu archivo JavaScript:
- * import { ContextMenu } from './ContextMenu.js';
- * 
- ** // Instancia del menú contextual
- * const contextMenu = new ContextMenu('context-menu', 'menu-options', nodeTypeManager);
- * 
- ** // Evento para mostrar el menú contextual cuando se hace clic derecho en un elemento
- * document.addEventListener('contextmenu', function (e) {
- *   const anchor = e.target.closest('a.node-link');
- *   if (anchor) {
- *     e.preventDefault(); // Prevenir el menú contextual predeterminado
- *     contextMenu.show(e, anchor); // Mostrar el menú contextual personalizado
- *   }
- * });
- * 
- * @example
- ** // Ejemplo de uso:
- * const anchor = document.querySelector('a.node-link[data-type="group"]');
- * const event = new MouseEvent('contextmenu', { clientX: 100, clientY: 100 });
- * contextMenu.show(event, anchor); // Muestra el menú contextual para un nodo de tipo "group"
- * 
- ** // Opción "Agregar":
- * contextMenu.addNewTable('group', anchor); // Agrega un nodo de tipo "table" bajo un nodo de tipo "group"
+ * @param {Object} actionCallbacks - Un objeto que contiene los callbacks personalizados para cada acción.
  */
 
 export class ContextMenu {
-    constructor(menuId, optionsContainerId, nodeTypeManager) {
+    constructor(menuId, optionsContainerId, nodeTypeManager, actionCallbacks = {}) {
         this.menu = document.getElementById(menuId); // Menú contextual
         this.optionsContainer = document.getElementById(optionsContainerId); // Contenedor de opciones
         this.nodeTypeManager = nodeTypeManager; // nodeTypeManager externo que gestiona nodos y sus reglas
+        this.actionCallbacks = actionCallbacks; // Callbacks personalizados proporcionados externamente
         this.initializeEventListeners(); // Inicializar eventos para cerrar el menú
     }
 
@@ -153,8 +29,9 @@ export class ContextMenu {
      * @returns {void}
      */
     show(event, anchor) {
-        // Obtener el tipo de nodo desde el atributo data-type
+        // Obtener el tipo de nodo y el id desde los atributos data del anchor
         const nodeType = anchor.getAttribute('data-type');
+        const nodeId = anchor.getAttribute('data-id'); // Captura el id del nodo desde data-id
 
         // Limpiar las opciones anteriores
         this.optionsContainer.innerHTML = '';
@@ -167,12 +44,16 @@ export class ContextMenu {
             // Iterar sobre las acciones definidas en el nodo
             Object.keys(nodeConfig.actions).forEach(actionKey => {
                 const action = nodeConfig.actions[actionKey];
+                
+                // Crear opción con el callback proporcionado o un placeholder
                 const option = {
                     label: action.label,
-                    callback: this[action.callback].bind(this, nodeType, anchor), // Asignar el callback dinámico
+                    callback: this.actionCallbacks[action.callback] || (() => {
+                        console.warn(`Callback para '${action.callback}' no definido.`);
+                    }),
                     icon: nodeConfig.icon
                 };
-                this.createMenuItem(option);
+                this.createMenuItem(option, nodeType, anchor, nodeId);
             });
         }
 
@@ -186,9 +67,12 @@ export class ContextMenu {
      * Crea y agrega un ítem de menú contextual utilizando el partial 'menuitem.hbs'.
      * 
      * @param {Object} option - Opción que contiene el label, icono y la acción (callback) del ítem de menú.
+     * @param {string} nodeType - Tipo del nodo que se pasa al callback.
+     * @param {HTMLElement} anchor - Elemento que se pasa al callback.
+     * @param {string} nodeId - El id del nodo obtenido de data-id que se pasa al callback.
      * @returns {void}
      */
-    createMenuItem(option) {
+    createMenuItem(option, nodeType, anchor, nodeId) {
         // Renderizar el 'li' utilizando el template partial 'menuitem.hbs'
         const menuItemHtml = Handlebars.partials['projectItem']({
             caption: option.label,
@@ -209,54 +93,12 @@ export class ContextMenu {
 
         // Asignar la acción (callback)
         li.addEventListener('click', () => {
-            option.callback(); // Ejecutar la acción asociada
+            option.callback(nodeType, anchor, nodeId); // Ejecutar la acción con tipo de nodo, elemento y id
             this.hide(); // Ocultar el menú después de seleccionar una opción
         });
 
         // Añadir la opción al contenedor del menú
         this.optionsContainer.appendChild(li);
-    }
-
-    /**
-     * Callback para agregar un nuevo nodo como hijo del nodo actual, según las reglas de nodeTypeManager.
-     * 
-     * @param {string} parentType - Tipo del nodo padre.
-     * @param {HTMLElement} anchor - Elemento del nodo padre.
-     * @returns {void}
-     */
-    addNewNode(parentType, anchor) {
-        console.log(`Agregar un nuevo Nodo al nodo de tipo ${parentType}`);
-        // Aquí iría la lógica para agregar un nuevo grupo
-    }
-
-    /**
-     * Callback para renombrar un nodo actual.
-     * 
-     * @param {string} nodeType - Tipo del nodo que se va a renombrar.
-     * @param {HTMLElement} anchor - Elemento del nodo que se va a renombrar.
-     * @returns {void}
-     */
-    renameNode(nodeType, anchor) {
-        const newName = prompt("Ingrese el nuevo nombre para el nodo:");
-        if (newName) {
-            console.log(`Nodo de tipo ${nodeType} renombrado a: ${newName}`);
-            // Aquí iría la lógica para cambiar el nombre en el sistema
-        }
-    }
-
-    /**
-     * Callback para eliminar un nodo actual.
-     * 
-     * @param {string} nodeType - Tipo del nodo que se va a eliminar.
-     * @param {HTMLElement} anchor - El elemento del nodo que se va a eliminar.
-     * @returns {void}
-     */
-    deleteNode(nodeType, anchor) {
-        const confirmation = confirm("¿Está seguro de que desea eliminar este nodo?");
-        if (confirmation) {
-            console.log(`Nodo de tipo ${nodeType} eliminado.`);
-            // Aquí iría la lógica para eliminar el nodo en el sistema
-        }
     }
 
     /**

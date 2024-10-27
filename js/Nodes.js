@@ -3,6 +3,7 @@
  */
 import { renderTemplate } from './libraries/helpers.js';
 import { $$ } from './libraries/selector.js';
+
 export class Nodes {
     /**
      * @param {string} container - ID del contenedor HTML donde se renderizará el árbol.
@@ -10,6 +11,8 @@ export class Nodes {
     constructor(container) {
         this.container = container;
         this.nodes = [];
+        this.template = "templates/project_tree.hbs"; // Plantilla predeterminada
+        this.file = "";
     }
 
     /**
@@ -36,7 +39,7 @@ export class Nodes {
         node.state = options.state || {};
         node.properties = options.properties || [];
         node.children = (options.children || []).map(childOptions => Nodes._createNode(childOptions));
-        node.type = options.type || 'field'; // Por defecto, 'field'
+        node.type = options.type || 'field';
         return node;
     }
 
@@ -50,46 +53,48 @@ export class Nodes {
     }
 
     /**
-     * Agrega un hijo al nodo actual.
-     * @param {NodeOptions} childNodeOptions - Opciones del nodo hijo.
-     */
-    addChild(childNodeOptions) {
-        const childNode = Nodes._createNode(childNodeOptions);
-        this.children.push(childNode);
-    }
-
-    /**
-     * Elimina un nodo hijo por su ID.
-     * @param {string} nodeId - El ID del nodo a eliminar.
-     * @returns {boolean} - True si se eliminó el nodo, False si no se encontró.
-     */
-    removeChildById(nodeId) {
-        const index = this.children.findIndex(child => child.id === nodeId);
-        if (index !== -1) {
-            this.children.splice(index, 1);
-            return true;
-        }
-        return false;
-    }
-
-    /**
-     * Busca un nodo hijo recursivamente por su ID.
+     * Busca un nodo en todo el árbol recursivamente por su ID.
      * @param {string} nodeId - El ID del nodo a buscar.
      * @returns {Nodes|null} - Retorna el nodo encontrado o null si no se encuentra.
      */
     findChildById(nodeId) {
+        for (const node of this.nodes) {
+            const found = node._findInChildren(nodeId);
+            if (found) return found;
+        }
+        return null;
+    }
+
+    /**
+     * Método privado para buscar recursivamente en `this.children` dentro de un nodo individual.
+     * @param {string} nodeId - El ID del nodo a buscar.
+     * @returns {Nodes|null} - Retorna el nodo encontrado o null si no se encuentra.
+     * @private
+     */
+    _findInChildren(nodeId) {
         if (this.id === nodeId) {
             return this;
         }
-
-        for (const child of this.children) {
-            const found = child.findChildById(nodeId);
-            if (found) {
-                return found;
-            }
+        for (const child of this.children || []) {
+            const found = child._findInChildren(nodeId);
+            if (found) return found;
         }
-
         return null;
+    }
+
+    /**
+     * Actualiza una o varias propiedades de un nodo identificado por su ID.
+     * @param {string} nodeId - El ID del nodo a actualizar.
+     * @param {Object} properties - Objeto con las propiedades y sus valores para actualizar.
+     * @returns {boolean} - Retorna true si el nodo fue encontrado y actualizado, false si no.
+     */
+    updateNode(nodeId, properties) {
+        const node = this.findChildById(nodeId);
+        if (node) {
+            Object.assign(node, properties); // Actualiza las propiedades especificadas
+            return true;
+        }
+        return false; // Nodo no encontrado
     }
 
     /**
@@ -100,6 +105,7 @@ export class Nodes {
         if (this.nodes && this.nodes.length) {
             return {
                 container: this.container,
+                file: this.file,
                 nodes: this.nodes.map(node => node.toJSON())
             };
         }
@@ -122,7 +128,7 @@ export class Nodes {
      */
     async render() {
         const content = this.toJSON();
-        const html = await renderTemplate("templates/project_tree.hbs", content);
+        const html = await renderTemplate(this.template, content);
         $$(`${this.container}`).html(html);
     }
 }

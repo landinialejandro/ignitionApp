@@ -1,9 +1,10 @@
 <!-- partials/projectIem.hbs -->
-<li id="{{id}}" class="node-item {{#if state.node_open}}node-open{{/if}} {{li_class}}" 
+<li class="node-item {{#if state.node_open}}node-open{{/if}} {{li_class}}" 
     {{#each li_attr}} {{@key}}="{{this}}" {{/each}}>
     <a  class="node-link {{#if active}}active{{/if}} {{a_class}}"
         data-name="{{caption}}" 
         data-type="{{type}}" 
+        data-id="{{id}}"
         {{#each a_attr}} {{@key}}="{{this}}" {{/each}}>
         {{> component_i}}
         {{#if caption}}

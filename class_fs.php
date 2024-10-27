@@ -6,7 +6,7 @@
  * Esta clase garantiza que todas las operaciones se realicen dentro de un directorio base seguro.
  *
  * @package FileSystemManager
- * @author Tu Nombre
+ * @author Alejandro Landini
  * @version 1.0
  */
 
