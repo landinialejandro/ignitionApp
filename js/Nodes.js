@@ -81,6 +81,61 @@ export class Nodes {
         }
         return null;
     }
+    /**
+    * Busca el nodo padre de un nodo con un ID específico.
+    * @param {string} nodeId - El ID del nodo del cual queremos encontrar el padre.
+    * @returns {Nodes|null} - Retorna el nodo padre o null si no se encuentra.
+    */
+    findParentById(nodeId) {
+        for (const node of this.nodes) {
+            const parent = this._findParentInChildren(node, nodeId);
+            if (parent) return parent;
+        }
+        return null;
+    }
+
+    /**
+     * Método privado para buscar recursivamente el nodo padre dentro de `children`.
+     * @param {Nodes} parentNode - Nodo actual desde el cual se inicia la búsqueda.
+     * @param {string} nodeId - El ID del nodo del cual queremos encontrar el padre.
+     * @returns {Nodes|null} - Retorna el nodo padre o null si no se encuentra.
+     * @private
+     */
+    _findParentInChildren(parentNode, nodeId) {
+        for (const child of parentNode.children || []) {
+            if (child.id === nodeId) {
+                return parentNode;
+            }
+            const foundParent = this._findParentInChildren(child, nodeId);
+            if (foundParent) return foundParent;
+        }
+        return null;
+    }
+
+    /**
+     * Elimina un nodo identificado por su ID del árbol.
+     * @param {string} nodeId - El ID del nodo a eliminar.
+     * @returns {boolean} - Retorna true si el nodo fue encontrado y eliminado, false si no.
+     */
+    removeNode(nodeId) {
+        // Buscar el nodo padre
+        const parentNode = this.findParentById(nodeId);
+        if (parentNode) {
+            const index = parentNode.children.findIndex(child => child.id === nodeId);
+            if (index !== -1) {
+                parentNode.children.splice(index, 1); // Elimina el nodo del array de hijos
+                return true;
+            }
+        } else {
+            // Si el nodo a eliminar es un nodo raíz en `this.nodes`
+            const index = this.nodes.findIndex(node => node.id === nodeId);
+            if (index !== -1) {
+                this.nodes.splice(index, 1);
+                return true;
+            }
+        }
+        return false; // Nodo no encontrado
+    }
 
     /**
      * Agrega un nuevo nodo como hijo de un nodo existente identificado por su ID.

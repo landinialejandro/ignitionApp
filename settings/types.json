@@ -128,6 +128,10 @@
       "value": "bi bi-gear"
     },
     "actions": {
+      "delete": {
+        "label": "Eliminar Settings",
+        "callback": "deleteNode"
+      }
     },
     "validChildren": [],
     "description": "Settings de un nodo"
