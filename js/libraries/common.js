@@ -60,37 +60,35 @@ export const get_data = async ({ url, data = null, method = null, isJson = true,
  *     console.error('Error al guardar el archivo:', error);
  *   });
  */
-export const saveFileToServer = async (url, file, extraData = {}, callback = null) => {
-    // if (!(file instanceof File)) {
-    //     throw new Error("El parámetro 'file' debe ser un objeto de tipo File.");
-    // }
-
-    // Crear un FormData y añadir el archivo y datos adicionales
-    const formData = new FormData();
-    formData.append("file", file);
-
-    // Agregar datos adicionales al FormData
-    for (const key in extraData) {
-        formData.append(key, extraData[key]);
-    }
-
-    // Realizar la solicitud usando MyFetch
+export const saveFileToServer = async (file, extraData = {}, callback = null) => {
+    msg.info("saving project");
+    //TODO: se puede controlar si el nombre es valido antes de pasarlo a la función
     try {
-        const response = await MyFetch(
-            {
-                url,
-                method: "POST",
-                body: formData
-            },
-            true
-        );
+
+        const data = {
+            operation: "save_file",
+            type: "json",
+            id: file,
+            text: "",
+            content: JSON.stringify(extraData),
+        }
+        //save projet
+        const responseData = await get_data({
+            url: "ignitionApp.php", data,
+        })
 
         // Ejecutar el callback si se proporciona
         if (typeof callback === "function") {
             callback(response);
         }
 
-        return response;
+        if (responseData) {
+            console.log('Archivo guardado con éxito');
+            return responseData;
+        } else {
+            throw new Error(`Error al guardar: ${file}`);
+        }
+
     } catch (error) {
         console.error("Error en saveFileToServer:", error);
         throw error;

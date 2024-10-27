@@ -6,38 +6,99 @@ import { NodeTypeManager } from './NodeTypeManager.js';
 import { ContextMenu } from './ContextMenu.js';
 import { Nodes } from './Nodes.js';
 
-const msg = new Msglog();  // Se asegura la declaración de msg
+const msg = new Msglog();
 let nodeTypeManager = null;
 let project = null;
 
 const actionCallbacks = {
-    addNewNode: (parentType, anchor, nodeId) => {
-        console.log(`Agregar un nuevo nodo al nodo de tipo ${parentType}`);
-        console.log(parentType, nodeId);
+    addNewNode: (parentType, anchor, nodeId, typeToAdd) => {
+        console.log(`Intentando agregar un nuevo nodo de tipo ${typeToAdd} como hijo de ${parentType} con data-id ${nodeId}`);
+        
+        // Busca el nodo padre en el proyecto
+        const parentNode = project.findChildById(nodeId);
+
+        if (!parentNode) {
+            msg.danger("Nodo padre no encontrado. No se pudo agregar el nuevo nodo.");
+            console.error("Nodo padre no encontrado, no se pudo agregar el nuevo nodo.");
+            return;
+        }
+
+        // Verifica si el tipo de nodo a agregar está permitido como hijo del nodo padre
+        const allowedChildTypes = parentNode.allowedChildTypes || [];
+        if (!allowedChildTypes.includes(typeToAdd)) {
+            msg.danger(`No se permite agregar un nodo de tipo ${typeToAdd} al nodo de tipo ${parentNode.type}.`);
+            console.error(`Tipo de nodo ${typeToAdd} no permitido como hijo de ${parentNode.type}.`);
+            return;
+        }
+
+        // Obtiene las opciones del tipo de nodo desde nodeTypeManager
+        const baseOptions = nodeTypeManager.getType(typeToAdd);
+        
+        if (!baseOptions) {
+            msg.danger(`Tipo de nodo ${typeToAdd} no encontrado en nodeTypeManager.`);
+            console.error(`Tipo de nodo ${typeToAdd} no encontrado.`);
+            return;
+        }
+
+        // Construye el objeto de opciones del nuevo nodo sin especificar ID
+        const newNodeOptions = {
+            ...baseOptions,                 // Incluye las opciones específicas del tipo de nodo
+            caption: `Nuevo ${typeToAdd}`   // Título provisional para el nuevo nodo
+        };
+
+        // Agrega el nuevo nodo al nodo padre usando el método addChild
+        const success = project.addChild(nodeId, newNodeOptions);
+
+        if (success) {
+            project.render();  // Renderiza el proyecto actualizado en el DOM
+            msg.success(`Nodo de tipo ${typeToAdd} agregado exitosamente como hijo de ${parentType}.`);
+            console.log("Estado del proyecto actualizado:", project.toJSON());
+        } else {
+            msg.danger("No se pudo agregar el nodo. Verifique el ID proporcionado.");
+            console.error("No se pudo agregar el nodo.");
+        }
     },
+    
     renameNode: (nodeType, anchor, nodeId) => {
         const newName = prompt("Ingrese el nuevo nombre para el nodo:");
         if (newName) {
-            console.log(nodeType, nodeId);
-            console.log(`Nodo de tipo ${nodeType} renombrado a: ${newName}`);
+            console.log(`Intentando renombrar el nodo de tipo ${nodeType} con ID ${nodeId}`);
             const updated = project.updateNode(nodeId, { caption: newName });
             if (updated) {
-                console.log("Nodo actualizado exitosamente");
+                msg.success(`Nodo de tipo ${nodeType} renombrado exitosamente a: ${newName}`);
                 project.render();
-                console.log(project.toJSON());
+                console.log("Estado del proyecto actualizado:", project.toJSON());
             } else {
-                console.log("Nodo no encontrado");
+                msg.danger("Nodo no encontrado. No se pudo renombrar.");
+                console.log("Nodo no encontrado.");
             }
         }
     },
+    
     deleteNode: (nodeType, anchor, nodeId) => {
         const confirmation = confirm("¿Está seguro de que desea eliminar este nodo?");
         if (confirmation) {
-            console.log(nodeType, nodeId);
-            console.log(`Nodo de tipo ${nodeType} eliminado.`);
+            console.log(`Intentando eliminar el nodo de tipo ${nodeType} con ID ${nodeId}`);
+            const parentNode = project.findParentOfNode(nodeId);  // Encuentra el nodo padre
+
+            if (parentNode) {
+                const deleted = parentNode.removeChildById(nodeId);  // Remueve el nodo hijo
+                if (deleted) {
+                    project.render();  // Renderiza el proyecto actualizado en el DOM
+                    msg.success(`Nodo de tipo ${nodeType} eliminado exitosamente.`);
+                    console.log("Estado del proyecto actualizado:", project.toJSON());
+                } else {
+                    msg.danger("No se pudo eliminar el nodo. Verifique el ID proporcionado.");
+                    console.error("No se pudo eliminar el nodo.");
+                }
+            } else {
+                msg.danger("Nodo padre no encontrado. No se pudo eliminar el nodo.");
+                console.error("Nodo padre no encontrado, no se pudo eliminar el nodo.");
+            }
         }
     }
 };
+
 
 export const initializeProject = async (url) => {
     const content = await get_data({ url });
@@ -61,19 +122,14 @@ const handleProjectTree = (node) => {
     try {
         switch (type) {
             case "root":
-                // Lógica específica para root
                 break;
             case "group":
-                // Lógica específica para grupo
                 break;
             case "table":
-                // Lógica específica para tabla
                 break;
             case "field":
-                // Lógica específica para campo
                 break;
             case "settings":
-                // Lógica específica para configuración
                 break;
             default:
                 msg.warning("Tipo de enlace no soportado.");
@@ -129,32 +185,25 @@ const projectNodesListener = () => {
 
 const saveProjectListener = () => {
     $$('.save-project-btn').on('click', async function () {
-        const folder = project.file;
+        if (!project?.file || !project?.toJSON()) {
+            console.error("El archivo del proyecto o los datos no están definidos.");
+            msg.danger("Error: no se puede guardar un proyecto vacío o no inicializado.");
+            return;
+        }
+        
+        const file = project.file;
         const nodes = project.toJSON();
+
         try {
-                msg.info("saving project");
-                //TODO: se puede controlar si el nombre es valido antes de pasarlo a la función
-
-                const data = {
-                    operation: "save_file",
-                    type: "json",
-                    id: folder,
-                    text: "",
-                    content: JSON.stringify(nodes.nodes),
-                }
-                //save projet
-                const responseData = await get_data({
-                    url: "ignitionApp.php", data, 
-                })
-
+            const responseData = await saveFileToServer(file, nodes.nodes);
             if (responseData) {
                 console.log('Proyecto guardado con éxito');
                 return responseData;
             } else {
-                throw new Error(`No se obtuvieron datos para la carpeta: ${folder}`);
+                throw new Error(`No hubo respuesta para: ${file}`);
             }
         } catch (error) {
-            console.error(`Error al guardar el proyecto para el directorio ${folder}:`, error);
+            console.error(`Error al guardar el proyecto ${file}:`, error);
             throw error;
         }
     });

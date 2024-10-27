@@ -28,6 +28,7 @@ window.onload = async function () {
         loadNavBar('#settings-list', await getDirCollectionJson("settings"));
         
         addEventsListener();
+        
     } catch (error) {
         // Registrar el error y notificar al usuario
         console.error("Error al inicializar la aplicación:", error);

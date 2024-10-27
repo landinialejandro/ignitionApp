@@ -17,11 +17,13 @@
       },
       "add": {
         "label": "Agregar nuevo grupo",
-        "callback": "addNewNode"
+        "callback": "addNewNode",
+        "typeToAdd":"group"
       },
       "SettingsAdd": {
         "label": "Agregar propiedades",
-        "callback": "addNewNode"
+        "callback": "addNewNode",
+        "typeToAdd":"settings"
       }
     },
     "validChildren": [
@@ -47,11 +49,13 @@
       },
       "add": {
         "label": "Agregar nueva tabla",
-        "callback": "addNewNode"
+        "callback": "addNewNode",
+        "typeToAdd":"table"
       },
       "SettingsAdd": {
         "label": "Agregar propiedades",
-        "callback": "addNewNode"
+        "callback": "addNewNode",
+        "typeToAdd":"settings"
       }
     },
     "validChildren": [
@@ -77,11 +81,13 @@
       },
       "add": {
         "label": "Agregar nuevo campo",
-        "callback": "addNewNode"
+        "callback": "addNewNode",
+        "typeToAdd":"field"
       },
       "SettingsAdd": {
         "label": "Agregar propiedades",
-        "callback": "addNewNode"
+        "callback": "addNewNode"        ,
+        "typeToAdd":"settings"
       }
     },
     "validChildren": [
@@ -107,7 +113,8 @@
       },
       "SettingsAdd": {
         "label": "Agregar propiedades",
-        "callback": "addNewNode"
+        "callback": "addNewNode",
+        "typeToAdd":"settings"
       }
     },
     "validChildren": ["settings"],
@@ -118,7 +125,7 @@
     "maxDepth": 50,
     "icon": {
       "type": "class",
-      "value": "bi bi-cog"
+      "value": "bi bi-gear"
     },
     "actions": {
     },

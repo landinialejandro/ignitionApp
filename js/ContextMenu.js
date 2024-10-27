@@ -39,23 +39,27 @@ export class ContextMenu {
         // Obtener las reglas del nodo desde el nodeTypeManager
         const nodeConfig = this.nodeTypeManager.getType(nodeType);
 
-        // Si hay una configuración válida para el nodo, generar las opciones
-        if (nodeConfig) {
-            // Iterar sobre las acciones definidas en el nodo
-            Object.keys(nodeConfig.actions).forEach(actionKey => {
-                const action = nodeConfig.actions[actionKey];
-                
-                // Crear opción con el callback proporcionado o un placeholder
-                const option = {
-                    label: action.label,
-                    callback: this.actionCallbacks[action.callback] || (() => {
-                        console.warn(`Callback para '${action.callback}' no definido.`);
-                    }),
-                    icon: nodeConfig.icon
-                };
-                this.createMenuItem(option, nodeType, anchor, nodeId);
-            });
+        // Verificar si el nodo tiene acciones definidas; si no, ocultar el menú y terminar
+        if (!nodeConfig || !nodeConfig.actions || Object.keys(nodeConfig.actions).length === 0) {
+            this.hide(); // Asegurarse de que el menú esté oculto si no hay acciones
+            return; // No mostrar el menú si no hay acciones
         }
+
+        // Si hay una configuración válida para el nodo, generar las opciones
+        Object.keys(nodeConfig.actions).forEach(actionKey => {
+            const action = nodeConfig.actions[actionKey];
+            
+            // Crear opción con el callback proporcionado o un placeholder
+            const option = {
+                label: action.label,
+                callback: this.actionCallbacks[action.callback] || (() => {
+                    console.warn(`Callback para '${action.callback}' no definido.`);
+                }),
+                icon: nodeConfig.icon,
+                typeToAdd: action.typeToAdd // Incluimos typeToAdd si está definido
+            };
+            this.createMenuItem(option, nodeType, anchor, nodeId);
+        });
 
         // Posicionar el menú en la ubicación del clic
         this.menu.style.top = `${event.clientY}px`;
@@ -64,16 +68,16 @@ export class ContextMenu {
     }
 
     /**
-     * Crea y agrega un ítem de menú contextual utilizando el partial 'menuitem.hbs'.
+     * Crea y agrega un ítem de menú contextual utilizando el partial 'projectItem'.
      * 
-     * @param {Object} option - Opción que contiene el label, icono y la acción (callback) del ítem de menú.
+     * @param {Object} option - Opción que contiene el label, icono, tipo a agregar (si aplica) y la acción (callback) del ítem de menú.
      * @param {string} nodeType - Tipo del nodo que se pasa al callback.
      * @param {HTMLElement} anchor - Elemento que se pasa al callback.
      * @param {string} nodeId - El id del nodo obtenido de data-id que se pasa al callback.
      * @returns {void}
      */
     createMenuItem(option, nodeType, anchor, nodeId) {
-        // Renderizar el 'li' utilizando el template partial 'menuitem.hbs'
+        // Renderizar el 'li' utilizando el template partial 'projectItem'
         const menuItemHtml = Handlebars.partials['projectItem']({
             caption: option.label,
             type: option.type || 'ContextMenuOption', // Puedes cambiarlo según el tipo de opción
@@ -91,9 +95,9 @@ export class ContextMenu {
         // Obtener el 'li' generado por el partial
         const li = tempDiv.firstElementChild;
 
-        // Asignar la acción (callback)
+        // Asignar la acción (callback) e incluir typeToAdd cuando esté definido
         li.addEventListener('click', () => {
-            option.callback(nodeType, anchor, nodeId); // Ejecutar la acción con tipo de nodo, elemento y id
+            option.callback(nodeType, anchor, nodeId, option.typeToAdd); // Ejecutar la acción con el tipo a agregar
             this.hide(); // Ocultar el menú después de seleccionar una opción
         });
 

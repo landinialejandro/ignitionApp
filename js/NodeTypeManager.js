@@ -141,7 +141,7 @@ export class NodeTypeManager {
      */
     getMaxDepth(type) {
         const nodeType = this.getType(type);
-        return nodeType.maxDepth || Infinity;  // Retorna Infinity si no está especificado
+        return nodeType.maxDepth || Infinity;
     }
 
     /**
@@ -153,20 +153,19 @@ export class NodeTypeManager {
      */
     getIcon(type) {
         const nodeType = this.getType(type);
-        return nodeType.icon || { type: 'class', value: 'bi bi-file-earmark' };  // Ícono por defecto
+        return nodeType.icon || { type: 'class', value: 'bi bi-file-earmark' };
     }
 
     /**
-     * Obtener los atributos específicos de un tipo de nodo (por ejemplo, `a_attr`, `li_attr`).
+     * Obtener las acciones de un tipo de nodo.
      * 
      * @param {string} type - El tipo de nodo.
-     * @param {string} attribute - El nombre del atributo a obtener.
-     * @returns {Object} Los atributos solicitados.
+     * @returns {Object} Las acciones permitidas para el nodo.
      * @throws {Error} Si el tipo de nodo no existe.
      */
-    getAttribute(type, attribute) {
+    getActions(type) {
         const nodeType = this.getType(type);
-        return nodeType[attribute] || {};
+        return nodeType.actions || {};
     }
 
     /**
@@ -179,7 +178,7 @@ export class NodeTypeManager {
      */
     isActionAllowed(type, action) {
         const nodeType = this.getType(type);
-        return nodeType.actions && nodeType.actions[action] || false;  // Retorna `false` si la acción no está permitida
+        return !!(nodeType.actions && nodeType.actions[action]);
     }
 
     /**

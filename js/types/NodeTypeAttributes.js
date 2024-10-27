@@ -1,8 +1,8 @@
 /**
- * @typedef {import('./types/IconType').IconType} IconType
+ * @typedef {import('./IconType').IconType} IconType
  */
 /**
- * @typedef {import('./types/ActionType').ActionType} ActionType
+ * @typedef {import('./ActionType').ActionType} ActionType
  * Un objeto de acciones, donde la clave es el nombre de la acción (ej. "rename", "delete").
  */
 
@@ -16,8 +16,5 @@
  * @property {string} description - Descripción del nodo.
  */
 
-/**
- * @type {NodeTypeAttributes}
- */
 // Exportar la definición de NodeTypeAttributes
 export { };

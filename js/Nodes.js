@@ -83,6 +83,23 @@ export class Nodes {
     }
 
     /**
+     * Agrega un nuevo nodo como hijo de un nodo existente identificado por su ID.
+     * @param {string} parentId - El ID del nodo padre al que se agregará el nuevo nodo.
+     * @param {NodeOptions} nodeOptions - Opciones del nodo nuevo.
+     * @returns {boolean} - Retorna true si se agregó el nodo, false si el nodo padre no se encontró.
+     */
+    addChild(parentId, nodeOptions) {
+        const parentNode = this.findChildById(parentId);
+        if (parentNode) {
+            const newNode = Nodes._createNode(nodeOptions);
+            parentNode.children = parentNode.children || [];
+            parentNode.children.push(newNode);
+            return true;
+        }
+        return false; // Nodo padre no encontrado
+    }
+
+    /**
      * Actualiza una o varias propiedades de un nodo identificado por su ID.
      * @param {string} nodeId - El ID del nodo a actualizar.
      * @param {Object} properties - Objeto con las propiedades y sus valores para actualizar.

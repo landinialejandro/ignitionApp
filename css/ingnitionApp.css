@@ -122,6 +122,7 @@
 .project-tree .node-link .svg-icon, .context-menu-tree .svg-icon {
     min-width: 1rem;
     max-width: 1rem;
+    margin: 5px;
 }
 
 /* Estilos específicos para los elementos de lista del menú contextual */
