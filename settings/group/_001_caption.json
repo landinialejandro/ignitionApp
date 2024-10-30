@@ -1,23 +1,21 @@
 {
     "text": "Caption",
-    "data": {
-        "properties": [
-            {
-                "id": "en",
-                "placeholder": "Caption Field",
-                "usershelper": "This value is used to identify the title of the field in the database, it appears in the detail form and in the table view",
-                "text": "",
-                "default": true
-            },
-            {
-                "id": "es",
-                "placeholder": "Subtitulo en español",
-                "usershelper": "Identifica el título en español",
-                "text": ""
-            }
-        ]
-    },
-    "type": "input",
+    "data": [
+        {
+            "id": "en",
+            "placeholder": "Caption Field",
+            "usershelper": "This value is used to identify the title of the field in the database, it appears in the detail form and in the table view",
+            "text": "",
+            "default": true
+        },
+        {
+            "id": "es",
+            "placeholder": "Subtitulo en español",
+            "usershelper": "Identifica el título en español",
+            "text": ""
+        }
+    ],
+    "type": "input-group",
     "icon": {
         "value": "bi bi-type",
         "type": "class"

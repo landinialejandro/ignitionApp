@@ -1,15 +1,15 @@
 {
     "text": "Check options value",
-    "data": {
-        "check": true,
-        "options": [
-            {"text":"Show Only in admin group?", "checked":false}
-        ]
-    },
-    "type": "grp-settings",
+    "data": [
+        {
+            "text": "Show Only in admin group?",
+            "checked": false
+        }
+    ],
+    "type": "checkbox-group",
     "icon": {
-    "value": "bi bi-wrench-adjustable-circle",
-    "type": "class"
-  },
+        "value": "bi bi-wrench-adjustable-circle",
+        "type": "class"
+    },
     "order": 3
 }

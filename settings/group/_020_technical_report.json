@@ -1,10 +1,13 @@
 {
     "text": "Technical report",
-    "data": {
-        "placeholder": "Tech report",
-        "text": ""
-    },
-    "type": "textarea",
+    "data": [
+        {
+            "id":"Technical report",
+            "placeholder": "Tech report",
+            "text": ""
+        }
+    ],
+    "type": "textarea-group",
     "icon": {
         "value": "bi bi-journal-bookmark",
         "type": "class"
