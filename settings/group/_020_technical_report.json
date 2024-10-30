@@ -4,7 +4,7 @@
         "placeholder": "Tech report",
         "text": ""
     },
-    "type": "grp-settings",
+    "type": "textarea",
     "icon": {
         "value": "bi bi-journal-bookmark",
         "type": "class"

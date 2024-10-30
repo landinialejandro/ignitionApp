@@ -1,0 +1,69 @@
+<div class="card card-outline card-primary">
+    <div class="card-header">
+        <h3 class="card-title">
+            <i class="{{icon.value}}"></i> <!-- Ícono alineado con el título -->
+            {{text}} <!-- Título de la tarjeta -->
+        </h3>
+        <div class="card-tools">
+            <button type="button" class="btn btn-tool"
+                data-lte-toggle="card-collapse">
+                <i data-lte-icon="expand" class="bi bi-plus-lg"></i>
+                <i data-lte-icon="collapse" class="bi bi-dash-lg"></i>
+            </button>
+        </div> <!-- /.card-tools -->
+    </div> <!-- /.card-header -->
+    <div class="card-body" style="display: block; box-sizing: border-box;">
+        {{#if (eq type "input-group")}}
+        {{!-- Input Group --}}
+        {{#each data}}
+        <div class="card">
+            <div class="card-body">
+                {{> component_input}}
+            </div>
+        </div>
+        {{/each}}
+
+        {{else if (eq type "textarea-group")}}
+        {{!-- Textarea Group --}}
+        {{#each data}}
+        <div class="card">
+            <div class="card-body">
+                {{> component_textarea}}
+            </div>
+        </div>
+        {{/each}}
+
+        {{else if (eq type "checkbox-group")}}
+        {{!-- Checkbox Group --}}
+        {{#each data}}
+        <div class="card">
+            <div class="card-body">
+                {{> component_checkbox}}
+            </div>
+        </div>
+        {{/each}}
+
+        {{/if}}
+
+        {{!-- node info --}}
+        <div class="mb-3"></div>
+        <div class="card">
+            <div class="card-body">
+                <div class="d-flex justify-content-between mb-3">
+                    <div>
+                        Node info
+                    </div>
+                    <div class="float-end mb-2">
+                        <span class="badge text-bg-info">Order: {{order}}</span>
+                        <span class="badge text-bg-success">Title:
+                            {{text}}</span>
+                        <span class="badge text-bg-primary">Type:
+                            {{type}}</span>
+                    </div>
+                </div>
+                {{>component_input id="icon" text=icon.value}}
+            </div>
+        </div>
+
+    </div> <!-- /.card-body -->
+</div> <!-- /.card -->

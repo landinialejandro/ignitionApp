@@ -1,0 +1,12 @@
+ <div class="input-group">
+    <span class="input-group-text">{{id}}</span>
+    <input
+        type="text"
+        class="form-control"
+        id="input-{{id}}"
+        placeholder="{{placeholder}}"
+        value="{{text}}">
+</div>
+{{#if usershelper}}
+<small class="form-text text-muted">{{usershelper}}</small>
+{{/if}}

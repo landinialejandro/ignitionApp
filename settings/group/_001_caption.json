@@ -17,7 +17,7 @@
             }
         ]
     },
-    "type": "grp-settings",
+    "type": "input",
     "icon": {
         "value": "bi bi-type",
         "type": "class"

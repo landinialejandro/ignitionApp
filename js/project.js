@@ -1,7 +1,8 @@
 import { get_data, saveFileToServer } from './libraries/common.js';
 import { Msglog } from "./libraries/MsgLog.js";
 import { $$ } from './libraries/selector.js';
-import { getDirCollectionJson } from './libraries/helpers.js';
+import { getDirCollectionJson, renderTemplate } from './libraries/helpers.js';
+import { RegisterPartials } from './libraries/hbs.js'
 
 import { NodeTypeManager } from './NodeTypeManager.js';
 import { ContextMenu } from './ContextMenu.js';
@@ -72,7 +73,6 @@ const actionCallbacks = {
                 // Itera sobre cada archivo en el objeto `filesContent`
                 for (const [key, fileInfo] of Object.entries(filesContent)) {
                     const content = await get_data({ url: fileInfo.url });
-                    console.log(content);
                     const childNode = {
                         caption: content.text || "Elemento de configuración",
                         url: fileInfo.url,
@@ -99,7 +99,7 @@ const actionCallbacks = {
         if (success) {
             project.render();  // Renderiza el proyecto actualizado en el DOM
             msg.success(`Nodo de tipo ${typeToAdd} agregado exitosamente como hijo de ${parentType}.`);
-            console.log("Estado del proyecto actualizado:", project.toJSON());
+            // console.log("Estado del proyecto actualizado:", project.toJSON());
         } else {
             msg.danger("No se pudo agregar el nodo. Verifique el ID proporcionado.");
             console.error("No se pudo agregar el nodo.");
@@ -130,7 +130,7 @@ const actionCallbacks = {
             if (deleted) {
                 project.render();
                 msg.success(`Nodo de tipo ${nodeType} eliminado exitosamente.`);
-                console.log("Estado del proyecto actualizado:", project.toJSON());
+                // console.log("Estado del proyecto actualizado:", project.toJSON());
             } else {
                 msg.danger("No se pudo eliminar el nodo. Verifique el ID proporcionado.");
                 console.error("No se pudo eliminar el nodo.");
@@ -157,10 +157,10 @@ export const initializeProject = async (url) => {
     addEventsListener();
 };
 
-const handleProjectTree = (node) => {
-    const { type, name } = $$(node).allData();
+const handleProjectTree = async (node) => {
+    const { type, name, id } = $$(node).allData();
     msg.info(`NODElink clicked: ${name}`, true);
-    $$(".caption-selected").text(name);
+   
 
     try {
         switch (type) {
@@ -175,9 +175,20 @@ const handleProjectTree = (node) => {
             case "settings":
                 break;
             case "settingItem":
-                
+                const selected = project.findChildById(id);
+                console.log(selected.properties);
+
+                // Obtén directamente el partial ya compilado
+                // const htmlTemplate = Handlebars.partials['component_input'];
+                const html = await renderTemplate("templates/settingItem.hbs", selected.properties);
+
+                // Usa el template directamente, asumiendo que ya está registrado y compilado
+                // const html = htmlTemplate(selected.properties);
+                $$(".editor-card-body").html(html);
                 break;
+
             default:
+                $$(".caption-selected").text(name);
                 msg.warning("Tipo de enlace no soportado: " + type);
                 break;
         }

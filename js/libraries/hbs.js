@@ -33,15 +33,24 @@ export const RegisterHelpers = () => {
 
 }
 
-export const RegisterPartials = () => {
-	msg.info("registering partials...")
-	const partials = ["modalHeader", "modalFooter", "menuItem", "projectItem", "component_i"]
-	partials.forEach(async (e) => {
-		var url = `templates/partials/${e}.hbs`
-		var t = await get_data({ url, isJson: false })
-		Handlebars.registerPartial(e, t)
-	})
-}
+export const RegisterPartials = async () => {
+	msg.info("registering partials...");
+	const partials = ["modalHeader", "modalFooter", "menuItem", "projectItem", "component_i", "component_input", "component_textarea","component_checkbox"];
+
+	await Promise.all(partials.map(async (e) => {
+		msg.secondary(e, true);
+		const url = `templates/partials/${e}.hbs`;
+		const t = await get_data({ url, isJson: false });
+
+		// Compilar la plantilla antes de registrarla en Handlebars
+		const compiledTemplate = Handlebars.compile(t);
+		Handlebars.registerPartial(e, compiledTemplate);
+	}));
+
+	msg.info("partials registered and compiled.");
+};
+
+
 
 RegisterHelpers()
 RegisterPartials()
