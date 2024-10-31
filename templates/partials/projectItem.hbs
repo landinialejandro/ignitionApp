@@ -11,6 +11,9 @@
             <p>
                 <!-- Truncado a 20 caracteres -->
                 <span title="{{caption}}">{{truncate caption 20}}</span>
+                {{#if children}}
+                    <i class="node-arrow bi bi-chevron-right"></i>
+                {{/if}}
             </p>
         {{/if}}
         {{#if badge}}

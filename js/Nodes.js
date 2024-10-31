@@ -203,7 +203,7 @@ export class Nodes {
         const html = await renderTemplate(this.template, content);
         $$(`${this.container}`).html(html);
     }
-    
+
     /**
     * Obtiene un arreglo de los tipos de todos los nodos hijos directos de un nodo específico.
     * @param {string} parentId - El ID del nodo padre.
@@ -215,5 +215,22 @@ export class Nodes {
 
         // Retorna un arreglo con los tipos de los nodos hijos
         return parentNode.children.map(child => child.type);
+    }
+
+    /**
+     * Obtiene el breadcrumb (ruta de navegación) desde un nodo específico hasta la raíz.
+     * @param {string} nodeId - El ID del nodo para el cual se generará el breadcrumb.
+     * @returns {Object[]} - Un arreglo con los objetos del breadcrumb en el formato { label: <caption>, id: <id> }.
+     */
+    getBreadcrumb(nodeId) {
+        const breadcrumb = [];
+        let currentNode = this.findChildById(nodeId);
+
+        while (currentNode) {
+            breadcrumb.unshift({ label: currentNode.caption, id: currentNode.id }); // Añadir al inicio del arreglo
+            currentNode = this.findParentById(currentNode.id); // Subir un nivel en la jerarquía
+        }
+
+        return breadcrumb;
     }
 }

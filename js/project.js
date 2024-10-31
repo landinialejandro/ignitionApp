@@ -160,7 +160,12 @@ export const initializeProject = async (url) => {
 const handleProjectTree = async (node) => {
     const { type, name, id } = $$(node).allData();
     msg.info(`NODElink clicked: ${name}`, true);
-   
+
+    const breadcrumb = project.getBreadcrumb(id);
+    const tmp = Handlebars.partials['breadcrumb'];
+    $$(".breadcrumb").html(tmp(breadcrumb));
+
+
 
     try {
         switch (type) {
@@ -176,14 +181,8 @@ const handleProjectTree = async (node) => {
                 break;
             case "settingItem":
                 const selected = project.findChildById(id);
-                console.log(selected.properties);
 
-                // Obtén directamente el partial ya compilado
-                // const htmlTemplate = Handlebars.partials['component_input'];
                 const html = await renderTemplate("templates/settingItem.hbs", selected.properties);
-
-                // Usa el template directamente, asumiendo que ya está registrado y compilado
-                // const html = htmlTemplate(selected.properties);
                 $$(".editor-card-body").html(html);
                 break;
 
@@ -203,6 +202,7 @@ const addEventsListener = () => {
     projectNodesListener();
     contextMenuListener();
     saveProjectListener();
+    nodeOpenListener();
 };
 
 const initializeNodeTypes = async () => {
@@ -215,9 +215,21 @@ const initializeNodeTypes = async () => {
     }
 };
 
+const nodeOpenListener =()=>{
+    $$(".app-content").on("click", function (e) {
+        // Verifica si el elemento clicado es un enlace de nodo (.node-link)
+        const nodeItem = e.target.closest('.node-item'); // Selecciona el elemento .node-item contenedor
+        if (nodeItem) {
+            e.preventDefault();
+            // const nodeItem = e.target.closest('i.node-arrow'); // Selecciona el elemento .node-item contenedor
+            nodeItem.classList.toggle('node-open'); // Alterna la clase .node-open para el giro de la flecha
+        }
+    });
+}
+
 const contextMenuListener = () => {
     document.addEventListener('contextmenu', (e) => {
-        const anchor = e.target.closest('a.node-link');
+        const anchor = e.target.closest('a');
         if (anchor) {
             e.preventDefault();
             if (nodeTypeManager) {
@@ -231,8 +243,8 @@ const contextMenuListener = () => {
 };
 
 const projectNodesListener = () => {
-    $$("#main-content").on("click", function (e) {
-        const anchor = e.target.closest('a.node-link');
+    $$(".app-content").on("click", function (e) {
+        const anchor = e.target.closest('a');
         if (anchor) {
             e.preventDefault();
             handleProjectTree(anchor);

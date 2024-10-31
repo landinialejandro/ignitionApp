@@ -35,7 +35,7 @@ export const RegisterHelpers = () => {
 
 export const RegisterPartials = async () => {
 	msg.info("registering partials...");
-	const partials = ["modalHeader", "modalFooter", "menuItem", "projectItem", "component_i", "component_input", "component_textarea","component_checkbox"];
+	const partials = ["modalHeader", "modalFooter", "menuItem", "projectItem", "component_i", "component_input", "component_textarea","component_checkbox","breadcrumb"];
 
 	await Promise.all(partials.map(async (e) => {
 		msg.secondary(e, true);
