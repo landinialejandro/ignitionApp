@@ -60,6 +60,8 @@
 .project-tree {
     list-style: none;
     padding-left: 1rem; /* Añadir espaciado para niveles anidados */
+    overflow: hidden;
+    transition: max-height 0.5s ease; /* Transición suave */
 }
 
 /* Resaltar nodo cuando el mouse está encima */
@@ -112,4 +114,9 @@
 /* Opcional: estilo para el icono SVG */
 .node-link .node-icon {
     margin-right: 0.5rem; /* Espacio entre el icono y el texto */
+}
+
+/* Aplica max-height: 0 solo cuando la clase "node-closed" esté presente */
+.node-item.node-closed > .project-tree {
+    max-height: 0; /* Oculto */
 }

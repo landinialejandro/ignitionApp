@@ -215,17 +215,34 @@ const initializeNodeTypes = async () => {
     }
 };
 
-const nodeOpenListener =()=>{
+const nodeOpenListener = () => {
     $$(".app-content").on("click", function (e) {
-        // Verifica si el elemento clicado es un enlace de nodo (.node-link)
-        const nodeItem = e.target.closest('.node-item'); // Selecciona el elemento .node-item contenedor
+        const nodeItem = e.target.closest('.node-item');
         if (nodeItem) {
             e.preventDefault();
-            // const nodeItem = e.target.closest('i.node-arrow'); // Selecciona el elemento .node-item contenedor
-            nodeItem.classList.toggle('node-open'); // Alterna la clase .node-open para el giro de la flecha
+
+            // Alterna la clase "node-open" para mostrar/ocultar con animación
+            nodeItem.classList.toggle('node-open');
+
+            // Selecciona el primer sub-árbol (ul) y ajusta su max-height para la animación
+            const childTree = nodeItem.querySelector(':scope > ul.project-tree');
+            if (childTree) {
+                if (nodeItem.classList.contains('node-open')) {
+                    childTree.style.maxHeight = childTree.scrollHeight + 'px'; // Expande el sub-árbol
+                } else {
+                    childTree.style.maxHeight = '0'; // Colapsa el sub-árbol
+                }
+            }
+
+            // Controla la rotación de la flecha
+            const nodeArrow = nodeItem.querySelector(':scope > .node-link .node-arrow');
+            if (nodeArrow) {
+                nodeArrow.style.transform = nodeItem.classList.contains('node-open') ? 'rotate(90deg)' : 'rotate(0deg)';
+            }
         }
     });
 }
+
 
 const contextMenuListener = () => {
     document.addEventListener('contextmenu', (e) => {
