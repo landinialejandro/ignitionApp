@@ -62,7 +62,7 @@
     /* max-height: 0; Oculto por defecto */
     padding-left: 1rem; /* Añadir espaciado para niveles anidados */
     overflow: hidden;
-    transition: max-height 0.5s ease; /* Transición suave */expa
+    transition: max-height 0.5s ease; /* Transición suave */
 }
 
 /* Resaltar nodo cuando el mouse está encima */
