@@ -142,7 +142,6 @@ const actionCallbacks = {
     }
 };
 
-
 export const initializeProject = async (url) => {
     const content = await get_data({ url });
     const projectPage = await get_data({ url: "pages/project_page.html", isJson: false });
@@ -164,8 +163,6 @@ const handleProjectTree = async (node) => {
     const breadcrumb = project.getBreadcrumb(id);
     const tmp = Handlebars.partials['breadcrumb'];
     $$(".breadcrumb").html(tmp(breadcrumb));
-
-
 
     try {
         switch (type) {
@@ -228,9 +225,18 @@ const nodeOpenListener = () => {
             const childTree = nodeItem.querySelector(':scope > ul.project-tree');
             if (childTree) {
                 if (nodeItem.classList.contains('node-open')) {
-                    childTree.style.maxHeight = childTree.scrollHeight + 'px'; // Expande el sub-árbol
+                    // Expande el sub-árbol calculando scrollHeight
+                    childTree.style.maxHeight = childTree.scrollHeight + 'px';
+
+                    // Asegura que maxHeight se mantenga tras la animación para permitir expansión completa
+                    setTimeout(() => {
+                        if (nodeItem.classList.contains('node-open')) {
+                            childTree.style.maxHeight = 'none';
+                        }
+                    }, 500); // Tiempo que coincide con la transición CSS
                 } else {
-                    childTree.style.maxHeight = '0'; // Colapsa el sub-árbol
+                    // Colapsa el sub-árbol
+                    childTree.style.maxHeight = '0';
                 }
             }
 
@@ -241,8 +247,14 @@ const nodeOpenListener = () => {
             }
         }
     });
-}
+};
 
+// Inicializa los nodos abiertos al cargar la página
+document.addEventListener('DOMContentLoaded', () => {
+    document.querySelectorAll('.node-item.node-open > .project-tree').forEach(childTree => {
+        childTree.style.maxHeight = childTree.scrollHeight + 'px';
+    });
+});
 
 const contextMenuListener = () => {
     document.addEventListener('contextmenu', (e) => {

@@ -59,9 +59,10 @@
 /* Estructura principal de la lista de nodos */
 .project-tree {
     list-style: none;
+    /* max-height: 0; Oculto por defecto */
     padding-left: 1rem; /* Añadir espaciado para niveles anidados */
     overflow: hidden;
-    transition: max-height 0.5s ease; /* Transición suave */
+    transition: max-height 0.5s ease; /* Transición suave */expa
 }
 
 /* Resaltar nodo cuando el mouse está encima */
@@ -116,7 +117,6 @@
     margin-right: 0.5rem; /* Espacio entre el icono y el texto */
 }
 
-/* Aplica max-height: 0 solo cuando la clase "node-closed" esté presente */
-.node-item.node-closed > .project-tree {
-    max-height: 0; /* Oculto */
+.node-item.node-open > .project-tree {
+    /* max-height se controla mediante JavaScript */
 }
