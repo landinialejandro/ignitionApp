@@ -1,8 +1,8 @@
 {
-    "text": "Lenght",
-    "data": {
+    "captions": "Lenght",
+    "properties": {
         "placeholder": "Lenght string o value",
-        "text": ""
+        "captions": ""
     },
     "type":"field-settings",
     "icon": {

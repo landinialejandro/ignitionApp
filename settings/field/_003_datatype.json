@@ -1,7 +1,7 @@
 {
-    "text": "Data Type",
-    "data": {
-        "text":"",
+    "captions": "Data Type",
+    "properties": {
+        "captions":"",
         "option": true,
         "options": [
             "Tiny Integer",
@@ -21,7 +21,7 @@
             "VarChar",
             "Tiny Blob",
             "Tiny Text",
-            "Text",
+            "captions",
             "BLOB",
             "Medium BLOB",
             "Medium Text",

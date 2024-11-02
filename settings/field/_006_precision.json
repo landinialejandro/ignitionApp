@@ -1,9 +1,9 @@
 {
-    "text": "Precision",
-    "data": {
+    "captions": "Precision",
+    "properties": {
         "placeholder": "Presicion value",
         "usershelper": "Set the presicion value",
-        "text": ""
+        "captions": ""
     },
     "type":"field-settings",
     "icon": {

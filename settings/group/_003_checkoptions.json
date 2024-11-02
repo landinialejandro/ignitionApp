@@ -1,8 +1,8 @@
 {
-    "text": "Check options value",
-    "data": [
+    "captions": "Check options value",
+    "properties": [
         {
-            "text": "Show Only in admin group?",
+            "captions": "Show Only in admin group?",
             "checked": false
         }
     ],

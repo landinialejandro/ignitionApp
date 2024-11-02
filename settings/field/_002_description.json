@@ -1,16 +1,16 @@
 {
-    "text": "Multilingual Description",
-    "data": {
+    "captions": "Multilingual Description",
+    "properties": {
         "placeholder": "Description user helper",
         "properties": [
             {
                 "id": "en",
-                "text": "",
+                "captions": "",
                 "default":true
             },
             {
                 "id": "es",
-                "text": ""
+                "captions": ""
             }
         ],
         "type":"html-control"
@@ -21,7 +21,7 @@
     "type": "class"
   },
     "li_attr": {
-        "type": "text",
+        "type": "captions",
         "lang":"en"
     },
     "order":2

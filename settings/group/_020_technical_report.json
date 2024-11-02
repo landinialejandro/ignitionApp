@@ -1,10 +1,10 @@
 {
-    "text": "Technical report",
-    "data": [
+    "captions": "Technical report",
+    "properties": [
         {
             "id":"Technical report",
             "placeholder": "Tech report",
-            "text": ""
+            "captions": ""
         }
     ],
     "type": "textarea-group",

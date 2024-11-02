@@ -1,11 +1,11 @@
 {
-  "text": "Select you charset value",
-  "data": {
+  "captions": "Select you charset value",
+  "properties": {
     "description": {
-      "text": "You can add your own charset in _xxx_charsets.json file",
+      "captions": "You can add your own charset in _xxx_charsets.json file",
       "class": "text-warning"
     },
-    "text": "utf8",
+    "captions": "utf8",
     "option": true,
     "options": [
       "utf8",

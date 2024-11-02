@@ -135,5 +135,16 @@
     },
     "validChildren": [],
     "description": "Settings de un nodo"
+  },
+  "settingItem": {
+    "maxChildren": 0,
+    "maxDepth": 50,
+    "icon": {
+      "type": "class",
+      "value": "bi bi-gear"
+    },
+    "actions": {},
+    "validChildren": [],
+    "description": "Propiedades"
   }
 }

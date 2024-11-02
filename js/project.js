@@ -82,6 +82,7 @@ const actionCallbacks = {
                         children: fileInfo.children || false,
                         properties: content
                     };
+                    newNodeOptions.caption = "Settings";
                     newNodeOptions.children.push(childNode);
                 }
 
@@ -114,7 +115,7 @@ const actionCallbacks = {
             if (updated) {
                 msg.success(`Nodo de tipo ${nodeType} renombrado exitosamente a: ${newName}`);
                 project.render();
-                console.log("Estado del proyecto actualizado:", project.toJSON());
+                //console.log("Estado del proyecto actualizado:", project.toJSON());
             } else {
                 msg.danger("Nodo no encontrado. No se pudo renombrar.");
                 console.log("Nodo no encontrado.");
@@ -170,12 +171,11 @@ const handleProjectTree = async (node) => {
                 break;
             case "group":
                 break;
-            case "table":
-                break;
             case "field":
                 break;
             case "settings":
                 break;
+            case "table":
             case "settingItem":
                 const selected = project.findChildById(id);
 

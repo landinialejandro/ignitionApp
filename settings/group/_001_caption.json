@@ -1,18 +1,18 @@
 {
-    "text": "Caption",
-    "data": [
+    "captions": "Caption",
+    "properties": [
         {
             "id": "en",
             "placeholder": "Caption Field",
             "usershelper": "This value is used to identify the title of the field in the database, it appears in the detail form and in the table view",
-            "text": "",
+            "captions": "",
             "default": true
         },
         {
             "id": "es",
             "placeholder": "Subtitulo en español",
             "usershelper": "Identifica el título en español",
-            "text": ""
+            "captions": ""
         }
     ],
     "type": "input-group",
@@ -21,7 +21,7 @@
         "type": "class"
     },
     "li_attr": {
-        "type": "text",
+        "type": "captions",
         "lang": "en"
     },
     "order": 1

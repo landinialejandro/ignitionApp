@@ -1,8 +1,8 @@
 {
-    "text": "Technical report",
-    "data": {
+    "captions": "Technical report",
+    "properties": {
         "placeholder": "Tech report",
-        "text": ""
+        "captions": ""
     },
     "type": "tbl-setting",
     "icon": {

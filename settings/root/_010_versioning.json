@@ -1,8 +1,8 @@
 {
-    "text": "Versioning numbering system",
-    "data": {
+    "captions": "Versioning numbering system",
+    "properties": {
         "description":{
-            "text": "You can define your versioning number",
+            "captions": "You can define your versioning number",
             "class": "text-primary"
             },
         "properties": [
@@ -10,25 +10,25 @@
                 "id": "Major",
                 "usershelper":"Major changes break compatibility",
                 "placeholder": "Major version",
-                "text": "0"
+                "captions": "0"
             },
             {
                 "id": "Minor",
                 "usershelper":"Minor changes does no break compatibility",
                 "placeholder": "Minor version",
-                "text": "1"
+                "captions": "1"
             },
             {
                 "id": "Build",
                 "usershelper":"Build counter",
                 "placeholder": "Build number counter",
-                "text": "0"
+                "captions": "0"
             },
             {
                 "id": "Release",
                 "usershelper":"Release label",
                 "placeholder": "Add your release label",
-                "text": ""
+                "captions": ""
             }
         ]
     },
@@ -38,7 +38,7 @@
     "type": "class"
   },
     "li_attr": {
-        "type": "text",
+        "type": "captions",
         "lang": "en"
     },
     "order":10

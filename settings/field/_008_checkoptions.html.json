@@ -1,18 +1,18 @@
 {
-    "text": "Check options value",
-    "data": {
+    "captions": "Check options value",
+    "properties": {
         "check": true,
         "options": [
-            {"text":"Read only", "checked":false},
-            {"text":"Required", "checked":false},
-            {"text":"Rich (HTML) area", "checked":false},
-            {"text":"Unique", "checked":false},
-            {"text":"Show column sum", "checked":false},
-            {"text":"Text area", "checked":false},
-            {"text":"Do not filter", "checked":false},
-            {"text":"Check box", "checked":false},
-            {"text":"Hide in table view", "checked":false},
-            {"text":"Hide detal view", "checked":false}
+            {"captions":"Read only", "checked":false},
+            {"captions":"Required", "checked":false},
+            {"captions":"Rich (HTML) area", "checked":false},
+            {"captions":"Unique", "checked":false},
+            {"captions":"Show column sum", "checked":false},
+            {"captions":"Text area", "checked":false},
+            {"captions":"Do not filter", "checked":false},
+            {"captions":"Check box", "checked":false},
+            {"captions":"Hide in table view", "checked":false},
+            {"captions":"Hide detal view", "checked":false}
         ],
         "type":"html-control"
     },

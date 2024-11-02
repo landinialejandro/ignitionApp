@@ -114,9 +114,19 @@
 
 /* Opcional: estilo para el icono SVG */
 .node-link .node-icon {
+    align-items: center;
+    display: flex;
+    justify-content: center;
+    max-width: 1.5rem;
     margin-right: 0.5rem; /* Espacio entre el icono y el texto */
+    min-width: 1.5rem;
 }
 
 .node-item.node-open > .project-tree {
     /* max-height se controla mediante JavaScript */
+}
+
+.project-wrapper .node-link .svg-icon {
+    min-width: 1rem;
+    max-width: 1rem;
 }

@@ -1,16 +1,16 @@
 {
-    "text": "Description",
-    "data": {
+    "captions": "Description",
+    "properties": {
         "placeholder": "Description user helper",
         "properties": [
             {
                 "id": "en",
-                "text": "",
+                "captions": "",
                 "default":true
             },
             {
                 "id": "es",
-                "text": ""
+                "captions": ""
             }
         ]
     },
@@ -20,7 +20,7 @@
     "type": "class"
   },
     "li_attr": {
-        "type": "text",
+        "type": "captions",
         "lang":"en"
     },
     "order":3

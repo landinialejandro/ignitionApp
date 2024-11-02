@@ -1,20 +1,20 @@
 {
-    "text": "Detail view title",
-    "data": {
+    "captions": "Detail view title",
+    "properties": {
         "placeholder": "Detail view title",
         "properties": [
             {
                 "id": "en",
                 "placeholder": "Detail view title",
                 "usershelper":"This value is used to identify the title of the deatil view, it appears in the menu",
-                "text": "",
+                "captions": "",
                 "default":true
             },
             {
                 "id": "es",
                 "placeholder": "Detail view title",
                 "usershelper":"This value is used to identify the title of the deatil view, it appears in the menu",
-                "text": ""
+                "captions": ""
             }
         ]
     },
@@ -24,7 +24,7 @@
     "type": "class"
   },
     "li_attr": {
-        "type": "text",
+        "type": "captions",
         "lang": "en"
     },
     "order":8

@@ -1,8 +1,8 @@
 {
-    "text": "Custom default value",
-    "data": {
+    "captions": "Custom default value",
+    "properties": {
         "placeholder": "Your custom string o value",
-        "text": ""
+        "captions": ""
     },
     "type":"field-settings",
     "icon": {
@@ -10,7 +10,7 @@
     "type": "class"
   },
     "li_attr": {
-        "type": "text"
+        "type": "captions"
     },
     "order":7
 }

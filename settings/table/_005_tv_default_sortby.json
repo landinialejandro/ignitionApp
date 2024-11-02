@@ -1,7 +1,7 @@
 {
-    "text": "Default sortby",
-    "data": {
-        "text":"",
+    "captions": "Default sortby",
+    "properties": {
+        "captions":"",
         "option": true,
         "options": [
             "None"

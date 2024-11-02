@@ -1,8 +1,8 @@
 {
-    "text": "Records per page",
-    "data": {
+    "captions": "Records per page",
+    "properties": {
         "placeholder": "Records per page",
-        "text": ""
+        "captions": ""
     },
     "type":"tbl-setting",
     "icon": {

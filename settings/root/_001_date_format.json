@@ -1,11 +1,11 @@
 {
-  "text": "Date order format",
-  "data": {
+  "captions": "Date order format",
+  "properties": {
     "description": {
-      "text": "You can add your own options in _xxx_date_format.json file",
+      "captions": "You can add your own options in _xxx_date_format.json file",
       "class": "text-purple"
     },
-    "text": "",
+    "captions": "",
     "option": true,
     "options": [
       "Month, Day, Year",
