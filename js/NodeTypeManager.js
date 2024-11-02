@@ -77,7 +77,7 @@ export class NodeTypeManager {
      */
     canAddAtDepth(type, currentDepth) {
         const maxDepth = this.getMaxDepth(type);
-        return currentDepth < maxDepth;
+        return currentDepth <= maxDepth;
     }
 
     /**

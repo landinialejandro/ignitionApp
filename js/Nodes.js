@@ -3,7 +3,7 @@
  */
 import { renderTemplate } from './libraries/helpers.js';
 import { $$ } from './libraries/selector.js';
-import { NodeTypeManager } from './NodeTypeManager.js'; // Importar NodeTypeManager
+// import { NodeTypeManager } from './NodeTypeManager.js'; // Importar NodeTypeManager
 
 export class Nodes {
     /**
@@ -148,27 +148,57 @@ export class Nodes {
     addChild(parentId, nodeOptions) {
         const parentNode = this.findChildById(parentId);
         if (!parentNode) return false;
-
+    
+        // Verificar si se puede agregar el nodo en el nivel actual (mirando hacia abajo)
+        if (!this.canAddChildAtDepth(parentNode)) {
+            console.error(`No se puede añadir un nodo de tipo '${nodeOptions.type}' porque excede la profundidad máxima permitida para '${parentNode.type}'.`);
+            return false;
+        }
+    
+        // Verificar si el tipo de hijo es válido para el padre
         if (!this.nodeTypeManager.isValidChild(parentNode.type, nodeOptions.type)) {
-            console.error(`No se puede añadir el nodo de tipo '${nodeOptions.type}' como hijo de '${parentNode.type}'.`);
+            console.error(`El nodo de tipo '${nodeOptions.type}' no es un hijo válido para el nodo de tipo '${parentNode.type}'.`);
             return false;
         }
-
-        const currentChildrenCount = parentNode.children.length;
-        if (!this.nodeTypeManager.canAddChild(parentNode.type, currentChildrenCount)) {
-            console.error(`El nodo de tipo '${parentNode.type}' ha alcanzado el número máximo de hijos permitidos.`);
-            return false;
-        }
-
-        const currentDepth = this.getDepth(parentId);
-        if (!this.nodeTypeManager.canAddAtDepth(parentNode.type, currentDepth + 1)) {
-            console.error(`No se puede añadir un nodo a una profundidad superior a la permitida (${this.nodeTypeManager.getMaxDepth(parentNode.type)}).`);
-            return false;
-        }
-
+    
         const newNode = Nodes._createNode(nodeOptions);
         parentNode.children.push(newNode);
         return true;
+    }
+    
+
+    /**
+ * Calcula la profundidad máxima alcanzada desde un nodo específico hacia sus descendientes.
+ * @param {Nodes} node - El nodo desde el cual calcular la profundidad.
+ * @returns {number} - La profundidad máxima hacia los hijos desde este nodo.
+ */
+    calculateMaxDepth(node) {
+        if (!node.children || node.children.length === 0) {
+            return 1; // Un nodo sin hijos tiene una profundidad de 1
+        }
+
+        let maxDepth = 0;
+        for (const child of node.children) {
+            maxDepth = Math.max(maxDepth, this.calculateMaxDepth(child));
+        }
+        return maxDepth + 1; // +1 para incluir el nodo actual en el cálculo
+    }
+
+
+    /**
+    * Verifica si un nodo puede agregar un hijo sin exceder el `maxDepth` permitido.
+    * @param {Nodes} node - Nodo donde se quiere agregar el nuevo hijo.
+    * @returns {boolean} - True si se puede agregar el nodo, false si no.
+    */
+    canAddChildAtDepth(node) {
+        // Calcula la profundidad máxima actual desde el nodo hacia abajo
+        const currentDepth = this.calculateMaxDepth(node);
+
+        // Obtiene el maxDepth permitido para este nodo desde `types.json`
+        const maxDepthAllowed = this.nodeTypeManager.getMaxDepth(node.type);
+
+        // Verifica si la profundidad actual es menor que el máximo permitido
+        return currentDepth < maxDepthAllowed;
     }
 
     /**

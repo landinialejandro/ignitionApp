@@ -11,6 +11,25 @@ const msg = new Msglog();
 let nodeTypeManager = null;
 let project = null;
 
+export const initializeProject = async (url) => {
+
+    await initializeNodeTypes();
+
+    const content = await get_data({ url });
+    const projectPage = await get_data({ url: "pages/project_page.html", isJson: false });
+    $$("#main-content").html(projectPage);
+
+    project = new Nodes(".project-card-body", nodeTypeManager);
+    project.setNodes(content);
+    project.file = url;
+    project.nodeTypeManager = nodeTypeManager;
+
+    await project.render();
+    addEventsListener();
+};
+
+
+
 const actionCallbacks = {
     addNewNode: async (parentType, anchor, nodeId, typeToAdd) => {
         console.log(`Intentando agregar un nuevo nodo de tipo ${typeToAdd} como hijo de ${parentType} con data-id ${nodeId}`);
@@ -24,7 +43,7 @@ const actionCallbacks = {
             return;
         }
 
-        // Validación 1: Verificar si ya existe un nodo "settings" como hijo
+        // Verificar si ya existe un nodo "settings" como hijo
         const childrenTypes = project.getChildrenTypes(nodeId);
         if (typeToAdd === "settings" && childrenTypes.includes(typeToAdd)) {
             msg.danger("Ya existe un nodo de tipo 'settings' como hijo de este nodo. Solo puede haber uno.");
@@ -32,7 +51,7 @@ const actionCallbacks = {
             return;
         }
 
-        // Validación 2: Verificar si ya existe un nodo "root" en todo el proyecto
+        // Verificar si ya existe un nodo "root" en todo el proyecto
         if (typeToAdd === "root" && project.hasNodeOfType("root")) {
             msg.danger("Ya existe un nodo de tipo 'root' en el proyecto. Solo puede haber uno.");
             console.error("Ya existe un nodo de tipo 'root' en el proyecto.");
@@ -142,20 +161,6 @@ const actionCallbacks = {
     }
 };
 
-export const initializeProject = async (url) => {
-    const content = await get_data({ url });
-    const projectPage = await get_data({ url: "pages/project_page.html", isJson: false });
-    $$("#main-content").html(projectPage);
-
-    project = new Nodes(".project-card-body");
-    project.setNodes(content);
-    project.file = url;
-
-    await project.render();
-    await initializeNodeTypes();
-    addEventsListener();
-};
-
 const handleProjectTree = async (node) => {
     const { type, name, id } = $$(node).allData();
     msg.info(`NODElink clicked: ${name}`, true);
@@ -165,30 +170,53 @@ const handleProjectTree = async (node) => {
     $$(".breadcrumb").html(tmp(breadcrumb));
 
     try {
-        switch (type) {
-            case "field":
-                break;
-            case "root":
-            case "group":
-            case "table":
-            case "settings":
-            case "settingItem":
-                const selected = project.findChildById(id);
+        // Encuentra el nodo seleccionado en el proyecto
+        const selected = project.findChildById(id);
 
-                const html = await renderTemplate("templates/settingItem.hbs", selected);
-                $$(".editor-card-body").html(html);
-                break;
-
-            default:
-                $$(".caption-selected").text(name);
-                msg.warning("Tipo de enlace no soportado: " + type);
-                break;
+        if (!selected) {
+            msg.danger("Nodo no encontrado.");
+            console.error("Nodo no encontrado con el ID:", id);
+            return;
         }
+
+        // Renderiza el nodo actual si tiene propiedades
+        if (selected.properties) {
+            const html = await renderTemplate("templates/settingItem.hbs", selected);
+            $$(".editor-card-body").html(html);
+        }
+
+        // Función recursiva para renderizar todos los nodos hijos con `properties`
+        const renderChildrenRecursively = async (node, depth = 1) => {
+            if (node.children && node.children.length > 0) {
+                for (const child of node.children) {
+                    if (child.properties) {
+                        // Crear un contenedor con padding izquierdo para identificar la estructura
+                        const container = document.createElement('div');
+                        container.style.paddingLeft = `${depth * 20}px`; // Incrementar el padding por nivel
+                        container.classList.add('nested-node');
+
+                        // Renderizar el hijo con el template
+                        const childHtml = await renderTemplate("templates/settingItem.hbs", child);
+                        container.innerHTML = childHtml;
+
+                        // Añadir el contenedor al contenido existente usando appendChild
+                        document.querySelector(".editor-card-body").appendChild(container);
+
+                        // Llamada recursiva para los hijos del hijo
+                        await renderChildrenRecursively(child, depth + 1);
+                    }
+                }
+            }
+        };
+
+        // Iniciar la renderización recursiva de los hijos del nodo seleccionado
+        await renderChildrenRecursively(selected);
     } catch (error) {
         console.error("Error al manejar el clic:", error);
         msg.danger("Error al cargar el contenido. Verifica la consola para más detalles.");
     }
 };
+
 
 const addEventsListener = () => {
     msg.secondary("addEventsListenerProject", true);
