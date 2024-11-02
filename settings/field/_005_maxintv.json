@@ -1,8 +1,8 @@
 {
-    "captions": "Max character in table view",
+    "caption": "Max character in table view",
     "properties": {
         "placeholder": "Max character in table view value",
-        "captions": ""
+        "caption": ""
     },
     "type":"field-settings",
     "icon": {

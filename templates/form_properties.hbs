@@ -1,6 +1,6 @@
 <div class="card card-outline card-yellow">
     <div class="card-header">
-        <h3 class="card-title">{{text}}</h3>
+        <h3 class="card-title">{{caption}}</h3>
         <div class="card-tools">
             <button type = "button" class="btn btn-warning btn-xs add-new-properties" data-nodeid="{{id}}"> Add new</button>
             <button type="button" class="btn btn-tool" data-card-widget="collapse"><i class="fas fa-minus"></i></button>
@@ -28,7 +28,7 @@
                 </div>
                 <input  type="text" class="form-control form-node {{#if required}}validate-control{{/if}}" data-index="{{@index}}" 
                         data-nodeid="{{../id}}" name="{{id}}" placeholder="{{placeholder}}" 
-                        value="{{text}}" title="{{usershelper}}" {{#if required}}required{{/if}}>
+                        value="{{caption}}" title="{{usershelper}}" {{#if required}}required{{/if}}>
                         <button type="button" class="btn btn-tool remove-property" data-index="{{@index}}" data-nodeid="{{../id}}">
                             <i class="nav-icon fa fa-times"></i>
                         </button>

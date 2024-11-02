@@ -1,7 +1,7 @@
 [
     {
         "id": "1",
-        "captions": "New_Project",
+        "caption": "New_Project",
         "icon": "fas fa-project-diagram",
         "li_attr": {
             "id": "1"

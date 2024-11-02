@@ -1,20 +1,20 @@
 {
-    "captions": "Check options value",
+    "caption": "Check options value",
     "properties": {
         "check": true,
         "options": [
-            {"captions":"Descendingly", "checked":false},
-            {"captions":"Show quick search box", "checked":false},
-            {"captions":"Allow Sorting", "checked":false},
-            {"captions":"Allow filters", "checked":false},
-            {"captions":"Allow saving data to CSV files", "checked":false},
-            {"captions":"Allow print-view", "checked":false},
-            {"captions":"Allow user to save filters", "checked":false},
-            {"captions":"Hide link in home page", "checked":false},
-            {"captions":"Allow mass delete", "checked":false},
-            {"captions":"Filter before showing table view", "checked":false},
-            {"captions":"Hide link in navigation menu", "checked":false},
-            {"captions":"Show record count in home page", "checked":false}
+            {"caption":"Descendingly", "checked":false},
+            {"caption":"Show quick search box", "checked":false},
+            {"caption":"Allow Sorting", "checked":false},
+            {"caption":"Allow filters", "checked":false},
+            {"caption":"Allow saving data to CSV files", "checked":false},
+            {"caption":"Allow print-view", "checked":false},
+            {"caption":"Allow user to save filters", "checked":false},
+            {"caption":"Hide link in home page", "checked":false},
+            {"caption":"Allow mass delete", "checked":false},
+            {"caption":"Filter before showing table view", "checked":false},
+            {"caption":"Hide link in navigation menu", "checked":false},
+            {"caption":"Show record count in home page", "checked":false}
         ]
     },
     "type": "tbl-setting",

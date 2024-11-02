@@ -1,10 +1,11 @@
 {
-    "captions": "Technical report",
+    "caption": "Technical report",
+    "userHelp":  "Datos de seguimiento, mas adelante esta opción se puede utilizar para crear el ayuda del sistema.",
     "properties": [
         {
             "id":"Technical report",
             "placeholder": "Tech report",
-            "captions": ""
+            "caption": ""
         }
     ],
     "type": "textarea-group",

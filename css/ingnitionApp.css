@@ -9,7 +9,8 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    z-index: 9999; /* Mantener este valor alto */
+    z-index: 9999;
+    /* Mantener este valor alto */
 }
 
 #content-preloader {
@@ -18,11 +19,13 @@
     left: 0;
     width: 100%;
     height: 100%;
-    background-color: rgba(255, 255, 255, 0.8); /* Fondo semitransparente */
+    background-color: rgba(255, 255, 255, 0.8);
+    /* Fondo semitransparente */
     display: flex;
     align-items: center;
     justify-content: center;
-    z-index: 9998; /* Ajuste para evitar conflicto */
+    z-index: 9998;
+    /* Ajuste para evitar conflicto */
 }
 
 /* Títulos de la aplicación */
@@ -33,15 +36,19 @@
 }
 
 .title-ignition {
-    font-size: 2rem; /* Tamaño mayor */
-    color: #FF5733; /* Naranja brillante */
+    font-size: 2rem;
+    /* Tamaño mayor */
+    color: #FF5733;
+    /* Naranja brillante */
     font-weight: bold;
     margin-right: 5px;
 }
 
 .title-app {
-    font-size: 1.5rem; /* Tamaño menor */
-    color: #3498DB; /* Azul suave */
+    font-size: 1.5rem;
+    /* Tamaño menor */
+    color: #3498DB;
+    /* Azul suave */
     font-weight: 300;
 }
 
@@ -60,21 +67,27 @@
 .project-tree {
     list-style: none;
     /* max-height: 0; Oculto por defecto */
-    padding-left: 1rem; /* Añadir espaciado para niveles anidados */
+    padding-left: 1rem;
+    /* Añadir espaciado para niveles anidados */
     overflow: hidden;
-    transition: max-height 0.5s ease; /* Transición suave */
+    transition: max-height 0.5s ease;
+    /* Transición suave */
 }
 
 /* Resaltar nodo cuando el mouse está encima */
 .app-content .node-link:hover {
-    background-color: #8495f7; /* Color de fondo al hacer hover */
-    color: #333; /* Color de texto opcional */
-    border-radius: 4px; /* Bordes redondeados opcionales */
+    background-color: #8495f7;
+    /* Color de fondo al hacer hover */
+    color: #333;
+    /* Color de texto opcional */
+    border-radius: 4px;
+    /* Bordes redondeados opcionales */
 }
 
 /* Estilo para el texto en hover, opcional */
 .app-content .node-link:hover span {
-    font-weight: bold; /* Resaltar el texto cuando el mouse esté sobre el nodo */
+    font-weight: bold;
+    /* Resaltar el texto cuando el mouse esté sobre el nodo */
 }
 
 /* Transición para que el efecto sea suave */
@@ -98,7 +111,8 @@
     display: flex;
     align-items: center;
     margin: 0;
-    flex-grow: 1; /* Para que el texto ocupe el espacio disponible */
+    flex-grow: 1;
+    /* Para que el texto ocupe el espacio disponible */
 }
 
 /* Flecha a la derecha y transición para giro */
@@ -118,15 +132,17 @@
     display: flex;
     justify-content: center;
     max-width: 1.5rem;
-    margin-right: 0.5rem; /* Espacio entre el icono y el texto */
+    margin-right: 0.5rem;
+    /* Espacio entre el icono y el texto */
     min-width: 1.5rem;
 }
 
-.node-item.node-open > .project-tree {
-    /* max-height se controla mediante JavaScript */
-}
-
-.project-wrapper .node-link .svg-icon {
+.node-link .svg-icon,
+.node-icon .svg-icon {
     min-width: 1rem;
     max-width: 1rem;
+}
+
+.node-item.node-open>.project-tree {
+    /* max-height se controla mediante JavaScript */
 }

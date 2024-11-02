@@ -1,8 +1,8 @@
 {
-    "captions": "Redirect after insert",
+    "caption": "Redirect after insert",
     "properties": {
         "placeholder": "Redirect after insert",
-        "captions": "?SelectedID=#ID#"
+        "caption": "?SelectedID=#ID#"
     },
     "type":"tbl-setting",
     "icon": {

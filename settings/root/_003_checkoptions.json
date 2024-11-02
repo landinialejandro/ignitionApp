@@ -1,34 +1,34 @@
 {
-  "captions": "Check options value",
+  "caption": "Check options value",
   "properties": {
     "description": {
-      "captions": "You can add your own options in _xxx_checkoptions.json file",
+      "caption": "You can add your own options in _xxx_checkoptions.json file",
       "class": "text-success"
     },
     "check": true,
     "options": [
       {
-        "captions": "Use 24Hs time format",
+        "caption": "Use 24Hs time format",
         "checked": false,
         "usershelper": "Enable this function to show time in 24 Hs format"
       },
       {
-        "captions": "Don't enforce MYSQL encoding",
+        "caption": "Don't enforce MYSQL encoding",
         "checked": false,
         "usershelper": "Enable this option to Don't enforce MYSQL encoding"
       },
       {
-        "captions": "Hide the login/menbership system",
+        "caption": "Hide the login/menbership system",
         "checked": false,
         "usershelper": "Enable this option to Hide the login/menbership system"
       },
       {
-        "captions": "Allow admin access to server status page",
+        "caption": "Allow admin access to server status page",
         "checked": false,
         "usershelper": "Enable this option to Allow admin access to server status page"
       },
       {
-        "captions": "Show technical documentation page in the admin area",
+        "caption": "Show technical documentation page in the admin area",
         "checked": false,
         "usershelper": "Enable this option to Show technical documentation page in the admin area"
       }

@@ -2,7 +2,6 @@ import { get_data, saveFileToServer } from './libraries/common.js';
 import { Msglog } from "./libraries/MsgLog.js";
 import { $$ } from './libraries/selector.js';
 import { getDirCollectionJson, renderTemplate } from './libraries/helpers.js';
-import { RegisterPartials } from './libraries/hbs.js'
 
 import { NodeTypeManager } from './NodeTypeManager.js';
 import { ContextMenu } from './ContextMenu.js';
@@ -74,7 +73,7 @@ const actionCallbacks = {
                 for (const [key, fileInfo] of Object.entries(filesContent)) {
                     const content = await get_data({ url: fileInfo.url });
                     const childNode = {
-                        caption: content.text || "Elemento de configuración",
+                        caption: content.caption || "Elemento de configuración",
                         url: fileInfo.url,
                         type: "settingItem",  // Asignamos un tipo específico para cada archivo
                         a_class: fileInfo.a_class,
@@ -167,19 +166,16 @@ const handleProjectTree = async (node) => {
 
     try {
         switch (type) {
-            case "root":
-                break;
-            case "group":
-                break;
             case "field":
                 break;
-            case "settings":
-                break;
+            case "root":
+            case "group":
             case "table":
+            case "settings":
             case "settingItem":
                 const selected = project.findChildById(id);
 
-                const html = await renderTemplate("templates/settingItem.hbs", selected.properties);
+                const html = await renderTemplate("templates/settingItem.hbs", selected);
                 $$(".editor-card-body").html(html);
                 break;
 

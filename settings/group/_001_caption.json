@@ -1,18 +1,19 @@
 {
-    "captions": "Caption",
+    "caption": "Caption",
+    "usershelper": "Identificación del titulo del grupo se puede agregar para varios idiomas",
     "properties": [
         {
             "id": "en",
             "placeholder": "Caption Field",
-            "usershelper": "This value is used to identify the title of the field in the database, it appears in the detail form and in the table view",
-            "captions": "",
+            "usershelper": "This value is used to identify the title of the group of tables, it appears in the Home Page",
+            "caption": "",
             "default": true
         },
         {
             "id": "es",
             "placeholder": "Subtitulo en español",
             "usershelper": "Identifica el título en español",
-            "captions": ""
+            "caption": ""
         }
     ],
     "type": "input-group",

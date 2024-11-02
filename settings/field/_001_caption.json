@@ -1,19 +1,19 @@
 {
-    "captions": "Multilingual Captions",
+    "caption": "Multilingual Captions",
     "properties": {
         "properties": [
             {
                 "id": "en",
                 "placeholder": "Caption Field",
                 "usershelper": "This value is used to identify the title of the field in the database, it appears in the detail form and in the table view",
-                "captions": ""
+                "caption": ""
             },
             {
                 "id": "es",
                 "default": true,
                 "placeholder": "Subtitulo en español",
                 "usershelper": "Identifica el título en español",
-                "captions": ""
+                "caption": ""
             }
         ],
         "type": "html-control"

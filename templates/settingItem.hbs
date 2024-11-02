@@ -1,8 +1,8 @@
 <div class="card card-outline card-primary">
     <div class="card-header">
         <h3 class="card-title">
-            <i class="{{icon.value}}"></i> <!-- Ícono alineado con el título -->
-            {{text}} <!-- Título de la tarjeta -->
+            {{> component_i}}
+            {{caption}} <!-- Título de la tarjeta -->
         </h3>
         <div class="card-tools">
             <button type="button" class="btn btn-tool"
@@ -13,9 +13,17 @@
         </div> <!-- /.card-tools -->
     </div> <!-- /.card-header -->
     <div class="card-body" style="display: block; box-sizing: border-box;">
+        {{#with properties}}
+
+        {{#if usershelper}}
+        <div class="alert alert-info" role="alert">
+            {{usershelper}}
+        </div>
+        {{/if}}
+
         {{#if (eq type "input-group")}}
         {{!-- Input Group --}}
-        {{#each data}}
+        {{#each properties}}
         <div class="card">
             <div class="card-body">
                 {{> component_input}}
@@ -25,7 +33,7 @@
 
         {{else if (eq type "textarea-group")}}
         {{!-- Textarea Group --}}
-        {{#each data}}
+        {{#each properties}}
         <div class="card">
             <div class="card-body">
                 {{> component_textarea}}
@@ -35,7 +43,7 @@
 
         {{else if (eq type "checkbox-group")}}
         {{!-- Checkbox Group --}}
-        {{#each data}}
+        {{#each properties}}
         <div class="card">
             <div class="card-body">
                 {{> component_checkbox}}
@@ -43,8 +51,19 @@
         </div>
         {{/each}}
 
-        {{/if}}
+        {{else if (eq type "radio-group")}}
+        {{!-- Radio Group --}}
+        {{#each properties}}
+        <div class="card">
+            <div class="card-body">
+                {{> component_radio}}
+            </div>
+        </div>
+        {{/each}}
 
+        {{/if}}
+        
+        {{/with}}
         {{!-- node info --}}
         <div class="mb-3"></div>
         {{log this}}
@@ -57,12 +76,12 @@
                     <div class="float-end mb-2">
                         <span class="badge text-bg-info">Order: {{order}}</span>
                         <span class="badge text-bg-success">Title:
-                            {{text}}</span>
+                            {{caption}}</span>
                         <span class="badge text-bg-primary">Type:
                             {{type}}</span>
                     </div>
                 </div>
-                {{>component_input id="icon" text=icon.value}}
+                {{>component_input id="icon" caption=icon.value}}
             </div>
         </div>
 

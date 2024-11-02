@@ -1,7 +1,7 @@
 {
-    "captions": "Data Type",
+    "caption": "Data Type",
     "properties": {
-        "captions":"",
+        "caption":"",
         "option": true,
         "options": [
             "Tiny Integer",

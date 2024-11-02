@@ -1,20 +1,21 @@
 {
-  "captions": "Date order format",
-  "properties": {
-    "description": {
-      "captions": "You can add your own options in _xxx_date_format.json file",
-      "class": "text-purple"
+  "caption": "Date order format",
+  "usershelper": "Indique el orden en el que aparece la fecha. You can add your own options in _xxx_date_format.json file.",
+  "properties": [
+    {
+      "caption": "Month, Day, Year",
+      "checked": false
     },
-    "captions": "",
-    "option": true,
-    "options": [
-      "Month, Day, Year",
-      "Day, Month, Year",
-      "Year, Day, Month"
-    ],
-    "usershelper": "Indique el orden en el que aparece la fecha"
-  },
-  "type": "prj-settings",
+    {
+      "caption": "Day, Month, Year",
+      "checked":false
+    },
+    {
+      "caption": "Year, Day, Month",
+      "checked": true
+    }
+  ],
+  "type": "radio-group",
   "icon": {
     "value": "bi bi-wrench-adjustable-circle",
     "type": "class"

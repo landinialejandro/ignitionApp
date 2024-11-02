@@ -1,8 +1,8 @@
 {
-    "captions": "Database config",
+    "caption": "Database config",
     "properties": {
         "description":{
-            "captions": "You can add more own data base options in _xxx_db_conf.json file",
+            "caption": "You can add more own data base options in _xxx_db_conf.json file",
             "class": "text-primary"
             },
         "properties": [
@@ -10,38 +10,38 @@
                 "id": "dbServer",
                 "usershelper":"Database host",
                 "placeholder": "localhost",
-                "captions": ""
+                "caption": ""
             },
             {
                 "id": "dbUsername",
                 "usershelper":"Database login user name",
                 "placeholder": "root",
-                "captions": ""
+                "caption": ""
             },
             {
                 "id": "dbPassword",
                 "usershelper":"Database login user password",
                 "placeholder": "****",
-                "captions": ""
+                "caption": ""
             },
             {
                 "id": "dbDatabase",
                 "usershelper":"Required Database name",
                 "placeholder": "your database name",
-                "captions": "",
+                "caption": "",
                 "required":true
             },
             {
                 "id": "appURI",
                 "usershelper":"Aplication url",
                 "placeholder": "yourprjname",
-                "captions": ""
+                "caption": ""
             },
             {
                 "id": "host",
                 "usershelper":"Aplication host",
                 "placeholder": "localhost",
-                "captions": ""
+                "caption": ""
             }
         ]
     },

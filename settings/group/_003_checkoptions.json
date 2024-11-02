@@ -1,8 +1,9 @@
 {
-    "captions": "Check options value",
+    "caption": "Check options value",
+    "userHelp":  "Muestra solo si el grupo de usuario es admin",
     "properties": [
         {
-            "captions": "Show Only in admin group?",
+            "caption": "Show Only in admin group?",
             "checked": false
         }
     ],

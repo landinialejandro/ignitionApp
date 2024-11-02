@@ -1,15 +1,15 @@
 {
-    "captions": "Check options value",
+    "caption": "Check options value",
     "properties": {
         "check": true,
         "options": [
-            {"captions":"Enable detail view", "checked":true},
-            {"captions":"Delete records even if they have children records", "checked":false},
-            {"captions":"Allow print view", "checked":false},
-            {"captions":"Display detail view in a separate page", "checked":false},
-            {"captions":"Hide 'save as copy' when editing records", "checked":false},
-            {"captions":"Keep action buttons visible scrolling down", "checked":false},
-            {"captions":"Allow adding new records from homepage", "checked":false}
+            {"caption":"Enable detail view", "checked":true},
+            {"caption":"Delete records even if they have children records", "checked":false},
+            {"caption":"Allow print view", "checked":false},
+            {"caption":"Display detail view in a separate page", "checked":false},
+            {"caption":"Hide 'save as copy' when editing records", "checked":false},
+            {"caption":"Keep action buttons visible scrolling down", "checked":false},
+            {"caption":"Allow adding new records from homepage", "checked":false}
         ]
     },
     "type": "tbl-setting",

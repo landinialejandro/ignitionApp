@@ -1,5 +1,4 @@
 import { get_data } from './common.js';
-import { RegisterHelpers, RegisterPartials } from './hbs.js'
 
 //enable or disable containers
 export function Container(enable = true) {

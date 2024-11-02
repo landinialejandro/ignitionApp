@@ -1,12 +1,12 @@
 {
-    "captions": "Separator",
+    "caption": "Separator",
     "properties": {
         "description": {
-            "captions": "Change to your own date separator, puede cambiar su propio separador de fecha",
+            "caption": "Change to your own date separator, puede cambiar su propio separador de fecha",
             "class": "text-primary"
         },
         "placeholder": "/",
-        "captions": "/",
+        "caption": "/",
         "usershelper": "Write a date saparator"
     },
     "type": "prj-settings",

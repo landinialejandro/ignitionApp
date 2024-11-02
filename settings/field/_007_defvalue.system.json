@@ -1,7 +1,7 @@
 {
-    "captions": "System default value",
+    "caption": "System default value",
     "properties": {
-        "captions":"",
+        "caption":"",
         "option": true,
         "options": [
             "Create by user Name",

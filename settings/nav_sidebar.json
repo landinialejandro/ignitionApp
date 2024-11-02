@@ -22,7 +22,7 @@
         "a_class": "docs-page",
         "type": "page",
         "badge": {
-            "captions": "New",
+            "text": "New",
             "color": "danger"
         }
     },

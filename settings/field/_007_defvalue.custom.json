@@ -1,8 +1,8 @@
 {
-    "captions": "Custom default value",
+    "caption": "Custom default value",
     "properties": {
         "placeholder": "Your custom string o value",
-        "captions": ""
+        "caption": ""
     },
     "type":"field-settings",
     "icon": {

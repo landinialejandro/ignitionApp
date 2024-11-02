@@ -1,14 +1,14 @@
 {
-    "captions": "Database options value",
+    "caption": "Database options value",
     "properties": {
         "check": true,
         "options": [
-            {"captions":"Primary key", "checked":false},
-            {"captions":"Zero fill", "checked":false},
-            {"captions":"Auto increment", "checked":false},
-            {"captions":"Unique", "checked":false},
-            {"captions":"Unsigned", "checked":false},
-            {"captions":"Binary", "checked":false}
+            {"caption":"Primary key", "checked":false},
+            {"caption":"Zero fill", "checked":false},
+            {"caption":"Auto increment", "checked":false},
+            {"caption":"Unique", "checked":false},
+            {"caption":"Unsigned", "checked":false},
+            {"caption":"Binary", "checked":false}
         ]
     },
     "type": "field-settings",

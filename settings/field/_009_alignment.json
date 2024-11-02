@@ -1,7 +1,7 @@
 {
-    "captions": "Alignment",
+    "caption": "Alignment",
     "properties": {
-        "captions":"Left",
+        "caption":"Left",
         "option": true,
         "options": [
             "Left",

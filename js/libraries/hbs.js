@@ -1,7 +1,4 @@
 import { get_data } from './common.js';
-import { Msglog } from "./MsgLog.js";
-
-window.msg = new Msglog();
 
 export const RegisterHelpers = () => {
 	msg.info("registering helpers...")
@@ -17,7 +14,6 @@ export const RegisterHelpers = () => {
 			"notInString": (l, r) => r.indexOf(l) === -1,
 		}
 		result = operators[operator](operand_1, operand_2)
-
 		if (result) return options.fn(this)
 		else return options.inverse(this)
 	});
@@ -34,23 +30,33 @@ export const RegisterHelpers = () => {
 }
 
 export const RegisterPartials = async () => {
-	msg.info("registering partials...");
-	const partials = ["modalHeader", "modalFooter", "menuItem", "projectItem", "component_i", "component_input", "component_textarea","component_checkbox","breadcrumb"];
+    msg.info("registering partials...");
 
-	await Promise.all(partials.map(async (e) => {
-		msg.secondary(e, true);
-		const url = `templates/partials/${e}.hbs`;
-		const t = await get_data({ url, isJson: false });
+    const url = 'ignitionApp.php';
+    const data = {
+        id: 'templates/partials',
+        operation: 'get_node'
+    };
 
-		// Compilar la plantilla antes de registrarla en Handlebars
-		const compiledTemplate = Handlebars.compile(t);
-		Handlebars.registerPartial(e, compiledTemplate);
-	}));
+    try {
+        // Llamada a la función `get_data` para obtener los datos
+        const filesContent = await get_data({ url, data });
 
-	msg.info("partials registered and compiled.");
+        for (const [key, fileInfo] of Object.entries(filesContent)) {
+            //console.log(`Fetching template from: ${fileInfo.url}`); // Verificar URL
+
+            const t = await get_data({ url: fileInfo.url, isJson: false });
+            let indicePunto = fileInfo.caption.indexOf('.');
+            let name = indicePunto !== -1 ? fileInfo.caption.substring(0, indicePunto).toLowerCase() : fileInfo.caption.toLowerCase();
+
+            // Compilar la plantilla antes de registrarla en Handlebars
+            const compiledTemplate = Handlebars.compile(t);
+            Handlebars.registerPartial(name, compiledTemplate);
+            msg.secondary(`Partial ${name} registrado.`);
+        }
+
+    } catch (error) {
+        console.error(`Error registrando partials: ${error.message}`);
+    }
+    msg.info("partials registered and compiled.");
 };
-
-
-
-RegisterHelpers()
-RegisterPartials()

@@ -1,8 +1,8 @@
 {
-    "captions": "sql to create table",
+    "caption": "sql to create table",
     "properties": {
         "placeholder": "create table sql",
-        "captions": "create table if not exists `{{databaseName}}`.`{{tableName}}` ( {{fieldsDefinitions}} ) CHARSET {{charset}}"
+        "caption": "create table if not exists `{{databaseName}}`.`{{tableName}}` ( {{fieldsDefinitions}} ) CHARSET {{charset}}"
     },
     "type": "tbl-setting",
     "icon": "fa fa-database",

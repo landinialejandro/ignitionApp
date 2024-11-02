@@ -1,5 +1,6 @@
 import { get_data } from './libraries/common.js';
 import { Msglog } from "./libraries/MsgLog.js";
+import { RegisterPartials, RegisterHelpers } from './libraries/hbs.js';
 import { preloader, renderTemplate, getDirCollectionJson } from './libraries/helpers.js';
 import { $$ } from './libraries/selector.js';
 
@@ -16,19 +17,22 @@ window.onload = async function () {
         const version = setting.version || "0.0.0";
         const release = setting.release || "bad file";
         const text = `${version} - ${release}`;
-
+        
         // Mostrar información de la versión al usuario
         msg.info(`Versión: ${text}`);
         $$(".starter-version").html(text);
+
+        RegisterHelpers();
+        await RegisterPartials();
 
         // Cargar las diferentes secciones del navBar
         loadNavBar('#main-sidebar', await get_data({ url: "settings/nav_sidebar.json" }));
         loadNavBar('#main-headerbar', await get_data({ url: "settings/nav_headerbar.json" }));
         loadNavBar('#projects-list', await getDirCollectionJson("projects"));
         loadNavBar('#settings-list', await getDirCollectionJson("settings"));
-        
+
         addEventsListener();
-        
+
     } catch (error) {
         // Registrar el error y notificar al usuario
         console.error("Error al inicializar la aplicación:", error);
