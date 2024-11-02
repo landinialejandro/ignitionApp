@@ -55,44 +55,29 @@ export class NodeTypeManager {
     }
 
     /**
-     * Agregar un nuevo tipo de nodo.
+     * Verificar si se puede agregar un nuevo hijo sin exceder el máximo permitido.
      * 
-     * @param {string} type - El nombre del tipo de nodo.
-     * @param {NodeTypeAttributes} attributes - Atributos del tipo de nodo.
-     * @throws {Error} Si el tipo de nodo ya existe.
+     * @param {string} type - El tipo de nodo.
+     * @param {number} currentChildrenCount - Número actual de hijos.
+     * @returns {boolean} True si se puede agregar un hijo, false si no.
+     * @throws {Error} Si el tipo de nodo no existe.
      */
-    addType(type, attributes) {
-        if (this.types[type]) {
-            throw new Error(`El tipo de nodo '${type}' ya existe.`);
-        }
-        this.types[type] = attributes;
+    canAddChild(type, currentChildrenCount) {
+        const maxChildren = this.getMaxChildren(type);
+        return currentChildrenCount < maxChildren;
     }
 
     /**
-     * Modificar los atributos de un tipo de nodo existente.
+     * Verificar si se puede agregar un nodo en una profundidad específica sin exceder la profundidad máxima.
      * 
-     * @param {string} type - El nombre del tipo de nodo.
-     * @param {Partial<NodeTypeAttributes>} updatedAttributes - Nuevos atributos para el tipo de nodo.
+     * @param {string} type - El tipo de nodo.
+     * @param {number} currentDepth - La profundidad actual.
+     * @returns {boolean} True si se puede agregar en esa profundidad, false si no.
      * @throws {Error} Si el tipo de nodo no existe.
      */
-    updateType(type, updatedAttributes) {
-        if (!this.types[type]) {
-            throw new Error(`El tipo de nodo '${type}' no existe.`);
-        }
-        this.types[type] = { ...this.types[type], ...updatedAttributes };
-    }
-
-    /**
-     * Eliminar un tipo de nodo.
-     * 
-     * @param {string} type - El nombre del tipo de nodo a eliminar.
-     * @throws {Error} Si el tipo de nodo no existe.
-     */
-    removeType(type) {
-        if (!this.types[type]) {
-            throw new Error(`El tipo de nodo '${type}' no existe.`);
-        }
-        delete this.types[type];
+    canAddAtDepth(type, currentDepth) {
+        const maxDepth = this.getMaxDepth(type);
+        return currentDepth < maxDepth;
     }
 
     /**
@@ -145,27 +130,85 @@ export class NodeTypeManager {
     }
 
     /**
-     * Obtener el ícono de un tipo de nodo.
+     * Obtener el ícono de un tipo de nodo, usando un ícono por defecto si no se especifica.
      * 
      * @param {string} type - El tipo de nodo.
+     * @param {IconType} [defaultIcon={ type: 'class', value: 'bi bi-file-earmark' }] - Un ícono por defecto opcional.
      * @returns {IconType} El ícono asociado al tipo de nodo.
      * @throws {Error} Si el tipo de nodo no existe.
      */
-    getIcon(type) {
+    getIcon(type, defaultIcon = { type: 'class', value: 'bi bi-file-earmark' }) {
         const nodeType = this.getType(type);
-        return nodeType.icon || { type: 'class', value: 'bi bi-file-earmark' };
+        return nodeType.icon || defaultIcon;
     }
 
     /**
-     * Obtener las acciones de un tipo de nodo.
+     * Obtener detalles de una acción específica de un tipo de nodo.
      * 
      * @param {string} type - El tipo de nodo.
-     * @returns {Object} Las acciones permitidas para el nodo.
+     * @param {string} action - La acción a obtener (por ejemplo, 'delete', 'add').
+     * @returns {Object|null} Los detalles de la acción o null si no existe.
      * @throws {Error} Si el tipo de nodo no existe.
      */
-    getActions(type) {
+    getActionDetails(type, action) {
         const nodeType = this.getType(type);
-        return nodeType.actions || {};
+        return nodeType.actions && nodeType.actions[action] ? nodeType.actions[action] : null;
+    }
+
+    /**
+     * Verificar si un nodo debe contener al menos un tipo específico de hijo.
+     * 
+     * @param {string} type - El tipo de nodo.
+     * @param {string} requiredChildType - El tipo de hijo que se necesita verificar.
+     * @returns {boolean} True si el nodo debe contener al menos un hijo de ese tipo, false si no.
+     * @throws {Error} Si el tipo de nodo no existe.
+     */
+    requiresChildType(type, requiredChildType) {
+        const nodeType = this.getType(type);
+        return nodeType.validChildren.includes(requiredChildType);
+    }
+
+    /**
+     * Validar una estructura de árbol para asegurarse de que cumple con las restricciones de maxChildren y maxDepth.
+     * 
+     * @param {Object} treeNode - Nodo de árbol a validar.
+     * @param {string} type - El tipo de nodo raíz.
+     * @param {number} currentDepth - La profundidad actual de la validación.
+     * @returns {boolean} True si la estructura cumple con las restricciones, false si no.
+     */
+    validateTreeStructure(treeNode, type, currentDepth = 1) {
+        if (!this.canAddAtDepth(type, currentDepth)) {
+            return false;
+        }
+        
+        const currentChildrenCount = treeNode.children ? treeNode.children.length : 0;
+        if (!this.canAddChild(type, currentChildrenCount)) {
+            return false;
+        }
+        
+        if (treeNode.children) {
+            for (const child of treeNode.children) {
+                if (!this.isValidChild(type, child.type) || 
+                    !this.validateTreeStructure(child, child.type, currentDepth + 1)) {
+                    return false;
+                }
+            }
+        }
+        
+        return true;
+    }
+
+    /**
+     * Obtener todas las descripciones de tipos de nodos.
+     * 
+     * @returns {Object.<string, string>} Un objeto con los tipos de nodos y sus descripciones.
+     */
+    getAllDescriptions() {
+        const descriptions = {};
+        for (const [type, attributes] of Object.entries(this.types)) {
+            descriptions[type] = attributes.description || 'Sin descripción';
+        }
+        return descriptions;
     }
 
     /**
