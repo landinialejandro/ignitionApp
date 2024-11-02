@@ -3,16 +3,19 @@
  */
 import { renderTemplate } from './libraries/helpers.js';
 import { $$ } from './libraries/selector.js';
+import { NodeTypeManager } from './NodeTypeManager.js'; // Importar NodeTypeManager
 
 export class Nodes {
     /**
      * @param {string} container - ID del contenedor HTML donde se renderizará el árbol.
+     * @param {NodeTypeManager} nodeTypeManager - Instancia de NodeTypeManager para controlar las validaciones de tipos.
      */
-    constructor(container) {
+    constructor(container, nodeTypeManager) {
         this.container = container;
         this.nodes = [];
         this.template = "templates/project_tree.hbs"; // Plantilla predeterminada
         this.file = "";
+        this.nodeTypeManager = nodeTypeManager; // Instancia de NodeTypeManager
     }
 
     /**
@@ -81,11 +84,12 @@ export class Nodes {
         }
         return null;
     }
+
     /**
-    * Busca el nodo padre de un nodo con un ID específico.
-    * @param {string} nodeId - El ID del nodo del cual queremos encontrar el padre.
-    * @returns {Nodes|null} - Retorna el nodo padre o null si no se encuentra.
-    */
+     * Busca el nodo padre de un nodo con un ID específico.
+     * @param {string} nodeId - El ID del nodo del cual queremos encontrar el padre.
+     * @returns {Nodes|null} - Retorna el nodo padre o null si no se encuentra.
+     */
     findParentById(nodeId) {
         for (const node of this.nodes) {
             const parent = this._findParentInChildren(node, nodeId);
@@ -118,40 +122,68 @@ export class Nodes {
      * @returns {boolean} - Retorna true si el nodo fue encontrado y eliminado, false si no.
      */
     removeNode(nodeId) {
-        // Buscar el nodo padre
         const parentNode = this.findParentById(nodeId);
         if (parentNode) {
             const index = parentNode.children.findIndex(child => child.id === nodeId);
             if (index !== -1) {
-                parentNode.children.splice(index, 1); // Elimina el nodo del array de hijos
+                parentNode.children.splice(index, 1);
                 return true;
             }
         } else {
-            // Si el nodo a eliminar es un nodo raíz en `this.nodes`
             const index = this.nodes.findIndex(node => node.id === nodeId);
             if (index !== -1) {
                 this.nodes.splice(index, 1);
                 return true;
             }
         }
-        return false; // Nodo no encontrado
+        return false;
     }
 
     /**
-     * Agrega un nuevo nodo como hijo de un nodo existente identificado por su ID.
+     * Agrega un nuevo nodo como hijo de un nodo existente identificado por su ID, con validaciones de NodeTypeManager.
      * @param {string} parentId - El ID del nodo padre al que se agregará el nuevo nodo.
      * @param {NodeOptions} nodeOptions - Opciones del nodo nuevo.
-     * @returns {boolean} - Retorna true si se agregó el nodo, false si el nodo padre no se encontró.
+     * @returns {boolean} - Retorna true si se agregó el nodo, false si no.
      */
     addChild(parentId, nodeOptions) {
         const parentNode = this.findChildById(parentId);
-        if (parentNode) {
-            const newNode = Nodes._createNode(nodeOptions);
-            parentNode.children = parentNode.children || [];
-            parentNode.children.push(newNode);
-            return true;
+        if (!parentNode) return false;
+
+        if (!this.nodeTypeManager.isValidChild(parentNode.type, nodeOptions.type)) {
+            console.error(`No se puede añadir el nodo de tipo '${nodeOptions.type}' como hijo de '${parentNode.type}'.`);
+            return false;
         }
-        return false; // Nodo padre no encontrado
+
+        const currentChildrenCount = parentNode.children.length;
+        if (!this.nodeTypeManager.canAddChild(parentNode.type, currentChildrenCount)) {
+            console.error(`El nodo de tipo '${parentNode.type}' ha alcanzado el número máximo de hijos permitidos.`);
+            return false;
+        }
+
+        const currentDepth = this.getDepth(parentId);
+        if (!this.nodeTypeManager.canAddAtDepth(parentNode.type, currentDepth + 1)) {
+            console.error(`No se puede añadir un nodo a una profundidad superior a la permitida (${this.nodeTypeManager.getMaxDepth(parentNode.type)}).`);
+            return false;
+        }
+
+        const newNode = Nodes._createNode(nodeOptions);
+        parentNode.children.push(newNode);
+        return true;
+    }
+
+    /**
+     * Obtener la profundidad de un nodo a partir de su ID.
+     * @param {string} nodeId - El ID del nodo.
+     * @returns {number} - La profundidad del nodo en el árbol.
+     */
+    getDepth(nodeId) {
+        let depth = 0;
+        let currentNode = this.findChildById(nodeId);
+        while (currentNode) {
+            depth++;
+            currentNode = this.findParentById(currentNode.id);
+        }
+        return depth;
     }
 
     /**
@@ -163,10 +195,10 @@ export class Nodes {
     updateNode(nodeId, properties) {
         const node = this.findChildById(nodeId);
         if (node) {
-            Object.assign(node, properties); // Actualiza las propiedades especificadas
+            Object.assign(node, properties);
             return true;
         }
-        return false; // Nodo no encontrado
+        return false;
     }
 
     /**
@@ -205,15 +237,13 @@ export class Nodes {
     }
 
     /**
-    * Obtiene un arreglo de los tipos de todos los nodos hijos directos de un nodo específico.
-    * @param {string} parentId - El ID del nodo padre.
-    * @returns {string[]} - Un arreglo con los tipos de los nodos hijos.
-    */
+     * Obtiene un arreglo de los tipos de todos los nodos hijos directos de un nodo específico.
+     * @param {string} parentId - El ID del nodo padre.
+     * @returns {string[]} - Un arreglo con los tipos de los nodos hijos.
+     */
     getChildrenTypes(parentId) {
         const parentNode = this.findChildById(parentId);
-        if (!parentNode) return []; // Si no se encuentra el nodo padre, retorna un arreglo vacío
-
-        // Retorna un arreglo con los tipos de los nodos hijos
+        if (!parentNode) return [];
         return parentNode.children.map(child => child.type);
     }
 
@@ -227,8 +257,8 @@ export class Nodes {
         let currentNode = this.findChildById(nodeId);
 
         while (currentNode) {
-            breadcrumb.unshift({ label: currentNode.caption, id: currentNode.id }); // Añadir al inicio del arreglo
-            currentNode = this.findParentById(currentNode.id); // Subir un nivel en la jerarquía
+            breadcrumb.unshift({ label: currentNode.caption, id: currentNode.id });
+            currentNode = this.findParentById(currentNode.id);
         }
 
         return breadcrumb;
