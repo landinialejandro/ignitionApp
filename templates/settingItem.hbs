@@ -66,7 +66,7 @@
         {{/with}}
         {{!-- node info --}}
         <div class="mb-3"></div>
-        {{log this}}
+        {{!-- {{log this}} --}}
         <div class="card">
             <div class="card-body">
                 <div class="d-flex justify-content-between mb-3">
@@ -74,8 +74,9 @@
                         Node info
                     </div>
                     <div class="float-end mb-2">
+                        <span class="badge text-bg-info">Id: {{id}}</span>
                         <span class="badge text-bg-info">Order: {{order}}</span>
-                        <span class="badge text-bg-success">Title:
+                        <span class="badge text-bg-success">Caption:
                             {{caption}}</span>
                         <span class="badge text-bg-primary">Type:
                             {{type}}</span>

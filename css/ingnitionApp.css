@@ -146,3 +146,7 @@
 .node-item.node-open>.project-tree {
     /* max-height se controla mediante JavaScript */
 }
+
+.nested-node {
+    padding-top: 20px;
+}

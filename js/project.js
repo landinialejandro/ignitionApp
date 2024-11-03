@@ -193,6 +193,7 @@ const handleProjectTree = async (node) => {
                         // Crear un contenedor con padding izquierdo para identificar la estructura
                         const container = document.createElement('div');
                         container.style.paddingLeft = `${depth * 20}px`; // Incrementar el padding por nivel
+                        container.style.paddingTop = `${ 20}px`; 
                         container.classList.add('nested-node');
 
                         // Renderizar el hijo con el template
