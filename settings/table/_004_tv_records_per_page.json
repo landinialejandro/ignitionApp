@@ -1,16 +1,19 @@
 {
     "caption": "Records per page",
-    "properties": {
-        "placeholder": "Records per page",
-        "caption": ""
-    },
-    "type":"tbl-setting",
+    "properties": [
+        {
+            "caption": "Records per page",
+            "placeholder": "Records per page",
+            "value": ""
+        }
+    ],
+    "type": "input-group",
     "icon": {
-    "value": "bi bi-journal-bookmark",
-    "type": "class"
-  },
+        "value": "bi bi-journal-bookmark",
+        "type": "class"
+    },
     "li_attr": {
         "type": "integer"
     },
-    "order":4
+    "order": 4
 }

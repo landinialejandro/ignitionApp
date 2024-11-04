@@ -27,6 +27,13 @@ export const RegisterHelpers = () => {
 		return `${text.slice(0, partLength)}...${text.slice(-partLength)}`;
 	});
 
+	Handlebars.registerHelper('concat', function(...args) {
+		// Elimina el último argumento (opciones de Handlebars)
+		args.pop();
+		return args.join('');
+	  });
+	  
+
 }
 
 export const RegisterPartials = async () => {

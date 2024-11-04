@@ -63,34 +63,24 @@
     box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
 }
 
+
+
 /* Estructura principal de la lista de nodos */
 .project-tree {
     list-style: none;
-    /* max-height: 0; Oculto por defecto */
-    padding-left: 1rem;
-    /* Añadir espaciado para niveles anidados */
+    padding-left: 1rem; /* Espaciado para niveles anidados */
     overflow: hidden;
-    transition: max-height 0.5s ease;
-    /* Transición suave */
+    transition: max-height 0.5s ease; /* Transición suave */
 }
 
 /* Resaltar nodo cuando el mouse está encima */
 .app-content .node-link:hover {
-    background-color: #8495f7;
-    /* Color de fondo al hacer hover */
-    color: #333;
-    /* Color de texto opcional */
-    border-radius: 4px;
-    /* Bordes redondeados opcionales */
+    background-color: #8495f7; /* Color de fondo al hacer hover */
+    color: #333; /* Color de texto opcional */
+    border-radius: 4px; /* Bordes redondeados opcionales */
 }
 
-/* Estilo para el texto en hover, opcional */
-.app-content .node-link:hover span {
-    font-weight: bold;
-    /* Resaltar el texto cuando el mouse esté sobre el nodo */
-}
-
-/* Transición para que el efecto sea suave */
+/* Transición suave */
 .app-content .node-link {
     transition: background-color 0.3s ease, color 0.3s ease;
 }
@@ -111,8 +101,7 @@
     display: flex;
     align-items: center;
     margin: 0;
-    flex-grow: 1;
-    /* Para que el texto ocupe el espacio disponible */
+    flex-grow: 1; /* Para que el texto ocupe el espacio disponible */
 }
 
 /* Flecha a la derecha y transición para giro */
@@ -126,24 +115,27 @@
     transform: rotate(90deg);
 }
 
-/* Opcional: estilo para el icono SVG */
+/* Estilo para el contenedor del icono */
 .node-link .node-icon {
-    align-items: center;
     display: flex;
+    align-items: center;
     justify-content: center;
-    max-width: 1.5rem;
-    margin-right: 0.5rem;
-    /* Espacio entre el icono y el texto */
-    min-width: 1.5rem;
+    max-width: 1rem;
+    min-width: 1rem;
+    margin-right: 0.5rem; /* Espacio entre el icono y el texto */
+    vertical-align: middle; /* Alineación vertical con el texto */
 }
 
+/* Estilo para el SVG dentro de .node-icon */
 .node-link .svg-icon,
 .node-icon .svg-icon {
-    min-width: 1rem;
-    max-width: 1rem;
+    width: 1rem; /* Ajusta el tamaño del SVG */
+    height: 1rem; /* Ajusta el tamaño del SVG */
+    vertical-align: middle; /* Alineación vertical */
 }
 
-.node-item.node-open>.project-tree {
+/* Para nodos anidados */
+.node-item.node-open > .project-tree {
     /* max-height se controla mediante JavaScript */
 }
 

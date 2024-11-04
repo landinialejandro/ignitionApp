@@ -1,46 +1,43 @@
 {
     "caption": "Versioning numbering system",
-    "properties": {
-        "description":{
-            "caption": "You can define your versioning number",
-            "class": "text-primary"
-            },
-        "properties": [
-            {
-                "id": "Major",
-                "usershelper":"Major changes break compatibility",
-                "placeholder": "Major version",
-                "caption": "0"
-            },
-            {
-                "id": "Minor",
-                "usershelper":"Minor changes does no break compatibility",
-                "placeholder": "Minor version",
-                "caption": "1"
-            },
-            {
-                "id": "Build",
-                "usershelper":"Build counter",
-                "placeholder": "Build number counter",
-                "caption": "0"
-            },
-            {
-                "id": "Release",
-                "usershelper":"Release label",
-                "placeholder": "Add your release label",
-                "caption": ""
-            }
-        ]
+    "usershelpers": {
+        "caption": "You can define your versioning number",
+        "class": "text-primary"
     },
-    "type": "prj-settings",
+    "properties": [
+        {
+            "caption": "Major",
+            "usershelper": "Major changes break compatibility",
+            "placeholder": "Major version",
+            "value": "0"
+        },
+        {
+            "caption": "Minor",
+            "usershelper": "Minor changes does no break compatibility",
+            "placeholder": "Minor version",
+            "value": "1"
+        },
+        {
+            "caption": "Build",
+            "usershelper": "Build counter",
+            "placeholder": "Build number counter",
+            "value": "0"
+        },
+        {
+            "caption": "Release",
+            "usershelper": "Release label",
+            "placeholder": "Add your release label",
+            "value": ""
+        }
+    ],
+    "type": "input-group",
     "icon": {
-    "value": "bi bi-git",
-    "type": "class"
-  },
+        "value": "bi bi-git",
+        "type": "class"
+    },
     "li_attr": {
         "type": "captions",
         "lang": "en"
     },
-    "order":10
-    
+    "order": 10
 }

@@ -1,12 +1,10 @@
 {
   "caption": "Check options value",
-  "properties": {
-    "description": {
-      "caption": "You can add your own options in _xxx_checkoptions.json file",
-      "class": "text-success"
-    },
-    "check": true,
-    "options": [
+  "usershelper": {
+    "caption": "You can add your own options in _xxx_checkoptions.json file",
+    "class": "text-success"
+  },
+    "properties": [
       {
         "caption": "Use 24Hs time format",
         "checked": false,
@@ -32,9 +30,8 @@
         "checked": false,
         "usershelper": "Enable this option to Show technical documentation page in the admin area"
       }
-    ]
-  },
-  "type": "prj-settings",
+    ],
+  "type": "checkbox-group",
   "icon": {
     "value": "bi bi-wrench-adjustable-circle",
     "type": "class"

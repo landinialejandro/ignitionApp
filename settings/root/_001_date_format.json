@@ -1,6 +1,9 @@
 {
   "caption": "Date order format",
-  "usershelper": "Indique el orden en el que aparece la fecha. You can add your own options in _xxx_date_format.json file.",
+  "usershelper": {
+    "caption": "Indique el orden en el que aparece la fecha. You can add your own options in _xxx_date_format.json file.",
+    "class": "alert alert-info"
+},
   "properties": [
     {
       "caption": "Month, Day, Year",
@@ -17,7 +20,7 @@
   ],
   "type": "radio-group",
   "icon": {
-    "value": "bi bi-wrench-adjustable-circle",
+    "value": "bi bi-ui-radios",
     "type": "class"
   },
   "order": 1

@@ -13,56 +13,47 @@
         </div> <!-- /.card-tools -->
     </div> <!-- /.card-header -->
     <div class="card-body" style="display: block; box-sizing: border-box;">
+
         {{#with properties}}
+        {{#if (eq type "heading")}}
+        {{> component_heading}}
+        {{/if}}
+        {{#if properties}}
 
         {{#if usershelper}}
-        <div class="alert alert-info" role="alert">
-            {{usershelper}}
-        </div>
+        {{> usershelper}}
         {{/if}}
-
-        {{#if (eq type "input-group")}}
-        {{!-- Input Group --}}
-        {{#each properties}}
         <div class="card">
             <div class="card-body">
-                {{> component_input}}
-            </div>
-        </div>
-        {{/each}}
+                {{#if (eq type "input-group")}}
+                {{!-- Input Group --}}
+                {{#each properties}}
+                {{> component_input id=../../id}}
+                {{/each}}
 
-        {{else if (eq type "textarea-group")}}
-        {{!-- Textarea Group --}}
-        {{#each properties}}
-        <div class="card">
-            <div class="card-body">
-                {{> component_textarea}}
-            </div>
-        </div>
-        {{/each}}
+                {{else if (eq type "textarea-group")}}
+                {{!-- Textarea Group --}}
+                {{#each properties}}
+                {{> component_textarea id=../../id}}
+                {{/each}}
 
-        {{else if (eq type "checkbox-group")}}
-        {{!-- Checkbox Group --}}
-        {{#each properties}}
-        <div class="card">
-            <div class="card-body">
-                {{> component_checkbox}}
-            </div>
-        </div>
-        {{/each}}
+                {{else if (eq type "checkbox-group")}}
+                {{!-- Checkbox Group --}}
+                {{#each properties}}
+                {{> component_checkbox id=../../id}}
+                {{/each}}
 
-        {{else if (eq type "radio-group")}}
-        {{!-- Radio Group --}}
-        {{#each properties}}
-        <div class="card">
-            <div class="card-body">
-                {{> component_radio}}
+                {{else if (eq type "radio-group")}}
+                {{!-- Radio Group --}}
+                {{#each properties}}
+                {{> component_radio id=../../id}}
+                {{/each}}
+
+                {{/if}}
             </div>
         </div>
-        {{/each}}
 
         {{/if}}
-        
         {{/with}}
         {{!-- node info --}}
         <div class="mb-3"></div>
@@ -75,14 +66,17 @@
                     </div>
                     <div class="float-end mb-2">
                         <span class="badge text-bg-info">Id: {{id}}</span>
-                        <span class="badge text-bg-info">Order: {{order}}</span>
+                        <span class="badge text-bg-info">Order:
+                            {{properties.order}}</span>
                         <span class="badge text-bg-success">Caption:
                             {{caption}}</span>
                         <span class="badge text-bg-primary">Type:
                             {{type}}</span>
                     </div>
                 </div>
-                {{>component_input id="icon" caption=icon.value}}
+                {{#with icon}}
+                {{> component_input caption=(concat "icon " type) value=value}}
+                {{/with}}
             </div>
         </div>
 

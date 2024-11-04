@@ -1,10 +1,15 @@
 <div class="form-check">
-    <label class="form-check-label mb-3" for="checkbox-{{@index}}">
-        {{caption}}
-    </label>
+    {{#if usershelper}}
+    {{> usershelper}}
+    {{/if}}
     <input
+        name="{{id}}"
         type="radio"
         class="form-check-input"
         id="checkbox-{{@index}}"
-        {{#if checked}}checked{{/if}}>
+        {{#if checked}}checked{{/if}}
+        data-id="{{id}}">
+    <label class="form-check-label mb-3" for="checkbox-{{@index}}">
+        {{caption}}
+    </label>
 </div>

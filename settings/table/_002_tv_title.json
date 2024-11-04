@@ -1,34 +1,32 @@
 {
     "caption": "Table view title",
-    "properties": {
-        "description": {
-            "caption": "Es posible indicar el título de la vista de tabla en varios idiomas",
-            "class": "text-purple"
-          },
-        "properties": [
-            {
-                "id": "en",
-                "placeholder": "Table view title",
-                "usershelper":"This value is used to identify the title of the deatil view, it appears in the menu",
-                "caption": "",
-                "default":true
-            },
-            {
-                "id": "es",
-                "placeholder": "Table view title",
-                "usershelper":"This value is used to identify the title of the deatil view, it appears in the menu",
-                "caption": ""
-            }
-        ]
+    "usershelper": {
+        "caption": "Es posible indicar el título de la vista de tabla en varios idiomas",
+        "class": "text-purple"
     },
-    "type": "tbl-setting",
+    "properties": [
+        {
+            "caption": "en",
+            "placeholder": "Table view title",
+            "usershelper": "This value is used to identify the title of the deatil view, it appears in the menu",
+            "value": "",
+            "default": true
+        },
+        {
+            "caption": "es",
+            "placeholder": "Table view title",
+            "usershelper": "This value is used to identify the title of the deatil view, it appears in the menu",
+            "value": ""
+        }
+    ],
+    "type": "input-group",
     "icon": {
-    "value": "bi bi-type",
-    "type": "class"
-  },
+        "value": "bi bi-type",
+        "type": "class"
+    },
     "li_attr": {
         "type": "captions",
         "lang": "en"
     },
-    "order":2
+    "order": 2
 }

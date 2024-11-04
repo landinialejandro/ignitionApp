@@ -1,20 +1,24 @@
 {
   "caption": "Select you charset value",
-  "properties": {
-    "description": {
-      "caption": "You can add your own charset in _xxx_charsets.json file",
-      "class": "text-warning"
-    },
-    "caption": "utf8",
-    "option": true,
-    "options": [
-      "utf8",
-      "utf16",
-      "ascii"
-    ],
-    "usershelper": "Select your charset"
+  "usershelper": {
+    "caption": "You can add your own charset in _xxx_charsets.json file",
+    "class": "text-warning"
   },
-  "type": "prj-settings",
+  "properties": [
+    {
+      "caption": "utf8",
+      "checked": true
+    },
+    {
+      "caption": "utf16",
+      "checked": false
+    },
+    {
+      "caption": "ascii",
+      "checked": false
+    }
+  ],
+  "type": "radio-group",
   "icon": {
     "value": "bi bi-wrench-adjustable-circle",
     "type": "class"

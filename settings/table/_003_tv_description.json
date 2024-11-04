@@ -1,27 +1,25 @@
 {
     "caption": "Description",
-    "properties": {
-        "placeholder": "Description user helper",
-        "properties": [
-            {
-                "id": "en",
-                "caption": "",
-                "default":true
-            },
-            {
-                "id": "es",
-                "caption": ""
-            }
-        ]
-    },
-    "type":"tbl-setting",
+    "userhelper": "Description user helper",
+    "properties": [
+        {
+            "caption": "en",
+            "value": "",
+            "default": true
+        },
+        {
+            "caption": "es",
+            "value": ""
+        }
+    ],
+    "type": "input-group",
     "icon": {
-    "value": "bi bi-journal-bookmark",
-    "type": "class"
-  },
+        "value": "bi bi-journal-bookmark",
+        "type": "class"
+    },
     "li_attr": {
         "type": "captions",
-        "lang":"en"
+        "lang": "en"
     },
-    "order":3
+    "order": 3
 }

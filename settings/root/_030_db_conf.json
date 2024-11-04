@@ -1,58 +1,56 @@
 {
     "caption": "Database config",
-    "properties": {
-        "description":{
-            "caption": "You can add more own data base options in _xxx_db_conf.json file",
-            "class": "text-primary"
-            },
-        "properties": [
-            {
-                "id": "dbServer",
-                "usershelper":"Database host",
-                "placeholder": "localhost",
-                "caption": ""
-            },
-            {
-                "id": "dbUsername",
-                "usershelper":"Database login user name",
-                "placeholder": "root",
-                "caption": ""
-            },
-            {
-                "id": "dbPassword",
-                "usershelper":"Database login user password",
-                "placeholder": "****",
-                "caption": ""
-            },
-            {
-                "id": "dbDatabase",
-                "usershelper":"Required Database name",
-                "placeholder": "your database name",
-                "caption": "",
-                "required":true
-            },
-            {
-                "id": "appURI",
-                "usershelper":"Aplication url",
-                "placeholder": "yourprjname",
-                "caption": ""
-            },
-            {
-                "id": "host",
-                "usershelper":"Aplication host",
-                "placeholder": "localhost",
-                "caption": ""
-            }
-        ]
+    "usershelper": {
+        "caption": "You can add more own data base options in _xxx_db_conf.json file",
+        "class": "text-primary"
     },
-    "type": "prj-settings",
+    "properties": [
+        {
+            "caption": "dbServer",
+            "usershelper": "Database host",
+            "placeholder": "localhost",
+            "value": ""
+        },
+        {
+            "caption": "dbUsername",
+            "usershelper": "Database login user name",
+            "placeholder": "root",
+            "value": ""
+        },
+        {
+            "caption": "dbPassword",
+            "usershelper": "Database login user password",
+            "placeholder": "****",
+            "value": ""
+        },
+        {
+            "caption": "dbDatabase",
+            "usershelper": "Required Database name",
+            "placeholder": "your database name",
+            "value": "",
+            "required": true
+        },
+        {
+            "caption": "appURI",
+            "usershelper": "Aplication url",
+            "placeholder": "yourprjname",
+            "value": ""
+        },
+        {
+            "caption": "host",
+            "usershelper": "Aplication host",
+            "placeholder": "localhost",
+            "value": ""
+        }
+    ],
+    "type": "input-group",
     "icon": {
-    "value": "bi bi-type",
-    "type": "class"
-  },
+        "value": "bi bi-type",
+        "type": "class"
+    },
     "li_attr": {
         "type": "captions",
         "lang": "en"
     },
-    "order":30
+    "order": 30
 }

@@ -1,6 +1,9 @@
 {
     "caption": "Check options value",
-    "userHelp":  "Muestra solo si el grupo de usuario es admin",
+    "usershelper": {
+        "caption": "Muestra solo si el grupo de usuario es admin",
+        "class": "alert alert-info"
+    },
     "properties": [
         {
             "caption": "Show Only in admin group?",

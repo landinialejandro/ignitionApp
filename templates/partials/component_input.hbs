@@ -1,12 +1,15 @@
  <div class="input-group">
-    <span class="input-group-text">{{id}}</span>
+    <span class="input-group-text">{{caption}}</span>
     <input
+        name="{{id}}"
         type="text"
         class="form-control"
-        id="input-{{id}}"
+        id="input-{{caption}}"
         placeholder="{{placeholder}}"
-        value="{{caption}}">
+        value="{{value}}"
+        data-id="{{id}}">
 </div>
 {{#if usershelper}}
-<small class="form-text text-muted">{{usershelper}}</small>
+{{> usershelper}}
 {{/if}}
+<div class="mb-2"></div>

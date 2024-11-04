@@ -1,8 +1,6 @@
 {
-    "caption":"Table view settings",
-    "type":"tbl-setting",
-    "order":1,
-    "a_attr" : {
-        "style": "background-color: #e9ecef"
-    }
+    "caption": "Table view settings",
+    "type": "heading",
+    "order": 1,
+    "class": "text-info border-info"
 }
