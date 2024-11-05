@@ -1,25 +1,39 @@
 import { get_data, saveFileToServer } from './libraries/common.js';
+import { getDirCollectionJson, renderTemplate } from './libraries/helpers.js';
 import { Msglog } from "./libraries/MsgLog.js";
 import { $$ } from './libraries/selector.js';
-import { getDirCollectionJson, renderTemplate } from './libraries/helpers.js';
+import { ProjectTreeview } from './libraries/ProjectTreeview.js'
 
-import { NodeTypeManager } from './NodeTypeManager.js';
 import { ContextMenu } from './ContextMenu.js';
 import { Nodes } from './Nodes.js';
+import { NodeTypeManager } from './NodeTypeManager.js';
 
+const Default$ = {
+    animationSpeed: 300,
+    accordion: true
+};
 const msg = new Msglog();
 let nodeTypeManager = null;
 let project = null;
+let treeview = null;
+
+// // Inicializa los nodos abiertos al cargar la página
+// document.addEventListener('DOMContentLoaded', () => {
+//     document.querySelectorAll('.node-item.node-open > .project-tree').forEach(childTree => {
+//         childTree.style.maxHeight = childTree.scrollHeight + 'px';
+//     });
+// });
 
 export const initializeProject = async (url) => {
 
     await initializeNodeTypes();
+    // treeview = new ProjectTreeview('.project-wrapper');
 
     const content = await get_data({ url });
     const projectPage = await get_data({ url: "pages/project_page.html", isJson: false });
     $$("#main-content").html(projectPage);
 
-    project = new Nodes(".project-card-body", nodeTypeManager);
+    project = new Nodes(".project-container", nodeTypeManager);
     project.setNodes(content);
     project.file = url;
     project.nodeTypeManager = nodeTypeManager;
@@ -27,8 +41,6 @@ export const initializeProject = async (url) => {
     await project.render();
     addEventsListener();
 };
-
-
 
 const actionCallbacks = {
     addNewNode: async (parentType, anchor, nodeId, typeToAdd) => {
@@ -172,6 +184,7 @@ const handleProjectTree = async (node) => {
     try {
         // Encuentra el nodo seleccionado en el proyecto
         const selected = project.findChildById(id);
+        console.log(selected);
 
         if (!selected) {
             msg.danger("Nodo no encontrado.");
@@ -193,7 +206,7 @@ const handleProjectTree = async (node) => {
                         // Crear un contenedor con padding izquierdo para identificar la estructura
                         const container = document.createElement('div');
                         container.style.paddingLeft = `${depth * 20}px`; // Incrementar el padding por nivel
-                        container.style.paddingTop = `${ 20}px`; 
+                        container.style.paddingTop = `${20}px`;
                         container.classList.add('nested-node');
 
                         // Renderizar el hijo con el template
@@ -218,15 +231,6 @@ const handleProjectTree = async (node) => {
     }
 };
 
-
-const addEventsListener = () => {
-    msg.secondary("addEventsListenerProject", true);
-    projectNodesListener();
-    contextMenuListener();
-    saveProjectListener();
-    nodeOpenListener();
-};
-
 const initializeNodeTypes = async () => {
     try {
         nodeTypeManager = new NodeTypeManager();
@@ -237,73 +241,12 @@ const initializeNodeTypes = async () => {
     }
 };
 
-const nodeOpenListener = () => {
-    $$(".app-content").on("click", function (e) {
-        const nodeItem = e.target.closest('.node-item');
-        if (nodeItem) {
-            e.preventDefault();
-
-            // Alterna la clase "node-open" para mostrar/ocultar con animación
-            nodeItem.classList.toggle('node-open');
-
-            // Selecciona el primer sub-árbol (ul) y ajusta su max-height para la animación
-            const childTree = nodeItem.querySelector(':scope > ul.project-tree');
-            if (childTree) {
-                if (nodeItem.classList.contains('node-open')) {
-                    // Expande el sub-árbol calculando scrollHeight
-                    childTree.style.maxHeight = childTree.scrollHeight + 'px';
-
-                    // Asegura que maxHeight se mantenga tras la animación para permitir expansión completa
-                    setTimeout(() => {
-                        if (nodeItem.classList.contains('node-open')) {
-                            childTree.style.maxHeight = 'none';
-                        }
-                    }, 500); // Tiempo que coincide con la transición CSS
-                } else {
-                    // Colapsa el sub-árbol
-                    childTree.style.maxHeight = '0';
-                }
-            }
-
-            // Controla la rotación de la flecha
-            const nodeArrow = nodeItem.querySelector(':scope > .node-link .node-arrow');
-            if (nodeArrow) {
-                nodeArrow.style.transform = nodeItem.classList.contains('node-open') ? 'rotate(90deg)' : 'rotate(0deg)';
-            }
-        }
-    });
-};
-
-// Inicializa los nodos abiertos al cargar la página
-document.addEventListener('DOMContentLoaded', () => {
-    document.querySelectorAll('.node-item.node-open > .project-tree').forEach(childTree => {
-        childTree.style.maxHeight = childTree.scrollHeight + 'px';
-    });
-});
-
-const contextMenuListener = () => {
-    document.addEventListener('contextmenu', (e) => {
-        const anchor = e.target.closest('a');
-        if (anchor) {
-            e.preventDefault();
-            if (nodeTypeManager) {
-                const contextMenu = new ContextMenu('context-menu', 'menu-options', nodeTypeManager, actionCallbacks);
-                contextMenu.show(e, anchor);
-            } else {
-                console.error('NodeTypeManager no está inicializado.');
-            }
-        }
-    });
-};
-
-const projectNodesListener = () => {
-    $$(".app-content").on("click", function (e) {
-        const anchor = e.target.closest('a');
-        if (anchor) {
-            e.preventDefault();
-            handleProjectTree(anchor);
-        }
-    });
+const addEventsListener = () => {
+    $$('.app-content').off('click');
+    msg.secondary("addEventsListenerProject", true);
+    saveProjectListener();
+    nodeProjectListener();
+    contextMenuListener(); // Mantén el menú contextual como un listener separado
 };
 
 const saveProjectListener = () => {
@@ -330,4 +273,64 @@ const saveProjectListener = () => {
             throw error;
         }
     });
+};
+
+const nodeProjectListener = () => {
+
+    $$(".app-content").on("click", function (e) {
+        const nodeLink = e.target.closest('.node-link');
+        const nodeItem = e.target.closest('.node-item');
+        e.preventDefault();
+        // e.stopPropagation(); // Evita que se active cualquier otro listener
+
+        if (nodeLink) {
+            handleProjectTree(nodeLink); // Carga los datos en el editor
+        }
+
+        if (nodeItem ) {
+            toggleNodeOpenState(nodeItem); // Maneja la apertura/cierre del nodo
+            // const data = new ProjectTreeview(nodeItem, Default$);
+            // treeview.toggle(nodeItem);
+        }
+    });
+}
+
+const contextMenuListener = () => {
+    document.addEventListener('contextmenu', (e) => {
+        const anchor = e.target.closest('a');
+        if (anchor) {
+            e.preventDefault();
+            e.stopPropagation(); // Detiene la propagación para evitar interferencia con otros escuchadores
+            if (nodeTypeManager) {
+                const contextMenu = new ContextMenu('context-menu', 'menu-options', nodeTypeManager, actionCallbacks);
+                contextMenu.show(e, anchor);
+            } else {
+                console.error('NodeTypeManager no está inicializado.');
+            }
+        }
+    });
+};
+
+const toggleNodeOpenState = (nodeItem) => {
+    // Alterna la clase "node-open" para mostrar/ocultar con animación
+    nodeItem.classList.toggle('node-open');
+
+    const childTree = nodeItem.querySelector(':scope > ul.node-list');
+    if (childTree) {
+        if (nodeItem.classList.contains('node-open')) {
+            childTree.style.maxHeight = childTree.scrollHeight + 'px';
+            setTimeout(() => {
+                if (nodeItem.classList.contains('node-open')) {
+                    childTree.style.maxHeight = 'none';
+                }
+            }, 500); // Tiempo que coincide con la transición CSS
+        } else {
+            childTree.style.maxHeight = '0';
+        }
+    }
+
+    const nodeArrow = nodeItem.querySelector(':scope > .node-link .node-arrow');
+    if (nodeArrow) {
+        nodeArrow.style.transform = nodeItem.classList.contains('node-open') ? 'rotate(90deg)' : 'rotate(0deg)';
+    }
 };

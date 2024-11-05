@@ -1,16 +1,19 @@
 {
     "caption": "Redirect after insert",
-    "properties": {
-        "placeholder": "Redirect after insert",
-        "caption": "?SelectedID=#ID#"
-    },
-    "type":"tbl-setting",
+    "properties": [
+        {
+            "caption": "Redirect after insert",
+            "placeholder": "Redirect after insert",
+            "value": "?SelectedID=#ID#"
+        }
+    ],
+    "type": "input-group",
     "icon": {
-    "value": "bi bi-journal-bookmark",
-    "type": "class"
-  },
+        "value": "bi bi-journal-bookmark",
+        "type": "class"
+    },
     "li_attr": {
         "type": "integer"
     },
-    "order":9
+    "order": 9
 }

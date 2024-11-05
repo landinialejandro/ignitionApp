@@ -9,6 +9,7 @@
  *   - `text(content)`: Establece o devuelve el contenido de texto.
  *   - `css(property, value)`: Establece una propiedad CSS.
  *   - `on(eventType, handler)`: Añade un manejador de eventos.
+ *   - `off(eventType, handler)`: Elimina un manejador de eventos.
  *   - `data(attr)`: Devuelve el valor del atributo `data-*` solicitado.
  *   - `allData()`: Devuelve todos los atributos `data-*` del primer elemento como un objeto.
  *   - `attr(attribute, value)`: Obtiene o establece un atributo del elemento.
@@ -63,6 +64,23 @@ export const $$ = (input) => {
             }
             elements.forEach((element) => {
                 element.addEventListener(eventType, handler);
+                element._eventListeners = element._eventListeners || {};
+                element._eventListeners[eventType] = element._eventListeners[eventType] || [];
+                element._eventListeners[eventType].push(handler);
+            });
+        },
+        off: (eventType) => {
+            if (!eventType) {
+                console.error('Event type must be provided.');
+                return;
+            }
+            elements.forEach((element) => {
+                if (element._eventListeners && element._eventListeners[eventType]) {
+                    element._eventListeners[eventType].forEach((handler) => {
+                        element.removeEventListener(eventType, handler);
+                    });
+                    element._eventListeners[eventType] = [];
+                }
             });
         },
         data: (attr) => {

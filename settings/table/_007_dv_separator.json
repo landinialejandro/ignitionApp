@@ -1,8 +1,6 @@
 {
     "caption":"Detail view settings",
-    "type":"tbl-setting",
-    "order":7,
-    "a_attr" : {
-        "style": "background-color: #e9ecef"
-    }
+    "type": "heading",
+    "order": 7,
+    "class": "text-info border-info"
 }

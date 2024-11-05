@@ -45,7 +45,7 @@ window.onload = async function () {
 
 // Función principal para añadir todos los event listeners
 const addEventsListener = () => {
-    msg.secondary("addEventsListener", true);
+    msg.secondary("addEventsListenerApp", true);
     navLinkListener();
     // Aquí puedes agregar más listeners si es necesario en el futuro
 };

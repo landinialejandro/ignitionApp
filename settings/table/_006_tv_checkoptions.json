@@ -1,26 +1,59 @@
 {
     "caption": "Check options value",
-    "properties": {
-        "check": true,
-        "options": [
-            {"caption":"Descendingly", "checked":false},
-            {"caption":"Show quick search box", "checked":false},
-            {"caption":"Allow Sorting", "checked":false},
-            {"caption":"Allow filters", "checked":false},
-            {"caption":"Allow saving data to CSV files", "checked":false},
-            {"caption":"Allow print-view", "checked":false},
-            {"caption":"Allow user to save filters", "checked":false},
-            {"caption":"Hide link in home page", "checked":false},
-            {"caption":"Allow mass delete", "checked":false},
-            {"caption":"Filter before showing table view", "checked":false},
-            {"caption":"Hide link in navigation menu", "checked":false},
-            {"caption":"Show record count in home page", "checked":false}
-        ]
-    },
-    "type": "tbl-setting",
+    "properties": [
+        {
+            "caption": "Descendingly",
+            "checked": false
+        },
+        {
+            "caption": "Show quick search box",
+            "checked": false
+        },
+        {
+            "caption": "Allow Sorting",
+            "checked": false
+        },
+        {
+            "caption": "Allow filters",
+            "checked": false
+        },
+        {
+            "caption": "Allow saving data to CSV files",
+            "checked": false
+        },
+        {
+            "caption": "Allow print-view",
+            "checked": false
+        },
+        {
+            "caption": "Allow user to save filters",
+            "checked": false
+        },
+        {
+            "caption": "Hide link in home page",
+            "checked": false
+        },
+        {
+            "caption": "Allow mass delete",
+            "checked": false
+        },
+        {
+            "caption": "Filter before showing table view",
+            "checked": false
+        },
+        {
+            "caption": "Hide link in navigation menu",
+            "checked": false
+        },
+        {
+            "caption": "Show record count in home page",
+            "checked": false
+        }
+    ],
+    "type": "checkbox-group",
     "icon": {
-    "value": "bi bi-wrench-adjustable-circle",
-    "type": "class"
-  },
+        "value": "bi bi-wrench-adjustable-circle",
+        "type": "class"
+    },
     "order": 6
 }

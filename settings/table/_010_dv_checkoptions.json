@@ -1,21 +1,39 @@
 {
     "caption": "Check options value",
-    "properties": {
-        "check": true,
-        "options": [
-            {"caption":"Enable detail view", "checked":true},
-            {"caption":"Delete records even if they have children records", "checked":false},
-            {"caption":"Allow print view", "checked":false},
-            {"caption":"Display detail view in a separate page", "checked":false},
-            {"caption":"Hide 'save as copy' when editing records", "checked":false},
-            {"caption":"Keep action buttons visible scrolling down", "checked":false},
-            {"caption":"Allow adding new records from homepage", "checked":false}
-        ]
-    },
-    "type": "tbl-setting",
+    "properties": [
+        {
+            "caption": "Enable detail view",
+            "checked": true
+        },
+        {
+            "caption": "Delete records even if they have children records",
+            "checked": false
+        },
+        {
+            "caption": "Allow print view",
+            "checked": false
+        },
+        {
+            "caption": "Display detail view in a separate page",
+            "checked": false
+        },
+        {
+            "caption": "Hide 'save as copy' when editing records",
+            "checked": false
+        },
+        {
+            "caption": "Keep action buttons visible scrolling down",
+            "checked": false
+        },
+        {
+            "caption": "Allow adding new records from homepage",
+            "checked": false
+        }
+    ],
+    "type": "checkbox-group",
     "icon": {
-    "value": "bi bi-wrench-adjustable-circle",
-    "type": "class"
-  },
+        "value": "bi bi-wrench-adjustable-circle",
+        "type": "class"
+    },
     "order": 10
 }

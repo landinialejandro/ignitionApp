@@ -1,31 +1,29 @@
 {
     "caption": "Detail view title",
-    "properties": {
-        "placeholder": "Detail view title",
-        "properties": [
-            {
-                "id": "en",
-                "placeholder": "Detail view title",
-                "usershelper":"This value is used to identify the title of the deatil view, it appears in the menu",
-                "caption": "",
-                "default":true
-            },
-            {
-                "id": "es",
-                "placeholder": "Detail view title",
-                "usershelper":"This value is used to identify the title of the deatil view, it appears in the menu",
-                "caption": ""
-            }
-        ]
-    },
-    "type": "tbl-setting",
+    "placeholder": "Detail view title",
+    "properties": [
+        {
+            "caption": "en",
+            "placeholder": "Detail view title",
+            "usershelper": "This value is used to identify the title of the deatil view, it appears in the menu",
+            "value": "",
+            "default": true
+        },
+        {
+            "caption": "es",
+            "placeholder": "Detail view title",
+            "usershelper": "This value is used to identify the title of the deatil view, it appears in the menu",
+            "value": ""
+        }
+    ],
+    "type": "input-group",
     "icon": {
-    "value": "bi bi-type",
-    "type": "class"
-  },
+        "value": "bi bi-type",
+        "type": "class"
+    },
     "li_attr": {
         "type": "captions",
         "lang": "en"
     },
-    "order":8
+    "order": 8
 }

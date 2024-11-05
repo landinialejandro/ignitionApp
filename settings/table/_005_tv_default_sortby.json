@@ -1,16 +1,15 @@
 {
     "caption": "Default sortby",
-    "properties": {
-        "caption":"",
-        "option": true,
-        "options": [
-            "None"
-        ]
-    },
-    "type": "tbl-setting",
+    "properties": [
+        {
+            "caption": "None",
+            "checked": true
+        }
+    ],
+    "type": "radio-group",
     "icon": {
-    "value": "bi bi-wrench-adjustable-circle",
-    "type": "class"
-  },
+        "value": "bi bi-wrench-adjustable-circle",
+        "type": "class"
+    },
     "order": 5
 }
