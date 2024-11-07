@@ -1,0 +1,17 @@
+{{ log this}}
+{{#with properties}}
+<div class="btn-group-vertical w-100 p-3" role="group"
+    aria-label="Vertical button group">
+    <div class="btn-group w-100" role="group">
+        <button type="button" class="btn btn-primary dropdown-toggle w-100"
+            data-bs-toggle="dropdown" aria-expanded="false">
+            {{caption}}
+        </button>
+        <ul class="dropdown-menu">
+            {{#each properties}}
+            <li><a class="dropdown-item" href="{{url}}">{{caption}}</a></li>
+            {{/each}}
+        </ul>
+    </div>
+</div>
+{{/with}}

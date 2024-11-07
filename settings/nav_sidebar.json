@@ -1,16 +1,55 @@
 [
     {
+        "id": "agregar",
+        "caption": "Tools",
+        "url": "",
+        "active": true,
+        "icon": {
+            "value": "bi bi-speedometer",
+            "type": "class"
+        },
+        "a_class": "add-button",
+        "menu_open": true,
+        "type": "component",
+        "children": [],
+        "properties": {
+            "caption": "Nuevo",
+            "usershelper": {
+                "caption": "Agrega nuevo proyecto o carpeta",
+                "class": "alert alert-info"
+            },
+            "properties": [
+                {
+                    "caption": "Nuevo Proyecto",
+                    "checked": false
+                },
+                {
+                    "caption": "NUeva carpeta",
+                    "checked": false
+                }
+            ],
+            "type": "button-group",
+            "icon": {
+                "value": "bi bi-wrench-adjustable-circle",
+                "type": "class"
+            }
+        }
+    },
+    {
         "caption": "Proyectos",
         "url": "pages/projects_dash_page.html",
         "active": true,
-        "icon": "bi bi-speedometer",
+        "icon": {
+            "value": "bi bi-speedometer",
+            "type": "class"
+        },
         "a_class": "project-page",
         "menu_open": true,
         "type": "dash",
         "children": [
             {
                 "type": "component",
-                "component_id": "projects-list"
+                "id": "projects-list"
             }
         ]
     },
@@ -18,7 +57,10 @@
         "caption": "Documentación",
         "url": "pages/docs_page.html",
         "active": false,
-        "icon": "bi bi-book",
+        "icon": {
+            "value": "bi bi-book",
+            "type": "class"
+        },
         "a_class": "docs-page",
         "type": "page",
         "badge": {
@@ -30,7 +72,10 @@
         "caption": "Icons List",
         "url": "https://icons.getbootstrap.com/?q=uni#icons",
         "active": false,
-        "icon": "bi bi-image",
+        "icon": {
+            "value": "bi bi-image",
+            "type": "class"
+        },
         "a_class": "docs-page",
         "type": "page",
         "badge": {
@@ -42,14 +87,17 @@
         "caption": "Debug settings",
         "url": "pages/settings_dash_page.html",
         "active": false,
-        "icon": "bi bi-tools",
+        "icon": {
+            "value": "bi bi-tools",
+            "type": "class"
+        },
         "a_class": "debug-page",
         "menu_open": false,
         "type": "dash",
         "children": [
             {
                 "type": "component",
-                "component_id": "settings-list"
+                "id": "settings-list"
             }
         ]
     }

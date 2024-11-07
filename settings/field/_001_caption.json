@@ -20,9 +20,9 @@
     },
     "type": "field-settings",
     "icon": {
-    "value": "bi bi-type",
-    "type": "class"
-  },
+        "value": "bi bi-type",
+        "type": "class"
+    },
     "li_attr": {
         "type": "captions",
         "lang": "en"

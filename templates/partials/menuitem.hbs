@@ -1,7 +1,11 @@
 <!-- partials/menuitem.hbs -->
 {{#if (eq type "component")}}
 <li class="nav-item">
-    <div id="{{component_id}}"></div>
+    <div id="{{id}}">
+        {{#if properties}}
+            {{> component_button}}
+        {{/if}}
+    </div>
 </li>
 {{else}}
 <li class="nav-item{{#if menu_open}} menu-open{{/if}} {{li_class}}" {{#each
