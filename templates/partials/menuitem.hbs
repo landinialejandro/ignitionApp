@@ -3,7 +3,7 @@
 <li class="nav-item">
     <div id="{{id}}">
         {{#if properties}}
-            {{> component_button}}
+        {{> component_button}}
         {{/if}}
     </div>
 </li>
@@ -11,19 +11,21 @@
 <li class="nav-item{{#if menu_open}} menu-open{{/if}} {{li_class}}" {{#each
     li_attr}} {{@key}}="{{this}}" {{/each}}>
     <a href="{{url}}" class="nav-link {{#if active}}active{{/if}} {{a_class}}"
-        data-name="{{caption}}" 
-        data-type="{{type}}" 
+        data-name="{{caption}}"
+        data-type="{{type}}"
         {{#each a_attr}}{{@key}}="{{this}}" {{/each}}>
+
         {{> component_i}}
+      
         {{#if caption}}
-        <p>
-            <!-- Truncado a 20 caracteres -->
-            <span title="{{caption}}">{{truncate caption 20}}</span>
-            {{#if children}}
-            <i class="nav-arrow bi bi-chevron-right"></i>
-            {{/if}}
-        </p>
+        <!-- Truncado a 20 caracteres -->
+        <span title="{{caption}}">{{truncate caption 20}}</span>
         {{/if}}
+
+        {{#if children}}
+        <i class="bi bi-chevron-right submenu-chevron"></i>
+        {{/if}}
+        
         {{#if badge}}
         <span class="nav-badge badge text-bg-{{badge.color}} me-3">
             <i class="{{badge.icon}}"> </i>{{badge.text}}
@@ -32,7 +34,7 @@
     </a>
 
     {{#if children}}
-    <ul class="ms-2 nav nav-treeview">
+    <ul class="nav flex-column ms-3">
         {{#each children}}
         {{> menuitem }}
         {{/each}}

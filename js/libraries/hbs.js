@@ -59,7 +59,7 @@ export const RegisterPartials = async () => {
             // Compilar la plantilla antes de registrarla en Handlebars
             const compiledTemplate = Handlebars.compile(t);
             Handlebars.registerPartial(name, compiledTemplate);
-            msg.secondary(`Partial ${name} registrado.`);
+            msg.secondary(`Partial ${name} registrado.`, true);
         }
 
     } catch (error) {

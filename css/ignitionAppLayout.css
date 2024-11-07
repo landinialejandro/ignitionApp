@@ -7,6 +7,12 @@ body {
     background-color: #f8f9fa; /* Color de fondo para dar efecto de separación */
 }
 
+.version-app {
+    font-size: 0.9rem;
+    color: #ced4da;
+    padding-right: 1rem;
+}
+
 /* Contenedor principal que ocupa todo el espacio disponible */
 .main-container {
     display: flex;

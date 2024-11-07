@@ -20,14 +20,14 @@ window.onload = async function () {
         
         // Mostrar información de la versión al usuario
         msg.info(`Versión: ${text}`);
-        $$(".starter-version").html(text);
+        $$(".version-app").html(text);
 
         RegisterHelpers();
         await RegisterPartials();
 
         // Cargar las diferentes secciones del navBar
-        loadNavBar('#main-sidebar', await get_data({ url: "settings/nav_sidebar.json" }));
-        loadNavBar('#main-headerbar', await get_data({ url: "settings/nav_headerbar.json" }));
+        loadNavBar('#sidebar', await get_data({ url: "settings/nav_sidebar.json" }));
+        loadNavBar('#navbarNav', await get_data({ url: "settings/nav_headerbar.json" }));
         loadNavBar('#projects-list', await getDirCollectionJson("projects"));
         loadNavBar('#settings-list', await getDirCollectionJson("settings"));
 
