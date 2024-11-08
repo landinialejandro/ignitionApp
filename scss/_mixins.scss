@@ -1,0 +1,16 @@
+// Mixin para botones redondeados con sombra
+@mixin rounded-button($bg-color: $color-accent, $text-color: $color-text) {
+    background-color: $bg-color;
+    color: $text-color;
+    border-radius: $border-radius;
+    padding: 0.5rem 1rem;
+    box-shadow: $box-shadow;
+    transition: background-color 0.3s ease;
+}
+
+// Mixin de media queries para responsive
+@mixin responsive($breakpoint) {
+    @media (max-width: $breakpoint) {
+        @content;
+    }
+}

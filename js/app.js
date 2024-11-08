@@ -1,11 +1,12 @@
-import { get_data } from './libraries/common.js';
+import Constants from './constants.js';
+
+import { get_data, checkContainerAvailability } from './libraries/common.js';
 import { Msglog } from "./libraries/MsgLog.js";
 import { RegisterPartials, RegisterHelpers } from './libraries/hbs.js';
 import { preloader, renderTemplate, getDirCollectionJson } from './libraries/helpers.js';
 import { $$ } from './libraries/selector.js';
 
-import Constants from './constants.js';
-import { checkContainerAvailability } from './ignitionAppSidebar.js';
+// import { checkContainerAvailability } from './ignitionAppSidebar.js';
 import { initializeProject } from './project.js';
 
 window.msg = new Msglog();
@@ -82,8 +83,8 @@ const navLinkListener = () => {
 
 // Función para manejar el contenido según el tipo
 const handleContentLoading = async ({ type, name }, url) => {
-    const content = document.getElementById(Constants.DINAMIC_CONTENT_ID);
-    const contentPreloader = new preloader(Constants.DINAMIC_CONTENT_PRELOADER_ID);
+    const contentPreloader = new preloader(Constants.CONTENT_PRELOADER_ID);
+    const content = document.getElementById(Constants.CONTENT_ID);
     document.getElementById(Constants.CONTENT_HEADER_TITLE_ID).textContent = name;
 
     try {

@@ -1,0 +1,71 @@
+// Archivo: _button.scss
+
+// Clase base del botón principal
+.button {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0.5rem 1rem;
+    font-family: $font-family;
+    font-size: 1rem;
+    color: $color-text;                    // Color de texto claro para visibilidad
+    background-color: $color-accent;       // Color de fondo destacado
+    border: none;
+    border-radius: $border-radius;
+    cursor: pointer;
+    transition: background-color 0.3s ease, box-shadow 0.3s ease;
+
+    &:hover {
+        background-color: lighten($color-accent, 10%);
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+    }
+
+    &:focus {
+        outline: none;
+        box-shadow: 0 0 0 3px rgba($color-accent, 0.4);
+    }
+
+    &:active {
+        background-color: darken($color-accent, 10%);
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+    }
+}
+
+// Variante de botón secundario (ajustado para destacar sobre el sidebar)
+.button--secondary {
+    background-color: darken($color-sidebar, 15%);  // Un tono más oscuro que el sidebar
+    color: $color-text;
+
+    &:hover {
+        background-color: lighten($color-sidebar, 5%); // Efecto de hover claro
+    }
+
+    &:focus {
+        outline: none;
+        box-shadow: 0 0 0 3px rgba($color-text, 0.4); // Visibilidad en el enfoque
+    }
+
+    &:active {
+        background-color: darken($color-sidebar, 25%);
+    }
+}
+
+// Variante de botón con contorno (outline)
+.button--outline {
+    background-color: transparent;
+    color: $color-accent;
+    border: 2px solid $color-accent;
+
+    &:hover {
+        background-color: rgba($color-accent, 0.1);
+    }
+
+    &:focus {
+        outline: none;
+        box-shadow: 0 0 0 3px rgba($color-accent, 0.3);
+    }
+
+    &:active {
+        background-color: rgba($color-accent, 0.2);
+    }
+}

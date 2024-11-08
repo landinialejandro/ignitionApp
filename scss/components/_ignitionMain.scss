@@ -1,0 +1,5 @@
+.ignition-main {
+    height: calc(100vh - 3rem);               // Resta la altura del footer (ajusta según el tamaño del footer)
+    display: flex;
+    overflow: hidden;  
+}

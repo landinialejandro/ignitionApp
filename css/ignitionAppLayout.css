@@ -1,5 +1,5 @@
 /* Configuración de Flexbox en el body para hacer que el footer esté siempre al fondo */
-body {
+.ignition-wrapper {
     display: flex;
     flex-direction: column;
     min-height: 100vh;

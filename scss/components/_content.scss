@@ -1,0 +1,21 @@
+.ignition-content {
+    background-color: $color-sidebar;
+    border-radius: $border-radius;
+    box-shadow: $box-shadow;
+    color: $color-text;
+    display: flex;
+    flex: 1;
+    flex-direction: column;
+    margin-top: 0.5rem;
+    margin-bottom: 0.5rem;
+    margin-right: 0.5rem;
+    margin-left: 0rem;
+    overflow-y: auto;                    // Permite desplazamiento en el contenido si es necesario
+    padding: $container-padding;
+
+    #ignitionsContentBody {
+        padding: $container-padding;
+        flex: 1;
+        overflow-y: auto;               // Asegura que el contenido interno respete la altura
+    }
+}

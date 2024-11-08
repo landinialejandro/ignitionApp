@@ -41,7 +41,7 @@
         "url": "#",
         "active": true,
         "icon": {
-            "value": "bi bi-speedometer",
+            "value": "bi bi-diagram-3",
             "type": "class"
         },
         "a_class": "project-page",

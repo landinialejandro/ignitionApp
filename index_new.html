@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>IgnitionApp | Dashboard</title>
+    <link id="browser_favicon" rel="shortcut icon" href="dist/logo/logo.png">
+    <!-- Meta Tags -->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="title" content="IgnitionApp | Dashboard">
+    <meta name="author" content="Landini">
+    <meta name="description" content="IgnitionApp es una aplicación para el fácil desarrollo de aplicaciones">
+    <meta name="keywords" content="vanilla JS">
+    <link rel="stylesheet" href="css/main.css">
+</head>
+
+<body>
+    <!-- Preloader General -->
+    <div id="preloader" class="bg-secondary">
+        <div class="spinner-grow" aria-label="Cargando"></div>
+        <div class="spinner-grow" aria-label="Cargando"></div>
+        <div class="spinner-grow" aria-label="Cargando"></div>
+    </div>
+
+    <!-- Contenedor general -->
+    <div class="ignition-wrapper">
+
+        <!-- Contenedor Principal -->
+        <div id="ignitionMain" class="ignition-main sidebar-visible">
+            <!-- Sidebar -->
+            <aside id="ignitionSidebar" class="ignition-sidebar">
+                <div class="ignition-sidebar-brand">
+                    <button class="button" id="toggleSidebar">
+                        <i class="">Toggle</i> <!-- Ícono de hamburguesa -->
+                    </button>
+                    <div class="brand-caption">
+                        <i class="brand-image" aria-hidden="true">Brand</i>
+                        <span>IgnitionApp</span>
+                    </div>
+                </div>
+                <div class="ignition-sidebar-content">
+                </div>
+            </aside>
+
+            <!-- Ignition Content -->
+            <main id="ignitionContent" class="ignition-content">
+                <!-- Título del contenido -->
+                <div id="ignitionContentHeader" class="ignition-content-header">
+                    <h2 id="content-header-caption">IgnitionApp Home</h2>
+                    <nav aria-label="breadcrumb">
+                        <ol class="breadcrumb">
+                            <li class="breadcrumb-item"><a href="#">Inicio</a></li>
+                            <li class="breadcrumb-item"><a href="#">Sección</a></li>
+                            <li class="breadcrumb-item active" aria-current="page">Actual</li>
+                        </ol>
+                    </nav>
+                </div>
+
+                <!-- Cuerpo de contenido -->
+                <div id="ignitionsContentBody" class="ignition-content-body">
+                    <!-- Preloader para el content-body, se activa al seleccionar opciones en el sidebar -->
+                    <div id="contentPreloader" class="content-preloader" style="display: none;">
+                        <div class="spinner-grow">
+                            <span class="">Cargando...</span>
+                        </div>
+                    </div>
+
+                    <!-- Contenedor para contenido dinámico -->
+                    <div id="contentMain" class="content-main">
+                        <p>Contenido principal de la página, con un diseño que muestra el sidebar colapsado dejando solo
+                            los iconos visibles.</p>
+
+                            <button class="button">
+                                <i class="">Toggle</i> <!-- Ícono de hamburguesa -->
+                            </button>
+                            <button class="button button--outline">
+                                <i class="">Toggle</i> <!-- Ícono de hamburguesa -->
+                            </button>
+                            <button class="button button--secondary">
+                                <i class="">Toggle</i> <!-- Ícono de hamburguesa -->
+                            </button>
+                    </div>
+                </div>
+            </main>
+        </div>
+
+        <!-- Footer -->
+        <footer class="ignition-footer">
+            <span>&copy; 2024 Mi Aplicación. Todos los derechos reservados.</span>
+            <span class="version-app">Versión 1.0.0</span>
+        </footer>
+    </div>
+
+    <script type="module" src="js/app.js"></script>
+    <script>
+        // JavaScript para activar el contentPreloader cuando se selecciona una opción del sidebar
+        document.querySelectorAll("#ignitionSidebar .ignition-sidebar-content a").forEach(link => {
+            link.addEventListener("click", () => {
+                document.getElementById("contentPreloader").style.display = "block";
+                // Aquí iría el código para cargar el contenido dinámico y ocultar el preloader una vez cargado.
+            });
+        });
+    </script>
+</body>
+
+</html>

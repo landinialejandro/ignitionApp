@@ -32,7 +32,7 @@ export const initializeProject = async (url) => {
 
     const content = await get_data({ url });
     const projectPage = await get_data({ url: "pages/project_page.html", isJson: false });
-    $$("#"+Constants.DINAMIC_CONTENT_ID).html(projectPage);
+    $$("#"+Constants.CONTENT_ID).html(projectPage);
 
     project = new Nodes(".project-container", nodeTypeManager);
     project.setNodes(content);

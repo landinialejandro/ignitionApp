@@ -1,0 +1,13 @@
+.ignition-footer {
+    background-color: $color-sidebar;
+    padding: 0.5rem $container-padding-lateral;
+    color: $color-text-muted;
+    text-align: center;
+    font-size: 0.85rem;
+    border-radius: 0 0 $border-radius $border-radius;
+    box-shadow: $box-shadow;
+    height: 3rem;                            // Define la altura del footer
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}

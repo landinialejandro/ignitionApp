@@ -79,6 +79,7 @@ export const renderTemplate = async (template, content) => {
         const templateData = await get_data({ url: template, isJson: false });
 
         // Compilar la plantilla con Handlebars
+        // TODO: veririficar si la el modulo HBS está operativo y ver otra alternativa de visualización
         const compiledTemplate = Handlebars.compile(templateData);
 
         // Renderizar la plantilla con el contenido proporcionado
