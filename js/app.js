@@ -4,20 +4,39 @@ import { RegisterPartials, RegisterHelpers } from './libraries/hbs.js';
 import { preloader, renderTemplate, getDirCollectionJson } from './libraries/helpers.js';
 import { $$ } from './libraries/selector.js';
 
+import Constants from './constants.js';
+import { checkContainerAvailability } from './ignitionAppSidebar.js';
 import { initializeProject } from './project.js';
 
 window.msg = new Msglog();
 msg.success("Iniciando app.js", true);
-const maiPreloader = new preloader("preloader");
+const maiPreloader = new preloader(Constants.PRELOADER_ID);
 
 window.onload = async function () {
     try {
+        checkContainerAvailability('toggleSidebar', (container) => {
+            container.addEventListener('click', function () {
+                const mainContainer = document.getElementById(Constants.MAIN_CONTAINER);
+                if (mainContainer) {
+                    mainContainer.classList.toggle('sidebar-collapsed');
+                }
+            });
+
+            document.querySelectorAll('[data-bs-toggle="collapse"]').forEach(function (item) {
+                item.addEventListener('click', function () {
+                    this.classList.toggle('submenu-expanded');
+                    this.classList.toggle('submenu-collapsed');
+                });
+            });
+        });
+
+
         // Obtener la configuración de la aplicación
         const setting = await get_data({ url: "settings/settings.json" });
         const version = setting.version || "0.0.0";
         const release = setting.release || "bad file";
         const text = `${version} - ${release}`;
-        
+
         // Mostrar información de la versión al usuario
         msg.info(`Versión: ${text}`);
         $$(".version-app").html(text);
@@ -27,7 +46,7 @@ window.onload = async function () {
 
         // Cargar las diferentes secciones del navBar
         loadNavBar('#sidebar', await get_data({ url: "settings/nav_sidebar.json" }));
-        loadNavBar('#navbarNav', await get_data({ url: "settings/nav_headerbar.json" }));
+        // loadNavBar('#navbarNav', await get_data({ url: "settings/nav_headerbar.json" }));
         loadNavBar('#projects-list', await getDirCollectionJson("projects"));
         loadNavBar('#settings-list', await getDirCollectionJson("settings"));
 
@@ -63,9 +82,9 @@ const navLinkListener = () => {
 
 // Función para manejar el contenido según el tipo
 const handleContentLoading = async ({ type, name }, url) => {
-    const mainContent = document.querySelector("#main-content");
-    const contentPreloader = new preloader("content-preloader");
-    $$("#app-content-header-caption").text(name);
+    const content = document.getElementById(Constants.DINAMIC_CONTENT_ID);
+    const contentPreloader = new preloader(Constants.DINAMIC_CONTENT_PRELOADER_ID);
+    document.getElementById(Constants.CONTENT_HEADER_TITLE_ID).textContent = name;
 
     try {
         // Instanciar el preloader para #main-content
@@ -75,15 +94,15 @@ const handleContentLoading = async ({ type, name }, url) => {
             case "dash":
 
             case "page":
-                loadPageContent(url, mainContent);
+                loadPageContent(url, content);
                 break;
 
             case "file":
-                await loadJsonContent(url, mainContent);
+                await loadJsonContent(url, content);
                 break;
 
             case "image":
-                loadImageContent(url, mainContent);
+                loadImageContent(url, content);
                 break;
 
             case "system":

@@ -36,8 +36,9 @@
         }
     },
     {
+        "id": "proyectos",
         "caption": "Proyectos",
-        "url": "pages/projects_dash_page.html",
+        "url": "#",
         "active": true,
         "icon": {
             "value": "bi bi-speedometer",
@@ -45,8 +46,21 @@
         },
         "a_class": "project-page",
         "menu_open": true,
-        "type": "dash",
+        "type": "folder",
         "children": [
+            {
+                "id": "dash",
+                "caption": "Dashboard",
+                "url": "pages/projects_dash_page.html",
+                "active": true,
+                "icon": {
+                    "value": "bi bi-speedometer",
+                    "type": "class"
+                },
+                "a_class": "project-page",
+                "menu_open": true,
+                "type": "dash"
+            },
             {
                 "type": "component",
                 "id": "projects-list"
@@ -54,6 +68,7 @@
         ]
     },
     {
+        "id": "documentacion",
         "caption": "Documentación",
         "url": "pages/docs_page.html",
         "active": false,
@@ -69,6 +84,7 @@
         }
     },
     {
+        "id": "iconlist",
         "caption": "Icons List",
         "url": "https://icons.getbootstrap.com/?q=uni#icons",
         "active": false,
@@ -84,6 +100,7 @@
         }
     },
     {
+        "id": "debug",
         "caption": "Debug settings",
         "url": "pages/settings_dash_page.html",
         "active": false,

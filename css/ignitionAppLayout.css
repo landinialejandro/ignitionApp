@@ -6,6 +6,51 @@ body {
     margin: 0;
     background-color: #f8f9fa; /* Color de fondo para dar efecto de separación */
 }
+/* Preloader */
+#preloader {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 9999;
+    /* Mantener este valor alto */
+}
+
+/* Estilos del contenedor principal de contenido */
+#content-body {
+    position: relative; /* Para que el preloader se posicione dentro */
+    min-height: 200px; /* Altura mínima para el contenido */
+}
+
+/* Preloader para el content-body */
+#content-preloader {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(255, 255, 255, 0.8); /* Fondo semitransparente */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 10; /* Más alto que el contenido pero limitado a content-body */
+}
+
+/* Contenedor del contenido principal */
+#content-main {
+    position: relative;
+    z-index: 1; /* Para estar debajo del preloader */
+    padding: 1rem;
+    background-color: #495057;
+    border-radius: 8px;
+    color: #fff;
+}
+
 
 .version-app {
     font-size: 0.9rem;

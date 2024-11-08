@@ -4,6 +4,7 @@ import { Msglog } from "./libraries/MsgLog.js";
 import { $$ } from './libraries/selector.js';
 import { ProjectTreeview } from './libraries/ProjectTreeview.js'
 
+import Constants from './constants.js';
 import { ContextMenu } from './ContextMenu.js';
 import { Nodes } from './Nodes.js';
 import { NodeTypeManager } from './NodeTypeManager.js';
@@ -31,7 +32,7 @@ export const initializeProject = async (url) => {
 
     const content = await get_data({ url });
     const projectPage = await get_data({ url: "pages/project_page.html", isJson: false });
-    $$("#main-content").html(projectPage);
+    $$("#"+Constants.DINAMIC_CONTENT_ID).html(projectPage);
 
     project = new Nodes(".project-container", nodeTypeManager);
     project.setNodes(content);
