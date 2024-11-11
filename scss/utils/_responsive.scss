@@ -1,37 +1,23 @@
 // scss/utils/_responsive.scss
+
 @include respond('small') {
-    .sidebar {
-      width: 80px; // Sidebar reducido en pantallas pequeñas
-      .sidebar-content,
-      .sidebar-footer {
-        display: none;
-      }
+  // Ajustes específicos del sidebar en pantallas pequeñas
+  .sidebar {
+    width: 60px; // Sidebar reducido a solo íconos en pantallas pequeñas
+    .sidebar-content,
+    .sidebar-footer {
+      display: none; // Oculta contenido y footer en pantallas pequeñas
     }
   }
-  // scss/utils/_responsive.scss
 
-@include respond('small') {
-  .app-main {
-    flex-direction: column; // Cambia a layout en columna en pantallas pequeñas
-
-    .sidebar {
-      width: 100%; // Sidebar ocupa todo el ancho en pantallas pequeñas
-      .sidebar-content,
-      .sidebar-footer {
-        display: none; // Oculta contenido interno en pantallas pequeñas
-      }
-    }
-
-    .content {
-      width: 100%; // Content ocupa todo el ancho en pantallas pequeñas
-      flex-grow: 1; // Permite que el contenido ocupe todo el espacio disponible
-      overflow-y: auto;
-    }
+  // Ajustes para el contenido en pantallas pequeñas
+  .content {
+    width: calc(100% - 60px); // Descuenta el ancho del sidebar colapsado
+    overflow-y: auto;
+    flex-grow: 1;
   }
-}
-// scss/utils/_responsive.scss
 
-@include respond('small') {
+  // Ajustes específicos del footer en pantallas pequeñas
   .app-footer {
     flex-direction: column;
     height: auto;

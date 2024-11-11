@@ -12,12 +12,20 @@
   @include shadow(); // Sombra aplicada al sidebar
   @include rounded(8px); // Bordes redondeados de 8px (ajusta el valor si prefieres otro)
 
+  // Estilos de estado expandido (pantallas grandes)
+  &.expanded {
+    width: 250px;
+  }
+
+  // Estilos de estado retraído (para pantallas pequeñas)
   &.collapsed {
-    width: 80px; // Ancho reducido en estado colapsado
+    width: 60px; // Ancho reducido para mostrar solo íconos
+    position: fixed; // Para superponerse sobre el content al expandirse
+    z-index: 1001; // Para asegurarse de que esté encima del content
 
     .sidebar-content,
     .sidebar-footer {
-      display: none; // Ocultamos el contenido y footer en modo colapsado
+      display: none; // Oculta el contenido y footer en modo colapsado
     }
   }
 }
@@ -113,5 +121,19 @@
 
   &.collapsed {
     animation: sidebarSlideOut 0.3s ease forwards;
+  }
+}
+
+.sidebar-toggle {
+  background: transparent;
+  border: none;
+  color: $color-text;
+  font-size: 1.5rem;
+  cursor: pointer;
+  padding: $spacing-xs;
+  @include transition(color);
+
+  &:hover {
+    color: $color-accent;
   }
 }

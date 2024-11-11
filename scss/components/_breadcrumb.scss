@@ -1,50 +1,38 @@
-// Archivo: _breadcrumb.scss
+// scss/components/_breadcrumb.scss
 
 .breadcrumb {
     display: flex;
     align-items: center;
-    list-style: none;
-    padding: 0.5rem 1rem;
+    font-size: $font-size-small; // Tamaño de fuente más pequeño para breadcrumb
+    background: transparent; // Fondo transparente
+    padding: 0;
     margin: 0;
-    font-family: $font-family-base;
-    font-size: 0.9rem;
-    color: $color-text-muted;
-    background-color: $color-intermediate; // Fondo intermedio
-    @include rounded(8px);
-    
+    list-style: none;
+  
     .breadcrumb-item {
-        display: flex;
-        align-items: center;
-
-        &::after {
-            content: '/';
-            margin: 0 0.5rem;
-            color: $color-text-muted; // Separador
+      color: $color-text-muted; // Color menos destacado para el breadcrumb
+  
+      &:not(:last-child)::after {
+        content: "›"; // Separador entre los items
+        padding: 0 $spacing-xs;
+        color: $color-text-muted;
+      }
+  
+      a {
+        color: $color-text; // Color del texto principal
+        text-decoration: none;
+        @include transition(color);
+  
+        &:hover {
+          color: $color-accent; // Color de acento para el hover
         }
-
-        &:last-child::after {
-            content: ''; // Elimina el separador para el último ítem
-        }
-
-        a {
-            color: $color-accent;
-            text-decoration: none;
-            transition: color 0.3s ease;
-
-            &:hover {
-                color: lighten($color-accent, 10%); // Efecto hover
-            }
-
-            &:focus {
-                outline: none;
-                box-shadow: 0 0 0 2px rgba($color-accent, 0.5);
-            }
-        }
-
-        &.active {
-            color: $color-text; // Color de la última sección, sin enlace
-            font-weight: bold;
-            pointer-events: none;
-        }
+      }
+  
+      &.active {
+        color: $color-accent; // Color de acento para el item activo
+        font-weight: $font-weight-bold;
+        pointer-events: none; // Evita que el item activo sea clickable
+      }
     }
-}
+  }
+  
