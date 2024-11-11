@@ -25,9 +25,8 @@
 <body>
     <!-- Preloader principal que afecta la visibilidad del app-wrapper. 
          Se muestra mientras se carga la aplicación para mejorar la experiencia de usuario. -->
-    <!-- Preloader principal que cubre toda la pantalla -->
     <div class="preloader" aria-label="Cargando aplicación">
-        <div class="spinner"></div>
+        ...
     </div>
 
     <!-- Contenedor principal de toda la aplicación -->
@@ -68,23 +67,32 @@
                 </footer>
             </aside>
 
-            <!-- content: Contenedor principal de contenido -->
+            <!-- content: Contenedor de contenido principal donde se muestra el contenido dinámico del dashboard. -->
             <section class="content">
-                <!-- content-header: Encabezado con título y breadcrumb -->
+
+                <!-- content-header: Encabezado del contenido, incluye el título y un breadcrumb para navegación.
+                     Este encabezado aparece en la parte superior del content. -->
                 <header class="content-header">
-                    <div class="content-title">Dashboard</div>
+                    <div class="content-title"> <!-- Título del contenido -->
+                        ...
+                    </div>
                     <nav class="breadcrumb" aria-label="Breadcrumb">
-                        <a href="#">Inicio</a> / <a href="#">Sección</a> / <span>Página actual</span>
+                        <!-- Breadcrumb para mostrar la navegación jerárquica -->
+                        ...
                     </nav>
                 </header>
 
-                <!-- content-body: Área principal para mostrar contenido dinámico -->
+                <!-- content-body-preloader: Preloader específico del content-body.
+                     Se activa para indicar que el contenido está cargando cuando el usuario navega en el sidebar. -->
+                <div class="content-body-preloader" aria-label="Cargando contenido">
+                    ...
+                </div>
+
+                <!-- content-body: Cuerpo principal del contenido dinámico del dashboard. -->
                 <article class="content-body">
-                    <!-- Aquí puedes agregar contenido dinámico -->
-                    <p>Este es el cuerpo principal del contenido.</p>
+                    ...
                 </article>
             </section>
-
 
         </main>
 
@@ -105,7 +113,7 @@
 
     <!-- JavaScript principal para la aplicación.
          Se carga al final del body para no afectar el rendimiento de carga inicial de la página. -->
-    <script type="module" src="js/demo.js"></script>
+    <script type="module" src="js/app.js"></script>
 </body>
 
 </html>

@@ -1,28 +1,36 @@
-#preloader,
-.content-preloader {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    background-color: rgba(0, 0, 0, 0.8);
+// scss/components/_preloader.scss
+
+.preloader {
     position: fixed;
-    width: 100%;
-    height: 100%;
-    z-index: 9999;
-
-    .spinner-grow {
-        width: 3rem;
-        height: 3rem;
-        background-color: $color-accent;
-        border-radius: 50%;
-        animation: grow 1.2s infinite ease-in-out;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background-color: $color-background; // Fondo oscuro
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 1000; // Para que quede encima de otros elementos
+    transition: opacity 0.3s ease; // Transición suave al ocultarse
+  
+    &.hidden {
+      opacity: 0;
+      visibility: hidden;
     }
-}
-
-@keyframes grow {
-    0%, 100% {
-        transform: scale(1);
+  
+    .spinner {
+      width: 50px;
+      height: 50px;
+      border: 5px solid lighten($color-background, 20%); // Borde más claro para contraste
+      border-top: 5px solid $color-accent; // Borde de color acento para animación
+      border-radius: 50%;
+      animation: spin 1s linear infinite;
     }
-    50% {
-        transform: scale(1.5);
-    }
-}
+  }
+  
+  // Animación de giro
+  @keyframes spin {
+    from { transform: rotate(0deg); }
+    to { transform: rotate(360deg); }
+  }
+  

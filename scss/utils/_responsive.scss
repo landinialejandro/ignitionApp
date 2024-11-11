@@ -1,0 +1,44 @@
+// scss/utils/_responsive.scss
+@include respond('small') {
+    .sidebar {
+      width: 80px; // Sidebar reducido en pantallas pequeñas
+      .sidebar-content,
+      .sidebar-footer {
+        display: none;
+      }
+    }
+  }
+  // scss/utils/_responsive.scss
+
+@include respond('small') {
+  .app-main {
+    flex-direction: column; // Cambia a layout en columna en pantallas pequeñas
+
+    .sidebar {
+      width: 100%; // Sidebar ocupa todo el ancho en pantallas pequeñas
+      .sidebar-content,
+      .sidebar-footer {
+        display: none; // Oculta contenido interno en pantallas pequeñas
+      }
+    }
+
+    .content {
+      width: 100%; // Content ocupa todo el ancho en pantallas pequeñas
+      flex-grow: 1; // Permite que el contenido ocupe todo el espacio disponible
+      overflow-y: auto;
+    }
+  }
+}
+// scss/utils/_responsive.scss
+
+@include respond('small') {
+  .app-footer {
+    flex-direction: column;
+    height: auto;
+    padding: $spacing-sm;
+
+    .footer-status {
+      margin: $spacing-xs 0; // Espaciado vertical entre elementos
+    }
+  }
+}

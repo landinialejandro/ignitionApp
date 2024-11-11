@@ -1,0 +1,16 @@
+// _animations.scss
+@keyframes slideIn {
+    from { transform: translateX(-100%); }
+    to { transform: translateX(0); }
+  }
+  
+  @keyframes slideOut {
+    from { transform: translateX(0); }
+    to { transform: translateX(-100%); }
+  }
+  
+  .sidebar {
+    &.collapsed { animation: slideOut 0.3s forwards; }
+    &.expanded { animation: slideIn 0.3s forwards; }
+  }
+  

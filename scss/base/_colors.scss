@@ -1,0 +1,20 @@
+// scss/base/_colors.scss
+
+// Fondo oscuro principal y secundario
+$color-background: #1a1a2e;
+$color-background-alt: #16213e;
+$color-intermediate: #1f1f33; // Color entre el fondo principal y el fondo alternativo
+
+
+// Color claro para texto sobre fondo oscuro
+$color-text: #e4e4e7;
+$color-text-muted: #a1a1b0; // Gris claro y suave para textos menos destacados
+
+// Color de acento para elementos interactivos
+$color-accent: #e94560;
+
+// Colores adicionales para hover, focus y sombras
+$color-shadow: rgba(0, 0, 0, 0.3);
+$color-hover: lighten($color-background, 10%);
+$color-focus: darken($color-background, 10%);
+

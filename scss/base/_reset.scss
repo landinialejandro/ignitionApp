@@ -1,0 +1,21 @@
+// scss/base/_reset.scss
+
+*,
+*::before,
+*::after {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html, body {
+  width: 100%;
+  height: 100%;
+  overflow-x: hidden;
+}
+
+body {
+  font-family: $font-family-base; // Fuente predeterminada definida en variables
+  background-color: $color-background; // Fondo oscuro
+  color: $color-text; // Color de texto claro
+}

@@ -1,0 +1,27 @@
+// scss/layout/_footer.scss
+
+.app-footer {
+    background-color: $color-background-alt; // Fondo alternativo para diferenciación
+    color: $color-text;
+    height: $footer-height; // Altura fija del footer
+    margin: 5px 10px 10px; // Reduce el margen superior a 10px
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 $spacing-md; // Espaciado horizontal
+    border-top: 1px solid $color-hover; // Línea divisoria en la parte superior
+    @include shadow(); // Sombra para dar efecto de separación
+    @include rounded(0 0 8px 8px); // Bordes redondeados en las esquinas inferiores
+
+    // Estilos para los elementos internos
+    .footer-copyright,
+    .footer-status,
+    .footer-version {
+        font-size: $font-size-small;
+    }
+
+    .footer-status {
+        text-align: center;
+        flex-grow: 1; // Para centrar el estado en el medio del footer
+    }
+}

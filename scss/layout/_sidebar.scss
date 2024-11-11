@@ -1,0 +1,117 @@
+// scss/layout/_sidebar.scss
+.sidebar {
+  background-color: $color-background; // Fondo oscuro del sidebar
+  color: $color-text; // Texto claro para contraste
+  width: 250px; // Ancho del sidebar en estado expandido
+  height: calc(100% - 15px); // Ajusta el alto para compensar el margen
+  margin: 10px 5px 5px 10px; // Reduce el margen inferior a 10px
+
+  display: flex;
+  flex-direction: column;
+  overflow: hidden; // Ocultamos el contenido al colapsar
+  @include shadow(); // Sombra aplicada al sidebar
+  @include rounded(8px); // Bordes redondeados de 8px (ajusta el valor si prefieres otro)
+
+  &.collapsed {
+    width: 80px; // Ancho reducido en estado colapsado
+
+    .sidebar-content,
+    .sidebar-footer {
+      display: none; // Ocultamos el contenido y footer en modo colapsado
+    }
+  }
+}
+
+// scss/layout/_sidebar.scss (continúa)
+.sidebar-brand {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: $spacing-sm;
+  border-bottom: 1px solid $color-hover; // Línea divisoria para el branding
+
+  .brand-logo {
+    width: 30px;
+    height: 30px;
+    @include rounded(50%); // Logo circular
+    background-color: $color-accent; // Color de acento para el logo
+  }
+
+  .brand-name {
+    font-size: $font-size-large;
+    font-weight: bold;
+    color: $color-text;
+  }
+}
+
+.sidebar-content {
+  flex-grow: 1;
+  padding: $spacing-sm;
+  display: flex;
+  flex-direction: column;
+  gap: $spacing-xs;
+}
+
+.sidebar-footer {
+  padding: $spacing-sm;
+  border-top: 1px solid $color-hover;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  .user-avatar {
+    width: 40px;
+    height: 40px;
+    @include rounded(50%);
+    background-color: lighten($color-accent, 10%);
+  }
+
+  .user-name {
+    font-size: $font-size-small;
+    color: $color-text;
+  }
+
+  .settings-button {
+    background: transparent;
+    border: none;
+    color: $color-accent;
+    font-size: 1.5rem;
+    cursor: pointer;
+    @include transition(color);
+
+    &:hover {
+      color: lighten($color-accent, 15%);
+    }
+  }
+}
+
+// scss/layout/_sidebar.scss (continúa)
+@keyframes sidebarSlideIn {
+  from {
+    transform: translateX(-100%);
+  }
+
+  to {
+    transform: translateX(0);
+  }
+}
+
+@keyframes sidebarSlideOut {
+  from {
+    transform: translateX(0);
+  }
+
+  to {
+    transform: translateX(-100%);
+  }
+}
+
+.sidebar {
+  &.expanded {
+    animation: sidebarSlideIn 0.3s ease forwards;
+  }
+
+  &.collapsed {
+    animation: sidebarSlideOut 0.3s ease forwards;
+  }
+}
