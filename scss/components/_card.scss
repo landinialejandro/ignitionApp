@@ -1,0 +1,66 @@
+// scss/components/_card.scss
+
+@use 'sass:math';
+
+.card {
+  background-color: $color-background-alt;
+  color: $color-text;
+  @include rounded(); // Mantiene el mismo redondeado
+  @include shadow(); // Sombra para el efecto de flotación
+//   padding: $spacing-sm;
+//   margin: $spacing-xs;
+  position: relative;
+  overflow: hidden;
+  transition: transform 0.3s ease, box-shadow 0.3s ease; // Suaviza el efecto de hover
+
+  &:hover {
+    transform: translateY(-4px); // Efecto de "flotación" al hacer hover
+    box-shadow: 0 6px 15px $color-shadow, 0 0 10px $color-accent; // Realza la sombra, con efecto de luz
+  }
+
+  .card-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: $spacing-xs $spacing-sm;
+    border-bottom: 1px solid $color-hover; // Línea divisoria sutil en el encabezado
+    background-color: darken($color-background-alt, 5%); // Sutil contraste en el header
+  }
+
+  .card-title {
+    font-size: 1rem; // Tamaño de título similar a brand-name
+    font-weight: $font-weight-bold;
+    color: $color-text;
+    margin: 0;
+  }
+
+  .card-tools {
+    display: flex;
+    gap: $spacing-xs;
+
+    .tool-button {
+      background: transparent;
+      border: none;
+      color: $color-text-muted; // Color más tenue para iconos
+      font-size: 1.1rem;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: math.div($spacing-xs, 2); // Uso de math.div para evitar advertencia
+      @include transition(color);
+
+      &:hover {
+        color: $color-accent; // Realce de color al pasar el cursor
+      }
+    }
+  }
+
+  .card-body {
+    padding: $spacing-sm;
+    background-color: $color-background; // Fondo más oscuro para el cuerpo de la tarjeta
+    color: $color-text;
+    // @include rounded(8px); // Redondeado para el contenido de la tarjeta
+    box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.1); // Sombra interna sutil para profundidad
+  }
+}

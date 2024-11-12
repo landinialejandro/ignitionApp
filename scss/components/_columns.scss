@@ -1,0 +1,30 @@
+// scss/components/_columns.scss
+
+.col-container {
+    display: flex;
+    flex-wrap: wrap; // Permite que los elementos se ajusten en filas cuando no hay suficiente espacio
+    gap: $spacing-md; // Espaciado entre columnas, puedes ajustar el valor según sea necesario
+  
+    // Clase para una columna de ancho fluido en el contenedor
+    .col {
+      flex: 1 1 100%; // Ancho completo por defecto en pantallas pequeñas
+      @include rounded();
+    //   padding: $spacing-sm;
+    }
+  
+    // 2 columnas
+    &.cols-2 .col {
+      flex: 1 1 calc(50% - #{$spacing-md}); // Cada columna ocupa el 50% del ancho, menos el espacio entre columnas
+    }
+  
+    // 3 columnas
+    &.cols-3 .col {
+      flex: 1 1 calc(33.33% - #{$spacing-md}); // Cada columna ocupa un tercio del ancho disponible
+    }
+  
+    // 4 columnas
+    &.cols-4 .col {
+      flex: 1 1 calc(25% - #{$spacing-md}); // Cada columna ocupa el 25% del ancho disponible
+    }
+  }
+  
