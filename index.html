@@ -43,13 +43,11 @@
 
                 <!-- sidebar-brand: Branding del sidebar que contiene el botón de cierre, el logo y el nombre de la aplicación. -->
                 <header class="sidebar-brand">
-                    <button class="sidebar-toggle" aria-label="Cerrar menú lateral">Cerrar</button>
-                    <!-- Botón de cierre del sidebar -->
+                    <button class="sidebar-toggle" aria-label="Cerrar menú lateral"> <i class="bi bi-list"></i></button>
                     <div class="brand-logo" aria-hidden="true">
-                        <!-- Logo de la aplicación (no se lee en lectores de pantalla) -->
-                        ...
+                        <i class="bi bi-lightbulb"></i>
                     </div>
-                    <div class="brand-name">IgnitionApp</div> <!-- Nombre de la aplicación -->
+                    <h2 class="brand-name">IgnitionApp</h2>
                 </header>
 
                 <!-- sidebar-content: Contenido principal del sidebar, que ocupa el alto restante entre el brand y el footer del sidebar. -->
@@ -79,7 +77,7 @@
                         </li>
 
                         <!-- Item sin Submenú -->
-                        <li class="nav-item expanded">
+                        <li class="nav-item">
                             <a href="link.html" class="nav-link">
                                 <i class="bi bi-folder nav-icon"></i> <!-- Icono de Documentos -->
                                 <span class="nav-text">Documentos</span>
@@ -116,20 +114,28 @@
                 <footer class="sidebar-footer">
                     <div class="user-avatar" aria-hidden="true">
                         <!-- Avatar del usuario (no se lee en lectores de pantalla) -->
-                        ...
+                        <i class="bi bi-person-badge"></i>
                     </div>
-                    <div class="user-name">Usuario</div> <!-- Nombre del usuario -->
-                    <button class="settings-button" aria-label="Abrir configuración">Configuración</button>
+                    <div class="user-name">Alejandro</div> <!-- Nombre del usuario -->
+                    <button class="settings-button" aria-label="Abrir configuración"><i class="bi bi-gear"></i></button>
                     <!-- Botón para abrir configuración -->
                 </footer>
             </aside>
 
             <!-- content: Contenedor principal de contenido -->
             <section class="content">
-                <!-- content-header: Encabezado con título y breadcrumb -->
+                <!-- content-header: Encabezado con título, campo de búsqueda y breadcrumb -->
                 <header class="content-header">
                     <h2 class="content-title">Dashboard</h2>
-                    <nav aria-label="breadcrumb" aria-label="breadcrumb">
+
+                    <!-- Campo de búsqueda -->
+                    <form class="search-form" role="search" aria-label="Buscar">
+                        <input type="text" class="search-input" placeholder="Buscar..." aria-label="Campo de búsqueda">
+                        <button type="submit" class="search-button"><i class="bi bi-search"></i></button> <!-- Icono de búsqueda -->
+                    </form>
+
+                    <!-- Breadcrumb -->
+                    <nav aria-label="breadcrumb">
                         <ol class="breadcrumb">
                             <li class="breadcrumb-item"><a href="#">Inicio</a></li>
                             <li class="breadcrumb-item"><a href="#">Sección</a></li>
@@ -142,6 +148,10 @@
                 <article class="content-body">
                     <!-- Aquí puedes agregar contenido dinámico -->
                     <p>Este es el cuerpo principal del contenido.</p>
+                    <a href="#" class="button solid">Botón Sólido</a>
+                    <a href="#" class="button outlined">Botón Outline</a>
+                    <a href="#" class="button secondary">Botón Secundario</a>
+
                 </article>
             </section>
 

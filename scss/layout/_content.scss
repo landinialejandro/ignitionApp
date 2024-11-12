@@ -3,39 +3,11 @@
 .content {
   background-color: $color-background-alt;
   color: $color-text;
-  padding: $spacing-md;
   margin: 10px;
   flex-grow: 1;
   overflow-y: auto;
   @include shadow();
   @include rounded(8px);
-
-  // Descuenta el ancho del sidebar en pantallas grandes
-  width: calc(100% - 250px); // Resta el ancho del sidebar expandido en pantallas grandes
-
-  .content-header {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    padding-bottom: $spacing-sm;
-    border-bottom: 1px solid $color-hover; // Línea divisoria debajo del header
-    margin-bottom: $spacing-md;
-
-    .content-title {
-      font-size: $font-size-large;
-      font-weight: bold;
-      color: $color-text;
-    }
-
-  }
-
-  .content-body {
-    padding: $spacing-md;
-    background-color: $color-background; // Fondo más oscuro para contrastar
-    @include rounded(); // Bordes redondeados
-    min-height: 300px; // Altura mínima para la visualización de contenido
-    display: flex;
-    flex-direction: column;
-    gap: $spacing-sm; // Espacio entre elementos internos
-  }
+  width: 100%; // Asegura que ocupe todo el ancho
+  padding: 0; // Elimina el padding de content para evitar espacio alrededor
 }

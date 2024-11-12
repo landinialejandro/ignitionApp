@@ -1,0 +1,51 @@
+// scss/components/_buttons.scss
+
+.button {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0.6rem 1.2rem;
+    font-size: 1rem;
+    font-weight: $font-weight-normal;
+    border-radius: 8px; // Bordes redondeados
+    cursor: pointer;
+    text-decoration: none;
+    @include shadow(0px 4px 8px rgba(0, 0, 0, 0.1)); // Sombra suave para flotación
+    @include transition(all 0.3s ease); // Transición para el efecto de hover
+  
+    &:hover {
+      @include shadow(0px 6px 12px rgba(0, 0, 0, 0.2)); // Sombra más intensa al hacer hover
+      transform: translateY(-2px); // Efecto de elevación
+    }
+  
+    &.solid {
+      background-color: $color-accent;
+      color: $color-text-light;
+      border: none;
+  
+      &:hover {
+        background-color: darken($color-accent, 10%);
+      }
+    }
+  
+    &.outlined {
+      background-color: transparent;
+      color: $color-accent;
+      border: 2px solid $color-accent;
+  
+      &:hover {
+        background-color: rgba($color-accent, 0.1);
+      }
+    }
+  
+    &.secondary {
+      background-color: $color-secondary;
+      color: $color-text-light;
+      border: none;
+  
+      &:hover {
+        background-color: darken($color-secondary, 10%);
+      }
+    }
+  }
+  

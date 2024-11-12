@@ -1,0 +1,9 @@
+.content-body {
+    padding: $spacing-md; // Padding interno para el body
+    background-color: $color-background;
+    min-height: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: $spacing-sm;
+    flex-grow: 1;
+  }

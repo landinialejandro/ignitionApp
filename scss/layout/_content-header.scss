@@ -1,0 +1,57 @@
+// scss/layout/_content-header.scss
+
+.content-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: $spacing-sm;
+  background-color: $color-background-alt;
+  border-bottom: 1px solid $color-hover;
+  border-radius: 8px;
+  @include shadow();
+  // margin-bottom: $spacing-md;
+  width: 100%; // Ocupa todo el ancho del contenedor
+
+  .content-title {
+    font-size: 1rem; // Mismo tamaño que brand-name
+    font-weight: $font-weight-normal;
+    color: $color-text;
+    margin: 0;
+  }
+
+  .search-form {
+    display: flex;
+    align-items: center;
+    background-color: $color-background;
+    border-radius: 50px;
+    padding: 0.4rem 0.8rem;
+    @include shadow();
+
+    .search-input {
+      background: transparent;
+      border: none;
+      outline: none;
+      color: $color-text;
+      padding: 0 0.5rem;
+      font-size: 0.9rem;
+      width: 180px;
+
+      &::placeholder {
+        color: $color-text-muted;
+      }
+    }
+
+    .search-button {
+      background: transparent;
+      border: none;
+      color: $color-accent;
+      font-size: 1.2rem;
+      cursor: pointer;
+      @include transition(color);
+
+      &:hover {
+        color: lighten($color-accent, 10%);
+      }
+    }
+  }
+}

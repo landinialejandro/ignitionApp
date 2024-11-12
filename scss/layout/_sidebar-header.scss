@@ -1,0 +1,49 @@
+// scss/layout/_sidebar-header.scss
+
+.sidebar-brand {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: $spacing-sm;
+  background-color: $color-background-alt;
+  border-bottom: 1px solid $color-hover;
+  height: 60px;
+
+  .sidebar-toggle {
+    background: transparent;
+    border: none;
+    color: $color-text;
+    font-size: 1.5rem;
+    cursor: pointer;
+    padding: $spacing-xs;
+    display: flex;
+    align-items: center;
+    @include transition(color, transform);
+
+    &:hover {
+      color: $color-accent;
+      transform: scale(1.1);
+    }
+  }
+
+  .brand-logo {
+    width: 40px;           // Ancho igual al avatar
+    height: 40px;          // Alto igual al avatar
+    font-size: 1.4rem;     // Tamaño del icono dentro del logo
+    border: 2px solid $color-accent;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-right: $spacing-xs;
+    color: $color-accent;  // Color del ícono para contraste
+  }
+
+  .brand-name {
+    font-size: 1rem;
+    font-weight: $font-weight-normal;
+    color: $color-text;
+    margin: 0;
+    flex-grow: 1;
+  }
+}

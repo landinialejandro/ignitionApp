@@ -1,86 +1,93 @@
 // scss/components/_sidebar-menu.scss
 
+@use 'sass:math';
+
 .sidebar-content {
-    padding: $spacing-sm; // Espaciado alrededor del contenido del sidebar
-  
-    .nav-list {
-      list-style: none;
-      padding: 0;
-      margin: 0;
-  
-      .nav-item {
-        margin-bottom: $spacing-xs / 2; // Espaciado reducido entre items
-  
+  padding: $spacing-sm; // Espaciado alrededor del contenido del sidebar
+
+  .nav-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+
+    .nav-item {
+      margin-bottom: math.div($spacing-xs, 2); // Usar math.div para el espaciado entre items
+
+      // Aplica la línea gruesa y brillante al elemento padre si está expandido
+      &.expanded {
         .nav-link {
-          display: flex;
-          align-items: center;
-          justify-content: space-between;
+          // border-left: 3px solid $color-accent; // Línea más gruesa y color más brillante
+        }
+      }
+
+      .nav-link {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        color: $color-text;
+        padding: $spacing-xs;
+        text-decoration: none;
+        background-color: transparent;
+        border-radius: 3px;
+        font-size: 0.9rem;
+        @include transition(background-color, color);
+
+        &:hover {
+          background-color: $color-hover;
+          color: $color-accent;
+        }
+
+        &.active {
+          background-color: $color-background-alt;
+          font-weight: $font-weight-bold;
+          color: $color-accent;
+        }
+
+        .nav-icon {
+          margin-right: math.div($spacing-xs, 2); // Usar math.div en lugar de /
+          font-size: 1rem;
+          color: $color-text-muted;
+        }
+
+        .nav-text {
+          flex-grow: 1;
           color: $color-text;
-          padding: $spacing-xs; // Espaciado pequeño
-          text-decoration: none;
-          background-color: transparent;
-          border-radius: 3px;
-          font-size: 0.9rem;
-          @include transition(background-color, color);
-  
-          &:hover {
-            background-color: $color-hover;
-            color: $color-accent;
+        }
+
+        .menu-chevron {
+          transition: transform 0.3s ease;
+          font-size: 0.8rem;
+          color: $color-text-muted;
+
+          // Chevron rotado cuando el submenú está expandido
+          &.expanded {
+            transform: rotate(90deg);
           }
-  
-          &.active {
-            background-color: $color-background-alt;
-            font-weight: $font-weight-bold;
-            color: $color-accent;
-          }
-  
-          // Icono sin ícono predeterminado
-          .nav-icon {
-            margin-right: $spacing-xs / 2;
-            font-size: 1rem;
+        }
+      }
+
+      // Estilo para el submenú
+      .nav-list {
+        display: none;
+        padding-left: $spacing-sm;
+        border-left: 2px solid $color-hover; // Línea más delgada para continuidad
+
+        .nav-item {
+          .nav-link {
             color: $color-text-muted;
-          }
-  
-          .nav-text {
-            flex-grow: 1; // Ocupa el espacio disponible entre icono y chevron
-            color: $color-text;
-          }
-  
-          .menu-chevron {
-            transition: transform 0.3s ease;
-            font-size: 0.8rem;
-            color: $color-text-muted;
-  
-            // Chevron rotado cuando el submenú está expandido
-            &.expanded {
-              transform: rotate(90deg);
+            font-size: 0.85rem;
+
+            &:hover {
+              color: $color-accent;
             }
           }
         }
-  
-        // Estilo para el submenú
-        .nav-list {
-          display: none; // Oculto por defecto
-          padding-left: $spacing-sm;
-          border-left: 1px solid $color-hover;
-  
-          .nav-item {
-            .nav-link {
-              color: $color-text-muted;
-              font-size: 0.85rem;
-  
-              &:hover {
-                color: $color-accent;
-              }
-            }
-          }
-        }
-  
-        // Muestra el submenú si el item tiene la clase `expanded`
-        &.expanded .nav-list {
-          display: block;
-        }
+      }
+
+      // Muestra el submenú si el item tiene la clase `expanded`
+      &.expanded .nav-list {
+        display: block;
       }
     }
   }
-  
+}

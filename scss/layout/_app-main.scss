@@ -10,11 +10,5 @@
       flex-shrink: 0; // Asegura que el sidebar mantenga su ancho definido
     }
   
-    // Content se expande para ocupar el espacio restante
-    .content {
-      flex-grow: 1; // Permite que content ocupe todo el espacio disponible
-      overflow-y: auto; // Scroll en el eje Y para contenido extenso
-      padding: $spacing-md;
-    }
   }
   
