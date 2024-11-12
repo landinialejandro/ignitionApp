@@ -1,14 +1,11 @@
-// scss/layout/_app-main.scss
-
 .app-main {
-    display: flex;
-    height: calc(100vh - $footer-height - 15px); // Ajuste dinámico para el alto menos el footer
-    overflow: hidden; // Oculta cualquier contenido que exceda la altura
-  
-    // Sidebar ocupará menos espacio que el content
-    .sidebar {
-      flex-shrink: 0; // Asegura que el sidebar mantenga su ancho definido
-    }
-  
+  display: flex;
+  height: calc(100vh - $footer-height - 15px); // Ajuste dinámico para el alto menos el footer
+  overflow: hidden; // Oculta cualquier contenido que exceda la altura
+
+  // Sidebar ocupará menos espacio que el content
+  .sidebar {
+    flex-shrink: 0; // Asegura que el sidebar mantenga su ancho definido
   }
-  
+
+}

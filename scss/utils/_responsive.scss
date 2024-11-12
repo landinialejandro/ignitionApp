@@ -1,30 +1,31 @@
 // scss/utils/_responsive.scss
 
 @include respond('small') {
-  // Ajustes específicos del sidebar en pantallas pequeñas
   .sidebar {
-    width: 60px; // Sidebar reducido a solo íconos en pantallas pequeñas
-    .sidebar-content,
-    .sidebar-footer {
-      display: none; // Oculta contenido y footer en pantallas pequeñas
+    width: $sidebar-min-width; // Colapsa el sidebar a solo iconos en pantallas pequeñas
+    &.collapsed {
+      width: $sidebar-min-width;
+    }
+
+    .sidebar-content .nav-text { 
+      display: none; // Oculta el texto, muestra solo iconos
+    }
+
+    .sidebar-brand .brand-content {
+      display: none; // Oculta el nombre de la aplicación
+    }
+
+    .sidebar-footer .user-content {
+      display: none; // Oculta el nombre del usuario, muestra solo el botón de configuración
+    }
+    .sidebar-footer  {
+      justify-content: start;
     }
   }
 
-  // Ajustes para el contenido en pantallas pequeñas
   .content {
-    width: calc(100% - 60px); // Descuenta el ancho del sidebar colapsado
+    width: calc(100% - $sidebar-min-width); // Ajusta el ancho para el sidebar colapsado
     overflow-y: auto;
     flex-grow: 1;
-  }
-
-  // Ajustes específicos del footer en pantallas pequeñas
-  .app-footer {
-    flex-direction: column;
-    height: auto;
-    padding: $spacing-sm;
-
-    .footer-status {
-      margin: $spacing-xs 0; // Espaciado vertical entre elementos
-    }
   }
 }

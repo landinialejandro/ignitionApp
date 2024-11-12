@@ -7,7 +7,7 @@
   padding: $spacing-sm;
   background-color: $color-background-alt;
   border-bottom: 1px solid $color-hover;
-  height: 60px;
+  min-height: $header-height;
 
   .sidebar-toggle {
     background: transparent;
@@ -26,24 +26,30 @@
     }
   }
 
-  .brand-logo {
-    width: 40px;           // Ancho igual al avatar
-    height: 40px;          // Alto igual al avatar
-    font-size: 1.4rem;     // Tamaño del icono dentro del logo
-    border: 2px solid $color-accent;
-    border-radius: 50%;
+  .brand-content {
     display: flex;
     align-items: center;
-    justify-content: center;
-    margin-right: $spacing-xs;
-    color: $color-accent;  // Color del ícono para contraste
-  }
+    justify-content: space-between;
 
-  .brand-name {
-    font-size: 1rem;
-    font-weight: $font-weight-normal;
-    color: $color-text;
-    margin: 0;
-    flex-grow: 1;
+    .brand-logo {
+      width: 40px;
+      height: 40px;
+      font-size: 1.4rem;
+      border: 2px solid $color-accent;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-right: $spacing-xs;
+      color: $color-accent;
+    }
+
+    .brand-name {
+      font-size: 1rem;
+      font-weight: $font-weight-normal;
+      color: $color-text;
+      margin: 0;
+      flex-grow: 1;
+    }
   }
 }

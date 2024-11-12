@@ -6,4 +6,6 @@
     flex-direction: column;
     gap: $spacing-sm;
     flex-grow: 1;
+    overflow-y: auto; // Scroll en el eje Y para contenido extenso
+
   }

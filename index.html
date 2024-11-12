@@ -44,10 +44,12 @@
                 <!-- sidebar-brand: Branding del sidebar que contiene el botón de cierre, el logo y el nombre de la aplicación. -->
                 <header class="sidebar-brand">
                     <button class="sidebar-toggle" aria-label="Cerrar menú lateral"> <i class="bi bi-list"></i></button>
-                    <div class="brand-logo" aria-hidden="true">
-                        <i class="bi bi-lightbulb"></i>
+                    <div class="brand-content">
+                        <div class="brand-logo" aria-hidden="true">
+                            <i class="bi bi-lightbulb"></i>
+                        </div>
+                        <h2 class="brand-name">IgnitionApp</h2>
                     </div>
-                    <h2 class="brand-name">IgnitionApp</h2>
                 </header>
 
                 <!-- sidebar-content: Contenido principal del sidebar, que ocupa el alto restante entre el brand y el footer del sidebar. -->
@@ -85,7 +87,7 @@
                         </li>
 
                         <!-- Otro Item con Submenú -->
-                        <li class="nav-item expanded">
+                        <li class="nav-item ">
                             <a href="#" class="nav-link" aria-expanded="true">
                                 <i class="bi bi-gear nav-icon"></i> <!-- Icono de Configuración -->
                                 <span class="nav-text">Configuración</span>
@@ -109,14 +111,15 @@
                     </ul>
                 </nav>
 
-
                 <!-- sidebar-footer: Sección del footer en el sidebar, contiene el avatar del usuario, su nombre y el botón de configuración. -->
                 <footer class="sidebar-footer">
-                    <div class="user-avatar" aria-hidden="true">
-                        <!-- Avatar del usuario (no se lee en lectores de pantalla) -->
-                        <i class="bi bi-person-badge"></i>
+                    <div class="user-content">
+                        <div class="user-avatar" aria-hidden="true">
+                            <!-- Avatar del usuario (no se lee en lectores de pantalla) -->
+                            <i class="bi bi-person-badge"></i>
+                        </div>
+                        <h2 class="user-name">Alejandro</h2> <!-- Nombre del usuario -->
                     </div>
-                    <div class="user-name">Alejandro</div> <!-- Nombre del usuario -->
                     <button class="settings-button" aria-label="Abrir configuración"><i class="bi bi-gear"></i></button>
                     <!-- Botón para abrir configuración -->
                 </footer>
@@ -131,7 +134,8 @@
                     <!-- Campo de búsqueda -->
                     <form class="search-form" role="search" aria-label="Buscar">
                         <input type="text" class="search-input" placeholder="Buscar..." aria-label="Campo de búsqueda">
-                        <button type="submit" class="search-button"><i class="bi bi-search"></i></button> <!-- Icono de búsqueda -->
+                        <button type="submit" class="search-button"><i class="bi bi-search"></i></button>
+                        <!-- Icono de búsqueda -->
                     </form>
 
                     <!-- Breadcrumb -->

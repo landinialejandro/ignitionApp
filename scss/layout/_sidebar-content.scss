@@ -1,0 +1,75 @@
+// scss/layout/_sidebar-content.scss
+@use 'sass:math'; // Importa el módulo math
+
+.sidebar-content {
+  padding: $spacing-sm;
+  height:calc(100% - $header-height - ($footer-height * 2)) ;
+  overflow-y: auto;
+
+  .nav-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+
+    .nav-item {
+      margin-bottom: math.div($spacing-xs, 2);
+
+      .nav-link {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        color: $color-text;
+        padding: $spacing-xs;
+        text-decoration: none;
+        background-color: transparent;
+        border-radius: 3px;
+        font-size: 0.9rem;
+        @include transition(background-color, color);
+
+        &:hover {
+          background-color: $color-hover;
+          color: $color-accent;
+        }
+
+        .nav-icon {
+          margin-right: math.div($spacing-xs, 2);
+          font-size: 1rem;
+          color: $color-text-muted;
+        }
+
+        .nav-text {
+          flex-grow: 1;
+          color: $color-text;
+        }
+
+        .menu-chevron {
+          transition: transform 0.3s ease;
+          font-size: 0.8rem;
+          color: $color-text-muted;
+          &.expanded {
+            transform: rotate(90deg);
+          }
+        }
+      }
+
+      .nav-list {
+        display: none;
+        padding-left: $spacing-sm;
+        border-left: 2px solid $color-hover;
+
+        .nav-item .nav-link {
+          color: $color-text-muted;
+          font-size: 0.85rem;
+
+          &:hover {
+            color: $color-accent;
+          }
+        }
+      }
+
+      &.expanded .nav-list {
+        display: block;
+      }
+    }
+  }
+}
