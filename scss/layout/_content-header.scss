@@ -10,6 +10,7 @@
   @include shadow();
   // margin-bottom: $spacing-md;
   width: 100%; // Ocupa todo el ancho del contenedor
+  min-height: $header-height;
 
   .content-title {
     font-size: 1rem; // Mismo tamaño que brand-name

@@ -1,11 +1,8 @@
 .content-body {
-    padding: $spacing-md; // Padding interno para el body
-    background-color: $color-background;
-    min-height: 100%;
-    display: flex;
-    flex-direction: column;
-    gap: $spacing-sm;
-    flex-grow: 1;
-    overflow-y: auto; // Scroll en el eje Y para contenido extenso
-
-  }
+  padding: $spacing-md;
+  background-color: $color-background;
+  height: calc(100vh - $header-height - $footer-height - $spacing-md); // Ajuste de altura para el espacio visible
+  overflow-y: auto; // Activa el scroll si el contenido excede la altura
+  display: block; // Cambia a display:block para asegurar que ocupe todo el alto disponible
+  gap: $spacing-sm; // Espaciado entre elementos internos (si flex está habilitado en el futuro)
+}
