@@ -3,18 +3,26 @@
 // Fondo oscuro principal y secundario
 $color-background: #1a1a2e;
 $color-background-alt: #16213e;
-$color-intermediate: #1f1f33; // Color entre el fondo principal y el fondo alternativo
-$color-secondary: #3a3a55; // Color secundario, menos intenso que el acento
-
+$color-intermediate: #1f1f33;
+$color-secondary: #3a3a55;
 
 // Color claro para texto sobre fondo oscuro
-$color-accent: #bb86fc;           // Color de acento
-$color-text: #e0e0e0;             // Texto principal
-$color-text-muted: #b0b0b0;       // Texto secundario
-$color-text-light: #f5f5f5; // Texto claro para elementos oscuros o con color de acento
+$color-accent: #bb86fc;
+$color-text: #e0e0e0;
+$color-text-muted: #b0b0b0;
+$color-text-light: #f5f5f5;
 
 // Colores adicionales para hover, focus y sombras
 $color-shadow: rgba(0, 0, 0, 0.3);
 $color-hover: lighten($color-background, 10%);
 $color-focus: darken($color-background, 10%);
 
+// Colores para bordes de alerta brillantes y modernos
+$color-primary-border: #3a7bd5;
+$color-success-border: #4CAF92;
+$color-danger-border: #FF5C5C;
+$color-warning-border: #FFA726;
+$color-info-border: #56CCF2;
+
+// Fondo esfumado para alertas
+$color-alert-background: rgba(255, 255, 255, 0.05); // Fondo muy sutil en blanco para el efecto esfumado

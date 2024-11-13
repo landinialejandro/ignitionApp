@@ -1,0 +1,77 @@
+// scss/components/_form.scss
+
+.form-container {
+    display: flex;
+    flex-direction: column;
+    gap: $spacing-sm; // Espacio entre elementos del formulario
+    padding: $spacing-md;
+    background-color: $color-background-alt;
+    color: $color-text;
+    @include rounded();
+    @include shadow();
+  }
+  
+  .form-group {
+    display: flex;
+    flex-direction: column;
+    gap: $spacing-xs;
+    position: relative;
+  
+    .form-label {
+      font-size: 0.875rem;
+      color: $color-text-muted;
+      font-weight: $font-weight-normal;
+      margin-bottom: $spacing-xs;
+    }
+  
+    .form-help {
+      font-size: 0.75rem;
+      color: $color-text-muted;
+      margin-top: $spacing-xs;
+    }
+  
+    .form-input,
+    .form-textarea {
+      background-color: $color-background;
+      color: $color-text;
+      padding: $spacing-xs;
+      border: 1px solid $color-hover;
+      border-radius: 4px;
+      outline: none;
+      @include transition(border-color, box-shadow);
+  
+      &:focus {
+        border-color: $color-accent;
+        box-shadow: 0 0 5px rgba($color-accent, 0.5);
+      }
+  
+      &::placeholder {
+        color: $color-text-muted;
+      }
+    }
+  
+    .form-textarea {
+      min-height: 80px;
+      resize: vertical; // Permitir ajuste vertical
+    }
+  
+    .form-check,
+    .form-radio {
+      display: flex;
+      align-items: center;
+      gap: $spacing-xs;
+  
+      input {
+        accent-color: $color-accent; // Color del check y radio
+        width: 1rem;
+        height: 1rem;
+        cursor: pointer;
+      }
+  
+      label {
+        color: $color-text;
+        font-size: 0.875rem;
+      }
+    }
+  }
+  

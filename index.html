@@ -46,8 +46,11 @@
                     <button class="sidebar-toggle" aria-label="Cerrar menú lateral"> <i class="bi bi-list"></i></button>
                     <div class="brand-content">
                         <div class="brand-logo" aria-hidden="true">
-                            <svg aria-hidden="true" height="24" viewBox="0 0 24 24" version="1.1" width="24" data-view-component="true" class="svg-icon">
-                                <path d="M14.265 1.627c0 3.545 1.869 5.327 3.479 7.021 1.54 1.62 3.006 3.163 3.006 6.102 0 4.812-3.753 8.25-8.565 8.25-4.813 0-8.935-3.421-8.935-8.25 0-2.039.962-4.011 2.509-4.899.305-.175.672.007.803.334C7.563 12.684 8.797 12.64 9.437 12c.388-.387.47-1.116-.004-2.062-2.405-4.812 1.863-8.279 4.2-8.854.336-.082.615.198.632.543ZM12.185 21.5c4.059 0 7.065-2.84 7.065-6.75 0-2.337-1.093-3.489-2.678-5.158l-.021-.023c-1.44-1.517-3.139-3.351-3.649-6.557a6.148 6.148 0 0 0-1.911 1.76c-.787 1.144-1.147 2.633-.216 4.495.603 1.205.777 2.74-.277 3.794-.657.657-1.762 1.1-2.956.586-.752-.324-1.353-.955-1.838-1.79-.567.706-.954 1.74-.954 2.893 0 3.847 3.288 6.75 7.435 6.75Z"></path>
+                            <svg aria-hidden="true" height="24" viewBox="0 0 24 24" version="1.1" width="24"
+                                data-view-component="true" class="svg-icon">
+                                <path
+                                    d="M14.265 1.627c0 3.545 1.869 5.327 3.479 7.021 1.54 1.62 3.006 3.163 3.006 6.102 0 4.812-3.753 8.25-8.565 8.25-4.813 0-8.935-3.421-8.935-8.25 0-2.039.962-4.011 2.509-4.899.305-.175.672.007.803.334C7.563 12.684 8.797 12.64 9.437 12c.388-.387.47-1.116-.004-2.062-2.405-4.812 1.863-8.279 4.2-8.854.336-.082.615.198.632.543ZM12.185 21.5c4.059 0 7.065-2.84 7.065-6.75 0-2.337-1.093-3.489-2.678-5.158l-.021-.023c-1.44-1.517-3.139-3.351-3.649-6.557a6.148 6.148 0 0 0-1.911 1.76c-.787 1.144-1.147 2.633-.216 4.495.603 1.205.777 2.74-.277 3.794-.657.657-1.762 1.1-2.956.586-.752-.324-1.353-.955-1.838-1.79-.567.706-.954 1.74-.954 2.893 0 3.847 3.288 6.75 7.435 6.75Z">
+                                </path>
                             </svg>
                         </div>
                         <h2 class="brand-name">IgnitionApp</h2>
@@ -212,19 +215,19 @@
                                     <div class="card-tools">
                                         <!-- Botón de minimizar -->
                                         <button class="tool-button" aria-label="Minimizar">
-                                          <i class="bi bi-dash"></i>
+                                            <i class="bi bi-dash"></i>
                                         </button>
-                                  
+
                                         <!-- Botón de expandir -->
                                         <button class="tool-button" aria-label="Expandir">
-                                          <i class="bi bi-arrows-fullscreen"></i>
+                                            <i class="bi bi-arrows-fullscreen"></i>
                                         </button>
-                                  
+
                                         <!-- Botón de cerrar -->
                                         <button class="tool-button" aria-label="Cerrar">
-                                          <i class="bi bi-x-lg"></i>
+                                            <i class="bi bi-x-lg"></i>
                                         </button>
-                                      </div>
+                                    </div>
                                 </div>
                             </div>
                             <div class="card-body">
@@ -243,9 +246,114 @@
                             </div>
                         </div>
                     </div>
-                    <a href="#" class="button solid">Botón Sólido</a>
-                    <a href="#" class="button outlined">Botón Outline</a>
-                    <a href="#" class="button secondary">Botón Secundario</a>
+                    <div class="col-container cols-3 margin-top">
+                        <a href="#" class="col button solid">Botón Sólido</a>
+                        <a href="#" class="col button outlined">Botón Outline</a>
+                        <a href="#" class="col button secondary">Botón Secundario</a>
+                    </div>
+                    <div class="form-container margin-top">
+                        <p>
+                            Hover over this
+                            <span class="tooltip" data-tooltip="This is a helpful tooltip">text</span>
+                            to see the tooltip.
+                        </p>
+
+                        <!-- Dropdown -->
+                        <div class="dropdown">
+                            <button class="dropdown-toggle" aria-haspopup="true" aria-expanded="false">
+                                Options
+                            </button>
+                            <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                                <a class="dropdown-item" href="#">Action 1</a>
+                                <a class="dropdown-item" href="#">Action 2</a>
+                                <a class="dropdown-item" href="#">Action 3</a>
+                            </div>
+                        </div>
+
+                        <!-- Alerta primaria -->
+                        <div class="alert alert-primary">
+                            <i class="alert-icon bi bi-info-circle"></i>
+                            <div class="alert-text">Esta es una alerta de información primaria.</div>
+                        </div>
+
+                        <!-- Alerta secundaria -->
+                        <div class="alert alert-secondary">
+                            <i class="alert-icon bi bi-gear"></i>
+                            <div class="alert-text">Esta es una alerta secundaria para configuraciones adicionales.
+                            </div>
+                        </div>
+
+                        <!-- Alerta de éxito -->
+                        <div class="alert alert-success">
+                            <i class="alert-icon bi bi-check-circle"></i>
+                            <div class="alert-text">¡Operación realizada con éxito!</div>
+                        </div>
+
+                        <!-- Alerta de peligro -->
+                        <div class="alert alert-danger">
+                            <i class="alert-icon bi bi-exclamation-triangle"></i>
+                            <div class="alert-text">¡Cuidado! Ha ocurrido un error crítico.</div>
+                        </div>
+
+                        <!-- Alerta de advertencia -->
+                        <div class="alert alert-warning">
+                            <i class="alert-icon bi bi-exclamation-circle"></i>
+                            <div class="alert-text">Advertencia: Revise su conexión a internet.</div>
+                        </div>
+
+                        <!-- Campo de texto con etiqueta y ayuda -->
+                        <div class="form-group">
+                            <label class="form-label" for="name">Nombre</label>
+                            <input type="text" id="name" class="form-input" placeholder="Ingresa tu nombre">
+                            <small class="form-help">Por favor, ingresa tu nombre completo.</small>
+                        </div>
+
+                        <!-- Área de texto con etiqueta y ayuda -->
+                        <div class="form-group">
+                            <label class="form-label" for="message">Mensaje</label>
+                            <textarea id="message" class="form-textarea"
+                                placeholder="Escribe tu mensaje aquí..."></textarea>
+                            <small class="form-help">Máximo 500 caracteres.</small>
+                        </div>
+
+                        <!-- Grupo de opciones con radio buttons -->
+                        <div class="form-group">
+                            <label class="form-label">Selecciona tu género</label>
+                            <div class="form-radio">
+                                <input type="radio" id="gender-male" name="gender" value="male">
+                                <label for="gender-male">Masculino</label>
+                            </div>
+                            <div class="form-radio">
+                                <input type="radio" id="gender-female" name="gender" value="female">
+                                <label for="gender-female">Femenino</label>
+                            </div>
+                            <div class="form-radio">
+                                <input type="radio" id="gender-other" name="gender" value="other">
+                                <label for="gender-other">Otro</label>
+                            </div>
+                        </div>
+
+                        <!-- Grupo de opciones con checkboxes -->
+                        <div class="form-group">
+                            <label class="form-label">Selecciona tus intereses</label>
+                            <div class="form-check">
+                                <input type="checkbox" id="interest-sports" name="interests" value="sports">
+                                <label for="interest-sports">Deportes</label>
+                            </div>
+                            <div class="form-check">
+                                <input type="checkbox" id="interest-music" name="interests" value="music">
+                                <label for="interest-music">Música</label>
+                            </div>
+                            <div class="form-check">
+                                <input type="checkbox" id="interest-reading" name="interests" value="reading">
+                                <label for="interest-reading">Lectura</label>
+                            </div>
+                        </div>
+
+                        <!-- Botón de envío del formulario -->
+                        <button type="submit" class="button solid">Enviar</button>
+                    </div>
+
 
                 </article>
 

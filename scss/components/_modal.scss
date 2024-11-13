@@ -1,0 +1,72 @@
+.modal-backdrop {
+    background-color: rgba(0, 0, 0, 0.7); // Fondo semitransparente oscuro para el fondo
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 1000;
+  }
+  
+  .modal {
+    background-color: rgba($color-background-alt, 0.95);
+    color: $color-text;
+    width: 90%;
+    max-width: 500px;
+    padding: $spacing-md;
+    position: relative;
+    @include rounded(8px);
+    @include shadow();
+    transition: transform 0.3s ease, opacity 0.3s ease;
+    transform: scale(0.95);
+    opacity: 0;
+  
+    &.active {
+      transform: scale(1);
+      opacity: 1;
+    }
+  
+    .modal-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding-bottom: $spacing-xs;
+      border-bottom: 1px solid $color-hover;
+  
+      .modal-title {
+        font-size: $font-size-large;
+        font-weight: $font-weight-bold;
+        color: $color-accent;
+      }
+  
+      .modal-close {
+        background: transparent;
+        border: none;
+        color: $color-accent;
+        font-size: 1.5rem;
+        cursor: pointer;
+        @include transition(color);
+  
+        &:hover {
+          color: lighten($color-accent, 10%);
+        }
+      }
+    }
+  
+    .modal-body {
+      padding: $spacing-sm 0;
+      color: $color-text;
+    }
+  
+    .modal-footer {
+      display: flex;
+      justify-content: flex-end;
+      gap: $spacing-xs;
+      border-top: 1px solid $color-hover;
+      padding-top: $spacing-xs;
+    }
+  }
+  
