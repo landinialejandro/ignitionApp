@@ -2,6 +2,8 @@
   display: flex;
   height: calc(100vh - $footer-height - 15px); // Ajuste dinámico para el alto menos el footer
   overflow: hidden; // Oculta cualquier contenido que exceda la altura
+  padding: $spacing-sm;
+  gap: $spacing-sm;
 
   // Sidebar ocupará menos espacio que el content
   .sidebar {

@@ -35,27 +35,33 @@ body {
   margin-bottom: 1.5rem;
 }
 
-@keyframes slideIn {
+@keyframes expandWidth {
   from {
-    transform: translateX(-100%);
+    width: 4rem;
   }
   to {
-    transform: translateX(0);
+    width: 16rem;
   }
 }
-@keyframes slideOut {
+@keyframes collapseWidth {
   from {
-    transform: translateX(0);
+    width: 16rem;
   }
   to {
-    transform: translateX(-100%);
+    width: 4rem;
   }
+}
+.sidebar {
+  width: 16rem;
+  transition: width 0.3s ease;
 }
 .sidebar.collapsed {
-  animation: slideOut 0.3s forwards;
+  width: 4rem;
+  animation: collapseWidth 0.3s forwards;
 }
 .sidebar.expanded {
-  animation: slideIn 0.3s forwards;
+  width: 16rem;
+  animation: expandWidth 0.3s forwards;
 }
 
 @keyframes glow {
@@ -72,8 +78,10 @@ body {
 @media (max-width: 600px) {
   .sidebar {
     width: 4rem;
+    position: flex;
+    z-index: 1001;
   }
-  .sidebar.collapsed {
+  .sidebar.expanded {
     width: 4rem;
   }
   .sidebar .sidebar-content .nav-text {
@@ -98,6 +106,8 @@ body {
   display: flex;
   height: calc(100vh - 2rem - 15px);
   overflow: hidden;
+  padding: 1rem;
+  gap: 1rem;
 }
 .app-main .sidebar {
   flex-shrink: 0;
@@ -106,7 +116,6 @@ body {
 .content {
   background-color: #16213e;
   color: #e0e0e0;
-  margin: 1rem;
   flex-grow: 1;
   display: flex;
   flex-direction: column;
@@ -195,7 +204,7 @@ body {
 .sidebar {
   background-color: #1a1a2e;
   color: #e0e0e0;
-  margin: 1rem;
+  width: 16rem;
   display: flex;
   flex-direction: column;
   overflow: hidden;
@@ -204,17 +213,20 @@ body {
 }
 .sidebar.collapsed {
   width: 4rem;
-  position: fixed;
-  z-index: 1001;
 }
 .sidebar.collapsed .sidebar-content .nav-text {
   display: none;
 }
-.sidebar.collapsed .sidebar-brand .brand-name {
+.sidebar.collapsed .sidebar-brand .brand-content {
   display: none;
 }
-.sidebar.collapsed .sidebar-footer .user-name {
+.sidebar.collapsed .sidebar-footer .user-content {
   display: none;
+}
+@media (max-width: 600px) {
+  .sidebar.expanded {
+    width: 16rem;
+  }
 }
 
 .sidebar-brand {
@@ -533,6 +545,7 @@ body {
   box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.1);
   font-size: 0.9rem;
   line-height: 1.5;
+  height: 100%;
 }
 
 .preloader {

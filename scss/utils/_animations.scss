@@ -1,19 +1,31 @@
   // scss/utils/_animations.scss
 
-@keyframes slideIn {
-    from { transform: translateX(-100%); }
-    to { transform: translateX(0); }
+// Animación de cambio de ancho en lugar de desplazamiento en el eje X
+@keyframes expandWidth {
+  from { width: $sidebar-min-width; }
+  to { width: $sidebar-max-width; }
+}
+
+@keyframes collapseWidth {
+  from { width: $sidebar-max-width; }
+  to { width: $sidebar-min-width; }
+}
+
+.sidebar {
+  width: $sidebar-max-width; // Ancho máximo inicial
+  transition: width 0.3s ease; // Suaviza el cambio de ancho
+
+  &.collapsed {
+    width: $sidebar-min-width; // Cambia al ancho mínimo en estado colapsado
+    animation: collapseWidth 0.3s forwards;
   }
-  
-  @keyframes slideOut {
-    from { transform: translateX(0); }
-    to { transform: translateX(-100%); }
+
+  &.expanded {
+    width: $sidebar-max-width; // Cambia al ancho máximo en estado expandido
+    animation: expandWidth 0.3s forwards;
   }
-  
-  .sidebar {
-    &.collapsed { animation: slideOut 0.3s forwards; }
-    &.expanded { animation: slideIn 0.3s forwards; }
-  }
+}
+
   
 
 @keyframes glow {

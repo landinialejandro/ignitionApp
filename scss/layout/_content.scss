@@ -3,7 +3,6 @@
 .content {
   background-color: $color-background-alt;
   color: $color-text;
-  margin: $spacing-sm;
   flex-grow: 1; // Expande el content para ocupar el espacio vertical restante
   display: flex;
   flex-direction: column;

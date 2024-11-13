@@ -1,22 +1,26 @@
 // scss/utils/_responsive.scss
 
 @include respond('small') {
-  .sidebar {
-    width: $sidebar-min-width; // Colapsa el sidebar a solo iconos en pantallas pequeñas
-    &.collapsed {
-      width: $sidebar-min-width;
+   .sidebar {
+    width: $sidebar-min-width; // Colapsa automáticamente en pantallas pequeñas
+    position: flex;
+    z-index: 1001;
+
+    // Fuerza la eliminación de la clase expanded cuando en pantallas pequeñas
+    &.expanded {
+      width: $sidebar-min-width; // Se asegura que no mantenga el ancho expandido
     }
 
-    .sidebar-content .nav-text { 
-      display: none; // Oculta el texto, muestra solo iconos
+    .sidebar-content .nav-text {
+      display: none; // Oculta el texto en modo colapsado
     }
 
     .sidebar-brand .brand-content {
-      display: none; // Oculta el nombre de la aplicación
+      display: none; // Oculta el nombre de la aplicación en modo colapsado
     }
 
     .sidebar-footer .user-content {
-      display: none; // Oculta el nombre del usuario, muestra solo el botón de configuración
+      display: none; // Oculta el nombre del usuario en modo colapsado
     }
     .sidebar-footer  {
       justify-content: start;

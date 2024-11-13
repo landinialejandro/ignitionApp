@@ -3,29 +3,33 @@
 .sidebar {
   background-color: $color-background;
   color: $color-text;
-  margin: $spacing-sm;
-  // width:$sidebar-max-width;
+  width: $sidebar-max-width;
   display: flex;
   flex-direction: column;
   overflow: hidden;
   @include shadow();
   @include rounded(8px);
 
+  // Estado colapsado
   &.collapsed {
     width: $sidebar-min-width;
-    position: fixed;
-    z-index: 1001;
-
     .sidebar-content .nav-text {
       display: none; // Oculta el texto en modo colapsado
     }
 
-    .sidebar-brand .brand-name {
+    .sidebar-brand .brand-content {
       display: none; // Oculta el nombre de la aplicación en modo colapsado
     }
 
-    .sidebar-footer .user-name {
+    .sidebar-footer .user-content {
       display: none; // Oculta el nombre del usuario en modo colapsado
+    }
+  }
+
+  // Estado expandido en pantallas grandes únicamente
+  &.expanded {
+    @include respond('small') {
+      width: $sidebar-max-width; // Solo se expande si no está en el punto de quiebre
     }
   }
 }
