@@ -34,15 +34,36 @@
     .brand-logo {
       width: 40px;
       height: 40px;
-      font-size: 1.4rem;
-      border: 2px solid $color-accent;
-      border-radius: 50%;
       display: flex;
       align-items: center;
       justify-content: center;
+      background-color: transparent;
+      border: 2px solid $color-accent;
+      border-radius: 50%;
+      transition: color 0.3s ease, transform 0.3s ease;
       margin-right: $spacing-xs;
-      color: $color-accent;
+      margin-left: $spacing-xs;
+    
+      &:hover {
+        color: $color-accent;
+        transform: scale(1.1);
+      }
+    
+      // Aplica estilos al ícono tanto para <i> como para SVG
+      i,
+      .svg-icon {
+        font-size: 1.4rem;
+        color: currentColor;
+        fill: currentColor;
+        transition: color 0.3s ease, fill 0.3s ease;
+    
+        &:hover {
+          color: lighten($color-accent, 10%);
+          fill: lighten($color-accent, 10%);
+        }
+      }
     }
+    
 
     .brand-name {
       font-size: 1rem;

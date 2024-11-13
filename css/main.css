@@ -261,14 +261,31 @@ body {
 .sidebar-brand .brand-content .brand-logo {
   width: 40px;
   height: 40px;
-  font-size: 1.4rem;
-  border: 2px solid #bb86fc;
-  border-radius: 50%;
   display: flex;
   align-items: center;
   justify-content: center;
+  background-color: transparent;
+  border: 2px solid #bb86fc;
+  border-radius: 50%;
+  transition: color 0.3s ease, transform 0.3s ease;
   margin-right: 0.5rem;
+  margin-left: 0.5rem;
+}
+.sidebar-brand .brand-content .brand-logo:hover {
   color: #bb86fc;
+  transform: scale(1.1);
+}
+.sidebar-brand .brand-content .brand-logo i,
+.sidebar-brand .brand-content .brand-logo .svg-icon {
+  font-size: 1.4rem;
+  color: currentColor;
+  fill: currentColor;
+  transition: color 0.3s ease, fill 0.3s ease;
+}
+.sidebar-brand .brand-content .brand-logo i:hover,
+.sidebar-brand .brand-content .brand-logo .svg-icon:hover {
+  color: #d7b8fd;
+  fill: #d7b8fd;
 }
 .sidebar-brand .brand-content .brand-name {
   font-size: 1rem;
