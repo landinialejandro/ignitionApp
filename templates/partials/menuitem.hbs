@@ -8,12 +8,9 @@
     </div>
 </li>
 {{else}}
-<li class="nav-item{{#if menu_open}} menu-open{{/if}} {{li_class}}" {{#each
+<li class="nav-item{{#if expanded}} expanded{{/if}} {{li_class}}" {{#each
     li_attr}} {{@key}}="{{this}}" {{/each}}>
     <a href="{{url}}" class="nav-link {{#if active}}active{{/if}} {{a_class}}"
-        {{#if children}}data-bs-toggle="collapse"
-        data-bs-target="#submenu-{{id}}"
-        {{/if}}
         data-name="{{caption}}"
         data-type="{{type}}"
         {{#each a_attr}}{{@key}}="{{this}}" {{/each}}>
@@ -22,74 +19,27 @@
 
         {{#if caption}}
         <!-- Truncado a 20 caracteres -->
-        <span title="{{caption}}">{{truncate caption 20}}</span>
+        <span class="nav-text" title="{{caption}}">{{truncate caption 20}}</span>
         {{/if}}
 
         {{#if children}}
-        <i class="bi bi-chevron-right submenu-chevron"></i>
+        <i
+            class="bi bi-chevron-right menu-chevron{{#if expanded}} expanded{{/if}}"></i>
         {{/if}}
 
         {{#if badge}}
-        <span class="nav-badge badge text-bg-{{badge.color}} me-3">
+        <span class="badge text-bg-{{badge.color}}">
             <i class="{{badge.icon}}"> </i>{{badge.text}}
         </span>
         {{/if}}
     </a>
 
     {{#if children}}
-    <div class="collapse" id="submenu-{{id}}">
-        <ul class="nav flex-column ms-3">
-            {{#each children}}
-            {{> menuitem }}
-            {{/each}}
-        </ul>
-    </div>
+    <ul class="nav-item">
+        {{#each children}}
+        {{> menuitem }}
+        {{/each}}
+    </ul>
     {{/if}}
 </li>
 {{/if}}
-{{!-- 
-<!-- Sidebar -->
-<aside id="sidebar" class="sidebar py-3">
-    <ul class="nav flex-column">
-        <!-- Menú principal: Inicio -->
-        <li class="nav-item">
-            <a class="nav-link" href="#inicio">
-                <i class="bi bi-1-circle"></i> <span>Inicio</span>
-            </a>
-        </li>
-
-        <!-- Menú principal con submenú: Servicios -->
-        <li class="nav-item">
-            <a class="nav-link submenu-collapsed" href="#servicios"
-                data-bs-toggle="collapse" data-bs-target="#submenuServicios"
-                aria-expanded="false" aria-controls="submenuServicios">
-                <i class="bi bi-2-circle"></i> <span>Servicios</span>
-                <i class="bi bi-chevron-right submenu-chevron"></i>
-            </a>
-            <!-- Submenú de Servicios -->
-            <div class="collapse" id="submenuServicios">
-                <ul class="nav flex-column ms-3">
-                    <li class="nav-item">
-                        <a class="nav-link text-white-50" href="#servicio1">
-                            <i class="bi bi-3-circle"></i> <span>Servicio
-                                1</span>
-                        </a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link text-white-50" href="#servicio2">
-                            <i class="bi bi-4-circle"></i> <span>Servicio
-                                2</span>
-                        </a>
-                    </li>
-                </ul>
-            </div>
-        </li>
-
-        <!-- Menú principal: Contacto -->
-        <li class="nav-item">
-            <a class="nav-link" href="#contacto">
-                <i class="bi bi-5-circle"></i> <span>Contacto</span>
-            </a>
-        </li>
-    </ul>
-</aside> --}}

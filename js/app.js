@@ -15,22 +15,6 @@ const maiPreloader = new preloader(Constants.PRELOADER_ID);
 
 window.onload = async function () {
     try {
-        checkContainerAvailability('toggleSidebar', (container) => {
-            container.addEventListener('click', function () {
-                const mainContainer = document.getElementById(Constants.MAIN_CONTAINER);
-                if (mainContainer) {
-                    mainContainer.classList.toggle('sidebar-collapsed');
-                }
-            });
-
-            document.querySelectorAll('[data-bs-toggle="collapse"]').forEach(function (item) {
-                item.addEventListener('click', function () {
-                    this.classList.toggle('submenu-expanded');
-                    this.classList.toggle('submenu-collapsed');
-                });
-            });
-        });
-
 
         // Obtener la configuración de la aplicación
         const setting = await get_data({ url: "settings/settings.json" });
@@ -40,13 +24,13 @@ window.onload = async function () {
 
         // Mostrar información de la versión al usuario
         msg.info(`Versión: ${text}`);
-        $$(".version-app").html(text);
+        $$(Constants.VERSION_CONTENT).html(text);
 
         RegisterHelpers();
         await RegisterPartials();
 
         // Cargar las diferentes secciones del navBar
-        loadNavBar('#sidebar', await get_data({ url: "settings/nav_sidebar.json" }));
+        loadNavBar(Constants.SIDEBAR_CONTENT, await get_data({ url: "settings/nav_sidebar.json" }));
         // loadNavBar('#navbarNav', await get_data({ url: "settings/nav_headerbar.json" }));
         loadNavBar('#projects-list', await getDirCollectionJson("projects"));
         loadNavBar('#settings-list', await getDirCollectionJson("settings"));
@@ -83,23 +67,24 @@ const navLinkListener = () => {
 
 // Función para manejar el contenido según el tipo
 const handleContentLoading = async ({ type, name }, url) => {
-    const contentPreloader = new preloader(Constants.CONTENT_PRELOADER_ID);
-    const content = document.getElementById(Constants.CONTENT_ID);
-    document.getElementById(Constants.CONTENT_HEADER_TITLE_ID).textContent = name;
+    const contentPreloader = new preloader(Constants.CONTENT_PRELOADER);
+    const content = $$(Constants.CONTENT);
+    $$(Constants.CONTENT_TITLE).text(name);
 
     try {
         // Instanciar el preloader para #main-content
         // los type system y folder se consultan antes y se sale de inmediato
         contentPreloader.show();// Mostrar preloader
         switch (type) {
-            case "dash":
-
+            case "content":
+                await loadContent(url, content);
+                break;
             case "page":
-                loadPageContent(url, content);
+                loadPage(url, content);
                 break;
 
             case "file":
-                await loadJsonContent(url, content);
+                await loadProject(url, content);
                 break;
 
             case "image":
@@ -124,13 +109,19 @@ const handleContentLoading = async ({ type, name }, url) => {
 };
 
 // Cargar contenido de una página en un iframe
-const loadPageContent = (url, container) => {
-    container.innerHTML = `<iframe src="${url}" style="width:100%; height:100vh; border:none;"></iframe>`;
+const loadPage = (url, container) => {
+    container.html(`<iframe src="${url}" style="width:100%; height:100vh; border:none;"></iframe>`);
+    msg.info(`Cargando página: ${url}`);
+};
+
+// Cargar contenido de una página en un iframe
+const loadContent = async (url, container) => {
+    container.html(await get_data({ url, isJson: false }));
     msg.info(`Cargando página: ${url}`);
 };
 
 // Cargar y mostrar contenido JSON formateado
-const loadJsonContent = async (url, container) => {
+const loadProject = async (url, container) => {
     initializeProject(url);
     msg.info(`Mostrando archivo JSON: ${url}`);
 };

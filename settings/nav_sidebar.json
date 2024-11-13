@@ -1,71 +1,48 @@
 [
     {
-        "id": "agregar",
-        "caption": "Tools",
-        "url": "",
-        "active": true,
-        "icon": {
-            "value": "bi bi-speedometer",
-            "type": "class"
-        },
-        "a_class": "add-button",
-        "menu_open": true,
-        "type": "component",
-        "children": [],
-        "properties": {
-            "caption": "Nuevo",
-            "usershelper": {
-                "caption": "Agrega nuevo proyecto o carpeta",
-                "class": "alert alert-info"
-            },
-            "properties": [
-                {
-                    "caption": "Nuevo Proyecto",
-                    "checked": false
-                },
-                {
-                    "caption": "NUeva carpeta",
-                    "checked": false
-                }
-            ],
-            "type": "button-group",
-            "icon": {
-                "value": "bi bi-wrench-adjustable-circle",
-                "type": "class"
-            }
-        }
-    },
-    {
-        "id": "proyectos",
+        "id": "project-page",
         "caption": "Proyectos",
         "url": "#",
-        "active": true,
+        "active": false,
         "icon": {
             "value": "bi bi-diagram-3",
             "type": "class"
         },
-        "a_class": "project-page",
-        "menu_open": true,
+        "expanded": true,
         "type": "folder",
         "children": [
             {
                 "id": "dash",
                 "caption": "Dashboard",
                 "url": "pages/projects_dash_page.html",
-                "active": true,
+                "active": false,
                 "icon": {
                     "value": "bi bi-speedometer",
                     "type": "class"
                 },
-                "a_class": "project-page",
-                "menu_open": true,
-                "type": "dash"
+                "expanded": true,
+                "type": "content"
             },
             {
                 "type": "component",
                 "id": "projects-list"
             }
         ]
+    },
+    {
+        "id": "ejemplo",
+        "caption": "Ejemplo componentes",
+        "url": "pages/demo.html",
+        "active": false,
+        "icon": {
+            "value": "bi bi-book",
+            "type": "class"
+        },
+        "type": "content",
+        "badge": {
+            "text": "New",
+            "color": "danger"
+        }
     },
     {
         "id": "documentacion",
@@ -76,8 +53,7 @@
             "value": "bi bi-book",
             "type": "class"
         },
-        "a_class": "docs-page",
-        "type": "page",
+        "type": "content",
         "badge": {
             "text": "New",
             "color": "danger"
@@ -92,7 +68,6 @@
             "value": "bi bi-image",
             "type": "class"
         },
-        "a_class": "docs-page",
         "type": "page",
         "badge": {
             "icon": "bi bi-bootstrap",
@@ -108,9 +83,8 @@
             "value": "bi bi-tools",
             "type": "class"
         },
-        "a_class": "debug-page",
-        "menu_open": false,
-        "type": "dash",
+        "expanded": false,
+        "type": "content",
         "children": [
             {
                 "type": "component",

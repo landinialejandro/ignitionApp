@@ -39,29 +39,25 @@ export const truncateText = (text, maxLength) => {
 }
 
 export class preloader {
-    constructor(preloaderId) {
-        this.preloader = document.getElementById(preloaderId);
+    constructor(preloader) {
+        this.preloader = $$(preloader);
     }
-
     show() {
-        this.preloader.style.transition = "opacity 0.5s"; // Animación de transición suave
-        this.preloader.style.opacity = "100";
-        this.preloader.style.display = "flex";
+        this.preloader.css("transition", "opacity 0.5s"); // Animación de transición suave
+        this.preloader.css("opacity", "1"); // Animación de transición suave
+        this.preloader.css("display", "flex"); // Animación de transición suave
     }
-
     hide() {
         if (this.preloader) { // Verificar si el elemento existe
             setTimeout(() => {
-                this.preloader.style.transition = "opacity 0.5s"; // Animación de transición suave
-                this.preloader.style.opacity = "0";
-
+                this.preloader.css("transition", "opacity 0.5s"); // Animación de transición suave
+                this.preloader.css("opacity", "0"); // Animación de transición suave
                 setTimeout(() => {
-                    this.preloader.style.display = "none";
+                    this.preloader.addClass('hidden');
                     msg.secondary("preloader finalizado...", true);
                 }, 500); // Esperar a que termine la transición antes de ocultar
             }, 600); // Retraso inicial de 600ms
         }
-        //this.preloader.style.display = "none";
     }
 }
 

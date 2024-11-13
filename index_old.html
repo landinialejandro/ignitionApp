@@ -2,146 +2,183 @@
 <html lang="es">
 
 <head>
-    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-    <title>IngnitionApp | Dashboard</title>
-    <link id="browser_favicon" rel="shortcut icon" href="dist/logo/logo.png">
-    <!-- Meta Tags -->
+    <!-- Metadatos esenciales del documento HTML -->
+    <meta charset="UTF-8"> <!-- Codificación de caracteres UTF-8 -->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- Responsive design para todos los dispositivos -->
+    <title>IgnitionApp | Dashboard</title> <!-- Título de la página -->
+
+    <!-- Favicon para navegadores estándar -->
+    <link rel="icon" type="image/x-icon" href="dist/logo/favicon.ico">
+
+    <!-- Metadatos adicionales para SEO y descripción -->
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="title" content="IgnitionApp | Dashboard">
     <meta name="author" content="Landini">
-    <meta name="description" content="IgnitionApp es una aplicación para el facil desarrollo de aplicaciones">
-    <meta name="keywords" content="bootstrap 5, dashboard, admin template, vanilla JS">
+    <meta name="description" content="IgnitionApp es una aplicación para el fácil desarrollo de aplicaciones">
+    <meta name="keywords" content="vanilla JS, dashboard, app development">
 
-    <!-- CSS Links -->
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fontsource/source-sans-3@5.0.12/index.css"
-        integrity="sha256-tXJfXfp6Ewt1ilPzLDtQnJV4hclT9XuaZUKyUvmyr+Q=" crossorigin="anonymous">
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/overlayscrollbars@2.3.0/styles/overlayscrollbars.min.css"
-        integrity="sha256-dSokZseQNT08wYEWiz5iLI8QPlKxG+TswNRD8k35cpg=" crossorigin="anonymous">
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.min.css"
-        integrity="sha256-Qsx5lrStHZyR9REqhUF8iQt73X06c8LGIUPzpOhwRrI=" crossorigin="anonymous">
-    <link rel="stylesheet"
-        href="https://cdnjs.cloudflare.com/ajax/libs/limonte-sweetalert2/11.4.22/sweetalert2.min.css">
-
-    <!-- <link rel="stylesheet" href="dist/adminlte4/css/adminlte.min.css"> -->
-    <link rel="stylesheet" href="css/ingnitionApp.css">
+    <!-- Enlace al archivo principal de estilos CSS -->
+    <link rel="stylesheet" href="dist/bs-icons/bootstrap-icons.min.css">
+    <link rel="stylesheet" href="css/main.css">
 </head>
 
-<body class="layout-fixed sidebar-expand-lg bg-body-tertiary">
-
-    <div id="preloader" class="bg-secondary" data-bs-theme="dark">
-        <div class="spinner-grow" role="status"></div>
-        <div class="spinner-grow" role="status"></div>
-        <div class="spinner-grow" role="status"></div>
+<body>
+    <!-- Preloader principal que afecta la visibilidad del app-wrapper. 
+         Se muestra mientras se carga la aplicación para mejorar la experiencia de usuario. -->
+    <!-- Preloader principal que cubre toda la pantalla -->
+    <div class="preloader" aria-label="Cargando aplicación">
+        <div class="spinner"></div>
     </div>
 
-    <!-- App Wrapper -->
+    <!-- Contenedor principal de toda la aplicación -->
     <div class="app-wrapper">
-        <!-- Header -->
-        <nav class="app-header navbar navbar-expand bg-body" data-bs-theme="dark">
-            <!-- <nav class="app-header navbar navbar-expand bg-secondary sadow" data-bs-theme="dark"></nav> -->
-            <div class="container-fluid">
-                <ul class="navbar-nav">
-                    <li class="nav-item">
-                        <a class="nav-link" data-lte-toggle="sidebar" href="#" role="button" data-type="system">
-                            <i class="bi bi-list"></i>
-                        </a>
-                    </li>
-                </ul>
-                <ul id="main-headerbar" class="navbar-nav">
-                    <!-- HeaderBar -->
-                </ul>
+        <!-- app-main: Contenedor principal de contenido de la aplicación.
+             Este contenedor ocupa el espacio restante de la pantalla, excepto el footer. -->
+        <main class="app-main">
 
-                <ul class="navbar-nav ms-auto">
-                    <li class="nav-item">
-                        <a class="nav-link" data-widget="navbar-search" href="#" role="button" data-type="system">
-                            <i class="bi bi-search"></i>
-                        </a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="#" data-lte-toggle="fullscreen" data-type="system">
-                            <i data-lte-icon="maximize" class="bi bi-arrows-fullscreen"></i>
-                            <i data-lte-icon="minimize" class="bi bi-fullscreen-exit" style="display: none;"></i>
-                        </a>
-                    </li>
-                </ul>
-            </div>
-        </nav>
-        <!-- Sidebar -->
-        <aside class="app-sidebar bg-body-secondary shadow" data-bs-theme="dark">
-            <div class="sidebar-brand">
-                <a href="./index.html" class="brand-link">
-                    <img src="dist/logo/logo.png" alt="Landini Logo" class="brand-image opacity-75 shadow">
-                    <span class="brand-text fw-light">IgnitionApp</span>
-                </a>
-            </div>
-            <div class="sidebar-wrapper">
-                <nav class="mt-2">
-                    <ul id="main-sidebar" class="nav sidebar-menu flex-column" data-lte-toggle="treeview" role="menu"
-                        data-accordion="false">
-                        <!-- sidebar -->
+            <!-- aside.sidebar: Barra lateral (sidebar) que contiene opciones de navegación.
+                 Esta sección ocupa el alto completo de app-main, y es más angosta que el content. -->
+            <aside class="sidebar expanded" aria-label="Menú lateral">
+
+                <!-- sidebar-brand: Branding del sidebar que contiene el botón de cierre, el logo y el nombre de la aplicación. -->
+                <header class="sidebar-brand">
+                    <button class="sidebar-toggle" aria-label="Cerrar menú lateral"> <i class="bi bi-list"></i></button>
+                    <div class="brand-content">
+                        <div class="brand-logo" aria-hidden="true">
+                            <svg aria-hidden="true" height="24" viewBox="0 0 24 24" version="1.1" width="24"
+                                data-view-component="true" class="svg-icon">
+                                <path
+                                    d="M14.265 1.627c0 3.545 1.869 5.327 3.479 7.021 1.54 1.62 3.006 3.163 3.006 6.102 0 4.812-3.753 8.25-8.565 8.25-4.813 0-8.935-3.421-8.935-8.25 0-2.039.962-4.011 2.509-4.899.305-.175.672.007.803.334C7.563 12.684 8.797 12.64 9.437 12c.388-.387.47-1.116-.004-2.062-2.405-4.812 1.863-8.279 4.2-8.854.336-.082.615.198.632.543ZM12.185 21.5c4.059 0 7.065-2.84 7.065-6.75 0-2.337-1.093-3.489-2.678-5.158l-.021-.023c-1.44-1.517-3.139-3.351-3.649-6.557a6.148 6.148 0 0 0-1.911 1.76c-.787 1.144-1.147 2.633-.216 4.495.603 1.205.777 2.74-.277 3.794-.657.657-1.762 1.1-2.956.586-.752-.324-1.353-.955-1.838-1.79-.567.706-.954 1.74-.954 2.893 0 3.847 3.288 6.75 7.435 6.75Z">
+                                </path>
+                            </svg>
+                        </div>
+                        <h2 class="brand-name">IgnitionApp</h2>
+                    </div>
+                </header>
+
+                <!-- sidebar-content: Contenido principal del sidebar, que ocupa el alto restante entre el brand y el footer del sidebar. -->
+                <nav class="sidebar-content" aria-label="Navegación principal">
+                    <ul class="nav-list">
+                        <!-- Item con Submenú -->
+                        <li class="nav-item expanded">
+                            <a href="#" class="nav-link" aria-expanded="true">
+                                <i class="bi bi-house-door nav-icon"></i> <!-- Icono de Inicio -->
+                                <span class="nav-text">Inicio</span>
+                                <i class="bi bi-chevron-right menu-chevron expanded"></i> <!-- Chevron -->
+                            </a>
+                            <ul class="nav-list">
+                                <li class="nav-item">
+                                    <a href="#" class="nav-link">
+                                        <i class="bi bi-circle nav-icon"></i>
+                                        <span class="nav-text">Subitem 1</span>
+                                    </a>
+                                </li>
+                                <li class="nav-item">
+                                    <a href="#" class="nav-link">
+                                        <i class="bi bi-circle nav-icon"></i>
+                                        <span class="nav-text">Subitem 2</span>
+                                    </a>
+                                </li>
+                            </ul>
+                        </li>
+
+                        <!-- Item sin Submenú -->
+                        <li class="nav-item">
+                            <a href="link.html" class="nav-link">
+                                <i class="bi bi-folder nav-icon"></i> <!-- Icono de Documentos -->
+                                <span class="nav-text">Documentos</span>
+                            </a>
+                        </li>
+
+                        <!-- Otro Item con Submenú -->
+                        <li class="nav-item ">
+                            <a href="#" class="nav-link" aria-expanded="true">
+                                <i class="bi bi-gear nav-icon"></i> <!-- Icono de Configuración -->
+                                <span class="nav-text">Configuración</span>
+                                <i class="bi bi-chevron-right menu-chevron expanded"></i> <!-- Chevron -->
+                            </a>
+                            <ul class="nav-list">
+                                <li class="nav-item">
+                                    <a href="#" class="nav-link">
+                                        <i class="bi bi-circle nav-icon"></i>
+                                        <span class="nav-text">Perfil</span>
+                                    </a>
+                                </li>
+                                <li class="nav-item">
+                                    <a href="#" class="nav-link">
+                                        <i class="bi bi-circle nav-icon"></i>
+                                        <span class="nav-text">Seguridad</span>
+                                    </a>
+                                </li>
+                            </ul>
+                        </li>
                     </ul>
                 </nav>
-            </div>
-        </aside>
-        <!-- Main Content -->
-        <main class="app-main bg-secondary" data-bs-theme="dark">
-            <nav class="menu bg-body-secondary " id="context-menu" style="display: none; position: absolute;"
-                data-bs-theme="dark">
-                <!-- Opciones del ContextMenu se agregarán dinámicamente aquí -->
-                <ul id="menu-options" class="context-menu-tree flex-column">
-                </ul>
-            </nav>
-            <div class="app-content-header">
-                <div class="container-fluid">
-                    <div class="row">
-                        <div class="col-sm-6">
-                            <h3 id="app-content-header-caption" class="app-title mb-0">
-                                <span class="title-ignition">Ignition</span><span class="title-app">App</span>
-                            </h3>
+
+                <!-- sidebar-footer: Sección del footer en el sidebar, contiene el avatar del usuario, su nombre y el botón de configuración. -->
+                <footer class="sidebar-footer">
+                    <div class="user-content">
+                        <div class="user-avatar" aria-hidden="true">
+                            <!-- Avatar del usuario (no se lee en lectores de pantalla) -->
+                            <i class="bi bi-person-badge"></i>
                         </div>
-                        <div class="col-sm-6">
-                            <ol class="breadcrumb float-sm-end">
-                            </ol>
-                        </div>
+                        <h2 class="user-name">Alejandro</h2> <!-- Nombre del usuario -->
                     </div>
-                </div>
-            </div>
-            <div class="app-content">
-                <div id="content-preloader" class="bg-secondary" data-bs-theme="dark" style="display: none;">
-                    <div class="spinner-wrapper">
-                        <div class="spinner-grow" role="status">
-                            <span class="visually-hidden">Cargando...</span>
-                        </div>
-                    </div>
-                </div>
-                <div id="main-content" class="container-fluid">
-                    <!-- Add your content here -->
-                    hola mundo
-                </div>
-            </div>
+                    <button class="settings-button" aria-label="Abrir configuración"><i class="bi bi-gear"></i></button>
+                    <!-- Botón para abrir configuración -->
+                </footer>
+            </aside>
+
+            <!-- content: Contenedor principal de contenido -->
+            <section class="content">
+                <!-- content-header: Encabezado con título, campo de búsqueda y breadcrumb -->
+                <header class="content-header">
+                    <h2 class="content-title">Dashboard</h2>
+
+                    <!-- Campo de búsqueda -->
+                    <form class="search-form" role="search" aria-label="Buscar">
+                        <input type="text" class="search-input" placeholder="Buscar..." aria-label="Campo de búsqueda">
+                        <button type="submit" class="search-button"><i class="bi bi-search"></i></button>
+                        <!-- Icono de búsqueda -->
+                    </form>
+
+                    <!-- Breadcrumb -->
+                    <nav aria-label="breadcrumb">
+                        <ol class="breadcrumb">
+                            <li class="breadcrumb-item"><a href="#">Inicio</a></li>
+                            <li class="breadcrumb-item"><a href="#">Sección</a></li>
+                            <li class="breadcrumb-item active" aria-current="page">Actual</li>
+                        </ol>
+                    </nav>
+                </header>
+
+                <!-- content-body: Área principal para mostrar contenido dinámico -->
+                <article class="content-body">
+
+                </article>
+
+            </section>
         </main>
-        <!-- Footer -->
-        <footer class="app-footer bg-body" data-bs-theme="dark">
-            <strong>
-                Copyright &copy; 2014-2024&nbsp;
-                <a href="http://landini.com.ar" class="text-decoration-none">Landini</a>.
-            </strong> version <span class="starter-version"></span>
-            <div class="float-end d-none d-sm-inline">Anything you want</div>
+
+        <!-- app-footer: Footer fijo al pie de la pantalla que contiene información adicional.
+             En este footer se muestran en línea el copyright, estado y versión de la aplicación. -->
+        <footer class="app-footer">
+            <div class="footer-copyright"> <!-- Copyright -->
+                © 2024 IgnitionApp
+            </div>
+            <div class="footer-status"> <!-- Estado de la aplicación o conexión -->
+                Estado
+            </div>
+            <div class="footer-version"> <!-- Versión de la aplicación -->
+                Versión 1.0.0
+            </div>
         </footer>
     </div>
-    <!-- Scripts -->
 
-    <script src="https://cdn.jsdelivr.net/npm/overlayscrollbars@2.3.0/browser/overlayscrollbars.browser.es6.min.js"
-        integrity="sha256-H2VM7BKda+v2Z4+DRy69uknwxjyDRhszjXFhsL4gD3w=" crossorigin="anonymous"></script>
-    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js"
-        integrity="sha256-whL0tQWoY1Ku1iskqPFvmZ+CHsvmRWx/PIoEvIeWh4I=" crossorigin="anonymous"></script>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.min.js"
-        integrity="sha384-0pUGZvbkm6XF6gxjEnlmuGrJXVbNuzT9qBBavbLwCsOGabYfZo0T0to5eqruptLy"
-        crossorigin="anonymous"></script>
-    <script src="https://cdn.jsdelivr.net/npm/handlebars@latest/dist/handlebars.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/limonte-sweetalert2/11.4.22/sweetalert2.all.min.js"></script>
-    <!-- <script src="dist/adminlte4/js/adminlte.min.js"></script> -->
-    <!-- App-specific JavaScript (Modules) -->
+    <!-- JavaScript principal para la aplicación.
+         Se carga al final del body para no afectar el rendimiento de carga inicial de la página. -->
+    <script src="js/layout.js"></script>
     <script type="module" src="js/app.js"></script>
 </body>
 

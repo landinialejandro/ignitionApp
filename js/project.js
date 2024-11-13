@@ -32,7 +32,7 @@ export const initializeProject = async (url) => {
 
     const content = await get_data({ url });
     const projectPage = await get_data({ url: "pages/project_page.html", isJson: false });
-    $$("#"+Constants.CONTENT_ID).html(projectPage);
+    $$(Constants.CONTENT).html(projectPage);
 
     project = new Nodes(".project-container", nodeTypeManager);
     project.setNodes(content);
@@ -195,7 +195,7 @@ const handleProjectTree = async (node) => {
 
         // Renderiza el nodo actual si tiene propiedades
         if (selected.properties) {
-            const html = await renderTemplate("templates/settingItem.hbs", selected);
+            const html = await renderTemplate("templates/menuitem.hbs", selected);
             $$(".editor-card-body").html(html);
         }
 

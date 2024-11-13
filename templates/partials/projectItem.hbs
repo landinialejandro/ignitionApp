@@ -1,7 +1,7 @@
 <!-- partials/projectIem.hbs -->
-<li class="node-item {{#if state.node_open}}node-open{{/if}} {{li_class}}" 
+<li class="nav-item {{#if state.node_open}}expended{{/if}} {{li_class}}" 
     {{#each li_attr}} {{@key}}="{{this}}" {{/each}}>
-    <a  class="node-link {{#if active}}active{{/if}} {{a_class}}"
+    <a  class="nav-link {{#if active}}active{{/if}} {{a_class}}"
         data-name="{{caption}}" 
         data-type="{{type}}" 
         data-id="{{id}}"
@@ -24,7 +24,7 @@
     </a>
 
     {{#if children}}
-    <ul class="node-list flex-column">
+    <ul class="nav-list">
         {{#each children}}
             {{> projectitem }}
         {{/each}}
