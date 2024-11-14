@@ -278,42 +278,45 @@ export const updateSidebarOverflow = () => {
     }
 };
 
-
 /**
- * Verifica periódicamente la disponibilidad del contenedor y ejecuta el callback si es encontrado.
- * Si no se encuentra el contenedor en 1 minuto, cancela la búsqueda.
- * @param {string} containerId - El ID del contenedor a buscar.
- * @param {function} callback - La función que se ejecutará cuando el contenedor sea encontrado.
- * @param {number} timeout - Tiempo máximo en milisegundos para intentar encontrar el contenedor (por defecto 60000 ms = 1 minuto).
+ * Observa cambios en el DOM y ejecuta un callback cuando todos los elementos especificados estén disponibles.
+ * Si no se encuentran todos los elementos en el tiempo especificado, detiene la observación.
+ *
+ * @param {string | string[]} containers - Un ID único o un array de IDs de los contenedores a buscar.
+ * @param {function} callback - La función que se ejecutará cuando todos los contenedores sean encontrados.
+ * @param {number} timeout - Tiempo máximo en milisegundos para observar los contenedores (por defecto 60000 ms = 1 minuto).
  */
-export const checkContainerAvailability = (containerId, callback, timeout = Constants.TIMEOUT) => {
+export const checkContainerAvailability = (containers, callback, timeout = 60000) => {
     if (typeof callback !== 'function') {
         console.error('El argumento proporcionado como callback no es una función.');
         return;
     }
 
+    const containerIds = Array.isArray(containers) ? containers : [containers];
     const startTime = Date.now();
+    
+    // Función para verificar si todos los elementos están presentes
+    const allContainersAvailable = () => containerIds.every(id => document.getElementById(id) !== null);
 
-    const attemptInitialization = () => {
-        const container = document.getElementById(containerId);
-        const elapsed = Date.now() - startTime;
-
-        if (container) {
+    const observer = new MutationObserver(() => {
+        if (allContainersAvailable()) {
             try {
-                // Ejecuta la función callback con el contenedor como argumento
-                callback(container);
-                // console.log('Contenedor inicializado: ', container);
+                const elements = containerIds.map(id => document.getElementById(id));
+                callback(...elements); // Ejecuta el callback con todos los elementos encontrados
+                observer.disconnect(); // Detiene la observación una vez encontrados todos los contenedores
+                console.log(`Todos los contenedores encontrados: ${containerIds.join(', ')}`);
             } catch (error) {
                 console.error('Error al ejecutar el callback:', error);
             }
-        } else if (elapsed < timeout) {
-            // Vuelve a intentar después de un corto período
-            setTimeout(attemptInitialization, 500); // Intenta cada 500 ms
-        } else {
-            console.warn(`No se encontró el contenedor "${containerId}" después de ${timeout / 1000} segundos. Búsqueda cancelada.`);
         }
-    };
+    });
 
-    attemptInitialization();
+    observer.observe(document.body, { childList: true, subtree: true });
+
+    setTimeout(() => {
+        if (!allContainersAvailable()) {
+            observer.disconnect();
+            console.warn(`No se encontraron todos los contenedores (${containerIds.join(', ')}) después de ${timeout / 1000} segundos. Observación cancelada.`);
+        }
+    }, timeout);
 };
-

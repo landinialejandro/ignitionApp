@@ -22,8 +22,8 @@ export const $$ = (input) => {
     const elements = typeof input === 'string'
         ? document.querySelectorAll(input)
         : input instanceof HTMLElement
-        ? [input]
-        : [];
+            ? [input]
+            : [];
 
     if (!elements.length) {
         console.warn('No elements found for the given input.');
@@ -57,16 +57,37 @@ export const $$ = (input) => {
                 element.style[property] = value;
             });
         },
-        on: (eventType, handler) => {
-            if (!eventType || typeof handler !== 'function') {
+        on: (eventType, selectorOrHandler, handler) => {
+            const isDelegation = typeof selectorOrHandler === 'string';
+            const actualHandler = isDelegation ? handler : selectorOrHandler;
+            const selector = isDelegation ? selectorOrHandler : null;
+
+            if (!eventType || typeof actualHandler !== 'function') {
                 console.error('Valid event type and handler function must be provided.');
                 return;
             }
+
             elements.forEach((element) => {
-                element.addEventListener(eventType, handler);
+                const delegatedHandler = (event) => {
+                    if (selector) {
+                        const potentialTargets = element.querySelectorAll(selector);
+                        let target = event.target;
+                        while (target && target !== element) {
+                            if ([...potentialTargets].includes(target)) {
+                                actualHandler.call(target, event); // Llamar al handler en el elemento encontrado
+                                break;
+                            }
+                            target = target.parentNode;
+                        }
+                    } else {
+                        actualHandler(event);
+                    }
+                };
+
+                element.addEventListener(eventType, delegatedHandler);
                 element._eventListeners = element._eventListeners || {};
                 element._eventListeners[eventType] = element._eventListeners[eventType] || [];
-                element._eventListeners[eventType].push(handler);
+                element._eventListeners[eventType].push(delegatedHandler);
             });
         },
         off: (eventType) => {

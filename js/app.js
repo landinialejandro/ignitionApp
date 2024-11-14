@@ -1,39 +1,60 @@
 import Constants from './constants.js';
-import { get_data, checkContainerAvailability, updateSidebarOverflow } from './libraries/common.js';
+import { checkContainerAvailability, get_data } from './libraries/common.js';
+import { RegisterHelpers, RegisterPartials } from './libraries/hbs.js';
+import { getDirCollectionJson, preloader, renderTemplate } from './libraries/helpers.js';
 import { Msglog } from "./libraries/MsgLog.js";
-import { RegisterPartials, RegisterHelpers } from './libraries/hbs.js';
-import { preloader, renderTemplate, getDirCollectionJson } from './libraries/helpers.js';
 import { $$ } from './libraries/selector.js';
 import { initializeProject } from './project.js';
 
 window.msg = new Msglog();
 msg.success("Iniciando app.js", true);
-const maiPreloader = new preloader(Constants.PRELOADER_ID);
+const mainPreloader = new preloader(Constants.PRELOADER_ID);
 
-window.onload = async function () {
+/**
+ * Maneja la carga de configuración y datos iniciales, y la inicialización de la interfaz.
+ */
+document.addEventListener("DOMContentLoaded", async () => {
+    mainPreloader.show();
     try {
-        const setting = await get_data({ url: "settings/settings.json" });
-        const version = setting.version || "0.0.0";
-        const release = setting.release || "bad file";
-        const text = `${version} - ${release}`;
-        
-        msg.info(`Versión: ${text}`);
-        $$(Constants.VERSION_CONTENT).html(text);
+        const [setting, navSidebar, projects, settings] = await Promise.all([
+            get_data({ url: "settings/settings.json" }),
+            get_data({ url: "settings/nav_sidebar.json" }),
+            getDirCollectionJson("projects"),
+            getDirCollectionJson("settings")
+        ]);
+
+        const versionText = `${setting.version || "0.0.0"} - ${setting.release || "bad file"}`;
+        msg.info(`Versión: ${versionText}`);
+        $$(Constants.VERSION_CONTENT).html(versionText);
 
         RegisterHelpers();
         await RegisterPartials();
 
-        loadNavBar(Constants.SIDEBAR_CONTENT, await get_data({ url: "settings/nav_sidebar.json" }));
-        loadNavBar('#projects-list', await getDirCollectionJson("projects"));
-        loadNavBar('#settings-list', await getDirCollectionJson("settings"));
+        loadNavBar(Constants.SIDEBAR_CONTENT, navSidebar);
+
+        checkContainerAvailability(['projects-list', 'settings-list'], (projectsContainer, settingsContainer) => {
+            loadNavBar('#projects-list', projects);
+            loadNavBar('#settings-list', settings);
+        });
+
         addEventsListener();
     } catch (error) {
-        console.error("Error al inicializar la aplicación:", error);
-        msg.danger("Ocurrió un problema al iniciar la aplicación. Por favor, inténtalo de nuevo más tarde.");
+        handleError("Error al inicializar la aplicación", error);
     } finally {
-        maiPreloader.hide();
+        mainPreloader.hide();
     }
-};
+});
+
+/**
+ * Función para manejar errores y mostrar mensajes en la consola y al usuario.
+ * 
+ * @param {string} message - Mensaje principal del error.
+ * @param {Error} error - Objeto de error capturado.
+ */
+function handleError(message, error) {
+    console.error(`${message}:`, error);
+    msg.danger(`${message}. Por favor, inténtalo de nuevo más tarde.`);
+}
 
 /**
  * Función para añadir todos los event listeners necesarios al inicializar la app.
@@ -44,49 +65,50 @@ const addEventsListener = () => {
 };
 
 /**
- * Función para manejar los eventos de clic en enlaces de navegación.
+ * Función para manejar los eventos de clic en enlaces de navegación utilizando delegación de eventos.
+ * Esto permite capturar clics en elementos `a.nav-link` incluso si se cargan dinámicamente.
  */
 const navLinkListener = () => {
-    $$("a.nav-link").on("click", async function (e) {
+    // Delegar el evento sobre el contenedor que contiene los enlaces
+    $$(Constants.SIDEBAR_CONTENT).on("click", "a.nav-link", async function (e) {
         e.preventDefault();
         msg.info(`Navlink clicked: ${this.textContent.trim()}`, true);
+
         const url = $$(this).attr("href");
         const data = $$(this).allData();
+
         await handleContentLoading(data, url);
     });
 };
 
+
 /**
- * Función que devuelve un objeto con métodos de carga según el tipo de contenido.
+ * Objeto que contiene métodos de carga según el tipo de contenido.
  * Cada método maneja directamente la carga de un tipo específico (content, page, file, image),
  * mientras que el método 'default' maneja los casos no soportados.
- *
- * @param {string} url - URL del contenido a cargar.
- * @param {HTMLElement} content - Elemento HTML donde se cargará el contenido.
- * @returns {Object} - Objeto con métodos de carga específicos para cada tipo.
  */
-const loadHandlers = (url, content) => ({
-    async content() {
+const loadHandlers = {
+    async content(url, content) {
         const contentHtml = await get_data({ url, isJson: false });
         content.html(contentHtml);
         msg.info(`Cargando contenido: ${url}`);
     },
-    page() {
+    page(url, content) {
         content.html(`<iframe src="${url}" style="width:100%; height:100vh; border:none;"></iframe>`);
         msg.info(`Cargando página: ${url}`);
     },
-    async file() {
+    async file(url) {
         initializeProject(url);
         msg.info(`Mostrando archivo JSON: ${url}`);
     },
-    image() {
+    image(url, content) {
         content.innerHTML = `<img src="${url}" alt="Imagen" style="max-width: 100%; height: auto;" />`;
         msg.info(`Mostrando imagen: ${url}`);
     },
     default() {
         msg.warning("Tipo de enlace no soportado.");
     }
-});
+};
 
 /**
  * Función principal para manejar la carga de contenido según el tipo proporcionado.
@@ -106,13 +128,10 @@ const handleContentLoading = async ({ type, name }, url) => {
     }
 
     try {
-        const handlers = loadHandlers(url, content);
-        const loadFunction = handlers[type] || handlers.default;
-
-        await loadFunction();
+        const loadFunction = loadHandlers[type] || loadHandlers.default;
+        await loadFunction(url, content);
     } catch (error) {
-        console.error(`Error al cargar el tipo de contenido '${type}':`, error);
-        msg.danger("Error al cargar el contenido. Verifica la consola para más detalles.");
+        handleError(`Error al cargar el tipo de contenido '${type}'`, error);
     } finally {
         contentPreloader.hide();
     }
@@ -130,7 +149,6 @@ const loadNavBar = async (selector, content) => {
         $$(selector).html(await renderTemplate("templates/nav_bar.hbs", content));
         msg.secondary(`${selector} cargado correctamente.`, true);
     } catch (error) {
-        console.error(`Error al cargar ${selector}:`, error);
-        msg.danger(`Ocurrió un error al cargar ${selector}.`);
+        handleError(`Error al cargar ${selector}`, error);
     }
 };
