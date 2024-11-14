@@ -6,15 +6,10 @@
             "type": "class",
             "value": "bi bi-diagram-3"
         },
-        "li_attr": {
-            "id": "root-project"
-        },
-        "a_attr": {
-            "href": "#",
-            "id": "a-root-project"
-        },
+        "li_attr": {},
+        "a_attr": {},
         "state": {
-            "opened": true
+            "expanded": true
         },
         "properties": [],
         "children": [],

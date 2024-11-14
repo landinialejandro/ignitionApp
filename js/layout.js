@@ -7,6 +7,32 @@ window.addEventListener('load', () => {
 });
 
 document.addEventListener("DOMContentLoaded", () => {
+  // Selección del contenedor principal para la delegación de eventos
+  const contentBody = document.querySelector(".content-body");
+
+  // Delegación de eventos para expansión/contracción
+  contentBody.addEventListener("click", (event) => {
+      const collapseButton = event.target.closest(".button-collapse");
+
+      // Verificar si el elemento clicado es un botón de colapso
+      if (collapseButton) {
+          const nodeItem = collapseButton.closest(".node-item");
+
+          // Alternar la clase 'expanded' para el nodo
+          if (nodeItem.classList.contains("expanded")) {
+              nodeItem.classList.remove("expanded");
+              collapseButton.classList.remove("expanded");
+          } else {
+              nodeItem.classList.add("expanded");
+              collapseButton.classList.add("expanded");
+          }
+      }
+  });
+});
+
+
+
+document.addEventListener("DOMContentLoaded", () => {
   const sidebar = document.querySelector(".sidebar");
   const toggleButton = document.querySelector(".sidebar-toggle");
 
@@ -55,5 +81,3 @@ document.addEventListener('DOMContentLoaded', () => {
       }
   });
 });
-
-

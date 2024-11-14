@@ -13,7 +13,7 @@ export class Nodes {
     constructor(container, nodeTypeManager) {
         this.container = container;
         this.nodes = [];
-        this.template = "templates/project_tree.hbs"; // Plantilla predeterminada
+        this.template = "templates/treeview.hbs"; // Plantilla predeterminada
         this.file = "";
         this.nodeTypeManager = nodeTypeManager; // Instancia de NodeTypeManager
     }

@@ -1,0 +1,118 @@
+// scss/layout/_treeview-content.scss
+@use 'sass:math';
+
+.treeview-content {
+  padding: $spacing-sm;
+  height: calc(100vh - $header-height - ($footer-height * 2));
+  overflow-y: auto;
+  display: block;
+  
+  .node-list {
+    .node-item {
+      margin-bottom: math.div($spacing-xs, 2);
+      list-style: none;
+
+      .node-link-container {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: $spacing-xs;
+        border-radius: 3px;
+        background-color: transparent;
+        @include transition(background-color, color);
+
+        &:hover {
+          background-color: $color-hover;
+        }
+        
+        .node-link {
+          display: flex;
+          align-items: center;
+          color: $color-text;
+          text-decoration: none;
+          font-size: 0.9rem;
+
+          &:hover {
+            color: $color-accent;
+          }
+
+          .node-icon {
+            margin-right: math.div($spacing-xs, 2);
+            font-size: 1rem;
+            color: $color-text-muted;
+          }
+
+          .node-text {
+            flex-grow: 1;
+            color: $color-text;
+          }
+        }
+
+        // Estilos mejorados para tools-box
+        .tools-box {
+          display: flex;
+          align-items: center;
+          background-color: darken($color-background, 5%);
+          border-radius: 3px;
+          padding: 0.2rem 0.4rem;
+
+          .button-collapse,
+          .button-add-child,
+          .button-delete-node {
+            background: none;
+            border: none;
+            width: 1.5rem; // Ancho y alto iguales para forma cuadrada
+            height: 1.5rem;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: $color-text-muted;
+            transition: background-color 0.3s ease, color 0.3s ease, border-radius 0.3s ease;
+
+            &:hover {
+              background-color: lighten($color-secondary, 20%); // Color claro en hover
+              color: $color-accent;
+              border-radius: 50%; // Redondeado en hover para efecto burbuja
+            }
+          }
+
+          .button-collapse .node-collapse,
+          .button-add-child .node-add,
+          .button-delete-node .node-delete {
+            font-size: 0.8rem;
+          }
+
+          // Rotación en el ícono cuando el botón tiene la clase expanded
+          .button-collapse.expanded .node-collapse {
+            transform: rotate(90deg);
+          }
+        }
+      }
+
+      .node-submenu {
+        overflow: hidden;
+        max-height: 0;
+        opacity: 0;
+        padding-left: $spacing-sm;
+        border-left: 2px solid $color-hover;
+        margin-top: $spacing-xs;
+        transition: max-height 0.4s ease, opacity 0.3s ease;
+
+        .node-item .node-link {
+          color: $color-text-muted;
+          font-size: 0.85rem;
+
+          &:hover {
+            color: $color-accent;
+          }
+        }
+      }
+
+      &.expanded > .node-submenu {
+        max-height: 2500px;
+        opacity: 1;
+      }
+    }
+  }
+}

@@ -429,6 +429,128 @@ body {
   font-size: 1.2rem;
 }
 
+.treeview-content {
+  padding: 1rem;
+  height: calc(100vh - 5.25rem - 4rem);
+  overflow-y: auto;
+  display: block;
+}
+.treeview-content .node-list .node-item {
+  margin-bottom: 0.25rem;
+  list-style: none;
+}
+.treeview-content .node-list .node-item .node-link-container {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0.5rem;
+  border-radius: 3px;
+  background-color: transparent;
+  transition: background-color color ease-in-out;
+}
+.treeview-content .node-list .node-item .node-link-container:hover {
+  background-color: #2c2c4f;
+}
+.treeview-content .node-list .node-item .node-link-container .node-link {
+  display: flex;
+  align-items: center;
+  color: #e0e0e0;
+  text-decoration: none;
+  font-size: 0.9rem;
+}
+.treeview-content .node-list .node-item .node-link-container .node-link:hover {
+  color: #bb86fc;
+}
+.treeview-content .node-list .node-item .node-link-container .node-link .node-icon {
+  margin-right: 0.25rem;
+  font-size: 1rem;
+  color: #b0b0b0;
+}
+.treeview-content .node-list .node-item .node-link-container .node-link .node-text {
+  flex-grow: 1;
+  color: #e0e0e0;
+}
+.treeview-content .node-list .node-item .node-link-container .tools-box {
+  display: flex;
+  align-items: center;
+  background-color: #11111e;
+  border-radius: 3px;
+  padding: 0.2rem 0.4rem;
+}
+.treeview-content .node-list .node-item .node-link-container .tools-box .button-collapse,
+.treeview-content .node-list .node-item .node-link-container .tools-box .button-add-child,
+.treeview-content .node-list .node-item .node-link-container .tools-box .button-delete-node {
+  background: none;
+  border: none;
+  width: 1.5rem;
+  height: 1.5rem;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #b0b0b0;
+  transition: background-color 0.3s ease, color 0.3s ease, border-radius 0.3s ease;
+}
+.treeview-content .node-list .node-item .node-link-container .tools-box .button-collapse:hover,
+.treeview-content .node-list .node-item .node-link-container .tools-box .button-add-child:hover,
+.treeview-content .node-list .node-item .node-link-container .tools-box .button-delete-node:hover {
+  background-color: #636392;
+  color: #bb86fc;
+  border-radius: 50%;
+}
+.treeview-content .node-list .node-item .node-link-container .tools-box .button-collapse .node-collapse,
+.treeview-content .node-list .node-item .node-link-container .tools-box .button-add-child .node-add,
+.treeview-content .node-list .node-item .node-link-container .tools-box .button-delete-node .node-delete {
+  font-size: 0.8rem;
+}
+.treeview-content .node-list .node-item .node-link-container .tools-box .button-collapse.expanded .node-collapse {
+  transform: rotate(90deg);
+}
+.treeview-content .node-list .node-item .node-submenu {
+  overflow: hidden;
+  max-height: 0;
+  opacity: 0;
+  padding-left: 1rem;
+  border-left: 2px solid #2c2c4f;
+  margin-top: 0.5rem;
+  transition: max-height 0.4s ease, opacity 0.3s ease;
+}
+.treeview-content .node-list .node-item .node-submenu .node-item .node-link {
+  color: #b0b0b0;
+  font-size: 0.85rem;
+}
+.treeview-content .node-list .node-item .node-submenu .node-item .node-link:hover {
+  color: #bb86fc;
+}
+.treeview-content .node-list .node-item.expanded > .node-submenu {
+  max-height: 2500px;
+  opacity: 1;
+}
+
+.context-menu {
+  position: absolute;
+  display: none;
+  background-color: rgba(22, 33, 62, 0.95);
+  color: #e0e0e0;
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+  border-radius: 6px;
+  padding: 0.5rem 0;
+  z-index: 1000;
+  min-width: 150px;
+}
+.context-menu .context-item {
+  padding: 0.5rem 1rem;
+  cursor: pointer;
+  text-decoration: none;
+  color: #e0e0e0;
+  display: block;
+  transition: color background-color ease-in-out;
+}
+.context-menu .context-item:hover {
+  color: #bb86fc;
+  background-color: #2c2c4f;
+}
+
 .content {
   position: relative;
 }

@@ -1,0 +1,28 @@
+// scss/layout/_context-menu.scss
+@use 'sass:math';
+
+.context-menu {
+  position: absolute;
+  display: none; // Se mostrará dinámicamente con JavaScript
+  background-color: rgba($color-background-alt, 0.95);
+  color: $color-text;
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+  @include rounded(6px);
+  padding: $spacing-xs 0;
+  z-index: 1000;
+  min-width: 150px; // Tamaño mínimo para el menú contextual
+
+  .context-item {
+    padding: $spacing-xs $spacing-sm;
+    cursor: pointer;
+    text-decoration: none;
+    color: $color-text;
+    display: block;
+    @include transition(color, background-color);
+
+    &:hover {
+      color: $color-accent;
+      background-color: $color-hover;
+    }
+  }
+}

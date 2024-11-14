@@ -1,0 +1,45 @@
+<!-- partials/projectIem.hbs -->
+<li class="node-item expanded{{#if state.expanded}}expanded{{/if}}{{ li_class}}"
+    {{#each li_attr}} {{@key}}="{{this}}" {{/each}}>
+    <div class="node-link-container">
+        <a class="node-link {{#if active}}active{{/if}} {{a_class}}"
+            id="{{id}}"
+            data-name="{{caption}}"
+            data-type="{{type}}"
+            data-id="{{id}}"
+            {{#each a_attr}} {{@key}}="{{this}}" {{/each}}>
+            {{> component_i}}
+            {{#if caption}}
+            <!-- Truncado a 20 caracteres -->
+            <span title="{{caption}}">{{truncate caption 20}}</span>
+            {{/if}}
+            {{#if badge}}
+            <span class="nav-badge badge text-bg-{{badge.color}} me-3">
+                <i class="{{badge.icon}}"> </i>{{badge.text}}
+            </span>
+            {{/if}}
+        </a>
+        <div class="tools-box">
+            <button class="button-add-child" aria-label="Agregar nodo hijo">
+                <i class="bi bi-plus-circle node-add"></i>
+            </button>
+            <button class="button-delete-node" aria-label="Eliminar nodo">
+                <i class="bi bi-trash node-delete"></i>
+            </button>
+            {{#if children}}
+            <button class="button-collapse expanded"
+                aria-label="Expandir/Contraer">
+                <i class="bi bi-chevron-right node-collapse"></i>
+            </button>
+            {{/if}}
+        </div>
+    </div>
+
+    {{#if children}}
+    <ul class="node-list node-submenu">
+        {{#each children}}
+        {{> node_list }}
+        {{/each}}
+    </ul>
+    {{/if}}
+</li>
