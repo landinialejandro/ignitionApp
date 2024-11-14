@@ -43,6 +43,7 @@ export class preloader {
         this.preloader = $$(preloader);
     }
     show() {
+        this.preloader.removeClass('hidden');
         this.preloader.css("transition", "opacity 0.5s"); // Animación de transición suave
         this.preloader.css("opacity", "1"); // Animación de transición suave
         this.preloader.css("display", "flex"); // Animación de transición suave

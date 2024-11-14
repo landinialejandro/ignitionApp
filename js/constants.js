@@ -6,7 +6,7 @@ const Constants = Object.freeze({
     VERSION_CONTENT: '.footer-version',
     SIDEBAR_CONTENT: '.sidebar-content',
     CONTENT: '.content-body',
-    CONTENT_PRELOADER: '.content-preloader',
+    CONTENT_PRELOADER: '.content-body-preloader',
     CONTENT_TITLE: '.content-title'
 });
 

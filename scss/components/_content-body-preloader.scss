@@ -1,0 +1,40 @@
+// scss/components/_content-preloader.scss
+
+.content {
+    position: relative; // Establece el contexto de posición para el preloader
+  }
+  
+  .content-body-preloader {
+    position: absolute; // Superpone el preloader dentro de content
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: rgba(26, 26, 46, 0.8); // Fondo semitransparente para el overlay
+    z-index: 999; // Aumenta el z-index para asegurar superposición
+    opacity: 1;
+    transition: opacity 0.3s ease, visibility 0.3s ease;
+  
+    &.hidden {
+      opacity: 0;
+      visibility: hidden;
+    }
+  
+    .spinner {
+      width: 40px;
+      height: 40px;
+      border: 4px solid lighten($color-background, 20%);
+      border-top: 4px solid $color-accent;
+      border-radius: 50%;
+      animation: spin 1s linear infinite;
+    }
+  }
+  
+  @keyframes spin {
+    from { transform: rotate(0deg); }
+    to { transform: rotate(360deg); }
+  }
+  
