@@ -265,6 +265,20 @@ export const filteredObject = (obj, keys = []) => {
     return result;
 };
 
+export const updateSidebarOverflow = () => {
+    const sidebarContent = document.querySelector('.sidebar-content');
+    
+    if (sidebarContent) {
+        // Restablece `overflow` para recalcular el desplazamiento
+        sidebarContent.style.overflowY = 'hidden';
+        // Vuelve a activar el desplazamiento si el contenido excede la altura del contenedor
+        if (sidebarContent.scrollHeight > sidebarContent.clientHeight) {
+            sidebarContent.style.overflowY = 'auto';
+        }
+    }
+};
+
+
 /**
  * Verifica periódicamente la disponibilidad del contenedor y ejecuta el callback si es encontrado.
  * Si no se encuentra el contenedor en 1 minuto, cancela la búsqueda.

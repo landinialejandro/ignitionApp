@@ -35,19 +35,25 @@ document.addEventListener("DOMContentLoaded", () => {
 });
 
 document.addEventListener('DOMContentLoaded', () => {
-  const collapseButtons = document.querySelectorAll('.button-collapse');
+  const sidebar = document.querySelector('.sidebar');
 
-  collapseButtons.forEach(button => {
-      button.addEventListener('click', (event) => {
+  // Delegamos el evento 'click' en el contenedor .sidebar
+  sidebar.addEventListener('click', (event) => {
+      // Verificamos si el clic fue en un elemento .button-collapse
+      const button = event.target.closest('.button-collapse');
+      if (button) {
           event.preventDefault();
+          event.stopPropagation(); // Evita la propagación a otros elementos dentro del nav-item
+          
           const navItem = button.closest('.nav-item');
           
           // Alterna la clase 'expanded' en el nav-item
           navItem.classList.toggle('expanded');
           
-          // Alterna la clase 'expanded' en el botón y no solo en el icono
+          // Alterna la clase 'expanded' en el botón
           button.classList.toggle('expanded');
-      });
+      }
   });
 });
+
 

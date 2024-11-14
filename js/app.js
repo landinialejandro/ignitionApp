@@ -1,6 +1,6 @@
 import Constants from './constants.js';
 
-import { get_data, checkContainerAvailability } from './libraries/common.js';
+import { get_data, checkContainerAvailability, updateSidebarOverflow } from './libraries/common.js';
 import { Msglog } from "./libraries/MsgLog.js";
 import { RegisterPartials, RegisterHelpers } from './libraries/hbs.js';
 import { preloader, renderTemplate, getDirCollectionJson } from './libraries/helpers.js';
@@ -34,7 +34,6 @@ window.onload = async function () {
         // loadNavBar('#navbarNav', await get_data({ url: "settings/nav_headerbar.json" }));
         loadNavBar('#projects-list', await getDirCollectionJson("projects"));
         loadNavBar('#settings-list', await getDirCollectionJson("settings"));
-
         addEventsListener();
 
     } catch (error) {
@@ -43,6 +42,7 @@ window.onload = async function () {
         msg.danger("Ocurrió un problema al iniciar la aplicación. Por favor, inténtalo de nuevo más tarde.");
     } finally {
         // Ocultar el preloader siempre, incluso si ocurrió un error
+        // updateSidebarOverflow();
         maiPreloader.hide();
     }
 };
@@ -54,7 +54,6 @@ const addEventsListener = () => {
     // Aquí puedes agregar más listeners si es necesario en el futuro
 };
 
-// Función para gestionar los clics en los enlaces del nav-link
 const navLinkListener = () => {
     $$("a.nav-link").on("click", async function (e) {
         e.preventDefault();

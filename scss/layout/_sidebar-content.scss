@@ -3,72 +3,74 @@
 
 .sidebar-content {
   padding: $spacing-sm;
-  height: calc(100% - $header-height - ($footer-height * 2));
+  height: calc(100vh - $header-height - ($footer-height * 2));
   overflow-y: auto;
-
+  display: block;
+  
   .nav-list {
-    padding: 0;
-    margin: 0;
-    
     .nav-item {
       margin-bottom: math.div($spacing-xs, 2);
       list-style: none;
 
-      .nav-link {
+      // Contenedor para alinear .nav-link y .button-collapse
+      .nav-link-container {
         display: flex;
         align-items: center;
-        justify-content: space-between;
-        color: $color-text;
+        justify-content: space-between; // Alinea el enlace y el botón a los extremos
         padding: $spacing-xs;
-        text-decoration: none;
-        background-color: transparent;
         border-radius: 3px;
-        font-size: 0.9rem;
+        background-color: transparent;
         @include transition(background-color, color);
 
         &:hover {
           background-color: $color-hover;
-          color: $color-accent;
         }
-
-        .nav-icon {
-          margin-right: math.div($spacing-xs, 2);
-          font-size: 1rem;
-          color: $color-text-muted;
-        }
-
-        .nav-text {
-          flex-grow: 1;
+        
+        .nav-link {
+          display: flex;
+          align-items: center;
           color: $color-text;
+          text-decoration: none;
+          font-size: 0.9rem;
+
+          &:hover {
+            color: $color-accent;
+          }
+
+          .nav-icon {
+            margin-right: math.div($spacing-xs, 2);
+            font-size: 1rem;
+            color: $color-text-muted;
+          }
+
+          .nav-text {
+            flex-grow: 1;
+            color: $color-text;
+          }
         }
 
-        // Estilos para el botón chevron
-        .tools-box {
+        // Estilos para el botón de colapso
+        .button-collapse {
+          background: none;
+          border: none;
+          padding: 0.5rem;
+          cursor: pointer;
           display: flex;
           align-items: center;
 
-          .button-collapse {
-            background: none;
-            border: none;
-            padding: 0;
-            cursor: pointer;
-            display: flex;
-            align-items: center;
+          .menu-collapse {
+            font-size: 0.8rem;
+            transition: transform 0.3s ease-in-out, color 0.3s ease;
+            color: $color-text-muted;
 
-            .menu-collapse {
-              font-size: 0.8rem;
-              transition: transform 0.3s ease-in-out, color 0.3s ease;
-              color: $color-text-muted;
-
-              &:hover {
-                color: lighten($color-accent, 20%);
-              }
+            &:hover {
+              color: lighten($color-accent, 20%);
             }
+          }
 
-            // Aplicar rotación en el ícono cuando el botón tiene la clase expanded
-            &.expanded .menu-collapse {
-              transform: rotate(90deg);
-            }
+          // Rotación en el ícono cuando el botón tiene la clase expanded
+          &.expanded .menu-collapse {
+            transform: rotate(90deg);
           }
         }
       }
@@ -93,9 +95,9 @@
         }
       }
 
-      // Mostrar submenú con animación
+      // Mostrar submenú con animación cuando nav-item está expandido
       &.expanded > .nav-submenu {
-        max-height: 500px; // Ajusta según sea necesario
+        max-height: 2500px;
         opacity: 1;
       }
     }

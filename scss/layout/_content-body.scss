@@ -1,5 +1,5 @@
 .content-body {
-  padding: $spacing-md;
+  padding: $spacing-sm;
   background-color: $color-background;
   height: calc(100vh - $header-height - $footer-height - $spacing-md); // Ajuste de altura para el espacio visible
   overflow-y: auto; // Activa el scroll si el contenido excede la altura
