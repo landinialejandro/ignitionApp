@@ -25,9 +25,27 @@
     gap: $spacing-xs;
     min-height: calc($header-height * (2/3));
 
+    // Iconos de tipo `i` de Bootstrap
     > i {
       font-size: 1.2rem;
       color: $color-accent;
+    }
+
+    // Icono SVG en el encabezado
+    .svg-icon {
+      width: 1.2rem;
+      height: 1.2rem;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      color: $color-accent; // Para que SVG herede el color correcto
+
+      svg {
+        fill: currentColor; // Hereda el color de la clase superior
+        stroke: currentColor;
+        width: 100%; // Asegura que ocupe todo el contenedor
+        height: 100%;
+      }
     }
 
     > .card-title, & > :not(.card-tools):not(i) {
@@ -36,6 +54,9 @@
       color: $color-text;
       margin: 0;
       flex-grow: 1;
+      display: flex;
+      align-items: center;
+      gap: $spacing-xs; // Espacio entre el icono y el texto
     }
   }
 

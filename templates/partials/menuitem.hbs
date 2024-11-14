@@ -17,7 +17,7 @@
             data-type="{{type}}"
             {{#each a_attr}}{{@key}}="{{this}}" {{/each}}>
 
-            {{> component_i}}
+            {{> component_i context="nav"}}
 
             {{#if caption}}
             <!-- Truncado a 20 caracteres -->

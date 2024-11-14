@@ -6,7 +6,7 @@
   height: calc(100vh - $header-height - ($footer-height * 2));
   overflow-y: auto;
   display: block;
-  
+
   .node-list {
     .node-item {
       margin-bottom: math.div($spacing-xs, 2);
@@ -16,30 +16,31 @@
         display: flex;
         align-items: center;
         justify-content: space-between;
-        padding: $spacing-xs;
+        padding: math.div($spacing-xs, 2);
         border-radius: 3px;
         background-color: transparent;
         @include transition(background-color, color);
 
         &:hover {
           background-color: $color-hover;
+
+          .tools-box {
+            background-color: $color-background;
+            opacity: 1;
+          }
         }
-        
+
         .node-link {
           display: flex;
           align-items: center;
           color: $color-text;
           text-decoration: none;
           font-size: 0.9rem;
+          cursor: pointer; // Cambia el cursor a puntero
 
           &:hover {
             color: $color-accent;
-          }
 
-          .node-icon {
-            margin-right: math.div($spacing-xs, 2);
-            font-size: 1rem;
-            color: $color-text-muted;
           }
 
           .node-text {
@@ -52,16 +53,23 @@
         .tools-box {
           display: flex;
           align-items: center;
-          background-color: darken($color-background, 5%);
+          background-color: transparent;
           border-radius: 3px;
           padding: 0.2rem 0.4rem;
+          opacity: 0.6;
+          transition: background-color 0.3s ease, opacity 0.3s ease;
+
+          &:hover {
+            background-color: $color-background;
+            opacity: 1;
+          }
 
           .button-collapse,
           .button-add-child,
           .button-delete-node {
             background: none;
             border: none;
-            width: 1.5rem; // Ancho y alto iguales para forma cuadrada
+            width: 1.5rem;
             height: 1.5rem;
             cursor: pointer;
             display: flex;
@@ -71,9 +79,9 @@
             transition: background-color 0.3s ease, color 0.3s ease, border-radius 0.3s ease;
 
             &:hover {
-              background-color: lighten($color-secondary, 20%); // Color claro en hover
+              background-color: lighten($color-secondary, 20%);
               color: $color-accent;
-              border-radius: 50%; // Redondeado en hover para efecto burbuja
+              border-radius: 50%;
             }
           }
 
@@ -83,7 +91,6 @@
             font-size: 0.8rem;
           }
 
-          // Rotación en el ícono cuando el botón tiene la clase expanded
           .button-collapse.expanded .node-collapse {
             transform: rotate(90deg);
           }
@@ -96,7 +103,7 @@
         opacity: 0;
         padding-left: $spacing-sm;
         border-left: 2px solid $color-hover;
-        margin-top: $spacing-xs;
+        // margin-top: $spacing-xs;
         transition: max-height 0.4s ease, opacity 0.3s ease;
 
         .node-item .node-link {
@@ -109,7 +116,7 @@
         }
       }
 
-      &.expanded > .node-submenu {
+      &.expanded>.node-submenu {
         max-height: 2500px;
         opacity: 1;
       }

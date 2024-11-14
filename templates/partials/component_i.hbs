@@ -1,8 +1,8 @@
-
+{{!-- hay que pasar la variable del contexto --}}
 {{#if (eq icon.type "class")}}
-    <i class="nav-icon {{icon.value}}"></i>
+  <i class="icon {{concat "icon-" context}} {{icon.value}}"></i>
 {{else if (eq icon.type "svg")}}
-  <div class="nav-icon svg-icon">
+  <div class="icon {{concat "icon-" context}} svg-icon">
     {{{icon.value}}}
   </div>
 {{/if}}

@@ -1,5 +1,5 @@
 <!-- partials/projectIem.hbs -->
-<li class="node-item expanded{{#if state.expanded}}expanded{{/if}}{{ li_class}}"
+<li class="node-item expanded{{#if state.expanded}} expanded{{/if}}{{ li_class}}"
     {{#each li_attr}} {{@key}}="{{this}}" {{/each}}>
     <div class="node-link-container">
         <a class="node-link {{#if active}}active{{/if}} {{a_class}}"
@@ -8,7 +8,7 @@
             data-type="{{type}}"
             data-id="{{id}}"
             {{#each a_attr}} {{@key}}="{{this}}" {{/each}}>
-            {{> component_i}}
+            {{> component_i context="nav"}}
             {{#if caption}}
             <!-- Truncado a 20 caracteres -->
             <span title="{{caption}}">{{truncate caption 20}}</span>
@@ -23,7 +23,7 @@
             <button class="button-add-child" aria-label="Agregar nodo hijo">
                 <i class="bi bi-plus-circle node-add"></i>
             </button>
-            <button class="button-delete-node" aria-label="Eliminar nodo">
+            <button id="{{id}}" class="button-delete-node" aria-label="Eliminar nodo">
                 <i class="bi bi-trash node-delete"></i>
             </button>
             {{#if children}}

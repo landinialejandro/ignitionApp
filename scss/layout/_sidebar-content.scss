@@ -37,12 +37,6 @@
             color: $color-accent;
           }
 
-          .nav-icon {
-            margin-right: math.div($spacing-xs, 2);
-            font-size: 1rem;
-            color: $color-text-muted;
-          }
-
           .nav-text {
             flex-grow: 1;
             color: $color-text;

@@ -1,7 +1,7 @@
-<div class="card card-outline card-primary">
+<div class="card margin-bottom">
     <div class="card-header">
         <h3 class="card-title">
-            {{> component_i}}
+            {{> component_i context="card-title"}}
             {{caption}} <!-- Título de la tarjeta -->
         </h3>
         <div class="card-tools">
@@ -12,7 +12,7 @@
             </button>
         </div> <!-- /.card-tools -->
     </div> <!-- /.card-header -->
-    <div class="card-body" style="display: block; box-sizing: border-box;">
+    <div class="card-body" >
 
         {{#with properties}}
         {{#if (eq type "heading")}}

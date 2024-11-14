@@ -1,0 +1,26 @@
+// scss/components/_badge.scss
+
+@use 'sass:map';
+@use 'sass:math';
+
+.badge {
+  display: inline-flex;
+  align-items: center;
+  padding: 0.25rem 0.5rem;
+  font-size: 0.875rem;
+  font-weight: bold;
+  border-radius: 12px;
+  text-transform: uppercase;
+  white-space: nowrap;
+  gap: 0.25rem; // Espacio entre icono y texto
+  transition: background-color 0.3s ease, color 0.3s ease;
+
+  // Generar clases de color dinámicamente
+  @each $name, $color in $badge-colors {
+    &-#{$name} {
+      background-color: $color;
+      color: contrast($color, $color-text-light, $color-background);
+    }
+  }
+
+}

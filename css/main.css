@@ -327,11 +327,6 @@ body {
 .sidebar-content .nav-list .nav-item .nav-link-container .nav-link:hover {
   color: #bb86fc;
 }
-.sidebar-content .nav-list .nav-item .nav-link-container .nav-link .nav-icon {
-  margin-right: 0.25rem;
-  font-size: 1rem;
-  color: #b0b0b0;
-}
 .sidebar-content .nav-list .nav-item .nav-link-container .nav-link .nav-text {
   flex-grow: 1;
   color: #e0e0e0;
@@ -443,7 +438,7 @@ body {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 0.5rem;
+  padding: 0.25rem;
   border-radius: 3px;
   background-color: transparent;
   transition: background-color color ease-in-out;
@@ -451,20 +446,20 @@ body {
 .treeview-content .node-list .node-item .node-link-container:hover {
   background-color: #2c2c4f;
 }
+.treeview-content .node-list .node-item .node-link-container:hover .tools-box {
+  background-color: #1a1a2e;
+  opacity: 1;
+}
 .treeview-content .node-list .node-item .node-link-container .node-link {
   display: flex;
   align-items: center;
   color: #e0e0e0;
   text-decoration: none;
   font-size: 0.9rem;
+  cursor: pointer;
 }
 .treeview-content .node-list .node-item .node-link-container .node-link:hover {
   color: #bb86fc;
-}
-.treeview-content .node-list .node-item .node-link-container .node-link .node-icon {
-  margin-right: 0.25rem;
-  font-size: 1rem;
-  color: #b0b0b0;
 }
 .treeview-content .node-list .node-item .node-link-container .node-link .node-text {
   flex-grow: 1;
@@ -473,9 +468,15 @@ body {
 .treeview-content .node-list .node-item .node-link-container .tools-box {
   display: flex;
   align-items: center;
-  background-color: #11111e;
+  background-color: transparent;
   border-radius: 3px;
   padding: 0.2rem 0.4rem;
+  opacity: 0.6;
+  transition: background-color 0.3s ease, opacity 0.3s ease;
+}
+.treeview-content .node-list .node-item .node-link-container .tools-box:hover {
+  background-color: #1a1a2e;
+  opacity: 1;
 }
 .treeview-content .node-list .node-item .node-link-container .tools-box .button-collapse,
 .treeview-content .node-list .node-item .node-link-container .tools-box .button-add-child,
@@ -512,7 +513,6 @@ body {
   opacity: 0;
   padding-left: 1rem;
   border-left: 2px solid #2c2c4f;
-  margin-top: 0.5rem;
   transition: max-height 0.4s ease, opacity 0.3s ease;
 }
 .treeview-content .node-list .node-item .node-submenu .node-item .node-link {
@@ -969,12 +969,29 @@ body {
   font-size: 1.2rem;
   color: #bb86fc;
 }
+.card .card-header .svg-icon {
+  width: 1.2rem;
+  height: 1.2rem;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  color: #bb86fc;
+}
+.card .card-header .svg-icon svg {
+  fill: currentColor;
+  stroke: currentColor;
+  width: 100%;
+  height: 100%;
+}
 .card .card-header > .card-title, .card .card-header > :not(.card-tools):not(i) {
   font-size: 1rem;
   font-weight: 700;
   color: #e0e0e0;
   margin: 0;
   flex-grow: 1;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
 }
 .card .card-tools {
   display: flex;
@@ -1041,4 +1058,31 @@ body {
   to {
     transform: rotate(360deg);
   }
+}
+.icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1rem;
+}
+.icon-badge {
+  margin-right: 0.25rem;
+}
+.icon-nav {
+  margin-right: 0.25rem;
+  color: #b0b0b0;
+}
+.icon-button {
+  font-size: 1.25rem;
+  color: #bb86fc;
+}
+.icon.svg-icon {
+  width: 1rem;
+  height: 1rem;
+}
+.icon.svg-icon svg {
+  width: 100%;
+  height: 100%;
+  fill: currentColor;
+  stroke: currentColor;
 }/*# sourceMappingURL=main.css.map */
