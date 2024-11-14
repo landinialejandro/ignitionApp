@@ -27,43 +27,46 @@ export const RegisterHelpers = () => {
 		return `${text.slice(0, partLength)}...${text.slice(-partLength)}`;
 	});
 
-	Handlebars.registerHelper('concat', function(...args) {
+	Handlebars.registerHelper('concat', function (...args) {
 		// Elimina el último argumento (opciones de Handlebars)
 		args.pop();
 		return args.join('');
-	  });
-	  
+	});
+
+	Handlebars.registerHelper('default', function (value, defaultValue) {
+		return value || defaultValue;
+	});
 
 }
 
 export const RegisterPartials = async () => {
-    msg.info("registering partials...");
+	msg.info("registering partials...");
 
-    const url = 'ignitionApp.php';
-    const data = {
-        id: 'templates/partials',
-        operation: 'get_node'
-    };
+	const url = 'ignitionApp.php';
+	const data = {
+		id: 'templates/partials',
+		operation: 'get_node'
+	};
 
-    try {
-        // Llamada a la función `get_data` para obtener los datos
-        const filesContent = await get_data({ url, data });
+	try {
+		// Llamada a la función `get_data` para obtener los datos
+		const filesContent = await get_data({ url, data });
 
-        for (const [key, fileInfo] of Object.entries(filesContent)) {
-            //console.log(`Fetching template from: ${fileInfo.url}`); // Verificar URL
+		for (const [key, fileInfo] of Object.entries(filesContent)) {
+			//console.log(`Fetching template from: ${fileInfo.url}`); // Verificar URL
 
-            const t = await get_data({ url: fileInfo.url, isJson: false });
-            let indicePunto = fileInfo.caption.indexOf('.');
-            let name = indicePunto !== -1 ? fileInfo.caption.substring(0, indicePunto).toLowerCase() : fileInfo.caption.toLowerCase();
+			const t = await get_data({ url: fileInfo.url, isJson: false });
+			let indicePunto = fileInfo.caption.indexOf('.');
+			let name = indicePunto !== -1 ? fileInfo.caption.substring(0, indicePunto).toLowerCase() : fileInfo.caption.toLowerCase();
 
-            // Compilar la plantilla antes de registrarla en Handlebars
-            const compiledTemplate = Handlebars.compile(t);
-            Handlebars.registerPartial(name, compiledTemplate);
-            msg.secondary(`Partial ${name} registrado.`, true);
-        }
+			// Compilar la plantilla antes de registrarla en Handlebars
+			const compiledTemplate = Handlebars.compile(t);
+			Handlebars.registerPartial(name, compiledTemplate);
+			msg.secondary(`Partial ${name} registrado.`, true);
+		}
 
-    } catch (error) {
-        console.error(`Error registrando partials: ${error.message}`);
-    }
-    msg.info("partials registered and compiled.");
+	} catch (error) {
+		console.error(`Error registrando partials: ${error.message}`);
+	}
+	msg.info("partials registered and compiled.");
 };

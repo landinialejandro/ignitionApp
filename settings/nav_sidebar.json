@@ -70,8 +70,12 @@
         },
         "type": "page",
         "badge": {
-            "icon": "bi bi-bootstrap",
-            "color": "info"
+            "icon": {
+                "value": "bi bi-bootstrap",
+                "type": "class"
+            },
+            "color": "info",
+            "text":""
         }
     },
     {

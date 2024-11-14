@@ -31,15 +31,16 @@
 @import 'layout/context-menu';
 
 // Import component styles
-@import 'components/content-body-preloader';
-@import 'components/dropdown';
-@import 'components/tooltips';
-@import 'components/modal';
-@import 'components/columns';
-@import 'components/form';
 @import 'components/alert';
+@import 'components/badget';
 @import 'components/breadcrumb';
 @import 'components/button';
 @import 'components/card';
-@import 'components/preloader';
+@import 'components/columns';
+@import 'components/content-body-preloader';
+@import 'components/dropdown';
+@import 'components/form';
 @import 'components/icon';
+@import 'components/modal';
+@import 'components/preloader';
+@import 'components/tooltips';

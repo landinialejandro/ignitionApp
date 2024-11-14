@@ -26,9 +26,7 @@
             {{/if}}
 
             {{#if badge}}
-            <span class="badge text-bg-{{badge.color}}">
-                <i class="{{badge.icon}}"> </i>{{badge.text}}
-            </span>
+            {{> component_badge badge}}
             {{/if}}
         </a>
         {{#if children}}
