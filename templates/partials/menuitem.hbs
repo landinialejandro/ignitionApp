@@ -8,8 +8,8 @@
     </div>
 </li>
 {{else}}
-<li class="nav-item{{#if expanded}} expanded{{/if}} {{li_class}}" {{#each
-    li_attr}} {{@key}}="{{this}}" {{/each}}>
+<li class="nav-item{{#if children}} expanded{{/if}}{{li_class}}"
+    {{#each li_attr}} {{@key}}="{{this}}" {{/each}}>
     <a href="{{url}}" class="nav-link {{#if active}}active{{/if}} {{a_class}}"
         data-name="{{caption}}"
         data-type="{{type}}"
@@ -19,12 +19,18 @@
 
         {{#if caption}}
         <!-- Truncado a 20 caracteres -->
-        <span class="nav-text" title="{{caption}}">{{truncate caption 20}}</span>
+        <span class="nav-text" title="{{caption}}">{{truncate caption
+            20}}</span>
         {{/if}}
 
         {{#if children}}
-        <i
-            class="bi bi-chevron-right menu-chevron{{#if expanded}} expanded{{/if}}"></i>
+        <!-- Contenedor tool-box con botón chevron -->
+        <div class="tools-box">
+            <button class="button-collapse expanded"
+                aria-label="Expandir/Contraer">
+                <i class="bi bi-chevron-right menu-collapse"></i>
+            </button>
+        </div>
         {{/if}}
 
         {{#if badge}}
@@ -35,7 +41,7 @@
     </a>
 
     {{#if children}}
-    <ul class="nav-item">
+    <ul class="nav-item nav-submenu">
         {{#each children}}
         {{> menuitem }}
         {{/each}}
