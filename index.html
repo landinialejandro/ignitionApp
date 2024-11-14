@@ -60,14 +60,23 @@
                 <!-- sidebar-content: Contenido principal del sidebar, que ocupa el alto restante entre el brand y el footer del sidebar. -->
                 <nav class="sidebar-content" aria-label="Navegación principal">
                     <ul class="nav-list">
-                        <!-- Item con Submenú -->
+
+                        <!-- Item con Submenú de primer nivel -->
                         <li class="nav-item expanded">
-                            <a href="#" class="nav-link" aria-expanded="true">
-                                <i class="bi bi-house-door nav-icon"></i> <!-- Icono de Inicio -->
+                            <a href="#" class="nav-link">
+                                <i class="bi bi-house-door nav-icon"></i>
                                 <span class="nav-text">Inicio</span>
-                                <i class="bi bi-chevron-right menu-chevron expanded"></i> <!-- Chevron -->
+
+                                <!-- Contenedor tool-box con botón chevron -->
+                                <div class="tools-box">
+                                    <button class="button-collapse expanded" aria-label="Expandir/Contraer">
+                                        <i class="bi bi-chevron-right menu-collapse"></i>
+                                    </button>
+                                </div>
                             </a>
-                            <ul class="nav-list">
+
+                            <!-- Submenú de primer nivel -->
+                            <ul class="nav-list nav-submenu">
                                 <li class="nav-item">
                                     <a href="#" class="nav-link">
                                         <i class="bi bi-circle nav-icon"></i>
@@ -78,38 +87,30 @@
                                     <a href="#" class="nav-link">
                                         <i class="bi bi-circle nav-icon"></i>
                                         <span class="nav-text">Subitem 2</span>
-                                    </a>
-                                </li>
-                            </ul>
-                        </li>
 
-                        <!-- Item sin Submenú -->
-                        <li class="nav-item">
-                            <a href="link.html" class="nav-link">
-                                <i class="bi bi-folder nav-icon"></i> <!-- Icono de Documentos -->
-                                <span class="nav-text">Documentos</span>
-                            </a>
-                        </li>
+                                        <!-- Contenedor tool-box con botón chevron -->
+                                        <div class="tools-box">
+                                            <button class="button-collapse" aria-label="Expandir/Contraer">
+                                                <i class="bi bi-chevron-right menu-collapse"></i>
+                                            </button>
+                                        </div>
+                                    </a>
 
-                        <!-- Otro Item con Submenú -->
-                        <li class="nav-item ">
-                            <a href="#" class="nav-link" aria-expanded="true">
-                                <i class="bi bi-gear nav-icon"></i> <!-- Icono de Configuración -->
-                                <span class="nav-text">Configuración</span>
-                                <i class="bi bi-chevron-right menu-chevron expanded"></i> <!-- Chevron -->
-                            </a>
-                            <ul class="nav-list">
-                                <li class="nav-item">
-                                    <a href="#" class="nav-link">
-                                        <i class="bi bi-circle nav-icon"></i>
-                                        <span class="nav-text">Perfil</span>
-                                    </a>
-                                </li>
-                                <li class="nav-item">
-                                    <a href="#" class="nav-link">
-                                        <i class="bi bi-circle nav-icon"></i>
-                                        <span class="nav-text">Seguridad</span>
-                                    </a>
+                                    <!-- Submenú de segundo nivel -->
+                                    <ul class="nav-list nav-submenu">
+                                        <li class="nav-item">
+                                            <a href="#" class="nav-link">
+                                                <i class="bi bi-circle nav-icon"></i>
+                                                <span class="nav-text">Subitem 2.1</span>
+                                            </a>
+                                        </li>
+                                        <li class="nav-item">
+                                            <a href="#" class="nav-link">
+                                                <i class="bi bi-circle nav-icon"></i>
+                                                <span class="nav-text">Subitem 2.2</span>
+                                            </a>
+                                        </li>
+                                    </ul>
                                 </li>
                             </ul>
                         </li>
@@ -180,7 +181,7 @@
          Se carga al final del body para no afectar el rendimiento de carga inicial de la página. -->
     <script src="dist/handlebars/handlebars.js"></script>
     <script src="js/layout.js"></script>
-    <script type="module" src="js/app.js"></script>
+    <!-- <script type="module" src="js/app.js"></script> -->
 </body>
 
 </html>

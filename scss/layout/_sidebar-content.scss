@@ -1,9 +1,9 @@
 // scss/layout/_sidebar-content.scss
-@use 'sass:math'; // Importa el módulo math
+@use 'sass:math';
 
 .sidebar-content {
   padding: $spacing-sm;
-  height:calc(100% - $header-height - ($footer-height * 2)) ;
+  height: calc(100% - $header-height - ($footer-height * 2));
   overflow-y: auto;
 
   .nav-list {
@@ -42,20 +42,46 @@
           color: $color-text;
         }
 
-        .menu-chevron {
-          transition: transform 0.3s ease;
-          font-size: 0.8rem;
-          color: $color-text-muted;
-          &.expanded {
-            transform: rotate(90deg);
+        // Estilos para el botón chevron
+        .tools-box {
+          display: flex;
+          align-items: center;
+
+          .button-collapse {
+            background: none;
+            border: none;
+            padding: 0;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+
+            .menu-collapse {
+              font-size: 0.8rem;
+              transition: transform 0.3s ease-in-out, color 0.3s ease;
+              color: $color-text-muted;
+
+              &:hover {
+                color: lighten($color-accent, 20%);
+              }
+            }
+
+            // Aplicar rotación en el ícono cuando el botón tiene la clase expanded
+            &.expanded .menu-collapse {
+              transform: rotate(90deg);
+            }
           }
         }
       }
 
-      .nav-list {
-        display: none;
+      // Submenús multinivel con efecto de persiana
+      .nav-submenu {
+        overflow: hidden;
+        max-height: 0;
+        opacity: 0;
         padding-left: $spacing-sm;
         border-left: 2px solid $color-hover;
+        margin-top: $spacing-xs;
+        transition: max-height 0.4s ease, opacity 0.3s ease;
 
         .nav-item .nav-link {
           color: $color-text-muted;
@@ -67,8 +93,10 @@
         }
       }
 
-      &.expanded .nav-list {
-        display: block;
+      // Mostrar submenú con animación
+      &.expanded > .nav-submenu {
+        max-height: 500px; // Ajusta según sea necesario
+        opacity: 1;
       }
     }
   }

@@ -1,10 +1,10 @@
 // Simulación de la finalización de la carga de la aplicación
-// window.addEventListener('load', () => {
-//   // Espera 2 segundos para simular una carga de datos
-//   setTimeout(() => {
-//     document.querySelector('.preloader').classList.add('hidden');
-//   }, 2000);
-// });
+window.addEventListener('load', () => {
+  // Espera 2 segundos para simular una carga de datos
+  setTimeout(() => {
+    document.querySelector('.preloader').classList.add('hidden');
+  }, 1000);
+});
 
 document.addEventListener("DOMContentLoaded", () => {
   const sidebar = document.querySelector(".sidebar");
@@ -34,4 +34,20 @@ document.addEventListener("DOMContentLoaded", () => {
   window.addEventListener("resize", handleResize);
 });
 
+document.addEventListener('DOMContentLoaded', () => {
+  const collapseButtons = document.querySelectorAll('.button-collapse');
+
+  collapseButtons.forEach(button => {
+      button.addEventListener('click', (event) => {
+          event.preventDefault();
+          const navItem = button.closest('.nav-item');
+          
+          // Alterna la clase 'expanded' en el nav-item
+          navItem.classList.toggle('expanded');
+          
+          // Alterna la clase 'expanded' en el botón y no solo en el icono
+          button.classList.toggle('expanded');
+      });
+  });
+});
 
