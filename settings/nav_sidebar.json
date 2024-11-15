@@ -45,6 +45,21 @@
         }
     },
     {
+        "id": "documentacionScss",
+        "caption": "Documentación Scss",
+        "url": "pages/ManualEstilos.html",
+        "active": false,
+        "icon": {
+            "value": "bi bi-book",
+            "type": "class"
+        },
+        "type": "content",
+        "badge": {
+            "text": "New",
+            "color": "danger"
+        }
+    },
+    {
         "id": "documentacion",
         "caption": "Documentación",
         "url": "pages/docs_page.html",

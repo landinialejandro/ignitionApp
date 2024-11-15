@@ -1,5 +1,10 @@
 // project.js
 
+/**
+ * Este archivo gestiona la lógica principal de un sistema de gestión de nodos y árbol de proyecto.
+ * Incluye inicialización, manejo de eventos, acciones en los nodos y renderizado dinámico.
+ */
+
 import { get_data, saveFileToServer } from './libraries/common.js';
 import { getDirCollectionJson, renderTemplate } from './libraries/helpers.js';
 import { Msglog } from "./libraries/MsgLog.js";
@@ -11,96 +16,118 @@ import { ContextMenu } from './ContextMenu.js';
 import { Nodes } from './Nodes.js';
 import { NodeTypeManager } from './NodeTypeManager.js';
 
-const Default$ = {
-    animationSpeed: 300,
-    accordion: true
-};
-
+// Variables globales necesarias para la gestión del proyecto
 const msg = new Msglog();
 let nodeTypeManager = null;
 let project = null;
-let treeview = null;
 
+// Instancia única del menú contextual
+let contextMenu = null;
+
+/**
+ * Inicializa el proyecto cargando los tipos de nodos y la página de proyecto.
+ * 
+ * @param {string} url - URL del archivo JSON con los datos del proyecto.
+ */
 export const initializeProject = async (url) => {
-    await initializeNodeTypes();
-    const content = await get_data({ url });
-    const projectPage = await get_data({ url: "pages/project_page.html", isJson: false });
-    $$(Constants.CONTENT).html(projectPage);
+    try {
+        await initializeNodeTypes();
 
-    project = new Nodes(".project-container", nodeTypeManager);
-    project.setNodes(content);
-    project.file = url;
-    project.nodeTypeManager = nodeTypeManager;
+        const content = await get_data({ url });
+        const projectPage = await get_data({ url: "pages/project_page.html", isJson: false });
 
-    await project.render();
-    addEventsListener();
+        // Renderizar la estructura base del proyecto
+        $$(Constants.CONTENT).html(projectPage);
+
+        project = new Nodes(".project-container", nodeTypeManager);
+        project.setNodes(content);
+        project.file = url;
+
+        await project.render();
+
+        addEventsListener();
+    } catch (error) {
+        msg.danger("Error al inicializar el proyecto.");
+        console.error(error);
+    }
 };
 
+/**
+ * Inicializa los tipos de nodos desde un archivo JSON.
+ */
+const initializeNodeTypes = async () => {
+    try {
+        nodeTypeManager = new NodeTypeManager();
+        await nodeTypeManager.loadFromFile('./settings/types.json');
+    } catch (error) {
+        msg.danger('Error al cargar tipos de nodos.');
+        console.error(error);
+    }
+};
+
+/**
+ * Callbacks personalizados para acciones en el árbol de nodos.
+ */
 const actionCallbacks = {
+    /**
+     * Agrega un nuevo nodo al árbol.
+     */
     addNewNode: async (parentType, anchor, nodeId, typeToAdd) => {
-        console.log(`Agregando nodo de tipo ${typeToAdd}`);
-        const parentNode = project.findChildById(nodeId);
-        if (!parentNode) {
-            msg.danger("Nodo padre no encontrado.");
-            return;
-        }
-        const childrenTypes = project.getChildrenTypes(nodeId);
-        if (typeToAdd === "settings" && childrenTypes.includes(typeToAdd)) {
-            msg.danger("Ya existe un nodo de tipo 'settings' en este nivel.");
-            return;
-        }
-        if (typeToAdd === "root" && project.hasNodeOfType("root")) {
-            msg.danger("Ya existe un nodo de tipo 'root'.");
-            return;
-        }
-        if (!nodeTypeManager.isValidChild(parentType, typeToAdd)) {
-            msg.danger(`Tipo de nodo ${typeToAdd} no permitido.`);
-            return;
-        }
-        const baseOptions = nodeTypeManager.getType(typeToAdd);
-        if (!baseOptions) {
-            msg.danger(`Tipo de nodo ${typeToAdd} no encontrado.`);
-            return;
-        }
-        const newNodeOptions = {
-            ...baseOptions,
-            type: typeToAdd,
-            caption: `Nuevo ${typeToAdd}`,
-            children: []
-        };
-        if (typeToAdd === "settings") {
-            try {
-                const settingsPath = `settings/${parentType}`;
-                const filesContent = await getDirCollectionJson(settingsPath);
-                for (const [key, fileInfo] of Object.entries(filesContent)) {
-                    const content = await get_data({ url: fileInfo.url });
-                    const childNode = {
-                        caption: content.caption || "Elemento de configuración",
-                        url: fileInfo.url,
-                        type: "settingItem",
-                        a_class: fileInfo.a_class,
-                        icon: content.icon,
-                        children: fileInfo.children || false,
-                        properties: content
-                    };
-                    newNodeOptions.caption = "Settings";
-                    newNodeOptions.children.push(childNode);
-                }
-                msg.success("Elementos de configuración agregados.");
-            } catch (error) {
-                msg.danger("Error al cargar elementos de configuración.");
-                console.error(error);
-                return;
+        try {
+            console.log(`Agregando nodo de tipo ${typeToAdd}`);
+            const parentNode = project.findChildById(nodeId);
+
+            if (!parentNode) {
+                throw new Error("Nodo padre no encontrado.");
             }
-        }
-        const success = project.addChild(nodeId, newNodeOptions);
-        if (success) {
-            project.render();
-            msg.success(`Nodo ${typeToAdd} agregado exitosamente.`);
-        } else {
-            msg.danger("No se pudo agregar el nodo.");
+
+            // Validaciones específicas del tipo de nodo
+            if (typeToAdd === "settings" && project.getChildrenTypes(nodeId).includes(typeToAdd)) {
+                throw new Error("Ya existe un nodo de tipo 'settings' en este nivel.");
+            }
+            if (typeToAdd === "root" && project.hasNodeOfType("root")) {
+                throw new Error("Ya existe un nodo de tipo 'root'.");
+            }
+            if (!nodeTypeManager.isValidChild(parentType, typeToAdd)) {
+                throw new Error(`Tipo de nodo ${typeToAdd} no permitido como hijo de ${parentType}.`);
+            }
+
+            const baseOptions = nodeTypeManager.getType(typeToAdd);
+            if (!baseOptions) {
+                throw new Error(`Tipo de nodo ${typeToAdd} no encontrado.`);
+            }
+
+            // Crear un nuevo nodo con opciones base
+            const newNodeOptions = {
+                ...baseOptions,
+                type: typeToAdd,
+                caption: `Nuevo ${typeToAdd}`,
+                children: []
+            };
+
+            // Inicializar nodos de tipo "settings" si corresponde
+            if (typeToAdd === "settings") {
+                await initializeSettingsNode(parentType, newNodeOptions);
+            }
+
+            // Agregar el nodo al proyecto
+            const success = project.addChild(nodeId, newNodeOptions);
+
+            if (success) {
+                await project.render();
+                msg.success(`Nodo ${typeToAdd} agregado exitosamente.`);
+            } else {
+                throw new Error("No se pudo agregar el nodo.");
+            }
+        } catch (error) {
+            msg.danger(error.message || "Error al agregar el nodo.");
+            console.error(error);
         }
     },
+
+    /**
+     * Renombra un nodo del árbol.
+     */
     renameNode: (nodeType, anchor, nodeId) => {
         const newName = prompt("Ingrese el nuevo nombre:");
         if (newName) {
@@ -113,9 +140,12 @@ const actionCallbacks = {
             }
         }
     },
+
+    /**
+     * Elimina un nodo del árbol.
+     */
     deleteNode: (nodeType, anchor, nodeId) => {
-        const confirmation = confirm("¿Eliminar este nodo?");
-        if (confirmation) {
+        if (confirm("¿Eliminar este nodo?")) {
             const deleted = project.removeNode(nodeId);
             if (deleted) {
                 project.render();
@@ -127,48 +157,93 @@ const actionCallbacks = {
     }
 };
 
-const handleProjectTree = async (node) => {
-    const { id } = $$(node).allData();
-    const selected = project.findChildById(id);
-    if (!selected) {
-        msg.danger("Nodo no encontrado.");
-        return;
+/**
+ * Inicializa los nodos de configuración ("settings") con archivos de un directorio.
+ * 
+ * @param {string} parentType - Tipo del nodo padre.
+ * @param {Object} newNodeOptions - Opciones base del nuevo nodo.
+ */
+const initializeSettingsNode = async (parentType, newNodeOptions) => {
+    try {
+        const settingsPath = `settings/${parentType}`;
+        const filesContent = await getDirCollectionJson(settingsPath);
+
+        for (const [key, fileInfo] of Object.entries(filesContent)) {
+            const content = await get_data({ url: fileInfo.url });
+            newNodeOptions.children.push({
+                caption: content.caption || "Elemento de configuración",
+                url: fileInfo.url,
+                type: "settingItem",
+                a_class: fileInfo.a_class,
+                icon: content.icon,
+                children: fileInfo.children || false,
+                properties: content
+            });
+        }
+
+        msg.success("Elementos de configuración agregados.");
+    } catch (error) {
+        msg.danger("Error al cargar elementos de configuración.");
+        throw error;
     }
-    if (selected.properties) {
-        const html = await renderTemplate("templates/properties.hbs", selected);
-        $$(".editor-container").html(html);
-    }
-    // await renderChildrenRecursively(selected);
 };
 
-const initializeNodeTypes = async () => {
+/**
+ * Maneja el clic en nodos del árbol de proyecto.
+ * 
+ * @param {HTMLElement} node - Nodo que fue clickeado.
+ */
+const handleProjectTree = async (node) => {
     try {
-        nodeTypeManager = new NodeTypeManager();
-        await nodeTypeManager.loadFromFile('./settings/types.json');
+        const { id } = $$(node).allData();
+        const selected = project.findChildById(id);
+
+        if (!selected) {
+            throw new Error("Nodo no encontrado.");
+        }
+
+        if (selected.properties) {
+            const html = await renderTemplate("templates/properties.hbs", selected);
+            $$(".editor-container").html(html);
+        }
     } catch (error) {
-        msg.danger('Error al cargar tipos de nodos.');
+        msg.danger(error.message || "Error al manejar el nodo.");
         console.error(error);
     }
 };
 
+/**
+ * Agrega los listeners principales del proyecto.
+ */
 const addEventsListener = () => {
     saveProjectListener();
     nodeProjectListener();
     contextMenuListener();
 };
 
+/**
+ * Listener para guardar el proyecto.
+ */
 const saveProjectListener = () => {
     $$('.save-project-btn').on('click', async () => {
-        const nodes = project.toJSON();
-        const response = await saveFileToServer(project.file, nodes.nodes);
-        if (response) {
-            msg.success('Proyecto guardado.');
-        } else {
-            msg.danger("Error al guardar proyecto.");
+        try {
+            const nodes = project.toJSON();
+            const response = await saveFileToServer(project.file, nodes.nodes);
+            if (response) {
+                msg.success('Proyecto guardado.');
+            } else {
+                throw new Error("Error al guardar proyecto.");
+            }
+        } catch (error) {
+            msg.danger(error.message || "Error al guardar proyecto.");
+            console.error(error);
         }
     });
 };
 
+/**
+ * Listener para manejar clics en nodos del árbol.
+ */
 const nodeProjectListener = () => {
     $$(Constants.CONTENT).on("click", (e) => {
         const nodeLink = e.target.closest('.node-link-container');
@@ -178,17 +253,20 @@ const nodeProjectListener = () => {
     });
 };
 
+/**
+ * Listener para mostrar el menú contextual.
+ */
 const contextMenuListener = () => {
-    $$(Constants.CONTENT).on("click", '.button-add-child', (e)=>{
+    if (!contextMenu) {
+        contextMenu = new ContextMenu('context-menu', 'menu-options', nodeTypeManager, actionCallbacks);
+    }
+
+    $$(Constants.CONTENT).on("click", '.button-add-child', (e) => {
         const link = e.target.closest('.node-link-container');
         if (link) {
             e.preventDefault();
             e.stopPropagation();
-            if (nodeTypeManager) {
-                const contextMenu = new ContextMenu('context-menu', 'menu-options', nodeTypeManager, actionCallbacks);
-                contextMenu.show(e, link);
-            }
+            contextMenu.show(e, link);
         }
-    })
+    });
 };
-

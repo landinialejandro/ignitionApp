@@ -1,0 +1,114 @@
+
+
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            line-height: 1.6;
+            margin: 20px;
+        }
+        h1, h2, h3 {
+            color: #333;
+        }
+        h1 {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+        pre {
+            background: #f4f4f4;
+            padding: 10px;
+            border: 1px solid #ddd;
+            overflow-x: auto;
+        }
+        code {
+            color: #c7254e;
+            background: #f9f2f4;
+            padding: 2px 4px;
+            border-radius: 4px;
+        }
+        .category {
+            margin-bottom: 40px;
+        }
+        .example {
+            border: 1px solid #ddd;
+            padding: 10px;
+            margin: 10px 0;
+            background: #f9f9f9;
+        }
+    </style>
+    <h1>SCSS Manual</h1>
+
+    <section>
+        <h2>Introduction</h2>
+        <p>This manual explains the structure and usage of the SCSS files in this project. It includes detailed descriptions of each category and practical examples of their implementation in HTML.</p>
+    </section>
+
+    <section>
+        <h2>File Structure</h2>
+        <p>The SCSS files are organized into the following categories:</p>
+        <ul>
+            <li><strong>Base:</strong> Global styles, typography, resets, and variables.</li>
+            <li><strong>Layout:</strong> Defines the structure of the application, including headers, footers, and sidebars.</li>
+            <li><strong>Components:</strong> Modular and reusable UI elements like buttons, cards, and modals.</li>
+            <li><strong>Utils:</strong> Helper classes and utility styles for spacing, responsiveness, and animations.</li>
+            <li><strong>Themes:</strong> Style definitions for dark and light modes.</li>
+        </ul>
+    </section>
+
+    <section class="category">
+        <h2>Base</h2>
+        <p>The <code>base</code> folder includes foundational styles like typography, resets, and global settings.</p>
+        <h3>Example: Typography</h3>
+        <p>The file <code>_typography.scss</code> contains basic text styles for headings, paragraphs, and other textual elements.</p>
+        <div class="example">
+            <h1>Heading 1</h1>
+            <p>This is a paragraph styled using base typography.</p>
+        </div>
+        <pre><code>&lt;h1&gt;Heading 1&lt;/h1&gt;
+&lt;p&gt;This is a paragraph styled using base typography.&lt;/p&gt;
+</code></pre>
+    </section>
+
+    <section class="category">
+        <h2>Layout</h2>
+        <p>The <code>layout</code> folder defines the overall structure of the app, including headers, footers, and sidebars.</p>
+        <h3>Example: Header</h3>
+        <p>The file <code>_header.scss</code> styles the application's header.</p>
+        <div class="example">
+            <header class="header">This is the header section</header>
+        </div>
+        <pre><code>&lt;header class="header"&gt;This is the header section&lt;/header&gt;</code></pre>
+    </section>
+
+    <section class="category">
+        <h2>Components</h2>
+        <p>The <code>components</code> folder includes reusable UI elements like buttons, cards, and modals.</p>
+        <h3>Example: Button</h3>
+        <p>The file <code>_button.scss</code> defines styles for buttons.</p>
+        <div class="example">
+            <button class="btn-primary">Click Me</button>
+        </div>
+        <pre><code>&lt;button class="btn-primary"&gt;Click Me&lt;/button&gt;</code></pre>
+    </section>
+
+    <section class="category">
+        <h2>Utils</h2>
+        <p>The <code>utils</code> folder provides helper classes for spacing, responsiveness, and animations.</p>
+        <h3>Example: Spacing</h3>
+        <p>Utility classes like <code>.m-10</code> and <code>.p-20</code> help manage margins and padding.</p>
+        <div class="example">
+            <div class="m-10 p-20" style="border: 1px solid #ddd;">Content with margin and padding</div>
+        </div>
+        <pre><code>&lt;div class="m-10 p-20"&gt;Content with margin and padding&lt;/div&gt;</code></pre>
+    </section>
+
+    <section class="category">
+        <h2>Themes</h2>
+        <p>The <code>themes</code> folder includes definitions for dark and light modes.</p>
+        <h3>Example: Dark Theme</h3>
+        <p>The file <code>_dark.scss</code> defines styles for the dark theme.</p>
+        <div class="example" style="background: #333; color: #fff; padding: 10px;">
+            This is a dark-themed component.
+        </div>
+        <pre><code>&lt;div class="dark-theme"&gt;This is a dark-themed component&lt;/div&gt;</code></pre>
+    </section>
+</body>
