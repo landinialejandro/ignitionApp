@@ -19,37 +19,35 @@
         padding: math.div($spacing-xs, 2);
         border-radius: 3px;
         background-color: transparent;
-        @include transition(background-color, color);
-
+        @include transition(background-color, color, border-left);
+      
         &:hover {
           background-color: $color-hover;
-
+      
           .tools-box {
             background-color: $color-background;
             opacity: 1;
           }
         }
-
+      
         .node-link {
           display: flex;
           align-items: center;
           color: $color-text;
           text-decoration: none;
           font-size: 0.9rem;
-          cursor: pointer; // Cambia el cursor a puntero
-
+          cursor: pointer;
+      
           &:hover {
             color: $color-accent;
-
           }
-
+      
           .node-text {
             flex-grow: 1;
             color: $color-text;
           }
         }
-
-        // Estilos mejorados para tools-box
+      
         .tools-box {
           display: flex;
           align-items: center;
@@ -57,13 +55,13 @@
           border-radius: 3px;
           padding: 0.2rem 0.4rem;
           opacity: 0.6;
-          transition: background-color 0.3s ease, opacity 0.3s ease;
-
+          @include transition(background-color, opacity);
+      
           &:hover {
             background-color: $color-background;
             opacity: 1;
           }
-
+      
           .button-collapse,
           .button-add-child,
           .button-delete-node {
@@ -76,26 +74,38 @@
             align-items: center;
             justify-content: center;
             color: $color-text-muted;
-            transition: background-color 0.3s ease, color 0.3s ease, border-radius 0.3s ease;
-
+            @include transition(background-color, color, border-radius);
+      
             &:hover {
               background-color: lighten($color-secondary, 20%);
               color: $color-accent;
               border-radius: 50%;
             }
           }
-
+      
           .button-collapse .node-collapse,
           .button-add-child .node-add,
           .button-delete-node .node-delete {
             font-size: 0.8rem;
           }
-
+      
           .button-collapse.expanded .node-collapse {
             transform: rotate(90deg);
           }
         }
+      
+        &.active {
+          color: $color-accent;
+          font-weight: $font-weight-bold;
+          background: linear-gradient(to right, rgba(187, 134, 252, 0.1), rgba(187, 134, 252, 0.2));
+          border-left: 4px solid $color-accent;
+          box-shadow: inset 0 0 10px rgba(187, 134, 252, 0.1);
+      
+          // Agregar animación específica al activarse
+          @include transition(background, border-left, box-shadow);
+        }
       }
+      
 
       .node-submenu {
         overflow: hidden;
@@ -120,6 +130,7 @@
         max-height: 2500px;
         opacity: 1;
       }
+
     }
   }
 }

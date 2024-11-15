@@ -1,9 +1,9 @@
 {{#each this}}
     {{#if @last}}
-        <li class="breadcrumb-item active" aria-current="page">{{this.label}}</li>
+        <li class="breadcrumb-item active" aria-current="page" >{{this.label}}</li>
         {{else}}
-        <li class="breadcrumb-item">
-            <a href="{{this.url}}">{{this.label}}</a>
+        <li class="breadcrumb-item"  >
+            <a href="{{this.url}}" data-id="{{this.id}}" >{{this.label}}</a>
         </li>
     {{/if}}
 {{/each}}

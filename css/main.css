@@ -316,10 +316,18 @@ body {
   padding: 0.5rem;
   border-radius: 3px;
   background-color: transparent;
-  transition: background-color color ease-in-out;
+  transition: background-color color border-left;
 }
 .sidebar-content .nav-list .nav-item .nav-link-container:hover {
   background-color: #2c2c4f;
+}
+.sidebar-content .nav-list .nav-item .nav-link-container.active {
+  color: #bb86fc;
+  font-weight: 700;
+  background: linear-gradient(to right, rgba(187, 134, 252, 0.1), rgba(187, 134, 252, 0.2));
+  border-left: 4px solid #bb86fc;
+  box-shadow: inset 0 0 10px rgba(187, 134, 252, 0.1);
+  transition: background border-left box-shadow;
 }
 .sidebar-content .nav-list .nav-item .nav-link-container .nav-link {
   display: flex;
@@ -445,7 +453,7 @@ body {
   padding: 0.25rem;
   border-radius: 3px;
   background-color: transparent;
-  transition: background-color color ease-in-out;
+  transition: background-color color border-left;
 }
 .treeview-content .node-list .node-item .node-link-container:hover {
   background-color: #2c2c4f;
@@ -476,7 +484,7 @@ body {
   border-radius: 3px;
   padding: 0.2rem 0.4rem;
   opacity: 0.6;
-  transition: background-color 0.3s ease, opacity 0.3s ease;
+  transition: background-color opacity ease-in-out;
 }
 .treeview-content .node-list .node-item .node-link-container .tools-box:hover {
   background-color: #1a1a2e;
@@ -494,7 +502,7 @@ body {
   align-items: center;
   justify-content: center;
   color: #b0b0b0;
-  transition: background-color 0.3s ease, color 0.3s ease, border-radius 0.3s ease;
+  transition: background-color color border-radius;
 }
 .treeview-content .node-list .node-item .node-link-container .tools-box .button-collapse:hover,
 .treeview-content .node-list .node-item .node-link-container .tools-box .button-add-child:hover,
@@ -510,6 +518,14 @@ body {
 }
 .treeview-content .node-list .node-item .node-link-container .tools-box .button-collapse.expanded .node-collapse {
   transform: rotate(90deg);
+}
+.treeview-content .node-list .node-item .node-link-container.active {
+  color: #bb86fc;
+  font-weight: 700;
+  background: linear-gradient(to right, rgba(187, 134, 252, 0.1), rgba(187, 134, 252, 0.2));
+  border-left: 4px solid #bb86fc;
+  box-shadow: inset 0 0 10px rgba(187, 134, 252, 0.1);
+  transition: background border-left box-shadow;
 }
 .treeview-content .node-list .node-item .node-submenu {
   overflow: hidden;

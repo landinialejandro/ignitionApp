@@ -6,26 +6,37 @@
   height: calc(100vh - $header-height - ($footer-height * 2));
   overflow-y: auto;
   display: block;
-  
+
   .nav-list {
     .nav-item {
       margin-bottom: math.div($spacing-xs, 2);
       list-style: none;
 
-      // Contenedor para alinear .nav-link y .button-collapse
+      // scss/components/_nav.scss
       .nav-link-container {
         display: flex;
         align-items: center;
-        justify-content: space-between; // Alinea el enlace y el botón a los extremos
+        justify-content: space-between;
         padding: $spacing-xs;
         border-radius: 3px;
         background-color: transparent;
-        @include transition(background-color, color);
+        @include transition(background-color, color, border-left);
 
         &:hover {
           background-color: $color-hover;
         }
-        
+
+        &.active {
+          color: $color-accent; // Resalta el texto
+          font-weight: $font-weight-bold; // Negrita para el texto
+          background: linear-gradient(to right,
+              rgba(187, 134, 252, 0.1),
+              rgba(187, 134, 252, 0.2)); // Fondo degradado suave
+          border-left: 4px solid $color-accent; // Línea lateral destacada
+          box-shadow: inset 0 0 10px rgba(187, 134, 252, 0.1); // Sombra interna para profundidad
+          @include transition(background, border-left, box-shadow);
+        }
+
         .nav-link {
           display: flex;
           align-items: center;
@@ -62,7 +73,7 @@
             }
           }
 
-          // Rotación en el ícono cuando el botón tiene la clase expanded
+          // Rotación del ícono cuando el botón tiene la clase expanded
           &.expanded .menu-collapse {
             transform: rotate(90deg);
           }
@@ -90,7 +101,7 @@
       }
 
       // Mostrar submenú con animación cuando nav-item está expandido
-      &.expanded > .nav-submenu {
+      &.expanded>.nav-submenu {
         max-height: 2500px;
         opacity: 1;
       }

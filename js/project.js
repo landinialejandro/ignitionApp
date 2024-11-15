@@ -202,6 +202,12 @@ const handleProjectTree = async (node) => {
             throw new Error("Nodo no encontrado.");
         }
 
+        $$('.node-link-container').removeClass('active')
+        $$(`#${id}`).addClass('active')
+        
+        const breadcrumb = Handlebars.partials  ['breadcrumb'](project.getBreadcrumb(id));
+        $$('.breadcrumb').html(breadcrumb);
+
         if (selected.properties) {
             const html = await renderTemplate("templates/properties.hbs", selected);
             $$(".editor-container").html(html);

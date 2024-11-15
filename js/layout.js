@@ -1,46 +1,30 @@
-// Simulación de la finalización de la carga de la aplicación
-window.addEventListener('load', () => {
-  // Espera 2 segundos para simular una carga de datos
-  setTimeout(() => {
-    document.querySelector('.preloader').classList.add('hidden');
-  }, 1000);
-});
-
-document.addEventListener("DOMContentLoaded", () => {
-  // Selección del contenedor principal para la delegación de eventos
-  const contentBody = document.querySelector(".content-body");
-
-  // Delegación de eventos para expansión/contracción
-  contentBody.addEventListener("click", (event) => {
-      const collapseButton = event.target.closest(".button-collapse");
-
-      // Verificar si el elemento clicado es un botón de colapso
-      if (collapseButton) {
-          const nodeItem = collapseButton.closest(".node-item");
-
-          // Alternar la clase 'expanded' para el nodo
-          if (nodeItem.classList.contains("expanded")) {
-              nodeItem.classList.remove("expanded");
-              collapseButton.classList.remove("expanded");
-          } else {
-              nodeItem.classList.add("expanded");
-              collapseButton.classList.add("expanded");
-          }
-      }
-  });
-});
-
-
+// // Simulación de la finalización de la carga de la aplicación
+// window.addEventListener('load', () => {
+//   // Espera 2 segundos para simular una carga de datos
+//   setTimeout(() => {
+//     document.querySelector('.preloader').classList.add('hidden');
+//   }, 1000);
+// });
 
 document.addEventListener("DOMContentLoaded", () => {
   const sidebar = document.querySelector(".sidebar");
+  const contentBody = document.querySelector(".content-body");
   const toggleButton = document.querySelector(".sidebar-toggle");
 
-  // Función para alternar manualmente el estado del sidebar
-  toggleButton.addEventListener("click", () => {
-    sidebar.classList.toggle("collapsed");
-    sidebar.classList.toggle("expanded");
-  });
+  // Función para alternar clases
+  const toggleClass = (element, className, force) => {
+    if (force !== undefined) {
+      element.classList.toggle(className, force);
+    } else {
+      element.classList.toggle(className);
+    }
+  };
+
+  // Función para manejar el colapso del sidebar
+  const handleSidebarToggle = () => {
+    toggleClass(sidebar, "collapsed");
+    toggleClass(sidebar, "expanded");
+  };
 
   // Función para manejar el cambio de tamaño de la ventana
   const handleResize = () => {
@@ -53,31 +37,57 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   };
 
-  // Llama a la función de tamaño de ventana al cargar la página
+  // Función para gestionar el estado activo del nav-link-container
+  const setActiveNavLink = (selectedLink) => {
+    // Quita la clase 'active' de todos los elementos
+    document.querySelectorAll(".nav-link-container").forEach((link) => {
+      link.classList.remove("active");
+    });
+
+    // Agrega la clase 'active' al elemento seleccionado
+    if (selectedLink) {
+      selectedLink.classList.add("active");
+    }
+  };
+
+  // Inicializa el estado del sidebar según el tamaño de la ventana
   handleResize();
 
-  // Agrega un evento de cambio de tamaño de ventana
+  // Eventos
+  if (toggleButton) {
+    toggleButton.addEventListener("click", handleSidebarToggle);
+  }
   window.addEventListener("resize", handleResize);
-});
 
-document.addEventListener('DOMContentLoaded', () => {
-  const sidebar = document.querySelector('.sidebar');
+  // Delegación de eventos para treeview y sidebar collapse
+  document.body.addEventListener("click", (event) => {
+    const collapseButton = event.target.closest(".button-collapse");
+    const navButton = event.target.closest(".nav-item .button-collapse");
+    const navLink = event.target.closest(".nav-link-container");
 
-  // Delegamos el evento 'click' en el contenedor .sidebar
-  sidebar.addEventListener('click', (event) => {
-      // Verificamos si el clic fue en un elemento .button-collapse
-      const button = event.target.closest('.button-collapse');
-      if (button) {
-          event.preventDefault();
-          event.stopPropagation(); // Evita la propagación a otros elementos dentro del nav-item
-          
-          const navItem = button.closest('.nav-item');
-          
-          // Alterna la clase 'expanded' en el nav-item
-          navItem.classList.toggle('expanded');
-          
-          // Alterna la clase 'expanded' en el botón
-          button.classList.toggle('expanded');
+    if (collapseButton) {
+      const nodeItem = collapseButton.closest(".node-item");
+      if (nodeItem) {
+        const isExpanded = nodeItem.classList.contains("expanded");
+        toggleClass(nodeItem, "expanded", !isExpanded);
+        toggleClass(collapseButton, "expanded", !isExpanded);
       }
+    }
+
+    if (navButton) {
+      event.preventDefault();
+      event.stopPropagation();
+      const navItem = navButton.closest(".nav-item");
+      if (navItem) {
+        const isExpanded = navItem.classList.contains("expanded");
+        toggleClass(navItem, "expanded", !isExpanded);
+        toggleClass(navButton, "expanded", !isExpanded);
+      }
+    }
+
+    if (navLink && !event.target.closest(".button-collapse")) {
+      // Establece la clase 'active' en el elemento seleccionado
+      setActiveNavLink(navLink);
+    }
   });
 });

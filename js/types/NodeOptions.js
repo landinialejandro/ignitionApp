@@ -1,5 +1,5 @@
 /**
- * @typedef {import('./types/IconType').IconType} IconType
+ * @typedef {import('./IconType').IconType} IconType
  */
 /**
  * @typedef {Object} NodeOptions
@@ -10,7 +10,7 @@
  * @property {Object} [a_attr] - Atributos personalizados para la etiqueta `<a>`.
  * @property {Object} [state] - Estado del nodo (por ejemplo, si está abierto).
  * @property {Object} [properties] - Datos adicionales del nodo.
- * @property {Node[]} [children] - Nodos hijos.
+ * @property {NodeOptions} [children] - Nodos hijos.
  * @property {string} [type] - Tipo de nodo (root, group, table, field).
  */
 
