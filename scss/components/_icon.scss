@@ -6,6 +6,11 @@
     align-items: center;
     justify-content: center;
     font-size: $font-size-base;
+    
+    &-card {
+        color: $color-accent;
+        font-size: $font-size-large;
+    }
 
     &-badge {
         margin-right: math.div($spacing-xs, 2);
@@ -19,6 +24,10 @@
     &-button {
         font-size: $font-size-large;
         color: $color-accent;
+    }
+
+    &-tools{
+        margin-right: math.div($spacing-xs, 2);
     }
 
     // Estilos para SVGs en `.icon` contenedores

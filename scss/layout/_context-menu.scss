@@ -16,7 +16,7 @@
     padding: $spacing-xs $spacing-sm;
     cursor: pointer;
     text-decoration: none;
-    color: $color-text;
+    color: $color-text; 
     display: block;
     @include transition(color, background-color);
 

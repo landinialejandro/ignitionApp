@@ -179,15 +179,51 @@ const nodeProjectListener = () => {
 };
 
 const contextMenuListener = () => {
-    document.addEventListener('contextmenu', (e) => {
-        const anchor = e.target.closest('a');
-        if (anchor) {
+    $$('.button-add-child').on("click", (e)=>{
+        const link = e.target.closest('.node-link-container');
+        if (link) {
             e.preventDefault();
             if (nodeTypeManager) {
                 const contextMenu = new ContextMenu('context-menu', 'menu-options', nodeTypeManager, actionCallbacks);
-                contextMenu.show(e, anchor);
+                contextMenu.show(e, link);
             }
         }
-    });
+    })
 };
+
+// const contextMenuListener = () => {
+//     document.addEventListener('contextmenu', (e) => {
+//         // Verificar si el clic derecho fue en el botón .button-add-child
+//         const button = e.target.closest('.button-add-child');
+        
+//         if (button) {
+//             e.preventDefault();
+            
+//             if (nodeTypeManager) {
+//                 // Crear una instancia de ContextMenu si no existe
+//                 let contextMenu = document.getElementById('context-menu');
+                
+//                 if (!contextMenu) {
+//                     // Si el menú no existe, crearlo dinámicamente
+//                     contextMenu = document.createElement('div');
+//                     contextMenu.id = 'context-menu';
+//                     contextMenu.classList.add('menu-options');
+//                     document.body.appendChild(contextMenu);
+//                 }
+                
+//                 // Inicializar y mostrar el menú contextual en la posición del clic derecho
+//                 const contextMenuInstance = new ContextMenu('context-menu', 'menu-options', nodeTypeManager, actionCallbacks);
+//                 contextMenuInstance.show(e, button);
+//             }
+//         }
+//     });
+
+//     // Ocultar el menú contextual al hacer clic fuera de él
+//     document.addEventListener('click', (event) => {
+//         const contextMenu = document.getElementById('context-menu');
+//         if (contextMenu && !event.target.closest('#context-menu')) {
+//             contextMenu.style.display = 'none';
+//         }
+//     });
+// };
 

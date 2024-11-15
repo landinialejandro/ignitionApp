@@ -1,53 +1,41 @@
 // scss/components/_alert.scss
 // Estilos de alertas outline con fondo esfumado
+
+@use 'sass:map';
+
+
 .alert {
-    padding: $spacing-sm;
-    border-radius: 8px;
-    background-color: $color-alert-background; // Fondo esfumado para todas las alertas
-    border: 1px solid; // Añadimos borde para cada tipo de alerta
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.2); // Sombra para realce
-    display: flex;
-    align-items: center;
-    gap: $spacing-xs; // Espacio entre el icono y el texto
-  
-    &.alert-primary {
-      border-color: $color-primary-border;
-      color: $color-primary-border;
-    }
-  
-    &.alert-success {
-      border-color: $color-success-border;
-      color: $color-success-border;
-    }
-  
-    &.alert-danger {
-      border-color: $color-danger-border;
-      color: $color-danger-border;
-    }
-  
-    &.alert-warning {
-      border-color: $color-warning-border;
-      color: $color-warning-border;
-    }
-  
-    &.alert-info {
-      border-color: $color-info-border;
-      color: $color-info-border;
-    }
-  
-    // Hover con efecto de brillo
-    &:hover {
-      box-shadow: 0 0 12px lighten($color-shadow, 20%);
-    }
-  
-    // Icono en la alerta (opcional)
-    .alert-icon {
-      font-size: 1.2rem;
-    }
-  
-    // Texto de alerta
-    .alert-text {
-      font-size: 0.9rem;
-      font-weight: $font-weight-normal;
+  padding: $spacing-sm;
+  @include rounded();
+  background-color: $color-alert-background; // Fondo esfumado para todas las alertas
+  border: 1px solid;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.2); // Sombra para realce
+  display: flex;
+  align-items: center;
+  gap: $spacing-xs; // Espacio entre el icono y el texto
+  transition: box-shadow 0.3s ease;
+
+  // Generar clases de color de alerta dinámicamente
+  @each $name, $color in $theme-colors {
+    &-#{$name} {
+      border-color: $color;
+      color: $color;
     }
   }
+
+  // Hover con efecto de brillo
+  &:hover {
+    box-shadow: 0 0 12px lighten($color-shadow, 20%);
+  }
+
+  // Icono en la alerta (opcional)
+  .alert-icon {
+    font-size: 1.2rem;
+  }
+
+  // Texto de alerta
+  .alert-text {
+    font-size: 0.9rem;
+    font-weight: $font-weight-normal;
+  }
+}

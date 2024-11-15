@@ -4,15 +4,6 @@
 @use 'sass:math';
 
 // Variables de configuración para el componente `badge`
-$badge-colors: (
-  "primary": $color-primary-border,
-  "success": $color-success-border,
-  "danger": $color-danger-border,
-  "warning": $color-warning-border,
-  "info": $color-info-border,
-  "light": $color-text-light,
-  "dark": $color-background
-);
 
 $badge-sizes: (
   "sm": (padding: 0.25rem 0.5rem, font-size: 0.75rem, icon-size: 1rem),
@@ -25,16 +16,17 @@ $badge-sizes: (
   align-items: center;
   font-weight: bold;
   border-radius: math.div($spacing-xs, 2);
+  border: 1px solid;
   text-transform: uppercase;
   white-space: nowrap;
   gap: 0.25rem; // Espacio entre icono y texto
-  @include transition(background-color, color);
+  background-color: $color-alert-background; // Fondo esfumado para todas las alertas
 
   // Iterar sobre los colores y aplicar los estilos de fondo y color de texto
-  @each $name, $color in $badge-colors {
+  @each $name, $color in $theme-colors {
     &-#{$name} {
-      background-color: map.get($badge-colors, $name);
-      color: contrast(map.get($badge-colors, $name), $color-text-light, $color-text-muted);
+      border-color: $color;
+      color: $color;
     }
   }
 

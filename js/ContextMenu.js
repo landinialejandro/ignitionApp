@@ -1,3 +1,4 @@
+//ContextMenu.js
 /**
  * @class ContextMenu
  * 
@@ -78,7 +79,7 @@ export class ContextMenu {
      */
     createMenuItem(option, nodeType, anchor, nodeId) {
         // Renderizar el 'li' utilizando el template partial 'projectItem'
-        const menuItemHtml = Handlebars.partials['projectitem']({
+        const menuItemHtml = Handlebars.partials['contextmenu']({
             caption: option.label,
             type: option.type || 'ContextMenuOption', // Puedes cambiarlo según el tipo de opción
             url: '#',                       // Puedes ajustar el URL según la lógica que tengas

@@ -3,11 +3,14 @@
         <div class="card-header">
             <h3 class="card-title">Proyecto</h3>
             <div class="card-tools">
-                <!-- reservado para botones como guardar, expandir, contraer, cerrar, maximizar -->
+                <button class="tool-button save-project-btn" aria-label="Guardar">
+                    <i class="icon-save bi bi-save icon-tools"></i>
+                    Guardar
+                </button>
             </div>
         </div>
         <div class="card-body project-container">
-            
+
         </div>
     </div>
     <div class="col card">
@@ -18,7 +21,12 @@
             </div>
         </div>
         <div class="card-body editor-container">
-            
+
         </div>
     </div>
 </div>
+<nav class="context-menu" id="context-menu" >
+    <!-- Opciones del ContextMenu se agregarán dinámicamente aquí -->
+    <ul id="menu-options" class="context-menu-tree">
+    </ul>
+</nav>

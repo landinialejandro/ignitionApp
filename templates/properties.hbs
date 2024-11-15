@@ -12,18 +12,20 @@
             </button>
         </div> <!-- /.card-tools -->
     </div> <!-- /.card-header -->
-    <div class="card-body" >
+    <div class="card-body">
 
         {{#with properties}}
         {{#if (eq type "heading")}}
         {{> component_heading}}
+         <div class="margin-bottom"></div>
         {{/if}}
         {{#if properties}}
 
         {{#if usershelper}}
         {{> usershelper}}
+         <div class="margin-bottom"></div>
         {{/if}}
-        <div class="card">
+        <div class="card margin-bottom-lg">
             <div class="card-body">
                 {{#if (eq type "input-group")}}
                 {{!-- Input Group --}}
@@ -56,21 +58,23 @@
         {{/if}}
         {{/with}}
         {{!-- node info --}}
-        <div class="mb-3"></div>
-        {{!-- {{log this}} --}}
+        <div class="margin-bottom"></div>
         <div class="card">
+            <div class="card-header">
+                <span class="text-info">
+                    Node info
+                </span>
+            </div>
             <div class="card-body">
-                <div class="d-flex justify-content-between mb-3">
-                    <div>
-                        Node info
-                    </div>
-                    <div class="float-end mb-2">
-                        <span class="badge text-bg-info">Id: {{id}}</span>
-                        <span class="badge text-bg-info">Order:
+                <div class="margin-bottom-lg">
+                    <div class>
+                        <span class="badge badge-sm badge-info">Id:
+                            {{id}}</span>
+                        <span class="badge badge-sm badge-info">Order:
                             {{properties.order}}</span>
-                        <span class="badge text-bg-success">Caption:
+                        <span class="badge badge-sm badge-success">Caption:
                             {{caption}}</span>
-                        <span class="badge text-bg-primary">Type:
+                        <span class="badge badge-sm badge-primary">Type:
                             {{type}}</span>
                     </div>
                 </div>

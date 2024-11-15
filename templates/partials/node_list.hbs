@@ -1,16 +1,17 @@
-<!-- partials/projectIem.hbs -->
+{{!-- partials/node_list.hbs --}}
 <li class="node-item expanded{{#if state.expanded}} expanded{{/if}}{{ li_class}}"
     {{#each li_attr}} {{@key}}="{{this}}" {{/each}}>
-    <div class="node-link-container">
+    <div class="node-link-container"
+        id="{{id}}"
+        data-name="{{caption}}"
+        data-type="{{type}}"
+        data-id="{{id}}"
+    >
         <a class="node-link {{#if active}}active{{/if}} {{a_class}}"
-            id="{{id}}"
-            data-name="{{caption}}"
-            data-type="{{type}}"
-            data-id="{{id}}"
             {{#each a_attr}} {{@key}}="{{this}}" {{/each}}>
             {{> component_i context="nav"}}
             {{#if caption}}
-            <!-- Truncado a 20 caracteres -->
+            {{!-- Truncado a 20 caracteres --}}
             <span title="{{caption}}">{{truncate caption 20}}</span>
             {{/if}}
             {{#if badge}}

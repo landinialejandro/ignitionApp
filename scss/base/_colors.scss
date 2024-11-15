@@ -26,3 +26,14 @@ $color-info-border: #56CCF2;
 
 // Fondo esfumado para alertas
 $color-alert-background: rgba(255, 255, 255, 0.05); // Fondo muy sutil en blanco para el efecto esfumado
+
+// Colores temáticos para alertas, badges, botones, etc.
+$theme-colors: (
+  "primary": $color-primary-border,
+  "success": $color-success-border,
+  "danger": $color-danger-border,
+  "warning": $color-warning-border,
+  "info": $color-info-border,
+  "light": $color-text-light,
+  "dark": $color-background
+);
