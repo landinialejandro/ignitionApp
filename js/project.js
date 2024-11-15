@@ -171,7 +171,7 @@ const saveProjectListener = () => {
 
 const nodeProjectListener = () => {
     $$(Constants.CONTENT).on("click", (e) => {
-        const nodeLink = e.target.closest('.node-link');
+        const nodeLink = e.target.closest('.node-link-container');
         if (nodeLink) {
             handleProjectTree(nodeLink);
         }
@@ -179,10 +179,11 @@ const nodeProjectListener = () => {
 };
 
 const contextMenuListener = () => {
-    $$('.button-add-child').on("click", (e)=>{
+    $$(Constants.CONTENT).on("click", '.button-add-child', (e)=>{
         const link = e.target.closest('.node-link-container');
         if (link) {
             e.preventDefault();
+            e.stopPropagation();
             if (nodeTypeManager) {
                 const contextMenu = new ContextMenu('context-menu', 'menu-options', nodeTypeManager, actionCallbacks);
                 contextMenu.show(e, link);
@@ -190,40 +191,4 @@ const contextMenuListener = () => {
         }
     })
 };
-
-// const contextMenuListener = () => {
-//     document.addEventListener('contextmenu', (e) => {
-//         // Verificar si el clic derecho fue en el botón .button-add-child
-//         const button = e.target.closest('.button-add-child');
-        
-//         if (button) {
-//             e.preventDefault();
-            
-//             if (nodeTypeManager) {
-//                 // Crear una instancia de ContextMenu si no existe
-//                 let contextMenu = document.getElementById('context-menu');
-                
-//                 if (!contextMenu) {
-//                     // Si el menú no existe, crearlo dinámicamente
-//                     contextMenu = document.createElement('div');
-//                     contextMenu.id = 'context-menu';
-//                     contextMenu.classList.add('menu-options');
-//                     document.body.appendChild(contextMenu);
-//                 }
-                
-//                 // Inicializar y mostrar el menú contextual en la posición del clic derecho
-//                 const contextMenuInstance = new ContextMenu('context-menu', 'menu-options', nodeTypeManager, actionCallbacks);
-//                 contextMenuInstance.show(e, button);
-//             }
-//         }
-//     });
-
-//     // Ocultar el menú contextual al hacer clic fuera de él
-//     document.addEventListener('click', (event) => {
-//         const contextMenu = document.getElementById('context-menu');
-//         if (contextMenu && !event.target.closest('#context-menu')) {
-//             contextMenu.style.display = 'none';
-//         }
-//     });
-// };
 

@@ -542,6 +542,9 @@ body {
   z-index: 1000;
   min-width: 150px;
 }
+.context-menu li {
+  list-style: none;
+}
 .context-menu .context-item {
   padding: 0.5rem 1rem;
   cursor: pointer;
