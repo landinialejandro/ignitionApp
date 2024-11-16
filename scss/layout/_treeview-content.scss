@@ -3,7 +3,6 @@
 
 .treeview-content {
   padding: $spacing-sm;
-  height: calc(100vh - $header-height - ($footer-height * 2));
   overflow-y: auto;
   display: block;
 

@@ -242,22 +242,37 @@ const saveNodeListener = () => {
         const form = e.target;
         const nodeId = form.getAttribute('data-id');
 
-        // Recolecta los valores ingresados en el formulario
-        const formData = new FormData(form);
+        // Recolecta todos los inputs del formulario
+        const inputs = form.querySelectorAll("input, textarea, select");
         const updatedValues = [];
-        formData.forEach((value, key) => {
-            updatedValues.push({
-                caption: key,
-                value: value
-            });
+
+        // Procesa todos los inputs
+        inputs.forEach(input => {
+            if (input.type === "checkbox" || input.type === "radio") {
+                // Incluye todos los checkbox y radios con su estado checked
+                updatedValues.push({
+                    caption: input.name || input.id,
+                    checked: input.checked // true si está marcado, false si no
+                });
+            } else {
+                // Procesa otros tipos de input (text, textarea, select)
+                updatedValues.push({
+                    caption: input.name || input.id,
+                    value: input.value
+                });
+            }
         });
 
         const node = project.findChildById(nodeId);
+        console.log(updatedValues);
 
+        // Actualiza las propiedades con map
         node.properties.properties = node.properties.properties.map((v, k) => {
-            // console.log(v, k);
+            console.log(v, k);
             return { ...v, ...updatedValues[k] }; // Crea un nuevo objeto con las actualizaciones
         });
+
+        console.log(node.properties.properties);
 
     })
 }
