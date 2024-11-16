@@ -1,4 +1,10 @@
 // project.js
+// TODO: falta comandos para agregar file o folder en sidebar
+// TODO: programar el boton borrar del nodo, verificar si puede y debe estar
+// TODO: Programar los botones del tool de los cards
+// TODO: Programar cambiar el caption de los nodos
+
+
 
 /**
  * Este archivo gestiona la lógica principal de un sistema de gestión de nodos y árbol de proyecto.
