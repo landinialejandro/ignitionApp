@@ -9,7 +9,6 @@ import { get_data, saveFileToServer } from './libraries/common.js';
 import { getDirCollectionJson, renderTemplate } from './libraries/helpers.js';
 import { Msglog } from "./libraries/MsgLog.js";
 import { $$ } from './libraries/selector.js';
-import { ProjectTreeview } from './libraries/ProjectTreeview.js';
 
 import Constants from './constants.js';
 import { ContextMenu } from './ContextMenu.js';
@@ -18,8 +17,8 @@ import { NodeTypeManager } from './NodeTypeManager.js';
 
 // Variables globales necesarias para la gestión del proyecto
 const msg = new Msglog();
-let nodeTypeManager = null;
-let project = null;
+const nodeTypeManager = new NodeTypeManager();
+const project = new Nodes();
 
 // Instancia única del menú contextual
 let contextMenu = null;
@@ -31,36 +30,23 @@ let contextMenu = null;
  */
 export const initializeProject = async (url) => {
     try {
-        await initializeNodeTypes();
-
+        await nodeTypeManager.loadFromFile('./settings/types.json');
         const content = await get_data({ url });
         const projectPage = await get_data({ url: "pages/project_page.html", isJson: false });
 
         // Renderizar la estructura base del proyecto
         $$(Constants.CONTENT).html(projectPage);
 
-        project = new Nodes(".project-container", nodeTypeManager);
+        project.container = ".project-container";
         project.setNodes(content);
         project.file = url;
+        project.nodeTypeManager = nodeTypeManager.types
 
         await project.render();
 
         addEventsListener();
     } catch (error) {
         msg.danger("Error al inicializar el proyecto.");
-        console.error(error);
-    }
-};
-
-/**
- * Inicializa los tipos de nodos desde un archivo JSON.
- */
-const initializeNodeTypes = async () => {
-    try {
-        nodeTypeManager = new NodeTypeManager();
-        await nodeTypeManager.loadFromFile('./settings/types.json');
-    } catch (error) {
-        msg.danger('Error al cargar tipos de nodos.');
         console.error(error);
     }
 };
@@ -159,6 +145,7 @@ const actionCallbacks = {
 
 /**
  * Inicializa los nodos de configuración ("settings") con archivos de un directorio.
+ * tomo cada archivo el directorio y lo agrego al setting como un children.
  * 
  * @param {string} parentType - Tipo del nodo padre.
  * @param {Object} newNodeOptions - Opciones base del nuevo nodo.
@@ -204,8 +191,8 @@ const handleProjectTree = async (node) => {
 
         $$('.node-link-container').removeClass('active')
         $$(`#${id}`).addClass('active')
-        
-        const breadcrumb = Handlebars.partials  ['breadcrumb'](project.getBreadcrumb(id));
+
+        const breadcrumb = Handlebars.partials['breadcrumb'](project.getBreadcrumb(id));
         $$('.breadcrumb').html(breadcrumb);
 
         if (selected.properties) {
@@ -225,6 +212,7 @@ const addEventsListener = () => {
     saveProjectListener();
     nodeProjectListener();
     contextMenuListener();
+    saveNodeListener();
 };
 
 /**
@@ -246,6 +234,38 @@ const saveProjectListener = () => {
         }
     });
 };
+
+const saveNodeListener = () => {
+    $$(Constants.CONTENT).on('submit', '#properties-form', (e) => {
+        e.preventDefault();
+        // Captura el formulario y el ID del nodo
+        const form = e.target;
+        const nodeId = form.getAttribute('data-id');
+
+        // Recolecta los valores ingresados en el formulario
+        const formData = new FormData(form);
+        const updatedValues = [];
+        formData.forEach((value, key) => {
+            updatedValues.push({
+                caption: key,
+                value: value
+            });
+        });
+
+        // Llama al método de actualización de la clase Nodes
+        const success = project.updateNode(nodeId, updatedValues);
+        console.log(formData);
+        console.log(updatedValues);
+
+
+        // Da retroalimentación al usuario
+        if (success) {
+            alert('Propiedades guardadas exitosamente.');
+        } else {
+            alert('Error al guardar las propiedades.');
+        }
+    })
+}
 
 /**
  * Listener para manejar clics en nodos del árbol.

@@ -1,11 +1,11 @@
-<div class="input-group">
-    <span class="input-group-text">{{caption}}</span>
+<div class="form-group margin-bottom">
+    <label class="form-label">{{caption}}</label>
     <textarea
-        class="form-control"
+        class="form-textarea"
         id="textarea-{{caption}}"
         placeholder="{{placeholder}}"
         data-id="{{id}}">{{caption}}</textarea>
+    {{#if usershelper}}
+    {{> usershelper}}
+    {{/if}}
 </div>
-{{#if usershelper}}
-{{> usershelper}}
-{{/if}}

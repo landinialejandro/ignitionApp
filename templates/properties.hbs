@@ -26,7 +26,7 @@
          <div class="margin-bottom"></div>
         {{/if}}
         <div class="card margin-bottom-lg">
-            <div class="card-body">
+            <form id="properties-form" class="card-body" data-id="{{../id}}">
                 {{#if (eq type "input-group")}}
                 {{!-- Input Group --}}
                 {{#each properties}}
@@ -52,7 +52,8 @@
                 {{/each}}
 
                 {{/if}}
-            </div>
+                <button type="submit" class="button secondary save-node-properties">Guardar</button>
+            </form>
         </div>
 
         {{/if}}
@@ -65,7 +66,7 @@
                     Node info
                 </span>
             </div>
-            <div class="card-body">
+            <form id="node-info" class="card-body">
                 <div class="margin-bottom-lg">
                     <div class>
                         <span class="badge badge-sm badge-info">Id:
@@ -81,7 +82,8 @@
                 {{#with icon}}
                 {{> component_input caption=(concat "icon " type) value=value}}
                 {{/with}}
-            </div>
+                <button type="submit" class="button secondary save-node-info">Guardar</button>
+            </form>
         </div>
 
     </div> <!-- /.card-body -->

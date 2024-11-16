@@ -1,13 +1,13 @@
-<div class="form-check">
+<div class="form-check margin-bottom">
+    <input
+        type="checkbox"
+        class="form-check"
+        id="checkbox-{{@index}}"
+        {{#if checked}}checked{{/if}}>
+    <label for="checkbox-{{@index}}">
+        {{caption}}
+    </label>
     {{#if usershelper}}
     {{> usershelper}}
     {{/if}}
-    <input
-        type="checkbox"
-        class="form-check-input"
-        id="checkbox-{{@index}}"
-        {{#if checked}}checked{{/if}}>
-    <label class="form-check-label mb-3" for="checkbox-{{@index}}">
-        {{caption}}
-    </label>
 </div>
