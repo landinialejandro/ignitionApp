@@ -252,18 +252,13 @@ const saveNodeListener = () => {
             });
         });
 
-        // Llama al método de actualización de la clase Nodes
-        const success = project.updateNode(nodeId, updatedValues);
-        console.log(formData);
-        console.log(updatedValues);
+        const node = project.findChildById(nodeId);
 
+        node.properties.properties = node.properties.properties.map((v, k) => {
+            // console.log(v, k);
+            return { ...v, ...updatedValues[k] }; // Crea un nuevo objeto con las actualizaciones
+        });
 
-        // Da retroalimentación al usuario
-        if (success) {
-            alert('Propiedades guardadas exitosamente.');
-        } else {
-            alert('Error al guardar las propiedades.');
-        }
     })
 }
 
