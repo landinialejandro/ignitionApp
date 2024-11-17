@@ -3,20 +3,32 @@ import { get_data } from './common.js';
 export const RegisterHelpers = () => {
 	msg.info("registering helpers...")
 	Handlebars.registerHelper("when", function (operand_1, operator, operand_2, options) {
-		var operators = {
+		const operators = {
 			'eq': (l, r) => l == r,
 			'noteq': (l, r) => l != r,
 			'gt': (l, r) => Number(l) > Number(r),
 			'or': (l, r) => l || r,
 			'and': (l, r) => l && r,
 			'%': (l, r) => (l % r) === 0,
-			"inString": (l, r) => r.indexOf(l) !== -1,
-			"notInString": (l, r) => r.indexOf(l) === -1,
+			'inString': (l, r) => r.indexOf(l) !== -1,
+			'notInString': (l, r) => r.indexOf(l) === -1,
+		};
+
+		// Verifica que el operador existe en el objeto `operators`
+		if (!operators[operator]) {
+			throw new Error(`Operator "${operator}" is not defined in the helper.`);
 		}
-		result = operators[operator](operand_1, operand_2)
-		if (result) return options.fn(this)
-		else return options.inverse(this)
+
+		const result = operators[operator](operand_1, operand_2);
+
+		if (result) {
+			return options.fn(this); // Renderiza el bloque "then"
+		} else {
+			return options.inverse(this); // Renderiza el bloque "else"
+		}
 	});
+
+
 	Handlebars.registerHelper('eq', function (a, b) {
 		return a === b;
 	});

@@ -29,15 +29,29 @@
             {{> component_badge badge}}
             {{/if}}
         </a>
-        {{#if children}}
+        {{#when type 'noteq' 'content'}}
         <!-- Contenedor tool-box con botón chevron -->
         <div class="tools-box">
-            <button class="button-collapse expanded"
+            <button class="button-tool button-delete-file" title="Borrar"
+                aria-label="Borrar">
+                <i class="bi bi-trash3"></i>
+            </button>
+            {{#if children}}
+            <button class="button-tool button-add-file"
+                title="Agregar Documento" aria-label="Agregar documento">
+                <i class="bi bi-file-earmark-plus"></i>
+            </button>
+            <button class="button-tool button-add-folder"
+                title="Agregar Carpeta" aria-label="Agregar carpeta">
+                <i class="bi bi-folder-plus"></i>
+            </button>
+            <button class="button-tool button-collapse expanded"
                 aria-label="Expandir/Contraer">
                 <i class="bi bi-chevron-right menu-collapse"></i>
             </button>
+            {{/if}}
         </div>
-        {{/if}}
+        {{/when}}
     </div>
 
     {{#if children}}

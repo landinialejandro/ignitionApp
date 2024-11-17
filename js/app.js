@@ -1,4 +1,4 @@
-import Constants from './constants.js';
+import Constants from './Constants.js';
 import { checkContainerAvailability, get_data } from './libraries/common.js';
 import { RegisterHelpers, RegisterPartials } from './libraries/hbs.js';
 import { getDirCollectionJson, preloader, renderTemplate } from './libraries/helpers.js';

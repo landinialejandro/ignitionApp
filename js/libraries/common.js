@@ -1,4 +1,4 @@
-import Constants from '../constants.js';
+import Constants from '../Constants.js';
 /**
  ** Realiza una petición HTTP y devuelve una promesa que se resuelve con los datos de la respuesta.
  *

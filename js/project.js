@@ -1,5 +1,5 @@
 // project.js
-// TODO: falta comandos para agregar file o folder en sidebar
+// ok TODO: falta comandos para agregar file o folder en sidebar
 // TODO: programar el boton borrar del nodo, verificar si puede y debe estar
 // TODO: Programar los botones del tool de los cards
 // TODO: Programar cambiar el caption de los nodos
@@ -16,7 +16,7 @@ import { getDirCollectionJson, renderTemplate } from './libraries/helpers.js';
 import { Msglog } from "./libraries/MsgLog.js";
 import { $$ } from './libraries/selector.js';
 
-import Constants from './constants.js';
+import Constants from './Constants.js';
 import { ContextMenu } from './ContextMenu.js';
 import { Nodes } from './Nodes.js';
 import { NodeTypeManager } from './NodeTypeManager.js';

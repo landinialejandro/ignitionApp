@@ -16,19 +16,19 @@
         align-items: center;
         justify-content: space-between;
         padding: math.div($spacing-xs, 2);
-        border-radius: 3px;
+        @include rounded(3px);
         background-color: transparent;
         @include transition(background-color, color, border-left);
-      
+
         &:hover {
           background-color: $color-hover;
-      
+
           .tools-box {
             background-color: $color-background;
             opacity: 1;
           }
         }
-      
+
         .node-link {
           display: flex;
           align-items: center;
@@ -36,17 +36,17 @@
           text-decoration: none;
           font-size: 0.9rem;
           cursor: pointer;
-      
+
           &:hover {
             color: $color-accent;
           }
-      
+
           .node-text {
             flex-grow: 1;
             color: $color-text;
           }
         }
-      
+
         .tools-box {
           display: flex;
           align-items: center;
@@ -55,12 +55,12 @@
           padding: 0.2rem 0.4rem;
           opacity: 0.6;
           @include transition(background-color, opacity);
-      
+
           &:hover {
             background-color: $color-background;
             opacity: 1;
           }
-      
+
           .button-collapse,
           .button-add-child,
           .button-delete-node {
@@ -74,37 +74,43 @@
             justify-content: center;
             color: $color-text-muted;
             @include transition(background-color, color, border-radius);
-      
+
             &:hover {
               background-color: lighten($color-secondary, 20%);
               color: $color-accent;
               border-radius: 50%;
             }
           }
-      
+
           .button-collapse .node-collapse,
           .button-add-child .node-add,
           .button-delete-node .node-delete {
             font-size: 0.8rem;
           }
-      
-          .button-collapse.expanded .node-collapse {
-            transform: rotate(90deg);
+
+          .button-collapse .node-collapse {
+            transform: rotate(0deg); // Posición inicial
+            transition: transform 0.3s ease-in-out; // Añade una transición suave
           }
+
+          .button-collapse.expanded .node-collapse {
+            transform: rotate(90deg); // Rotación cuando está expandido
+          }
+
         }
-      
+
         &.active {
           color: $color-accent;
           font-weight: $font-weight-bold;
           background: linear-gradient(to right, rgba(187, 134, 252, 0.1), rgba(187, 134, 252, 0.2));
           border-left: 4px solid $color-accent;
           box-shadow: inset 0 0 10px rgba(187, 134, 252, 0.1);
-      
+
           // Agregar animación específica al activarse
           @include transition(background, border-left, box-shadow);
         }
       }
-      
+
 
       .node-submenu {
         overflow: hidden;
