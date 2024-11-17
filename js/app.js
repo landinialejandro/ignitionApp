@@ -5,6 +5,8 @@ import { getDirCollectionJson, preloader, renderTemplate } from './libraries/hel
 import { Msglog } from "./libraries/MsgLog.js";
 import { $$ } from './libraries/selector.js';
 import { initializeProject } from './project.js';
+import { registerButtonAction } from './layout.js';
+
 
 window.msg = new Msglog();
 msg.success("Iniciando app.js", true);
@@ -62,6 +64,22 @@ function handleError(message, error) {
 const addEventsListener = () => {
     msg.secondary("addEventsListenerApp", true);
     navLinkListener();
+
+
+    // Registrar acción de botón para eliminar
+    registerButtonAction("button-delete-file", (button, e) => {
+
+        const link = button.closest('.nav-link-container');
+        console.log("Eliminar archivo desde otroModulo:", link);
+        const data = $$(link).allData();
+
+        console.log(data.url);
+
+        // Lógica para eliminar un archivo
+    });
+
+
+
 };
 
 /**
@@ -70,14 +88,15 @@ const addEventsListener = () => {
  */
 const navLinkListener = () => {
     // Delegar el evento sobre el contenedor que contiene los enlaces
-    $$(Constants.SIDEBAR_CONTENT).on("click", "a.nav-link", async function (e) {
-        e.preventDefault();
-        msg.info(`Navlink clicked: ${this.textContent.trim()}`, true);
-
-        const url = $$(this).attr("href");
-        const data = $$(this).allData();
-
-        await handleContentLoading(data, url);
+    $$(Constants.SIDEBAR_CONTENT).on("click", ".nav-link", async function (e) {
+        const link = e.target.closest('.nav-link-container');
+        if (link) {
+            msg.info(`Navlink clicked: ${this.textContent.trim()}`, true);
+            e.preventDefault();
+            e.stopPropagation();
+            const data = $$(link).allData();
+            await handleContentLoading(data);
+        }
     });
 };
 
@@ -118,7 +137,7 @@ const loadHandlers = {
  * @param {Object} params - Objeto con propiedades 'type' y 'name' del contenido.
  * @param {string} url - URL del contenido a cargar.
  */
-const handleContentLoading = async ({ type, name }, url) => {
+const handleContentLoading = async ({ type, name, url }) => {
     const contentPreloader = new preloader(Constants.CONTENT_PRELOADER);
     const content = $$(Constants.CONTENT);
 

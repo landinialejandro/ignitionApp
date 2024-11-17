@@ -10,11 +10,12 @@
 {{else}}
 <li class="nav-item{{#if children}} expanded{{/if}}{{li_class}}"
     {{#each li_attr}} {{@key}}="{{this}}" {{/each}}>
-    <div class="nav-link-container">
+    <div class="nav-link-container {{#if active}}active{{/if}} "
+        data-name="{{caption}}"
+        data-type="{{type}}"
+        data-url="{{url}}">
         <a href="{{url}}"
-            class="nav-link {{#if active}}active{{/if}} {{a_class}}"
-            data-name="{{caption}}"
-            data-type="{{type}}"
+            class="nav-link {{a_class}}"
             {{#each a_attr}}{{@key}}="{{this}}" {{/each}}>
 
             {{> component_i context="nav"}}
@@ -29,11 +30,12 @@
             {{> component_badge badge}}
             {{/if}}
         </a>
-        {{#when type 'noteq' 'content'}}
+
         <!-- Contenedor tool-box con botón chevron -->
         <div class="tools-box">
             <button class="button-tool button-delete-file" title="Borrar"
-                aria-label="Borrar">
+                aria-label="Borrar"
+                {{#when type 'eq' 'content'}} style="display: none;"{{/when}}>
                 <i class="bi bi-trash3"></i>
             </button>
             {{#if children}}
@@ -51,7 +53,7 @@
             </button>
             {{/if}}
         </div>
-        {{/when}}
+
     </div>
 
     {{#if children}}
