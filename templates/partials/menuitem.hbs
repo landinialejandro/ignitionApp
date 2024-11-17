@@ -8,9 +8,9 @@
     </div>
 </li>
 {{else}}
-<li class="nav-item{{#if children}} expanded{{/if}}{{li_class}}"
+<li class="nav-item {{#if children}}expanded {{/if}}{{li_class}}"
     {{#each li_attr}} {{@key}}="{{this}}" {{/each}}>
-    <div class="nav-link-container {{#if active}}active{{/if}} "
+    <div class="nav-link-container{{#if active}} active{{/if}} "
         data-name="{{caption}}"
         data-type="{{type}}"
         data-url="{{url}}">
@@ -21,7 +21,6 @@
             {{> component_i context="nav"}}
 
             {{#if caption}}
-            <!-- Truncado a 20 caracteres -->
             <span class="nav-text" title="{{caption}}">{{truncate caption
                 18}}</span>
             {{/if}}
@@ -30,14 +29,14 @@
             {{> component_badge badge}}
             {{/if}}
         </a>
-
-        <!-- Contenedor tool-box con botón chevron -->
+        {{#showToolsBox type children}}
         <div class="tools-box">
-            <button class="button-tool button-delete-file" title="Borrar"
-                aria-label="Borrar"
-                {{#when type 'eq' 'content'}} style="display: none;"{{/when}}>
+            {{#when type 'noteq' 'content'}}
+            <button class="button-tool button-delete" title="Borrar"
+                aria-label="Borrar">
                 <i class="bi bi-trash3"></i>
             </button>
+            {{/when}}
             {{#if children}}
             <button class="button-tool button-add-file"
                 title="Agregar Documento" aria-label="Agregar documento">
@@ -53,8 +52,8 @@
             </button>
             {{/if}}
         </div>
-
     </div>
+    {{/showToolsBox}}
 
     {{#if children}}
     <ul class="nav-item nav-submenu">

@@ -70,12 +70,9 @@ const addEventsListener = () => {
     registerButtonAction("button-delete-file", (button, e) => {
 
         const link = button.closest('.nav-link-container');
-        console.log("Eliminar archivo desde otroModulo:", link);
         const data = $$(link).allData();
+        console.log(data);
 
-        console.log(data.url);
-
-        // Lógica para eliminar un archivo
     });
 
 
