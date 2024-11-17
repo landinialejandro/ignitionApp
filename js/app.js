@@ -1,7 +1,7 @@
 import Constants from './Constants.js';
 import { checkContainerAvailability, get_data } from './libraries/common.js';
 import { RegisterHelpers, RegisterPartials } from './libraries/hbs.js';
-import { getDirCollectionJson, preloader, renderTemplate } from './libraries/helpers.js';
+import { actionsServer, getDirCollectionJson, preloader, renderTemplate } from './libraries/helpers.js';
 import { Msglog } from "./libraries/MsgLog.js";
 import { $$ } from './libraries/selector.js';
 import { initializeProject } from './project.js';
@@ -18,26 +18,10 @@ const mainPreloader = new preloader(Constants.PRELOADER_ID);
 document.addEventListener("DOMContentLoaded", async () => {
     mainPreloader.show();
     try {
-        const [setting, navSidebar, projects, settings] = await Promise.all([
-            get_data({ url: "settings/settings.json" }),
-            get_data({ url: "settings/nav_sidebar.json" }),
-            getDirCollectionJson("projects"),
-            getDirCollectionJson("settings")
-        ]);
-
-        const versionText = `${setting.version || "0.0.0"} - ${setting.release || "bad file"}`;
-        msg.info(`Versión: ${versionText}`);
-        $$(Constants.VERSION_CONTENT).html(versionText);
-
         RegisterHelpers();
         await RegisterPartials();
 
-        loadNavBar(Constants.SIDEBAR_CONTENT, navSidebar);
-
-        checkContainerAvailability(['projects-list', 'settings-list'], (projectsContainer, settingsContainer) => {
-            loadNavBar('#projects-list', projects);
-            loadNavBar('#settings-list', settings);
-        });
+        await loadSidebar();
 
         addEventsListener();
     } catch (error) {
@@ -46,6 +30,26 @@ document.addEventListener("DOMContentLoaded", async () => {
         mainPreloader.hide();
     }
 });
+
+const loadSidebar = async () => {
+    const [setting, navSidebar, projects, settings] = await Promise.all([
+        get_data({ url: "settings/settings.json" }),
+        get_data({ url: "settings/nav_sidebar.json" }),
+        getDirCollectionJson("projects"),
+        getDirCollectionJson("settings")
+    ]);
+
+    const versionText = `${setting.version || "0.0.0"} - ${setting.release || "bad file"}`;
+    msg.info(`Versión: ${versionText}`);
+    $$(Constants.VERSION_CONTENT).html(versionText);
+
+    loadNavBar(Constants.SIDEBAR_CONTENT, navSidebar);
+
+    checkContainerAvailability(['projects-list', 'settings-list'], (projectsContainer, settingsContainer) => {
+        loadNavBar('#projects-list', projects);
+        loadNavBar('#settings-list', settings);
+    });
+}
 
 /**
  * Función para manejar errores y mostrar mensajes en la consola y al usuario.
@@ -58,6 +62,46 @@ function handleError(message, error) {
     msg.danger(`${message}. Por favor, inténtalo de nuevo más tarde.`);
 }
 
+// Función auxiliar para manejar acciones genéricas
+const handleAction = async (data, operation, type = null) => {
+    data.operation = operation;
+
+    // Manejo de nombre para archivos o carpetas
+    if (type) {
+        data.type = type;
+
+        // Obtener el nombre del archivo o carpeta
+        const name = promptForName(data.url, type);
+        if (!name) {
+            console.warn(`Operación cancelada: No se proporcionó un nombre para el ${type}.`);
+            return; // Cancelar la operación si no se proporciona un nombre
+        }
+        data.text = name;
+    }
+    // Manejo específico para archivos
+    if (operation === 'delete_node') {
+        data.id = data.url;
+    }
+
+    console.log(`Performing ${operation} operation`, data);
+
+    // Ejecutar la operación en el servidor
+    await actionsServer(data);
+
+    // Recargar la barra lateral
+    await loadSidebar();
+};
+
+// Función auxiliar para solicitar el nombre del archivo o carpeta
+const promptForName = (url, type) => {
+    const name = prompt(`Ingrese el nombre del ${type}:`);
+    if (!name || name.trim() === '') {
+        msg.warning(`Nombre inválido proporcionado para el ${type}`);
+        return null;
+    }
+    return `${url}/${name}`;
+};
+
 /**
  * Función para añadir todos los event listeners necesarios al inicializar la app.
  */
@@ -65,13 +109,32 @@ const addEventsListener = () => {
     msg.secondary("addEventsListenerApp", true);
     navLinkListener();
 
-    // Registrar acción de botón para eliminar
-    registerButtonAction("button-delete", (button, e) => {
 
-        const link = button.closest('.nav-link-container');
-        const data = $$(link).allData();
-        console.log(data);
+    // Configuración de acciones
+    const actions = [
+        {
+            name: "delete",
+            operation: (data) => handleAction(data, 'delete_node'),
+        },
+        {
+            name: "add-file",
+            operation: (data) => handleAction(data, 'create_node', 'file'),
+        },
+        {
+            name: "add-folder",
+            operation: (data) => handleAction(data, 'create_node', 'folder'),
+        },
+    ];
 
+    // Registrar dinámicamente acciones de botones
+    actions.forEach(({ name, operation }) => {
+        registerButtonAction(`button-${name}`, (button, e) => {
+            const link = button.closest('.nav-link-container');
+            const data = $$(link).allData();
+            data.action = name;
+            // Ejecutar la operación específica de la acción
+            operation(data);
+        });
     });
 
 };
@@ -131,6 +194,12 @@ const loadHandlers = {
  * @param {string} url - URL del contenido a cargar.
  */
 const handleContentLoading = async ({ type, name, url }) => {
+
+    if (!url || !type) {
+        handleError("Parámetros incompletos para la carga de contenido", new Error("URL o tipo no definidos"));
+        return;
+    }
+
     const contentPreloader = new preloader(Constants.CONTENT_PRELOADER);
     const content = $$(Constants.CONTENT);
 

@@ -116,3 +116,29 @@ export const getDirCollectionJson = async (folder) => {
         throw error;  // Propagar el error para que el llamador lo maneje
     }
 };
+
+/**
+ * Obtiene la colección de directorios en formato JSON desde una carpeta específica.
+ * 
+ * @param {string} folder - El ID o nombre de la carpeta de la que se obtendrán los datos.
+ * @returns {Promise<Object>} - Un objeto JSON con los datos de la carpeta.
+ * @throws {Error} - Lanza un error si no se puede obtener la información.
+ */
+export const actionsServer = async (data) => {
+    try {
+        const url = 'ignitionApp.php';
+
+        // Llamada a la función `get_data` para obtener los datos
+        const responseData = await get_data({ url, data });
+
+        // Si hay una respuesta válida, la retornamos
+        if (responseData) {
+            return responseData;
+        } else {
+            throw new Error(`No se obtuvieron datos para la carpeta: ${folder}`);
+        }
+    } catch (error) {
+        console.error(`Error al obtener la colección del directorio ${folder}:`, error);
+        throw error;  // Propagar el error para que el llamador lo maneje
+    }
+};

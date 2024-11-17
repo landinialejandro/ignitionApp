@@ -159,14 +159,26 @@ class fs
      */
     public function create($id, $name = '', $isDir = false, $content = "")
     {
+        // Generar la ruta completa
         $path = $this->getPath($id) . ($name ? DIRECTORY_SEPARATOR . $name : '');
+        
+        // Verificar si es directorio o archivo
         if ($isDir) {
-            mkdir($path, 0777, true) or throw new Exception("Error al crear el directorio: {$path}");
+            // Crear el directorio
+            if (!mkdir($path, 0777, true) && !is_dir($path)) {
+                throw new Exception("Error al crear el directorio: {$path}");
+            }
         } else {
-            file_put_contents($path, $content) or throw new Exception("Error al crear el archivo: {$path}");
+            // Crear el archivo con contenido
+            if (file_put_contents($path, $content) === false) {
+                throw new Exception("Error al crear el archivo: {$path}");
+            }
         }
+        
+        // Retornar el ID del archivo o directorio creado
         return ['id' => $this->getId($path)];
     }
+    
 
     /**
      * Renombra un archivo o directorio.

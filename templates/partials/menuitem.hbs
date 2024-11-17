@@ -39,7 +39,7 @@
             </button>
             {{/when}}
 
-            {{#if children}}
+            {{#if (eq type 'folder')}}
             <button class="button-tool button-add-file"
                 title="Agregar Documento" aria-label="Agregar documento">
                 <i class="bi bi-file-earmark-plus"></i>
@@ -57,12 +57,12 @@
         {{/showToolsBox}}
     </div>
 
-    {{#isArray children}}
+    {{#if children}}
     <ul class="nav-item nav-submenu">
         {{#each children}}
         {{> menuitem }}
         {{/each}}
     </ul>
-    {{/isArray}}
+    {{/if}}
 </li>
 {{/if}}

@@ -2,14 +2,14 @@
     {
         "id": "project-page",
         "caption": "Proyectos",
-        "url": "#",
+        "url": "projects",
         "active": false,
         "icon": {
             "value": "bi bi-diagram-3",
             "type": "class"
         },
         "expanded": true,
-        "type": "content",
+        "type": "folder",
         "children": [
             {
                 "id": "dash",
@@ -98,6 +98,7 @@
         "caption": "Debug settings",
         "url": "pages/settings_dash_page.html",
         "active": false,
+        "folder":"settings",
         "icon": {
             "value": "bi bi-tools",
             "type": "class"

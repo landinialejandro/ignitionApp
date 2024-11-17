@@ -91,9 +91,6 @@ export const RegisterHelpers = () => {
 		const classList = args.filter(Boolean).join(' '); // Filtra valores nulos
 		return classList;
 	});
-	
-	
-
 
 	Handlebars.registerHelper('or', function (a, b) {
 		return a || b;
