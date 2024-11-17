@@ -86,6 +86,15 @@ export const RegisterHelpers = () => {
 		return show ? options.fn(this) : options.inverse(this);
 	});
 
+	Handlebars.registerHelper('classNames', function (...args) {
+		const options = args.pop(); // Extrae las opciones
+		const classList = args.filter(Boolean).join(' '); // Filtra valores nulos
+		return classList;
+	});
+	
+	
+
+
 	Handlebars.registerHelper('or', function (a, b) {
 		return a || b;
 	});
@@ -109,6 +118,11 @@ export const RegisterHelpers = () => {
 	Handlebars.registerHelper('default', function (value, defaultValue) {
 		return value || defaultValue;
 	});
+
+	Handlebars.registerHelper('isArray', function (value, options) {
+		return Array.isArray(value) ? options.fn(this) : options.inverse(this);
+	});
+
 
 }
 

@@ -1,28 +1,29 @@
-<!-- partials/menuitem.hbs -->
 {{#if (eq type "component")}}
 <li class="nav-item">
     <div id="{{id}}">
         {{#if properties}}
         {{> component_button}}
+        {{else}}
+        <p>No hay propiedades definidas.</p>
         {{/if}}
     </div>
 </li>
 {{else}}
-<li class="nav-item {{#if children}}expanded {{/if}}{{li_class}}"
-    {{#each li_attr}} {{@key}}="{{this}}" {{/each}}>
-    <div class="nav-link-container{{#if active}} active{{/if}} "
+<li class="{{classNames li_class 'nav-item'}}{{#if children}} expanded{{/if}}"
+    {{> attributes attrs=li_attr}}>
+    <div class="{{classNames 'nav-link-container'}}{{#if active}} active{{/if}}"
         data-name="{{caption}}"
         data-type="{{type}}"
         data-url="{{url}}">
         <a href="{{url}}"
-            class="nav-link {{a_class}}"
-            {{#each a_attr}}{{@key}}="{{this}}" {{/each}}>
-
+            class="{{classNames 'nav-link' a_class}}"
+            {{> attributes attrs=a_attr}}>
             {{> component_i context="nav"}}
 
             {{#if caption}}
-            <span class="nav-text" title="{{caption}}">{{truncate caption
-                18}}</span>
+            <span class="nav-text" title="{{caption}}">
+                {{truncate caption 18}}
+            </span>
             {{/if}}
 
             {{#if badge}}
@@ -37,6 +38,7 @@
                 <i class="bi bi-trash3"></i>
             </button>
             {{/when}}
+
             {{#if children}}
             <button class="button-tool button-add-file"
                 title="Agregar Documento" aria-label="Agregar documento">
@@ -52,15 +54,15 @@
             </button>
             {{/if}}
         </div>
+        {{/showToolsBox}}
     </div>
-    {{/showToolsBox}}
 
-    {{#if children}}
+    {{#isArray children}}
     <ul class="nav-item nav-submenu">
         {{#each children}}
         {{> menuitem }}
         {{/each}}
     </ul>
-    {{/if}}
+    {{/isArray}}
 </li>
 {{/if}}

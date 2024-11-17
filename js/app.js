@@ -65,17 +65,14 @@ const addEventsListener = () => {
     msg.secondary("addEventsListenerApp", true);
     navLinkListener();
 
-
     // Registrar acción de botón para eliminar
-    registerButtonAction("button-delete-file", (button, e) => {
+    registerButtonAction("button-delete", (button, e) => {
 
         const link = button.closest('.nav-link-container');
         const data = $$(link).allData();
         console.log(data);
 
     });
-
-
 
 };
 
@@ -90,7 +87,6 @@ const navLinkListener = () => {
         if (link) {
             msg.info(`Navlink clicked: ${this.textContent.trim()}`, true);
             e.preventDefault();
-            e.stopPropagation();
             const data = $$(link).allData();
             await handleContentLoading(data);
         }
