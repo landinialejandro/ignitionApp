@@ -97,9 +97,8 @@ export const saveFileToServer = async (file, extraData = {}, callback = null) =>
 };
 
 
-
 /**
- ** Realiza una petición HTTP utilizando la API Fetch y devuelve una promesa con los datos de la respuesta.
+ * Realiza una petición HTTP utilizando la API Fetch y devuelve una promesa con los datos de la respuesta.
  *
  * @param {Object} config - Configuración de la petición.
  * @param {string} config.url - URL a la que se realizará la petición. **Obligatorio.**
@@ -151,19 +150,38 @@ export const MyFetch = async (
 
     try {
         const response = await fetch(url, options);
+
+        // Manejo de respuestas HTTP no exitosas
         if (!response.ok) {
-            // Leer el cuerpo de la respuesta en caso de error
             const errorText = await response.text();
             throw new Error(`Error en la respuesta HTTP: ${response.status} ${response.statusText} - ${errorText}`);
         }
-        const data = isJson ? await response.json() : await response.text();
-        return data; // Aquí devolvemos los datos
+
+        // Leer el contenido de la respuesta como texto
+        const rawData = await response.text();
+
+        // Manejo del caso de cuerpo vacío
+        if (!rawData) {
+            console.warn("La respuesta está vacía.");
+            return isJson ? null : ""; // Devuelve `null` para JSON o cadena vacía para texto
+        }
+
+        // Intentar parsear como JSON si está habilitado
+        if (isJson) {
+            try {
+                return JSON.parse(rawData); // Parsear como JSON
+            } catch (error) {
+                throw new Error(`Error al analizar JSON: ${error.message} - Respuesta recibida: ${rawData}`);
+            }
+        }
+
+        // Devolver texto crudo si no es JSON
+        return rawData;
     } catch (err) {
-        // Re-lanzamos el error para que pueda ser manejado por quien llama a la función
-        throw err;
+        console.error("Error en MyFetch:", err);
+        throw err; // Re-lanzamos el error para que sea manejado externamente
     }
 };
-
 
 
 /**
