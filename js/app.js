@@ -1,3 +1,4 @@
+// app.js
 import Constants from './Constants.js';
 import { checkContainerAvailability, get_data } from './libraries/common.js';
 import { RegisterHelpers, RegisterPartials } from './libraries/hbs.js';
@@ -7,23 +8,19 @@ import { $$ } from './libraries/selector.js';
 import { initializeProject } from './project.js';
 import { registerButtonAction } from './layout.js';
 
-
+// Configuración inicial
 window.msg = new Msglog();
 msg.success("Iniciando app.js", true);
 const mainPreloader = new preloader(Constants.PRELOADER_ID);
 
-/**
- * Maneja la carga de configuración y datos iniciales, y la inicialización de la interfaz.
- */
+// Inicialización principal
 document.addEventListener("DOMContentLoaded", async () => {
     mainPreloader.show();
     try {
         RegisterHelpers();
         await RegisterPartials();
-
-        await loadSidebar();
-
-        addEventsListener();
+        await initializeSidebar();
+        registerGlobalEventListeners();
     } catch (error) {
         handleError("Error al inicializar la aplicación", error);
     } finally {
@@ -31,65 +28,26 @@ document.addEventListener("DOMContentLoaded", async () => {
     }
 });
 
-const loadSidebar = async () => {
-    const [setting, navSidebar, projects, settings] = await Promise.all([
-        get_data({ url: "settings/settings.json" }),
-        get_data({ url: "settings/nav_sidebar.json" }),
-        getDirCollectionJson("projects"),
-        getDirCollectionJson("settings")
-    ]);
-
-    const versionText = `${setting.version || "0.0.0"} - ${setting.release || "bad file"}`;
-    msg.info(`Versión: ${versionText}`);
-    $$(Constants.VERSION_CONTENT).html(versionText);
-
-    loadNavBar(Constants.SIDEBAR_CONTENT, navSidebar);
-
-    checkContainerAvailability(['projects-list', 'settings-list'], (projectsContainer, settingsContainer) => {
-        loadNavBar('#projects-list', projects);
-        loadNavBar('#settings-list', settings);
-    });
-}
+/** --- Funciones Auxiliares Generales --- **/
 
 /**
- * Función para manejar errores y mostrar mensajes en la consola y al usuario.
- * 
- * @param {string} message - Mensaje principal del error.
+ * Maneja errores y los muestra en la consola y al usuario.
+ * @param {string} message - Mensaje descriptivo del error.
  * @param {Error} error - Objeto de error capturado.
  */
 function handleError(message, error) {
     console.error(`${message}:`, error);
     msg.danger(`${message}. Por favor, inténtalo de nuevo más tarde.`);
+    // TODO: Agregar sistema de logs externo para registrar errores críticos
 }
 
-// Función auxiliar para manejar acciones genéricas
-const handleAction = async (data, operation, type = null) => {
-    data.operation = operation;
-
-    // Manejo de nombre para archivos o carpetas
-    if (operation === 'create_node') {
-        data.type = type;
-        // Obtener el nombre del archivo o carpeta
-        const name = promptForName(data.url, type);
-        if (!name) {
-            console.warn(`Operación cancelada: No se proporcionó un nombre para el ${type}.`);
-            return; // Cancelar la operación si no se proporciona un nombre
-        }
-        data.text = name;
-    }
-    // Manejo específico para archivos
-    if (operation === 'delete_node') {
-        data.id = data.url;
-    }
-
-    // Ejecutar la operación en el servidor
-    await actionsServer(data);
-    // Recargar la barra lateral
-    await loadSidebar();
-};
-
-// Función auxiliar para solicitar el nombre del archivo o carpeta
-const promptForName = (url, type) => {
+/**
+ * Solicita un nombre para un archivo o carpeta.
+ * @param {string} url - URL base donde se creará el nodo.
+ * @param {string} type - Tipo de nodo (e.g., 'file', 'folder').
+ * @returns {string|null} - Nombre completo del nodo o null si se cancela.
+ */
+const promptForNodeName = (url, type) => {
     const name = prompt(`Ingrese el nombre del ${type}:`);
     if (!name || name.trim() === '') {
         msg.warning(`Nombre inválido proporcionado para el ${type}`);
@@ -98,99 +56,125 @@ const promptForName = (url, type) => {
     return `${url}/${name}`;
 };
 
+/** --- Inicialización del Sidebar y Contenido --- **/
+
 /**
- * Función para añadir todos los event listeners necesarios al inicializar la app.
+ * Inicializa y renderiza el contenido del sidebar con datos de configuración y navegación.
  */
-const addEventsListener = () => {
-    msg.secondary("addEventsListenerApp", true);
-    navLinkListener();
+const initializeSidebar = async () => {
+    const [settings, navSidebar, projects, appSettings] = await Promise.all([
+        get_data({ url: "settings/settings.json" }),
+        get_data({ url: "settings/nav_sidebar.json" }),
+        getDirCollectionJson("projects"),
+        getDirCollectionJson("settings")
+    ]);
 
+    const versionText = `${settings.version || "0.0.0"} - ${settings.release || "bad file"}`;
+    msg.info(`Versión: ${versionText}`);
+    $$(Constants.VERSION_CONTENT).html(versionText);
 
-    // Configuración de acciones
+    renderSidebar(Constants.SIDEBAR_CONTENT, navSidebar);
+
+    checkContainerAvailability(['projects-list', 'settings-list'], (projectsContainer, settingsContainer) => {
+        renderSidebar('#projects-list', projects);
+        renderSidebar('#settings-list', appSettings);
+    });
+
+    // TODO: Centralizar el manejo de actualizaciones en el DOM para evitar duplicación
+};
+
+/**
+ * Renderiza una sección del sidebar utilizando una plantilla.
+ * @param {string} selector - Selector del contenedor donde se renderiza.
+ * @param {Object} content - Datos a renderizar.
+ */
+const renderSidebar = async (selector, content) => {
+    try {
+        content = content.menu ? content : { menu: content };
+        $$(selector).html(await renderTemplate("templates/nav_bar.hbs", content));
+        msg.secondary(`${selector} cargado correctamente.`, true);
+    } catch (error) {
+        handleError(`Error al cargar ${selector}`, error);
+    }
+};
+
+/** --- Manejo de Acciones y Eventos --- **/
+
+/**
+ * Registra todos los listeners necesarios al inicializar la aplicación.
+ */
+const registerGlobalEventListeners = () => {
+    msg.secondary("Registrando eventos globales", true);
+    registerNavigationListeners();
+
     const actions = [
-        {
-            name: "delete",
-            operation: (data) => handleAction(data, 'delete_node'),
-        },
-        {
-            name: "add-file",
-            operation: (data) => handleAction(data, 'create_node', 'file'),
-        },
-        {
-            name: "add-folder",
-            operation: (data) => handleAction(data, 'create_node', 'folder'),
-        },
+        { name: "delete", operation: (data) => processNodeAction(data, 'delete_node') },
+        { name: "add-file", operation: (data) => processNodeAction(data, 'create_node', 'file') },
+        { name: "add-folder", operation: (data) => processNodeAction(data, 'create_node', 'folder') },
     ];
 
-    // Registrar dinámicamente acciones de botones
     actions.forEach(({ name, operation }) => {
         registerButtonAction(`button-${name}`, (button, e) => {
             const link = button.closest('.nav-link-container');
             const data = $$(link).allData();
             data.action = name;
-            // Ejecutar la operación específica de la acción
             operation(data);
         });
     });
 
+    // TODO: Consolidar el registro dinámico de acciones para reducir duplicación
 };
 
 /**
- * Función para manejar los eventos de clic en enlaces de navegación utilizando delegación de eventos.
- * Esto permite capturar clics en elementos `a.nav-link` incluso si se cargan dinámicamente.
+ * Maneja eventos de clic en enlaces de navegación y delega la carga de contenido.
  */
-const navLinkListener = () => {
-    // Delegar el evento sobre el contenedor que contiene los enlaces
+const registerNavigationListeners = () => {
     $$(Constants.SIDEBAR_CONTENT).on("click", ".nav-link", async function (e) {
         const link = e.target.closest('.nav-link-container');
         if (link) {
-            msg.info(`Navlink clicked: ${this.textContent.trim()}`, true);
+            msg.info(`Enlace de navegación seleccionado: ${this.textContent.trim()}`, true);
             e.preventDefault();
             const data = $$(link).allData();
-            await handleContentLoading(data);
+            await loadContent(data);
         }
     });
+
+    // TODO: Agregar soporte para nuevos tipos de enlaces si es necesario en el futuro
 };
 
-
 /**
- * Objeto que contiene métodos de carga según el tipo de contenido.
- * Cada método maneja directamente la carga de un tipo específico (content, page, file, image),
- * mientras que el método 'default' maneja los casos no soportados.
+ * Maneja acciones como crear o eliminar nodos en el servidor y actualiza la interfaz.
+ * @param {Object} data - Datos relacionados con la acción.
+ * @param {string} operation - Tipo de operación a realizar (e.g., 'create_node', 'delete_node').
+ * @param {string|null} type - Tipo de recurso (e.g., 'file', 'folder').
  */
-const loadHandlers = {
-    async content(url, content) {
-        const contentHtml = await get_data({ url, isJson: false });
-        content.html(contentHtml);
-        msg.info(`Cargando contenido: ${url}`);
-    },
-    page(url, content) {
-        content.html(`<iframe src="${url}" style="width:100%; height:100vh; border:none;"></iframe>`);
-        msg.info(`Cargando página: ${url}`);
-    },
-    async file(url) {
-        initializeProject(url);
-        msg.info(`Mostrando archivo JSON: ${url}`);
-    },
-    image(url, content) {
-        content.innerHTML = `<img src="${url}" alt="Imagen" style="max-width: 100%; height: auto;" />`;
-        msg.info(`Mostrando imagen: ${url}`);
-    },
-    default() {
-        msg.warning("Tipo de enlace no soportado.");
+const processNodeAction = async (data, operation, type = null) => {
+    data.operation = operation;
+
+    if (operation === 'create_node') {
+        data.type = type;
+        const name = promptForNodeName(data.url, type);
+        if (!name) return;
+        data.text = name;
     }
+
+    if (operation === 'delete_node') {
+        data.id = data.url;
+    }
+
+    await actionsServer(data);
+    await initializeSidebar();
+
+    // TODO: Dividir esta función en sub-funciones para operaciones específicas si crece en complejidad
 };
 
-/**
- * Función principal para manejar la carga de contenido según el tipo proporcionado.
- * Muestra el preloader y cambia el título del contenido si el tipo es válido, y llama
- * al método de carga específico basado en el tipo. También maneja errores y oculta el preloader.
- *
- * @param {Object} params - Objeto con propiedades 'type' y 'name' del contenido.
- * @param {string} url - URL del contenido a cargar.
- */
-const handleContentLoading = async ({ type, name, url }) => {
+/** --- Carga Dinámica de Contenido --- **/
 
+/**
+ * Carga contenido dinámico según el tipo de enlace seleccionado.
+ * @param {Object} params - Contiene propiedades 'type', 'name', y 'url'.
+ */
+const loadContent = async ({ type, name, url }) => {
     if (!url || !type) {
         handleError("Parámetros incompletos para la carga de contenido", new Error("URL o tipo no definidos"));
         return;
@@ -215,17 +199,27 @@ const handleContentLoading = async ({ type, name, url }) => {
 };
 
 /**
- * Carga y renderiza una sección de la barra de navegación en el sidebar.
- * 
- * @param {string} selector - Selector CSS del contenedor donde se renderizará el contenido.
- * @param {Object} content - Datos del contenido a renderizar en el template.
+ * Métodos para manejar tipos específicos de contenido en la aplicación.
  */
-const loadNavBar = async (selector, content) => {
-    try {
-        content = content.menu ? content : { menu: content };
-        $$(selector).html(await renderTemplate("templates/nav_bar.hbs", content));
-        msg.secondary(`${selector} cargado correctamente.`, true);
-    } catch (error) {
-        handleError(`Error al cargar ${selector}`, error);
+const loadHandlers = {
+    async content(url, content) {
+        const contentHtml = await get_data({ url, isJson: false });
+        content.html(contentHtml);
+        msg.info(`Cargando contenido: ${url}`);
+    },
+    page(url, content) {
+        content.html(`<iframe src="${url}" style="width:100%; height:100vh; border:none;"></iframe>`);
+        msg.info(`Cargando página: ${url}`);
+    },
+    async file(url) {
+        initializeProject(url);
+        msg.info(`Mostrando archivo JSON: ${url}`);
+    },
+    image(url, content) {
+        content.innerHTML = `<img src="${url}" alt="Imagen" style="max-width: 100%; height: auto;" />`;
+        msg.info(`Mostrando imagen: ${url}`);
+    },
+    default() {
+        msg.warning("Tipo de enlace no soportado.");
     }
 };
