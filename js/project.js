@@ -3,6 +3,8 @@
 // TODO: programar el boton borrar del nodo, verificar si puede y debe estar
 // TODO: Programar los botones del tool de los cards
 // TODO: Programar cambiar el caption de los nodos
+// TODO: cambiar el codigo para guardar ls radios
+// TODO: Ordenar el seting como primer nodo.
 
 
 
@@ -123,7 +125,8 @@ const actionCallbacks = {
     renameNode: (nodeType, anchor, nodeId) => {
         const newName = prompt("Ingrese el nuevo nombre:");
         if (newName) {
-            const updated = project.updateNode(nodeId, { caption: newName });
+            let sanitizedCaption = newName.trim().replace(/\s+/g, "_");
+            const updated = project.updateNode(nodeId, { caption: sanitizedCaption });
             if (updated) {
                 msg.success(`Nodo renombrado a ${newName}.`);
                 project.render();
