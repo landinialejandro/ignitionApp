@@ -1,23 +1,3 @@
-/**
- * `$$` es una función utilitaria para la manipulación del DOM que proporciona métodos sencillos
- * para interactuar con los elementos seleccionados mediante un selector CSS o un elemento del DOM.
- *
- * @param {string | HTMLElement} input - Un selector CSS o un elemento del DOM.
- *
- * @returns {Object} Un objeto con métodos para manipular los elementos seleccionados:
- *   - `html(content)`: Establece o devuelve el contenido HTML.
- *   - `text(content)`: Establece o devuelve el contenido de texto.
- *   - `css(property, value)`: Establece una propiedad CSS.
- *   - `on(eventType, handler)`: Añade un manejador de eventos.
- *   - `off(eventType, handler)`: Elimina un manejador de eventos.
- *   - `data(attr)`: Devuelve el valor del atributo `data-*` solicitado.
- *   - `allData()`: Devuelve todos los atributos `data-*` del primer elemento como un objeto.
- *   - `attr(attribute, value)`: Obtiene o establece un atributo del elemento.
- *   - `addClass(className)`: Añade una clase CSS al elemento.
- *   - `removeClass(className)`: Elimina una clase CSS del elemento.
- *   - `remove()`: Elimina el elemento del DOM.
- *   - `append(html)`: Agrega contenido HTML al final de cada elemento seleccionado.
- */
 export const $$ = (input) => {
     const elements = typeof input === 'string'
         ? document.querySelectorAll(input)
@@ -29,133 +9,139 @@ export const $$ = (input) => {
         console.warn('No elements found for the given input.');
     }
 
-    return {
-        html: (content) => {
+    const api = {
+        elements,
+        html(content) {
             if (content !== undefined) {
                 elements.forEach((element) => {
                     element.innerHTML = content;
                 });
+                return this; // Encadenamiento
             } else {
                 return elements[0]?.innerHTML;
             }
         },
-        text: (content) => {
+        text(content) {
             if (content !== undefined) {
                 elements.forEach((element) => {
                     element.textContent = content;
                 });
+                return this; // Encadenamiento
             } else {
                 return elements[0]?.textContent;
             }
         },
-        css: (property, value) => {
-            if (!property || value === undefined) {
-                console.error('Property and value must be provided.');
-                return;
+        css(propertyOrObject, value) {
+            if (typeof propertyOrObject === "object") {
+                // Caso: Formato de objeto
+                Object.entries(propertyOrObject).forEach(([key, val]) => {
+                    elements.forEach((element) => {
+                        element.style[key] = val;
+                    });
+                });
+            } else if (typeof propertyOrObject === "string" && value !== undefined) {
+                // Caso: Formato tradicional (propiedad, valor)
+                elements.forEach((element) => {
+                    element.style[propertyOrObject] = value;
+                });
+            } else {
+                console.error('Property and value must be provided, or an object with styles.');
+            }
+            return this; // Encadenamiento
+        },
+        addClass(className) {
+            if (!className) {
+                console.error('Class name must be provided.');
+                return this;
             }
             elements.forEach((element) => {
-                element.style[property] = value;
+                element.classList.add(className);
             });
+            return this; // Encadenamiento
         },
-        on: (eventType, selectorOrHandler, handler) => {
-            const isDelegation = typeof selectorOrHandler === 'string';
+        removeClass(className) {
+            if (!className) {
+                console.error('Class name must be provided.');
+                return this;
+            }
+            elements.forEach((element) => {
+                element.classList.remove(className);
+            });
+            return this; // Encadenamiento
+        },
+        remove() {
+            elements.forEach((element) => {
+                element.remove();
+            });
+            return this; // Encadenamiento
+        },
+        on(eventType, selectorOrHandler, handler) {
+            if (!eventType) {
+                console.error('Event type must be provided.');
+                return this; // Mantener encadenamiento
+            }
+
+            const isDelegation = typeof selectorOrHandler === 'string'; // Verificar si es un selector
             const actualHandler = isDelegation ? handler : selectorOrHandler;
             const selector = isDelegation ? selectorOrHandler : null;
 
-            if (!eventType || typeof actualHandler !== 'function') {
-                console.error('Valid event type and handler function must be provided.');
-                return;
+            if (typeof actualHandler !== 'function') {
+                console.error('Valid handler function must be provided.');
+                return this; // Mantener encadenamiento
             }
 
             elements.forEach((element) => {
                 const delegatedHandler = (event) => {
                     if (selector) {
+                        // Manejar delegación: verificar si el target coincide con el selector
                         const potentialTargets = element.querySelectorAll(selector);
                         let target = event.target;
                         while (target && target !== element) {
                             if ([...potentialTargets].includes(target)) {
-                                actualHandler.call(target, event); // Llamar al handler en el elemento encontrado
-                                break;
+                                actualHandler.call(target, event); // Ejecutar en el target encontrado
+                                return;
                             }
                             target = target.parentNode;
                         }
                     } else {
+                        // Evento directo
                         actualHandler(event);
                     }
                 };
 
                 element.addEventListener(eventType, delegatedHandler);
+
+                // Guardar referencia para usar en "off"
                 element._eventListeners = element._eventListeners || {};
                 element._eventListeners[eventType] = element._eventListeners[eventType] || [];
                 element._eventListeners[eventType].push(delegatedHandler);
             });
+
+            return this; // Encadenamiento
         },
-        off: (eventType) => {
-            if (!eventType) {
-                console.error('Event type must be provided.');
-                return;
+        off(eventType, handler) {
+            if (!eventType || typeof handler !== 'function') {
+                console.error('Valid event type and handler function must be provided.');
+                return this;
             }
             elements.forEach((element) => {
-                if (element._eventListeners && element._eventListeners[eventType]) {
-                    element._eventListeners[eventType].forEach((handler) => {
-                        element.removeEventListener(eventType, handler);
-                    });
-                    element._eventListeners[eventType] = [];
-                }
+                element.removeEventListener(eventType, handler);
             });
+            return this; // Encadenamiento
         },
-        data: (attr) => {
-            return elements.length ? elements[0].dataset[attr] || null : null;
-        },
-        allData: () => {
-            const element = elements[0];
-            if (!element) return {};
-            return { ...element.dataset };
-        },
-        attr: (attribute, value) => {
-            if (attribute === undefined) {
-                console.error('Attribute must be provided.');
-                return;
+        allData() {
+            if (!elements.length) {
+                return []; // Devuelve un array vacío si no hay elementos seleccionados
             }
-            if (value !== undefined) {
-                elements.forEach((element) => {
-                    element.setAttribute(attribute, value);
-                });
-            } else {
-                return elements[0]?.getAttribute(attribute);
+            if (elements.length === 1) {
+                // Si solo hay un elemento, devolver su dataset como objeto
+                return { ...elements[0].dataset };
             }
+            // Si hay múltiples elementos, devolver un array de datasets
+            return Array.from(elements).map((element) => ({ ...element.dataset }));
         },
-        addClass: (className) => {
-            if (!className) {
-                console.error('Class name must be provided.');
-                return;
-            }
-            elements.forEach((element) => {
-                element.classList.add(className);
-            });
-        },
-        removeClass: (className) => {
-            if (!className) {
-                console.error('Class name must be provided.');
-                return;
-            }
-            elements.forEach((element) => {
-                element.classList.remove(className);
-            });
-        },
-        remove: () => {
-            elements.forEach((element) => {
-                element.remove();
-            });
-        },
-        append: (html) => {
-            if (html === undefined) {
-                console.error('HTML content must be provided.');
-                return;
-            }
-            elements.forEach((element) => {
-                element.insertAdjacentHTML('beforeend', html);
-            });
-        },
+
     };
+
+    return Object.create(api); // Crear un nuevo objeto con los métodos en el prototipo
 };
