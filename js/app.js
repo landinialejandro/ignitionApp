@@ -67,9 +67,8 @@ const handleAction = async (data, operation, type = null) => {
     data.operation = operation;
 
     // Manejo de nombre para archivos o carpetas
-    if (type) {
+    if (operation === 'create_node') {
         data.type = type;
-
         // Obtener el nombre del archivo o carpeta
         const name = promptForName(data.url, type);
         if (!name) {
@@ -83,11 +82,8 @@ const handleAction = async (data, operation, type = null) => {
         data.id = data.url;
     }
 
-    console.log(`Performing ${operation} operation`, data);
-
     // Ejecutar la operación en el servidor
     await actionsServer(data);
-
     // Recargar la barra lateral
     await loadSidebar();
 };

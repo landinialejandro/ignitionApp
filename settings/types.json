@@ -30,6 +30,8 @@
       "group",
       "settings"
     ],
+    "id":"root-node",
+    "caption":"Nuevo Proyecto",
     "description": "nodo principal y nombre del proyecto, no se puede borrar, si se puede renombrar"
   },
   "group": {

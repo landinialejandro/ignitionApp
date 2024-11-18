@@ -43,10 +43,10 @@ export const initializeProject = async (url) => {
         // Renderizar la estructura base del proyecto
         $$(Constants.CONTENT).html(projectPage);
 
+        project.nodeTypeManager = nodeTypeManager
         project.container = ".project-container";
-        project.setNodes(content);
         project.file = url;
-        project.nodeTypeManager = nodeTypeManager.types
+        project.setNodes(content);
 
         await project.render();
 

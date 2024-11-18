@@ -23,7 +23,20 @@ export class Nodes {
      * @param {NodeOptions[]} nodeOptionsArray - Array de nodos que deben agregarse al árbol.
      */
     setNodes(nodeOptionsArray) {
-        this.nodes = nodeOptionsArray.map(nodeOptions => Nodes._createNode(nodeOptions));
+        if (!nodeOptionsArray || nodeOptionsArray.length === 0) {
+            console.warn("No se proporcionó ningún nodo válido. Creando un nodo raíz predeterminado.");
+            const defOptions = this.nodeTypeManager.getType('root');
+            const rootOptions = {
+                id: defOptions.id || 'root',
+                caption: defOptions.caption || 'New Project',
+                type: 'root',
+                children: [],
+                icon: defOptions.icon || ""
+            };
+            this.nodes = [Nodes._createNode(rootOptions)];
+        } else {
+            this.nodes = nodeOptionsArray.map(nodeOptions => Nodes._createNode(nodeOptions));
+        }
     }
 
     /**
