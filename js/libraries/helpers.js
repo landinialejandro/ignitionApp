@@ -2,64 +2,6 @@
 import { get_data } from './common.js';
 import { $$ } from './selector.js';
 
-/**
- * Habilita o deshabilita contenedores específicos.
- * @param {boolean} enable - True para habilitar, false para deshabilitar.
- * @param {number} delay - Tiempo en milisegundos para aplicar la acción.
- */
-export function Container(enable = true, delay = 200) {
-    if (enable) {
-        setTimeout(() => $$(".card-starter").removeClass("container-disabled"), delay); // TODO: Hacer configurable el retraso.
-    } else {
-        $$(".card-starter").addClass("container-disabled");
-    }
-}
-
-/**
- * Actualiza el texto del breadcrumb activo.
- * @param {string} newBreadCrum - Nuevo texto para el breadcrumb.
- */
-export const setBreadCrum = (newBreadCrum) => {
-    const breadcrumb = $$(".breadcrumb-item.active");
-    if (breadcrumb) {
-        breadcrumb.text(newBreadCrum);
-    } else {
-        console.warn("No se encontró el breadcrumb activo."); // TODO: Manejar el caso donde no haya breadcrumb activo.
-    }
-};
-
-/**
- * Actualiza el título del archivo seleccionado.
- * @param {string} newTitle - Nuevo título para el archivo seleccionado.
- */
-export const setTitleFileSelected = (newTitle) => {
-    const title = $$(".title-file-selected");
-    if (title) {
-        title.text(newTitle);
-    } else {
-        console.warn("No se encontró el título del archivo seleccionado."); // TODO: Manejar el caso donde no exista el elemento.
-    }
-};
-
-/**
- * Recorta un texto si excede el límite especificado.
- * @param {string} text - El texto a recortar.
- * @param {number} maxLength - Longitud máxima permitida.
- * @returns {string} - El texto recortado o el original si no excede el límite.
- */
-export const truncateText = (text, maxLength) => {
-    if (typeof text !== "string") {
-        console.error("El texto debe ser un string."); // TODO: Manejar entradas no válidas.
-        return "";
-    }
-    if (text.length <= maxLength) return text;
-
-    const partLength = Math.floor((maxLength - 3) / 2);
-    const start = text.slice(0, partLength);
-    const end = text.slice(-partLength);
-
-    return `${start}...${end}`;
-}
 
 // Clase para manejar el preloader
 export class preloader {
