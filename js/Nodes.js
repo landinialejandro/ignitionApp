@@ -3,7 +3,6 @@
  */
 import { renderTemplate } from './libraries/helpers.js';
 import { $$ } from './libraries/selector.js';
-// import { NodeTypeManager } from './NodeTypeManager.js'; // Importar NodeTypeManager
 
 export class Nodes {
     /**
@@ -36,10 +35,10 @@ export class Nodes {
                 children: [],
                 icon: defOptions.icon || ""
             };
-            this.nodes = [Nodes._createNode(rootOptions)];
+            this.nodes = [Nodes.#createNode(rootOptions)];
             console.info("Se creó un nodo raíz predeterminado:", rootOptions);
         } else {
-            this.nodes = nodeOptionsArray.map(nodeOptions => Nodes._createNode(nodeOptions));
+            this.nodes = nodeOptionsArray.map(nodeOptions => Nodes.#createNode(nodeOptions));
         }
     }
 
@@ -49,16 +48,16 @@ export class Nodes {
      * @returns {Nodes} - Nodo creado.
      * @private
      */
-    static _createNode(options) {
+    static #createNode(options) {
         const node = new Nodes('');
-        node.id = options.id || node._generateUniqueId();
+        node.id = options.id || node.#generateUniqueId();
         node.caption = options.caption || 'Untitled';
         node.icon = options.icon || {};
         node.li_attr = options.li_attr || {};
         node.a_attr = options.a_attr || {};
         node.state = options.state || {};
         node.properties = options.properties || [];
-        node.children = (options.children || []).map(childOptions => Nodes._createNode(childOptions));
+        node.children = (options.children || []).map(childOptions => Nodes.#createNode(childOptions));
         node.type = options.type || 'field';
         return node;
     }
@@ -68,7 +67,7 @@ export class Nodes {
      * @returns {string}
      * @private
      */
-    _generateUniqueId() {
+    #generateUniqueId() {
         return 'node-' + Math.random().toString(36).substr(2, 9);
     }
 
@@ -79,7 +78,7 @@ export class Nodes {
      */
     findChildById(nodeId) {
         for (const node of this.nodes) {
-            const found = node._findInChildren(nodeId);
+            const found = node.#findInChildren(nodeId);
             if (found) return found;
         }
         return null;
@@ -91,12 +90,12 @@ export class Nodes {
      * @returns {Nodes|null} - Retorna el nodo encontrado o null si no se encuentra.
      * @private
      */
-    _findInChildren(nodeId) {
+    #findInChildren(nodeId) {
         if (this.id === nodeId) {
             return this;
         }
         for (const child of this.children || []) {
-            const found = child._findInChildren(nodeId);
+            const found = child.#findInChildren(nodeId);
             if (found) return found;
         }
         return null;
@@ -109,7 +108,7 @@ export class Nodes {
      */
     findParentById(nodeId) {
         for (const node of this.nodes) {
-            const parent = this._findParentInChildren(node, nodeId);
+            const parent = this.#findParentInChildren(node, nodeId);
             if (parent) return parent;
         }
         return null;
@@ -122,12 +121,12 @@ export class Nodes {
      * @returns {Nodes|null} - Retorna el nodo padre o null si no se encuentra.
      * @private
      */
-    _findParentInChildren(parentNode, nodeId) {
+    #findParentInChildren(parentNode, nodeId) {
         for (const child of parentNode.children || []) {
             if (child.id === nodeId) {
                 return parentNode;
             }
-            const foundParent = this._findParentInChildren(child, nodeId);
+            const foundParent = this.#findParentInChildren(child, nodeId);
             if (foundParent) return foundParent;
         }
         return null;
@@ -178,7 +177,6 @@ export class Nodes {
         return uniqueCaption;
     }
 
-
     /**
     * Agrega un nuevo nodo como hijo de un nodo existente identificado por su ID, con validaciones de NodeTypeManager y reglas específicas.
     * @param {string} parentId - El ID del nodo padre al que se agregará el nuevo nodo.
@@ -218,11 +216,10 @@ export class Nodes {
         }
 
         // Crear el nodo y agregarlo como hijo
-        const newNode = Nodes._createNode(nodeOptions);
+        const newNode = Nodes.#createNode(nodeOptions);
         parentNode.children.push(newNode);
         return true;
     }
-
 
     /**
      * Calcula la profundidad máxima alcanzada desde un nodo específico hacia sus descendientes.
@@ -240,7 +237,6 @@ export class Nodes {
         }
         return maxDepth + 1; // +1 para incluir el nodo actual en el cálculo
     }
-
 
     /**
     * Verifica si un nodo puede agregar un hijo sin exceder el `maxDepth` permitido.
