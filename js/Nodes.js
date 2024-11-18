@@ -157,19 +157,52 @@ export class Nodes {
     }
 
     /**
-     * Agrega un nuevo nodo como hijo de un nodo existente identificado por su ID, con validaciones de NodeTypeManager.
-     * @param {string} parentId - El ID del nodo padre al que se agregará el nuevo nodo.
-     * @param {NodeOptions} nodeOptions - Opciones del nodo nuevo.
-     * @returns {boolean} - Retorna true si se agregó el nodo, false si no.
+     * Genera un caption único verificando duplicados en un conjunto de nodos.
+     * @param {string} caption - El caption original.
+     * @param {Nodes[]} nodes - Lista de nodos donde verificar duplicados.
+     * @returns {string} - Un caption único.
      */
+    generateUniqueCaption(caption, nodes) {
+        let sanitizedCaption = caption.trim().replace(/\s+/g, "_");
+        let uniqueCaption = sanitizedCaption;
+        let counter = 1;
+
+        // Verificar si el caption ya existe
+        const isDuplicate = () => nodes.some(node => node.caption === uniqueCaption);
+
+        while (isDuplicate()) {
+            uniqueCaption = `${sanitizedCaption}_${counter}`;
+            counter++;
+        }
+
+        return uniqueCaption;
+    }
+
+
+    /**
+    * Agrega un nuevo nodo como hijo de un nodo existente identificado por su ID, con validaciones de NodeTypeManager y reglas específicas.
+    * @param {string} parentId - El ID del nodo padre al que se agregará el nuevo nodo.
+    * @param {NodeOptions} nodeOptions - Opciones del nodo nuevo.
+    * @returns {boolean} - Retorna true si se agregó el nodo, false si no.
+    */
     addChild(parentId, nodeOptions) {
         const parentNode = this.findChildById(parentId);
-        if (!parentNode) return false;
-
-        // Verificar si se puede agregar el nodo en el nivel actual (mirando hacia abajo)
-        if (!this.canAddChildAtDepth(parentNode)) {
-            console.error(`No se puede añadir un nodo de tipo '${nodeOptions.type}' porque excede la profundidad máxima permitida para '${parentNode.type}'.`);
+        if (!parentNode) {
+            console.error(`No se encontró el nodo padre con ID: ${parentId}`);
             return false;
+        }
+
+        // Generar un caption único según las reglas específicas
+        if (nodeOptions.type === "table") {
+            // Unicidad global para `table`
+            const allNodes = this.getCaptionsByType("table").map(caption => ({ caption }));
+            nodeOptions.caption = this.generateUniqueCaption(nodeOptions.caption, allNodes);
+        } else if (nodeOptions.type === "group") {
+            // Unicidad local para `group`
+            nodeOptions.caption = this.generateUniqueCaption(nodeOptions.caption, parentNode.children);
+        } else if (parentNode.type === "table" && nodeOptions.type === "field") {
+            // Unicidad local para `field` dentro de `table`
+            nodeOptions.caption = this.generateUniqueCaption(nodeOptions.caption, parentNode.children);
         }
 
         // Verificar si el tipo de hijo es válido para el padre
@@ -178,6 +211,13 @@ export class Nodes {
             return false;
         }
 
+        // Verificar si se puede agregar el nodo en el nivel actual (mirando hacia abajo)
+        if (!this.canAddChildAtDepth(parentNode)) {
+            console.error(`No se puede añadir un nodo de tipo '${nodeOptions.type}' porque excede la profundidad máxima permitida para '${parentNode.type}'.`);
+            return false;
+        }
+
+        // Crear el nodo y agregarlo como hijo
         const newNode = Nodes._createNode(nodeOptions);
         parentNode.children.push(newNode);
         return true;
@@ -185,10 +225,10 @@ export class Nodes {
 
 
     /**
- * Calcula la profundidad máxima alcanzada desde un nodo específico hacia sus descendientes.
- * @param {Nodes} node - El nodo desde el cual calcular la profundidad.
- * @returns {number} - La profundidad máxima hacia los hijos desde este nodo.
- */
+     * Calcula la profundidad máxima alcanzada desde un nodo específico hacia sus descendientes.
+     * @param {Nodes} node - El nodo desde el cual calcular la profundidad.
+     * @returns {number} - La profundidad máxima hacia los hijos desde este nodo.
+     */
     calculateMaxDepth(node) {
         if (!node.children || node.children.length === 0) {
             return 1; // Un nodo sin hijos tiene una profundidad de 1
