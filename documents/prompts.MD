@@ -7,7 +7,7 @@ Propósito del archivo: Dime para qué sirve el archivo y su rol en el sistema.
 Estructura: Evalúa si el orden de las funciones y clases sigue un flujo lógico y es fácil de leer de arriba a abajo. Si no, sugiere una reorganización.
 Consistencia y estilo: Verifica nombres de funciones/variables, manejo de errores y estilo de programación. Unifica enfoques si encuentras inconsistencias.
 Análisis de funciones clave: Examina cada función para confirmar que está bien encapsulada, hace una sola cosa y maneja errores o casos límite.
-Documentación: Evalúa si los comentarios son suficientes y claros. Añade encabezados breves para funciones importantes y elimina comentarios triviales.
+Documentación: Evalúa si los comentarios son suficientes y claros. Añade encabezados breves para funciones importantes y elimina comentarios triviales. En la parte superior asegurate de qeu esté comentado el nombre del archivo, // miarchivo.js
 Dependencias: Verifica que las dependencias externas sean necesarias, estén correctamente utilizadas y no obsoletas.
 TODOs: Agrega comentarios // TODO: en áreas donde se puedan realizar mejoras futuras.
 Al final, entrega el código mejorado junto con un resumen de los cambios realizados y sugerencias adicionales para un análisis más profundo en la siguiente fase.

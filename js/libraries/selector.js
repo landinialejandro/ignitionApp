@@ -1,3 +1,10 @@
+/**
+ * selector.js
+ * 
+ * Proporciona una función `$$(...)` para seleccionar y manipular elementos del DOM con una API similar a jQuery.
+ * Métodos disponibles: html, text, css, addClass, removeClass, remove, on, off, allData.
+ */
+
 export const $$ = (input) => {
     const elements = typeof input === 'string'
         ? document.querySelectorAll(input)
@@ -11,44 +18,48 @@ export const $$ = (input) => {
 
     const api = {
         elements,
+
+        // Métodos básicos
+
         html(content) {
             if (content !== undefined) {
                 elements.forEach((element) => {
                     element.innerHTML = content;
                 });
-                return this; // Encadenamiento
+                return this;
             } else {
-                return elements[0]?.innerHTML;
+                return elements[0]?.innerHTML || null; // TODO: Retornar null si no hay elementos.
             }
         },
+
         text(content) {
             if (content !== undefined) {
                 elements.forEach((element) => {
                     element.textContent = content;
                 });
-                return this; // Encadenamiento
+                return this;
             } else {
-                return elements[0]?.textContent;
+                return elements[0]?.textContent || null; // TODO: Retornar null si no hay elementos.
             }
         },
+
         css(propertyOrObject, value) {
             if (typeof propertyOrObject === "object") {
-                // Caso: Formato de objeto
                 Object.entries(propertyOrObject).forEach(([key, val]) => {
                     elements.forEach((element) => {
-                        element.style[key] = val;
+                        element.style[key] = val ?? ''; // TODO: Manejar valores null/undefined explícitamente.
                     });
                 });
             } else if (typeof propertyOrObject === "string" && value !== undefined) {
-                // Caso: Formato tradicional (propiedad, valor)
                 elements.forEach((element) => {
                     element.style[propertyOrObject] = value;
                 });
             } else {
                 console.error('Property and value must be provided, or an object with styles.');
             }
-            return this; // Encadenamiento
+            return this;
         },
+
         addClass(className) {
             if (!className) {
                 console.error('Class name must be provided.');
@@ -57,8 +68,9 @@ export const $$ = (input) => {
             elements.forEach((element) => {
                 element.classList.add(className);
             });
-            return this; // Encadenamiento
+            return this;
         },
+
         removeClass(className) {
             if (!className) {
                 console.error('Class name must be provided.');
@@ -67,44 +79,41 @@ export const $$ = (input) => {
             elements.forEach((element) => {
                 element.classList.remove(className);
             });
-            return this; // Encadenamiento
+            return this;
         },
+
         remove() {
             elements.forEach((element) => {
                 element.remove();
             });
-            return this; // Encadenamiento
+            return this;
         },
-        on(eventType, selectorOrHandler, handler) {
-            if (!eventType) {
-                console.error('Event type must be provided.');
-                return this; // Mantener encadenamiento
-            }
 
-            const isDelegation = typeof selectorOrHandler === 'string'; // Verificar si es un selector
+        // Gestión de eventos
+
+        on(eventType, selectorOrHandler, handler) {
+            const isDelegation = typeof selectorOrHandler === 'string';
             const actualHandler = isDelegation ? handler : selectorOrHandler;
             const selector = isDelegation ? selectorOrHandler : null;
 
-            if (typeof actualHandler !== 'function') {
-                console.error('Valid handler function must be provided.');
-                return this; // Mantener encadenamiento
+            if (!eventType || typeof actualHandler !== 'function') {
+                console.error('Valid event type and handler function must be provided.');
+                return this;
             }
 
             elements.forEach((element) => {
                 const delegatedHandler = (event) => {
                     if (selector) {
-                        // Manejar delegación: verificar si el target coincide con el selector
                         const potentialTargets = element.querySelectorAll(selector);
                         let target = event.target;
                         while (target && target !== element) {
                             if ([...potentialTargets].includes(target)) {
-                                actualHandler.call(target, event); // Ejecutar en el target encontrado
+                                actualHandler.call(target, event);
                                 return;
                             }
                             target = target.parentNode;
                         }
                     } else {
-                        // Evento directo
                         actualHandler(event);
                     }
                 };
@@ -117,18 +126,40 @@ export const $$ = (input) => {
                 element._eventListeners[eventType].push(delegatedHandler);
             });
 
-            return this; // Encadenamiento
+            return this;
         },
+
         off(eventType, handler) {
-            if (!eventType || typeof handler !== 'function') {
-                console.error('Valid event type and handler function must be provided.');
+            if (!eventType) {
+                console.error('Event type must be provided.');
                 return this;
             }
+
             elements.forEach((element) => {
-                element.removeEventListener(eventType, handler);
+                const listeners = element._eventListeners?.[eventType];
+                if (!listeners) return;
+
+                if (handler) {
+                    // Eliminar un handler específico
+                    const index = listeners.indexOf(handler);
+                    if (index !== -1) {
+                        element.removeEventListener(eventType, handler);
+                        listeners.splice(index, 1);
+                    }
+                } else {
+                    // Eliminar todos los handlers para el evento
+                    listeners.forEach((listener) => {
+                        element.removeEventListener(eventType, listener);
+                    });
+                    listeners.length = 0;
+                }
             });
-            return this; // Encadenamiento
+
+            return this; // TODO: Implementar offAll si se necesita eliminar todos los eventos.
         },
+
+        // Gestión de datos
+
         allData() {
             if (!elements.length) {
                 return []; // Devuelve un array vacío si no hay elementos seleccionados
@@ -140,8 +171,7 @@ export const $$ = (input) => {
             // Si hay múltiples elementos, devolver un array de datasets
             return Array.from(elements).map((element) => ({ ...element.dataset }));
         },
-
     };
 
-    return Object.create(api); // Crear un nuevo objeto con los métodos en el prototipo
+    return Object.create(api);
 };

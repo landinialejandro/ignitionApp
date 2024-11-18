@@ -9,11 +9,11 @@ import { $$ } from './selector.js';
  */
 export function Container(enable = true, delay = 200) {
     if (enable) {
-        setTimeout(() => $$(".card-starter").removeClass("container-disabled"), delay); // TODO: Verificar si el retraso es necesario en todos los casos.
+        setTimeout(() => $$(".card-starter").removeClass("container-disabled"), delay); // TODO: Hacer configurable el retraso.
     } else {
         $$(".card-starter").addClass("container-disabled");
     }
-};
+}
 
 /**
  * Actualiza el texto del breadcrumb activo.
@@ -22,7 +22,9 @@ export function Container(enable = true, delay = 200) {
 export const setBreadCrum = (newBreadCrum) => {
     const breadcrumb = $$(".breadcrumb-item.active");
     if (breadcrumb) {
-        breadcrumb.text(newBreadCrum); // TODO: Validar si el elemento existe.
+        breadcrumb.text(newBreadCrum);
+    } else {
+        console.warn("No se encontró el breadcrumb activo."); // TODO: Manejar el caso donde no haya breadcrumb activo.
     }
 };
 
@@ -33,7 +35,9 @@ export const setBreadCrum = (newBreadCrum) => {
 export const setTitleFileSelected = (newTitle) => {
     const title = $$(".title-file-selected");
     if (title) {
-        title.text(newTitle); // TODO: Validar si el elemento existe.
+        title.text(newTitle);
+    } else {
+        console.warn("No se encontró el título del archivo seleccionado."); // TODO: Manejar el caso donde no exista el elemento.
     }
 };
 
@@ -44,7 +48,10 @@ export const setTitleFileSelected = (newTitle) => {
  * @returns {string} - El texto recortado o el original si no excede el límite.
  */
 export const truncateText = (text, maxLength) => {
-    if (typeof text !== "string") return ""; // TODO: Validar que sea un string antes de operar.
+    if (typeof text !== "string") {
+        console.error("El texto debe ser un string."); // TODO: Manejar entradas no válidas.
+        return "";
+    }
     if (text.length <= maxLength) return text;
 
     const partLength = Math.floor((maxLength - 3) / 2);
@@ -52,7 +59,7 @@ export const truncateText = (text, maxLength) => {
     const end = text.slice(-partLength);
 
     return `${start}...${end}`;
-};
+}
 
 // Clase para manejar el preloader
 export class preloader {
@@ -61,25 +68,30 @@ export class preloader {
     }
     show() {
         if (!this.preloader) return;
-        this.preloader.removeClass('hidden').css({
-            transition: "opacity 0.5s",
-            opacity: "1",
-            display: "flex"
-        });
+        this.preloader
+            .removeClass('hidden')
+            .css({
+                transition: "opacity 0.5s",
+                opacity: "1",
+                display: "flex",
+            });
     }
     hide() {
         if (!this.preloader) return;
         setTimeout(() => {
-            this.preloader.css({ transition: "opacity 0.5s", opacity: "0" });
+            this.preloader.css({
+                transition: "opacity 0.5s",
+                opacity: "0",
+            });
             setTimeout(() => {
                 this.preloader.addClass('hidden');
-                if (window.msg) { // TODO: Validar si `msg` está definido para evitar errores.
-                    msg.secondary("preloader finalizado...", true);
+                if (window.msg) {
+                    msg.secondary("preloader finalizado...", true); // TODO: Validar si `msg` está definido.
                 }
             }, 500);
         }, 600);
     }
-};
+}
 
 /**
  * Renderiza una plantilla de Handlebars con el contenido proporcionado.
@@ -92,7 +104,7 @@ export const renderTemplate = async (template, content) => {
         const templateData = await get_data({ url: template, isJson: false });
 
         if (typeof Handlebars === "undefined") {
-            throw new Error("Handlebars no está disponible."); // TODO: Validar que Handlebars esté disponible.
+            throw new Error("Handlebars no está disponible.");
         }
 
         const compiledTemplate = Handlebars.compile(templateData);
@@ -125,7 +137,7 @@ export const serverOperation = async (operation, folder, extraData = {}) => {
         console.error(`Error en la operación ${operation} para ${folder}:`, error);
         throw error;
     }
-};
+}
 
 // Alias para operaciones específicas
 export const getDirCollectionJson = (folder) => serverOperation('get_node', folder);
