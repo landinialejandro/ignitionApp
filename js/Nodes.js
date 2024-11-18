@@ -26,6 +26,9 @@ export class Nodes {
         if (!nodeOptionsArray || nodeOptionsArray.length === 0) {
             console.warn("No se proporcionó ningún nodo válido. Creando un nodo raíz predeterminado.");
             const defOptions = this.nodeTypeManager.getType('root');
+            if (!defOptions) {
+                throw new Error("NodeTypeManager no pudo proporcionar un tipo de nodo raíz.");
+            }
             const rootOptions = {
                 id: defOptions.id || 'root',
                 caption: defOptions.caption || 'New Project',
@@ -34,6 +37,7 @@ export class Nodes {
                 icon: defOptions.icon || ""
             };
             this.nodes = [Nodes._createNode(rootOptions)];
+            console.info("Se creó un nodo raíz predeterminado:", rootOptions);
         } else {
             this.nodes = nodeOptionsArray.map(nodeOptions => Nodes._createNode(nodeOptions));
         }
@@ -161,24 +165,24 @@ export class Nodes {
     addChild(parentId, nodeOptions) {
         const parentNode = this.findChildById(parentId);
         if (!parentNode) return false;
-    
+
         // Verificar si se puede agregar el nodo en el nivel actual (mirando hacia abajo)
         if (!this.canAddChildAtDepth(parentNode)) {
             console.error(`No se puede añadir un nodo de tipo '${nodeOptions.type}' porque excede la profundidad máxima permitida para '${parentNode.type}'.`);
             return false;
         }
-    
+
         // Verificar si el tipo de hijo es válido para el padre
         if (!this.nodeTypeManager.isValidChild(parentNode.type, nodeOptions.type)) {
             console.error(`El nodo de tipo '${nodeOptions.type}' no es un hijo válido para el nodo de tipo '${parentNode.type}'.`);
             return false;
         }
-    
+
         const newNode = Nodes._createNode(nodeOptions);
         parentNode.children.push(newNode);
         return true;
     }
-    
+
 
     /**
  * Calcula la profundidad máxima alcanzada desde un nodo específico hacia sus descendientes.
@@ -306,4 +310,34 @@ export class Nodes {
 
         return breadcrumb;
     }
+
+    /**
+     * Devuelve una lista de captions de los nodos que coinciden con un tipo específico.
+     * @param {string} type - El tipo de nodo a buscar.
+     * @returns {string[]} - Lista de captions de los nodos encontrados.
+     */
+    getCaptionsByType(type) {
+        const captions = [];
+
+        /**
+         * Recorre recursivamente los nodos para encontrar los que coinciden con el tipo.
+         * @param {Nodes[]} nodes - Lista de nodos a recorrer.
+         */
+        const traverse = (nodes) => {
+            for (const node of nodes) {
+                if (node.type === type) {
+                    captions.push(node.caption);
+                }
+                if (node.children && node.children.length > 0) {
+                    traverse(node.children);
+                }
+            }
+        };
+
+        // Iniciar la búsqueda en los nodos raíz
+        traverse(this.nodes);
+
+        return captions;
+    }
+
 }
