@@ -5,6 +5,8 @@
 // TODO: Programar cambiar el caption de los nodos
 // TODO: cambiar el codigo para guardar ls radios
 // TODO: Ordenar el seting como primer nodo.
+// TODO: cuando hago click en el breadcrum hay que ir al nodo seleccionado
+// TODO: guardar tambien los estados del nodo, abierto o cerrado
 
 
 
