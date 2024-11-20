@@ -1,10 +1,10 @@
 /**
- * @typedef {import('./types/NodeOptions.js').NodeOptions} NodeOptions
+ * @typedef {import('../../../js/types/NodeOptions.js').NodeOptions} NodeOptions
  */
-import { renderTemplate } from './libraries/helpers.js';
-import { $$ } from './libraries/selector.js';
+import { renderTemplate } from '../../../js/libraries/helpers.js';
+import { $$ } from '../../../js/libraries/selector.js';
 
-export class Nodes {
+export class NodeForest {
     /**
      * @param {string} container - ID del contenedor HTML donde se renderizará el árbol.
      * @param {NodeTypeManager} nodeTypeManager - Instancia de NodeTypeManager para controlar las validaciones de tipos.
@@ -35,21 +35,21 @@ export class Nodes {
                 children: [],
                 icon: defOptions.icon || ""
             };
-            this.nodes = [Nodes.#createNode(rootOptions)];
+            this.nodes = [NodeForest.#createNode(rootOptions)];
             console.info("Se creó un nodo raíz predeterminado:", rootOptions);
         } else {
-            this.nodes = nodeOptionsArray.map(nodeOptions => Nodes.#createNode(nodeOptions));
+            this.nodes = nodeOptionsArray.map(nodeOptions => NodeForest.#createNode(nodeOptions));
         }
     }
 
     /**
      * Método privado para crear un nodo individual con sus propiedades y nodos hijos.
      * @param {NodeOptions} options - Opciones para crear el nodo.
-     * @returns {Nodes} - Nodo creado.
+     * @returns {NodeForest} - Nodo creado.
      * @private
      */
     static #createNode(options) {
-        const node = new Nodes('');
+        const node = new NodeForest('');
         node.id = options.id || node.#generateUniqueId();
         node.caption = options.caption || 'Untitled';
         node.icon = options.icon || {};
@@ -57,7 +57,7 @@ export class Nodes {
         node.a_attr = options.a_attr || {};
         node.state = options.state || {};
         node.properties = options.properties || [];
-        node.children = (options.children || []).map(childOptions => Nodes.#createNode(childOptions));
+        node.children = (options.children || []).map(childOptions => NodeForest.#createNode(childOptions));
         node.type = options.type || 'field';
         return node;
     }
@@ -74,7 +74,7 @@ export class Nodes {
     /**
      * Busca un nodo en todo el árbol recursivamente por su ID.
      * @param {string} nodeId - El ID del nodo a buscar.
-     * @returns {Nodes|null} - Retorna el nodo encontrado o null si no se encuentra.
+     * @returns {NodeForest|null} - Retorna el nodo encontrado o null si no se encuentra.
      */
     findChildById(nodeId) {
         for (const node of this.nodes) {
@@ -87,7 +87,7 @@ export class Nodes {
     /**
      * Método privado para buscar recursivamente en `this.children` dentro de un nodo individual.
      * @param {string} nodeId - El ID del nodo a buscar.
-     * @returns {Nodes|null} - Retorna el nodo encontrado o null si no se encuentra.
+     * @returns {NodeForest|null} - Retorna el nodo encontrado o null si no se encuentra.
      * @private
      */
     #findInChildren(nodeId) {
@@ -104,7 +104,7 @@ export class Nodes {
     /**
      * Busca el nodo padre de un nodo con un ID específico.
      * @param {string} nodeId - El ID del nodo del cual queremos encontrar el padre.
-     * @returns {Nodes|null} - Retorna el nodo padre o null si no se encuentra.
+     * @returns {NodeForest|null} - Retorna el nodo padre o null si no se encuentra.
      */
     findParentById(nodeId) {
         for (const node of this.nodes) {
@@ -116,9 +116,9 @@ export class Nodes {
 
     /**
      * Método privado para buscar recursivamente el nodo padre dentro de `children`.
-     * @param {Nodes} parentNode - Nodo actual desde el cual se inicia la búsqueda.
+     * @param {NodeForest} parentNode - Nodo actual desde el cual se inicia la búsqueda.
      * @param {string} nodeId - El ID del nodo del cual queremos encontrar el padre.
-     * @returns {Nodes|null} - Retorna el nodo padre o null si no se encuentra.
+     * @returns {NodeForest|null} - Retorna el nodo padre o null si no se encuentra.
      * @private
      */
     #findParentInChildren(parentNode, nodeId) {
@@ -158,7 +158,7 @@ export class Nodes {
     /**
      * Genera un caption único verificando duplicados en un conjunto de nodos.
      * @param {string} caption - El caption original.
-     * @param {Nodes[]} nodes - Lista de nodos donde verificar duplicados.
+     * @param {NodeForest[]} nodes - Lista de nodos donde verificar duplicados.
      * @returns {string} - Un caption único.
      */
     generateUniqueCaption(caption, nodes) {
@@ -216,14 +216,14 @@ export class Nodes {
         }
 
         // Crear el nodo y agregarlo como hijo
-        const newNode = Nodes.#createNode(nodeOptions);
+        const newNode = NodeForest.#createNode(nodeOptions);
         parentNode.children.push(newNode);
         return true;
     }
 
     /**
      * Calcula la profundidad máxima alcanzada desde un nodo específico hacia sus descendientes.
-     * @param {Nodes} node - El nodo desde el cual calcular la profundidad.
+     * @param {NodeForest} node - El nodo desde el cual calcular la profundidad.
      * @returns {number} - La profundidad máxima hacia los hijos desde este nodo.
      */
     calculateMaxDepth(node) {
@@ -240,7 +240,7 @@ export class Nodes {
 
     /**
     * Verifica si un nodo puede agregar un hijo sin exceder el `maxDepth` permitido.
-    * @param {Nodes} node - Nodo donde se quiere agregar el nuevo hijo.
+    * @param {NodeForest} node - Nodo donde se quiere agregar el nuevo hijo.
     * @returns {boolean} - True si se puede agregar el nodo, false si no.
     */
     canAddChildAtDepth(node) {
@@ -357,7 +357,7 @@ export class Nodes {
 
         /**
          * Recorre recursivamente los nodos para encontrar los que coinciden con el tipo.
-         * @param {Nodes[]} nodes - Lista de nodos a recorrer.
+         * @param {NodeForest[]} nodes - Lista de nodos a recorrer.
          */
         const traverse = (nodes) => {
             for (const node of nodes) {

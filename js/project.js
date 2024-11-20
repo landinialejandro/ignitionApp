@@ -22,13 +22,13 @@ import { $$ } from './libraries/selector.js';
 
 import Constants from './Constants.js';
 import { ContextMenu } from './ContextMenu.js';
-import { Nodes } from './Nodes.js';
+import { NodeForest } from '../src/index.js';
 import { NodeTypeManager } from './NodeTypeManager.js';
 
 // Variables globales necesarias para la gestión del proyecto
 const msg = new Msglog();
 const nodeTypeManager = new NodeTypeManager();
-const project = new Nodes();
+const project = new NodeForest();
 
 // Instancia única del menú contextual
 let contextMenu = null;
