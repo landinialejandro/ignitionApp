@@ -1,4 +1,4 @@
-import { get_data } from './libraries/common.js';  // Importamos el método para obtener datos de JSON
+import { get_data } from '../src/index.js';  // Importamos el método para obtener datos de JSON
 
 /**
  * @typedef {import('./types/IconType').IconType} IconType

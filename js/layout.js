@@ -1,4 +1,6 @@
-// layout.js
+// * file: js/layout.js
+
+import { initializeApp } from "./app.js";
 
 // Este archivo contiene la lógica para manejar el sidebar (barra lateral), el treeview (vista en árbol),
 // y los botones dentro de .tools-box que realizan distintas acciones. 
@@ -133,6 +135,10 @@ const initializeLayout = () => {
 };
 
 // Ejecutar la inicialización cuando el DOM esté completamente cargado
-document.addEventListener("DOMContentLoaded", initializeLayout);
+document.addEventListener("DOMContentLoaded", () => {
+  initializeLayout();
+  initializeApp();
+});
+// document.addEventListener("DOMContentLoaded", initializeLayout);
 
 export default { registerButtonAction };

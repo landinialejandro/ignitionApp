@@ -1,5 +1,5 @@
 // helpers.js
-import { get_data } from './common.js';
+import { serverOperation } from '../../src/index.js';
 import { $$ } from './selector.js';
 
 
@@ -32,30 +32,6 @@ export class preloader {
                 }
             }, 500);
         }, 600);
-    }
-}
-
-/**
- * Realiza una operación con el servidor.
- * @param {string} operation - Tipo de operación (e.g., 'get_node').
- * @param {string} folder - Carpeta de la operación.
- * @param {Object} extraData - Datos adicionales para la operación.
- * @returns {Promise<Object>} - Respuesta del servidor.
- */
-export const serverOperation = async (operation, folder, extraData = {}) => {
-    try {
-        const url = 'ignitionApp.php';
-        const data = { operation, id: folder, ...extraData };
-
-        const response = await get_data({ url, data });
-        if (response) {
-            return response;
-        } else {
-            throw new Error(`Sin datos recibidos para la operación ${operation} en: ${folder}`);
-        }
-    } catch (error) {
-        console.error(`Error en la operación ${operation} para ${folder}:`, error);
-        throw error;
     }
 }
 

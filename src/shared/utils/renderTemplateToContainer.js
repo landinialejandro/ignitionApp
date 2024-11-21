@@ -1,6 +1,6 @@
 // * src/shared/utils/renderTemplateToContainer.js
 
-import { get_data } from "../../../js/libraries/common.js";
+import { get_data } from '../../index.js';
 import { $$ } from "../../../js/libraries/selector.js";
 
 /**

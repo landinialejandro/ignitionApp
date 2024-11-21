@@ -1,14 +1,13 @@
 /**
  * @typedef {import('../../../js/types/NodeOptions.js').NodeOptions} NodeOptions
  */
-import { $$ } from '../../../js/libraries/selector.js';
-
 
 import { uniqueId } from './utils/uniqueId.js';
 import { generateUniqueCaption } from './utils/generateUniqueCaption.js';
-import { findInChildren, findParentInChildren, traverseAndCollectCaptionsByType } from './utils/treeSearchHelpers.js';
+import { validateNodeAddition } from './utils/validationHelpers.js';
+import { findInChildren, findParentInChildren } from './utils/treeSearchHelpers.js';
+import { nodeToJSON } from './utils/treeUtils.js';
 import { renderTemplateToContainer } from '../../index.js';
-
 
 export class NodeForest {
     /**
@@ -117,7 +116,6 @@ export class NodeForest {
         return false;
     }
 
-
     /**
     * Agrega un nuevo nodo como hijo de un nodo existente identificado por su ID, con validaciones de NodeTypeManager y reglas específicas.
     * @param {string} parentId - El ID del nodo padre al que se agregará el nuevo nodo.
@@ -130,84 +128,20 @@ export class NodeForest {
             console.error(`No se encontró el nodo padre con ID: ${parentId}`);
             return false;
         }
-
-        // Generar un caption único según las reglas específicas
-        if (nodeOptions.type === "table") {
-            // Unicidad global para `table`
-            const allNodes = traverseAndCollectCaptionsByType(this.nodes, "table").map(caption => ({ caption }));
-            nodeOptions.caption = generateUniqueCaption(nodeOptions.caption, allNodes);
-        } else if (nodeOptions.type === "group") {
-            // Unicidad local para `group`
-            nodeOptions.caption = generateUniqueCaption(nodeOptions.caption, parentNode.children);
-        } else if (parentNode.type === "table" && nodeOptions.type === "field") {
-            // Unicidad local para `field` dentro de `table`
-            nodeOptions.caption = generateUniqueCaption(nodeOptions.caption, parentNode.children);
-        }
-
-        // Verificar si el tipo de hijo es válido para el padre
-        if (!this.nodeTypeManager.isValidChild(parentNode.type, nodeOptions.type)) {
-            console.error(`El nodo de tipo '${nodeOptions.type}' no es un hijo válido para el nodo de tipo '${parentNode.type}'.`);
+    
+        // Validaciones centralizadas
+        const validation = validateNodeAddition(parentNode, nodeOptions, this.nodeTypeManager);
+        if (!validation.isValid) {
+            console.error(validation.message);
             return false;
         }
-
-        // Verificar si se puede agregar el nodo en el nivel actual (mirando hacia abajo)
-        if (!this.canAddChildAtDepth(parentNode)) {
-            console.error(`No se puede añadir un nodo de tipo '${nodeOptions.type}' porque excede la profundidad máxima permitida para '${parentNode.type}'.`);
-            return false;
-        }
-
-        // Crear el nodo y agregarlo como hijo
+    
+        // Generar un caption único
+        nodeOptions.caption = generateUniqueCaption(nodeOptions.caption, parentNode.children);
+    
         const newNode = NodeForest.#createNode(nodeOptions);
         parentNode.children.push(newNode);
         return true;
-    }
-
-    /**
-     * Calcula la profundidad máxima alcanzada desde un nodo específico hacia sus descendientes.
-     * @param {NodeForest} node - El nodo desde el cual calcular la profundidad.
-     * @returns {number} - La profundidad máxima hacia los hijos desde este nodo.
-     */
-    calculateMaxDepth(node) {
-        if (!node.children || node.children.length === 0) {
-            return 1; // Un nodo sin hijos tiene una profundidad de 1
-        }
-
-        let maxDepth = 0;
-        for (const child of node.children) {
-            maxDepth = Math.max(maxDepth, this.calculateMaxDepth(child));
-        }
-        return maxDepth + 1; // +1 para incluir el nodo actual en el cálculo
-    }
-
-    /**
-    * Verifica si un nodo puede agregar un hijo sin exceder el `maxDepth` permitido.
-    * @param {NodeForest} node - Nodo donde se quiere agregar el nuevo hijo.
-    * @returns {boolean} - True si se puede agregar el nodo, false si no.
-    */
-    canAddChildAtDepth(node) {
-        // Calcula la profundidad máxima actual desde el nodo hacia abajo
-        const currentDepth = this.calculateMaxDepth(node);
-
-        // Obtiene el maxDepth permitido para este nodo desde `types.json`
-        const maxDepthAllowed = this.nodeTypeManager.getMaxDepth(node.type);
-
-        // Verifica si la profundidad actual es menor que el máximo permitido
-        return currentDepth < maxDepthAllowed;
-    }
-
-    /**
-     * Obtener la profundidad de un nodo a partir de su ID.
-     * @param {string} nodeId - El ID del nodo.
-     * @returns {number} - La profundidad del nodo en el árbol.
-     */
-    getDepth(nodeId) {
-        let depth = 0;
-        let currentNode = this.findChildById(nodeId);
-        while (currentNode) {
-            depth++;
-            currentNode = this.findParentById(currentNode.id);
-        }
-        return depth;
     }
 
     /**
@@ -234,20 +168,10 @@ export class NodeForest {
             return {
                 container: this.container,
                 file: this.file,
-                nodes: this.nodes.map(node => node.toJSON())
+                nodes: this.nodes.map(nodeToJSON)
             };
         }
-        return {
-            id: this.id,
-            caption: this.caption,
-            icon: this.icon,
-            li_attr: this.li_attr,
-            a_attr: this.a_attr,
-            state: this.state,
-            properties: this.properties,
-            children: this.children.map(child => child.toJSON()),
-            type: this.type
-        };
+
     }
 
     /**
@@ -255,9 +179,7 @@ export class NodeForest {
      * @returns {Promise<void>} - Realiza la operación de renderizado.
      */
     async render() {
-        const content = this.toJSON();
-        console.log(content);
-        await renderTemplateToContainer(this.template, content, this.container);
+        await renderTemplateToContainer(this.template, this.toJSON(), this.container);
     }
 
     /**

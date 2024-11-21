@@ -1,13 +1,10 @@
-// app.js
-import Constants from './Constants.js';
-import { checkContainerAvailability, get_data } from './libraries/common.js';
 import { RegisterHelpers, RegisterPartials } from './libraries/hbs.js';
 import { actionsServer, getDirCollectionJson, preloader } from './libraries/helpers.js';
 import { Msglog } from "./libraries/MsgLog.js";
 import { $$ } from './libraries/selector.js';
 import { initializeProject } from './project.js';
 import { registerButtonAction } from './layout.js';
-import { renderTemplateToContainer } from '../src/index.js';
+import { renderTemplateToContainer, checkContainerAvailability, get_data, Constants} from '../src/index.js';
 
 // Configuración inicial
 window.msg = new Msglog();
@@ -15,7 +12,7 @@ msg.success("Iniciando app.js", true);
 const mainPreloader = new preloader(Constants.PRELOADER_ID);
 
 // Inicialización principal
-document.addEventListener("DOMContentLoaded", async () => {
+export const initializeApp = async() => {
     mainPreloader.show();
     try {
         RegisterHelpers();
@@ -27,7 +24,7 @@ document.addEventListener("DOMContentLoaded", async () => {
     } finally {
         mainPreloader.hide();
     }
-});
+};
 
 /** --- Funciones Auxiliares Generales --- **/
 

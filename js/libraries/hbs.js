@@ -1,4 +1,4 @@
-import { get_data } from './common.js';
+import { get_data } from '../../src/index.js';
 
 export const RegisterHelpers = () => {
 	msg.info("registering helpers...")

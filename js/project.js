@@ -1,4 +1,5 @@
-// project.js
+// * file:js/project.js
+
 // ok TODO: falta comandos para agregar file o folder en sidebar
 // TODO: programar el boton borrar del nodo, verificar si puede y debe estar
 // TODO: Programar los botones del tool de los cards
@@ -15,14 +16,13 @@
  * Incluye inicialización, manejo de eventos, acciones en los nodos y renderizado dinámico.
  */
 
-import { get_data, saveFileToServer } from './libraries/common.js';
+import { get_data, saveFileToServer } from '../src/index.js';
 import { getDirCollectionJson } from './libraries/helpers.js';
 import { Msglog } from "./libraries/MsgLog.js";
 import { $$ } from './libraries/selector.js';
 
-import Constants from './Constants.js';
 import { ContextMenu } from './ContextMenu.js';
-import { NodeForest, renderTemplateToContainer } from '../src/index.js';
+import { NodeForest, renderTemplateToContainer, Constants } from '../src/index.js';
 import { NodeTypeManager } from './NodeTypeManager.js';
 
 // Variables globales necesarias para la gestión del proyecto
@@ -292,6 +292,7 @@ const saveNodeListener = () => {
  */
 const nodeProjectListener = () => {
     $$(Constants.CONTENT).on("click", (e) => {
+        console.log('node click');
         const nodeLink = e.target.closest('.node-link-container');
         if (nodeLink) {
             handleProjectTree(nodeLink);
