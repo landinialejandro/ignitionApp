@@ -161,10 +161,13 @@ export const checkContainerAvailability = (containers, callback, timeout = 60000
         return;
     }
 
+    // Asegurarse de que containers sea siempre un array
     const containerIds = Array.isArray(containers) ? containers : [containers];
     const startTime = Date.now();
 
-    const allContainersAvailable = () => containerIds.every(id => document.getElementById(id) !== null);
+    // Verifica si todos los elementos están disponibles en el DOM
+    const allContainersAvailable = () => 
+        containerIds.every(id => document.getElementById(id) !== null);
 
     const observer = new MutationObserver(() => {
         if (allContainersAvailable()) {
@@ -179,12 +182,22 @@ export const checkContainerAvailability = (containers, callback, timeout = 60000
         }
     });
 
+    // Configuración del observador
     observer.observe(document.body, { childList: true, subtree: true });
 
+    // Timeout para detener la observación
     setTimeout(() => {
         if (!allContainersAvailable()) {
             observer.disconnect();
             console.warn(`No se encontraron todos los contenedores (${containerIds.join(', ')}) después de ${timeout / 1000} segundos. Observación cancelada.`);
         }
     }, timeout);
+
+    // Verificación inicial sin esperar a mutaciones
+    if (allContainersAvailable()) {
+        const elements = containerIds.map(id => document.getElementById(id));
+        callback(...elements);
+        observer.disconnect();
+        console.log(`Todos los contenedores encontrados (verificación inicial): ${containerIds.join(', ')}`);
+    }
 };

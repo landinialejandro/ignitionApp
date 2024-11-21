@@ -165,6 +165,6 @@ function enviarRespuesta($status, $data)
     http_response_code($status);
     header('Content-Type: application/json; charset=utf-8');
     // Codificación mejorada para manejar caracteres Unicode correctamente
-    echo json_encode($data, JSON_UNESCAPED_UNICODE);
+    echo json_encode(array_values($data), JSON_UNESCAPED_UNICODE);
     exit;
 }

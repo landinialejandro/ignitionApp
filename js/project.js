@@ -16,13 +16,13 @@
  */
 
 import { get_data, saveFileToServer } from './libraries/common.js';
-import { getDirCollectionJson, renderTemplate } from './libraries/helpers.js';
+import { getDirCollectionJson } from './libraries/helpers.js';
 import { Msglog } from "./libraries/MsgLog.js";
 import { $$ } from './libraries/selector.js';
 
 import Constants from './Constants.js';
 import { ContextMenu } from './ContextMenu.js';
-import { NodeForest } from '../src/index.js';
+import { NodeForest, renderTemplateToContainer } from '../src/index.js';
 import { NodeTypeManager } from './NodeTypeManager.js';
 
 // Variables globales necesarias para la gestión del proyecto
@@ -207,8 +207,7 @@ const handleProjectTree = async (node) => {
         $$('.breadcrumb').html(breadcrumb);
 
         if (selected.properties) {
-            const html = await renderTemplate("templates/properties.hbs", selected);
-            $$(".editor-container").html(html);
+            await renderTemplateToContainer("templates/properties.hbs", selected,".editor-container");
         }
     } catch (error) {
         msg.danger(error.message || "Error al manejar el nodo.");

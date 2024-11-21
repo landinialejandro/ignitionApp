@@ -2,11 +2,12 @@
 import Constants from './Constants.js';
 import { checkContainerAvailability, get_data } from './libraries/common.js';
 import { RegisterHelpers, RegisterPartials } from './libraries/hbs.js';
-import { actionsServer, getDirCollectionJson, preloader, renderTemplate } from './libraries/helpers.js';
+import { actionsServer, getDirCollectionJson, preloader } from './libraries/helpers.js';
 import { Msglog } from "./libraries/MsgLog.js";
 import { $$ } from './libraries/selector.js';
 import { initializeProject } from './project.js';
 import { registerButtonAction } from './layout.js';
+import { renderTemplateToContainer } from '../src/index.js';
 
 // Configuración inicial
 window.msg = new Msglog();
@@ -73,29 +74,14 @@ const initializeSidebar = async () => {
     msg.info(`Versión: ${versionText}`);
     $$(Constants.VERSION_CONTENT).html(versionText);
 
-    renderSidebar(Constants.SIDEBAR_CONTENT, navSidebar);
+    await renderTemplateToContainer("templates/nav_bar.hbs", navSidebar, Constants.SIDEBAR_CONTENT);
 
-    checkContainerAvailability(['projects-list', 'settings-list'], (projectsContainer, settingsContainer) => {
-        renderSidebar('#projects-list', projects);
-        renderSidebar('#settings-list', appSettings);
+    checkContainerAvailability(['projects-list', 'settings-list'], async(projectsContainer, settingsContainer) => {
+        await renderTemplateToContainer("templates/nav_bar.hbs", projects, '#projects-list');
+        await renderTemplateToContainer("templates/nav_bar.hbs", appSettings, '#settings-list');
     });
 
     // TODO: Centralizar el manejo de actualizaciones en el DOM para evitar duplicación
-};
-
-/**
- * Renderiza una sección del sidebar utilizando una plantilla.
- * @param {string} selector - Selector del contenedor donde se renderiza.
- * @param {Object} content - Datos a renderizar.
- */
-const renderSidebar = async (selector, content) => {
-    try {
-        content = content.menu ? content : { menu: content };
-        $$(selector).html(await renderTemplate("templates/nav_bar.hbs", content));
-        msg.secondary(`${selector} cargado correctamente.`, true);
-    } catch (error) {
-        handleError(`Error al cargar ${selector}`, error);
-    }
 };
 
 /** --- Manejo de Acciones y Eventos --- **/

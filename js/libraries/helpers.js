@@ -36,28 +36,6 @@ export class preloader {
 }
 
 /**
- * Renderiza una plantilla de Handlebars con el contenido proporcionado.
- * @param {string} template - Ruta de la plantilla.
- * @param {Object} content - Datos para el renderizado.
- * @returns {Promise<string>} - Plantilla renderizada como HTML.
- */
-export const renderTemplate = async (template, content) => {
-    try {
-        const templateData = await get_data({ url: template, isJson: false });
-
-        if (typeof Handlebars === "undefined") {
-            throw new Error("Handlebars no está disponible.");
-        }
-
-        const compiledTemplate = Handlebars.compile(templateData);
-        return compiledTemplate(content);
-    } catch (error) {
-        console.error(`Error al renderizar la plantilla ${template}:`, error);
-        throw new Error(`No se pudo renderizar la plantilla ${template}`);
-    }
-};
-
-/**
  * Realiza una operación con el servidor.
  * @param {string} operation - Tipo de operación (e.g., 'get_node').
  * @param {string} folder - Carpeta de la operación.

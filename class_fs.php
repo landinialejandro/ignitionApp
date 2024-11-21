@@ -85,13 +85,13 @@ class fs
         }, $items);
 
         if ($withRoot && $this->getId($dir) === '/') {
-            return [[
+            return [
                 'caption' => basename($this->base),
                 'url' => '/',
                 'icon' => 'bi bi-house',
                 'menu_open' => true,
                 'children' => $result,
-            ]];
+            ];
         }
 
         return $result;

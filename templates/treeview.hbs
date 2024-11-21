@@ -1,9 +1,10 @@
 <!-- project_tree.hbs -->
 <nav class="treeview-content" aria-label="Navegación principal">
     <ul class="node-list">
-
-    {{#each nodes}}
-        {{> node_list }}
-    {{/each}}
+        {{#each this}}
+            {{#each nodes}}
+                {{> node_list }}
+            {{/each}}
+        {{/each}}
     </ul>
 </nav>

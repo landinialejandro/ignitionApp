@@ -1,8 +1,14 @@
 /**
  * @typedef {import('../../../js/types/NodeOptions.js').NodeOptions} NodeOptions
  */
-import { renderTemplate } from '../../../js/libraries/helpers.js';
 import { $$ } from '../../../js/libraries/selector.js';
+
+
+import { uniqueId } from './utils/uniqueId.js';
+import { generateUniqueCaption } from './utils/generateUniqueCaption.js';
+import { findInChildren, findParentInChildren, traverseAndCollectCaptionsByType } from './utils/treeSearchHelpers.js';
+import { renderTemplateToContainer } from '../../index.js';
+
 
 export class NodeForest {
     /**
@@ -50,7 +56,7 @@ export class NodeForest {
      */
     static #createNode(options) {
         const node = new NodeForest('');
-        node.id = options.id || node.#generateUniqueId();
+        node.id = options.id || uniqueId('node');
         node.caption = options.caption || 'Untitled';
         node.icon = options.icon || {};
         node.li_attr = options.li_attr || {};
@@ -63,39 +69,13 @@ export class NodeForest {
     }
 
     /**
-     * Genera un ID único para el nodo si no se proporciona uno.
-     * @returns {string}
-     * @private
-     */
-    #generateUniqueId() {
-        return 'node-' + Math.random().toString(36).substr(2, 9);
-    }
-
-    /**
      * Busca un nodo en todo el árbol recursivamente por su ID.
      * @param {string} nodeId - El ID del nodo a buscar.
      * @returns {NodeForest|null} - Retorna el nodo encontrado o null si no se encuentra.
      */
     findChildById(nodeId) {
         for (const node of this.nodes) {
-            const found = node.#findInChildren(nodeId);
-            if (found) return found;
-        }
-        return null;
-    }
-
-    /**
-     * Método privado para buscar recursivamente en `this.children` dentro de un nodo individual.
-     * @param {string} nodeId - El ID del nodo a buscar.
-     * @returns {NodeForest|null} - Retorna el nodo encontrado o null si no se encuentra.
-     * @private
-     */
-    #findInChildren(nodeId) {
-        if (this.id === nodeId) {
-            return this;
-        }
-        for (const child of this.children || []) {
-            const found = child.#findInChildren(nodeId);
+            const found = findInChildren(node, nodeId);
             if (found) return found;
         }
         return null;
@@ -108,26 +88,8 @@ export class NodeForest {
      */
     findParentById(nodeId) {
         for (const node of this.nodes) {
-            const parent = this.#findParentInChildren(node, nodeId);
+            const parent = findParentInChildren(node, nodeId);
             if (parent) return parent;
-        }
-        return null;
-    }
-
-    /**
-     * Método privado para buscar recursivamente el nodo padre dentro de `children`.
-     * @param {NodeForest} parentNode - Nodo actual desde el cual se inicia la búsqueda.
-     * @param {string} nodeId - El ID del nodo del cual queremos encontrar el padre.
-     * @returns {NodeForest|null} - Retorna el nodo padre o null si no se encuentra.
-     * @private
-     */
-    #findParentInChildren(parentNode, nodeId) {
-        for (const child of parentNode.children || []) {
-            if (child.id === nodeId) {
-                return parentNode;
-            }
-            const foundParent = this.#findParentInChildren(child, nodeId);
-            if (foundParent) return foundParent;
         }
         return null;
     }
@@ -155,27 +117,6 @@ export class NodeForest {
         return false;
     }
 
-    /**
-     * Genera un caption único verificando duplicados en un conjunto de nodos.
-     * @param {string} caption - El caption original.
-     * @param {NodeForest[]} nodes - Lista de nodos donde verificar duplicados.
-     * @returns {string} - Un caption único.
-     */
-    generateUniqueCaption(caption, nodes) {
-        let sanitizedCaption = caption.trim().replace(/\s+/g, "_");
-        let uniqueCaption = sanitizedCaption;
-        let counter = 1;
-
-        // Verificar si el caption ya existe
-        const isDuplicate = () => nodes.some(node => node.caption === uniqueCaption);
-
-        while (isDuplicate()) {
-            uniqueCaption = `${sanitizedCaption}_${counter}`;
-            counter++;
-        }
-
-        return uniqueCaption;
-    }
 
     /**
     * Agrega un nuevo nodo como hijo de un nodo existente identificado por su ID, con validaciones de NodeTypeManager y reglas específicas.
@@ -193,14 +134,14 @@ export class NodeForest {
         // Generar un caption único según las reglas específicas
         if (nodeOptions.type === "table") {
             // Unicidad global para `table`
-            const allNodes = this.getCaptionsByType("table").map(caption => ({ caption }));
-            nodeOptions.caption = this.generateUniqueCaption(nodeOptions.caption, allNodes);
+            const allNodes = traverseAndCollectCaptionsByType(this.nodes, "table").map(caption => ({ caption }));
+            nodeOptions.caption = generateUniqueCaption(nodeOptions.caption, allNodes);
         } else if (nodeOptions.type === "group") {
             // Unicidad local para `group`
-            nodeOptions.caption = this.generateUniqueCaption(nodeOptions.caption, parentNode.children);
+            nodeOptions.caption = generateUniqueCaption(nodeOptions.caption, parentNode.children);
         } else if (parentNode.type === "table" && nodeOptions.type === "field") {
             // Unicidad local para `field` dentro de `table`
-            nodeOptions.caption = this.generateUniqueCaption(nodeOptions.caption, parentNode.children);
+            nodeOptions.caption = generateUniqueCaption(nodeOptions.caption, parentNode.children);
         }
 
         // Verificar si el tipo de hijo es válido para el padre
@@ -315,8 +256,8 @@ export class NodeForest {
      */
     async render() {
         const content = this.toJSON();
-        const html = await renderTemplate(this.template, content);
-        $$(`${this.container}`).html(html);
+        console.log(content);
+        await renderTemplateToContainer(this.template, content, this.container);
     }
 
     /**
@@ -345,35 +286,6 @@ export class NodeForest {
         }
 
         return breadcrumb;
-    }
-
-    /**
-     * Devuelve una lista de captions de los nodos que coinciden con un tipo específico.
-     * @param {string} type - El tipo de nodo a buscar.
-     * @returns {string[]} - Lista de captions de los nodos encontrados.
-     */
-    getCaptionsByType(type) {
-        const captions = [];
-
-        /**
-         * Recorre recursivamente los nodos para encontrar los que coinciden con el tipo.
-         * @param {NodeForest[]} nodes - Lista de nodos a recorrer.
-         */
-        const traverse = (nodes) => {
-            for (const node of nodes) {
-                if (node.type === type) {
-                    captions.push(node.caption);
-                }
-                if (node.children && node.children.length > 0) {
-                    traverse(node.children);
-                }
-            }
-        };
-
-        // Iniciar la búsqueda en los nodos raíz
-        traverse(this.nodes);
-
-        return captions;
     }
 
 }
