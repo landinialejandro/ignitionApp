@@ -275,7 +275,7 @@ const saveNodeListener = () => {
 
         // Actualiza las propiedades con map
         node.properties.properties = node.properties.properties.map((v, k) => {
-            console.log(v, k);
+            toastmaster.echo(v, k);
             return { ...v, ...updatedValues[k] }; // Crea un nuevo objeto con las actualizaciones
         });
     })
