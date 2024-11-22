@@ -16,13 +16,15 @@
  * Incluye inicialización, manejo de eventos, acciones en los nodos y renderizado dinámico.
  */
 
-import { get_data, saveFileToServer } from '../src/index.js';
+import { get_data, sanitizeInput, saveFileToServer } from '../src/index.js';
 import { getDirCollectionJson } from './libraries/helpers.js';
 import { $$ } from './libraries/selector.js';
 
 import { ContextMenu } from './ContextMenu.js';
-import { NodeForest, renderTemplateToContainer, Constants, toastmaster } from '../src/index.js';
+import { NodeForest, renderTemplateToContainer, Constants, toastmaster, getUserInput, validateGenericInput } from '../src/index.js';
 import { NodeTypeManager } from './NodeTypeManager.js';
+
+import { registerButtonAction } from './layout.js';
 
 // Variables globales necesarias para la gestión del proyecto
 const nodeTypeManager = new NodeTypeManager();
@@ -82,9 +84,6 @@ const actionCallbacks = {
             if (typeToAdd === "root" && project.hasNodeOfType("root")) {
                 throw new Error("Ya existe un nodo de tipo 'root'.");
             }
-            if (!nodeTypeManager.isValidChild(parentType, typeToAdd)) {
-                throw new Error(`Tipo de nodo ${typeToAdd} no permitido como hijo de ${parentType}.`);
-            }
 
             const baseOptions = nodeTypeManager.getType(typeToAdd);
             if (!baseOptions) {
@@ -123,16 +122,32 @@ const actionCallbacks = {
      * Renombra un nodo del árbol.
      */
     renameNode: (nodeType, anchor, nodeId) => {
-        const newName = prompt("Ingrese el nuevo nombre:");
+        const newName = getUserInput("Ingrese el nuevo nombre:", validateGenericInput);
+        const parentNode = project.findParentById(nodeId);
+        const currentNode = project.findChildById(nodeId);
+
         if (newName) {
-            let sanitizedCaption = newName.trim().replace(/\s+/g, "_");
-            const updated = project.updateNode(nodeId, { caption: sanitizedCaption });
+            let sanitizedCaption = sanitizeInput(newName, true);
+
+            const nodeOptions = { ...currentNode, caption: sanitizedCaption }; // Clonar el nodo original con el nuevo 
+
+            // Validaciones centralizadas
+            const validation = project.validate(parentNode, nodeOptions, nodeTypeManager);
+            if (!validation.isValid) {
+                toastmaster.danger(validation.message);
+                return false;
+            }
+
+            const updated = project.updateNode(nodeId, nodeOptions);
             if (updated) {
                 toastmaster.success(`Nodo renombrado a ${newName}.`);
                 project.render();
             } else {
                 toastmaster.danger("No se pudo renombrar el nodo.");
             }
+        }
+        else {
+            toastmaster.danger('Operación cancelada o entrada inválida.');
         }
     },
 
@@ -141,13 +156,16 @@ const actionCallbacks = {
      */
     deleteNode: (nodeType, anchor, nodeId) => {
         if (confirm("¿Eliminar este nodo?")) {
+            const currentNode = project.findChildById(nodeId);
             const deleted = project.removeNode(nodeId);
             if (deleted) {
                 project.render();
-                toastmaster.success(`Nodo ${nodeType} eliminado.`);
+                toastmaster.success(`Nodo ${currentNode.caption} del tipo ${currentNode.type} eliminado.`);
             } else {
                 toastmaster.danger("No se pudo eliminar el nodo.");
             }
+        }else{
+            toastmaster.danger('Operación cancelada.');
         }
     }
 };
@@ -205,7 +223,7 @@ const handleProjectTree = async (node) => {
         $$('.breadcrumb').html(breadcrumb);
 
         if (selected.properties) {
-            await renderTemplateToContainer("templates/properties.hbs", selected,".editor-container");
+            await renderTemplateToContainer("templates/properties.hbs", selected, ".editor-container");
         }
     } catch (error) {
         const msg = "Error al manejar el nodo.";
@@ -218,6 +236,7 @@ const handleProjectTree = async (node) => {
  */
 const addEventsListener = () => {
     saveProjectListener();
+    buttonsToolListener();
     nodeProjectListener();
     contextMenuListener();
     saveNodeListener();
@@ -285,10 +304,12 @@ const saveNodeListener = () => {
  * Listener para manejar clics en nodos del árbol.
  */
 const nodeProjectListener = () => {
-    $$(Constants.CONTENT).on("click", (e) => {
-        toastmaster.secondary('node click');
+    $$(Constants.CONTENT).on("click", ".node-link", (e) => {
         const nodeLink = e.target.closest('.node-link-container');
         if (nodeLink) {
+            e.preventDefault();
+            e.stopPropagation();
+            toastmaster.secondary('node click');
             handleProjectTree(nodeLink);
         }
     });
@@ -311,3 +332,15 @@ const contextMenuListener = () => {
         }
     });
 };
+
+const buttonsToolListener = () => {
+    $$(Constants.CONTENT).on("click", '.button-delete-node', (e) => {
+        const link = e.target.closest('.node-link-container');
+        if (link) {
+            e.preventDefault();
+            e.stopPropagation();
+            const data = $$(link).allData();
+            actionCallbacks.deleteNode(data.type, link, data.id);
+        }
+    });
+}

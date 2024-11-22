@@ -104,7 +104,7 @@
             "type": "class"
         },
         "expanded": false,
-        "type": "content",
+        "type": "folder",
         "children": [
             {
                 "type": "component",

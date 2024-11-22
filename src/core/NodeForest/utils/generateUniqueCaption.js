@@ -1,5 +1,8 @@
 // utilities/generateUniqueCaption.js
 
+import { sanitizeInput } from '../../../index.js';
+import { isDuplicate } from './validationHelpers.js';
+
 /**
  * Genera un caption único verificando duplicados en un conjunto de nodos.
  * @param {string} caption - El caption original.
@@ -7,13 +10,11 @@
  * @returns {string} - Un caption único.
  */
 export function generateUniqueCaption(caption, nodes) {
-    let sanitizedCaption = caption.trim().replace(/\s+/g, "_");
+    let sanitizedCaption = sanitizeInput(caption, true); // Reemplaza espacios por '_'.
     let uniqueCaption = sanitizedCaption;
     let counter = 1;
 
-    const isDuplicate = () => nodes.some(node => node.caption === uniqueCaption);
-
-    while (isDuplicate()) {
+    while (isDuplicate(uniqueCaption, nodes)) {
         uniqueCaption = `${sanitizedCaption}_${counter}`;
         counter++;
     }

@@ -3,42 +3,25 @@ import { actionsServer, getDirCollectionJson, preloader } from './libraries/help
 import { $$ } from './libraries/selector.js';
 import { initializeProject } from './project.js';
 import { registerButtonAction } from './layout.js';
-import { renderTemplateToContainer, checkContainerAvailability, get_data, Constants, toastmaster} from '../src/index.js';
+import { renderTemplateToContainer, checkContainerAvailability, get_data, Constants, toastmaster, getUserInput, sanitizeInput, validateGenericInput } from '../src/index.js';
 
 // Configuración inicial
 toastmaster.success("Iniciando app.js", true);
 const mainPreloader = new preloader(Constants.PRELOADER_ID);
 
 // Inicialización principal
-export const initializeApp = async() => {
+export const initializeApp = async () => {
     mainPreloader.show();
     try {
         RegisterHelpers();
         await RegisterPartials();
         await initializeSidebar();
-        registerGlobalEventListeners();
+        registerEventListeners();
     } catch (error) {
         toastmaster.handleError("Error al inicializar la aplicación", error);
     } finally {
         mainPreloader.hide();
     }
-};
-
-/** --- Funciones Auxiliares Generales --- **/
-
-/**
- * Solicita un nombre para un archivo o carpeta.
- * @param {string} url - URL base donde se creará el nodo.
- * @param {string} type - Tipo de nodo (e.g., 'file', 'folder').
- * @returns {string|null} - Nombre completo del nodo o null si se cancela.
- */
-const promptForNodeName = (url, type) => {
-    const name = prompt(`Ingrese el nombre del ${type}:`);
-    if (!name || name.trim() === '') {
-        toastmaster.warning(`Nombre inválido proporcionado para el ${type}`);
-        return null;
-    }
-    return `${url}/${name}`;
 };
 
 /** --- Inicialización del Sidebar y Contenido --- **/
@@ -60,7 +43,7 @@ const initializeSidebar = async () => {
 
     await renderTemplateToContainer("templates/nav_bar.hbs", navSidebar, Constants.SIDEBAR_CONTENT);
 
-    checkContainerAvailability(['projects-list', 'settings-list'], async(projectsContainer, settingsContainer) => {
+    checkContainerAvailability(['projects-list', 'settings-list'], async (projectsContainer, settingsContainer) => {
         await renderTemplateToContainer("templates/nav_bar.hbs", projects, '#projects-list');
         await renderTemplateToContainer("templates/nav_bar.hbs", appSettings, '#settings-list');
     });
@@ -73,7 +56,7 @@ const initializeSidebar = async () => {
 /**
  * Registra todos los listeners necesarios al inicializar la aplicación.
  */
-const registerGlobalEventListeners = () => {
+const registerEventListeners = () => {
     toastmaster.secondary("Registrando eventos globales", true);
     registerNavigationListeners();
 
@@ -123,9 +106,16 @@ const processNodeAction = async (data, operation, type = null) => {
 
     if (operation === 'create_node') {
         data.type = type;
-        const name = promptForNodeName(data.url, type);
-        if (!name) return;
-        data.text = name;
+
+        const name = getUserInput(`Ingrese el nombre del ${type}:`, validateGenericInput);
+
+        if (name) {
+            const sanitized = sanitizeInput(name, true, true); // Reemplazar espacios y convertir a minúsculas
+            toastmaster.secondary(`Dato ingresado: ${sanitized}`);
+            data.text = `${data.url}/${sanitized}`;
+        } else {
+            toastmaster.danger('Operación cancelada o entrada inválida.');
+        }
     }
 
     if (operation === 'delete_node') {

@@ -30,8 +30,8 @@
       "group",
       "settings"
     ],
-    "id":"root-node",
-    "caption":"Nuevo Proyecto",
+    "id": "root-node",
+    "caption": "Nuevo Proyecto",
     "description": "nodo principal y nombre del proyecto, no se puede borrar, si se puede renombrar"
   },
   "group": {
@@ -153,5 +153,49 @@
     "actions": {},
     "validChildren": [],
     "description": "Propiedades"
-  }
+  },
+  "folder": {
+    "maxChildren": 30,
+    "maxDepth": 6,
+    "icon": {
+      "type": "svg",
+      "value": "M2 6a2 2 0 0 1 2-2h5l2 2h5a2 2 0 0 1 2 2v6a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V6z"
+    },
+    "actions": {
+      "rename": {
+        "label": "Renombrar carpeta",
+        "callback": "renameNode"
+      },
+      "delete": {
+        "label": "Eliminar carpeta",
+        "callback": "deleteNode"
+      }
+    },
+    "validChildren": [
+      "file"
+    ],
+    "description": "tipo carpetas"
+  },
+  "file" : {
+    "maxChildren": 0,
+    "maxDepth": 6,
+    "icon": {
+      "type": "class",
+      "value": "bi bi-file-earmark-text"
+    },
+    "actions": {
+      "rename": {
+        "label": "Renombrar archivo",
+        "callback": "renameNode"
+      },
+      "delete": {
+        "label": "Eliminar archivo",
+        "callback": "deleteNode"
+      }
+    },
+    "validChildren": [
+    ],
+    "description": "Archivo nuevo, inlcuir extensión"
+  }   
+
 }

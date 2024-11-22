@@ -10,26 +10,15 @@ export class preloader {
     }
     show() {
         if (!this.preloader) return;
-        this.preloader
-            .removeClass('hidden')
-            .css({
-                transition: "opacity 0.5s",
-                opacity: "1",
-                display: "flex",
-            });
+        toastmaster.secondary("preloader inicalizado...", true);
+        this.preloader.removeClass('hidden')
     }
     hide() {
         if (!this.preloader) return;
         setTimeout(() => {
-            this.preloader.css({
-                transition: "opacity 0.5s",
-                opacity: "0",
-            });
-            setTimeout(() => {
-                this.preloader.addClass('hidden');
-                    toastmaster.secondary("preloader finalizado...", true);
-            }, 500);
-        }, 600);
+            this.preloader.addClass('hidden');
+            toastmaster.secondary("preloader finalizado...", true);
+        }, 500);
     }
 }
 

@@ -4,7 +4,7 @@
 
 import { uniqueId } from './utils/uniqueId.js';
 import { generateUniqueCaption } from './utils/generateUniqueCaption.js';
-import { validateNodeAddition } from './utils/validationHelpers.js';
+import { validateNode } from './utils/validationHelpers.js';
 import { findInChildren, findParentInChildren } from './utils/treeSearchHelpers.js';
 import { nodeToJSON } from './utils/treeUtils.js';
 import { renderTemplateToContainer } from '../../index.js';
@@ -128,16 +128,16 @@ export class NodeForest {
             console.error(`No se encontró el nodo padre con ID: ${parentId}`);
             return false;
         }
+
+        // Generar un caption único
+        nodeOptions.caption = generateUniqueCaption(nodeOptions.caption, parentNode.children);
     
         // Validaciones centralizadas
-        const validation = validateNodeAddition(parentNode, nodeOptions, this.nodeTypeManager);
+        const validation = validateNode(parentNode, nodeOptions, this.nodeTypeManager);
         if (!validation.isValid) {
             console.error(validation.message);
             return false;
         }
-    
-        // Generar un caption único
-        nodeOptions.caption = generateUniqueCaption(nodeOptions.caption, parentNode.children);
     
         const newNode = NodeForest.#createNode(nodeOptions);
         parentNode.children.push(newNode);
@@ -147,13 +147,14 @@ export class NodeForest {
     /**
      * Actualiza una o varias propiedades de un nodo identificado por su ID.
      * @param {string} nodeId - El ID del nodo a actualizar.
-     * @param {Object} properties - Objeto con las propiedades y sus valores para actualizar.
+     * @param {Object} nodeOptions - Objeto con las propiedades y sus valores para actualizar.
      * @returns {boolean} - Retorna true si el nodo fue encontrado y actualizado, false si no.
      */
-    updateNode(nodeId, properties) {
+    updateNode(nodeId, nodeOptions) {
+        
         const node = this.findChildById(nodeId);
         if (node) {
-            Object.assign(node, properties);
+            Object.assign(node, nodeOptions);
             return true;
         }
         return false;
@@ -208,6 +209,10 @@ export class NodeForest {
         }
 
         return breadcrumb;
+    }
+
+    validate(parentNode, nodeOptions, nodeTypeManager) {
+        return validateNode(parentNode, nodeOptions, nodeTypeManager);
     }
 
 }
