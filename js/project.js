@@ -18,15 +18,13 @@
 
 import { get_data, saveFileToServer } from '../src/index.js';
 import { getDirCollectionJson } from './libraries/helpers.js';
-import { Msglog } from "./libraries/MsgLog.js";
 import { $$ } from './libraries/selector.js';
 
 import { ContextMenu } from './ContextMenu.js';
-import { NodeForest, renderTemplateToContainer, Constants } from '../src/index.js';
+import { NodeForest, renderTemplateToContainer, Constants, toastmaster } from '../src/index.js';
 import { NodeTypeManager } from './NodeTypeManager.js';
 
 // Variables globales necesarias para la gestión del proyecto
-const msg = new Msglog();
 const nodeTypeManager = new NodeTypeManager();
 const project = new NodeForest();
 
@@ -56,8 +54,8 @@ export const initializeProject = async (url) => {
 
         addEventsListener();
     } catch (error) {
-        msg.danger("Error al inicializar el proyecto.");
-        console.error(error);
+        const msg = "Error al inicializar el proyecto.";
+        toastmaster.handleError(msg, error);
     }
 };
 
@@ -70,7 +68,7 @@ const actionCallbacks = {
      */
     addNewNode: async (parentType, anchor, nodeId, typeToAdd) => {
         try {
-            console.log(`Agregando nodo de tipo ${typeToAdd}`);
+            toastmaster.info(`Agregando nodo de tipo ${typeToAdd}`);
             const parentNode = project.findChildById(nodeId);
 
             if (!parentNode) {
@@ -111,13 +109,13 @@ const actionCallbacks = {
 
             if (success) {
                 await project.render();
-                msg.success(`Nodo ${typeToAdd} agregado exitosamente.`);
+                toastmaster.success(`Nodo ${typeToAdd} agregado exitosamente.`);
             } else {
                 throw new Error("No se pudo agregar el nodo.");
             }
         } catch (error) {
-            msg.danger(error.message || "Error al agregar el nodo.");
-            console.error(error);
+            const msg = "Error al agregar el nodo.";
+            toastmaster.handleError(msg, error);
         }
     },
 
@@ -130,10 +128,10 @@ const actionCallbacks = {
             let sanitizedCaption = newName.trim().replace(/\s+/g, "_");
             const updated = project.updateNode(nodeId, { caption: sanitizedCaption });
             if (updated) {
-                msg.success(`Nodo renombrado a ${newName}.`);
+                toastmaster.success(`Nodo renombrado a ${newName}.`);
                 project.render();
             } else {
-                msg.danger("No se pudo renombrar el nodo.");
+                toastmaster.danger("No se pudo renombrar el nodo.");
             }
         }
     },
@@ -146,9 +144,9 @@ const actionCallbacks = {
             const deleted = project.removeNode(nodeId);
             if (deleted) {
                 project.render();
-                msg.success(`Nodo ${nodeType} eliminado.`);
+                toastmaster.success(`Nodo ${nodeType} eliminado.`);
             } else {
-                msg.danger("No se pudo eliminar el nodo.");
+                toastmaster.danger("No se pudo eliminar el nodo.");
             }
         }
     }
@@ -179,10 +177,10 @@ const initializeSettingsNode = async (parentType, newNodeOptions) => {
             });
         }
 
-        msg.success("Elementos de configuración agregados.");
+        toastmaster.success("Elementos de configuración agregados.");
     } catch (error) {
-        msg.danger("Error al cargar elementos de configuración.");
-        throw error;
+        const msg = "Error al cargar elementos de configuración.";
+        toastmaster.handleError(msg, error);
     }
 };
 
@@ -210,8 +208,8 @@ const handleProjectTree = async (node) => {
             await renderTemplateToContainer("templates/properties.hbs", selected,".editor-container");
         }
     } catch (error) {
-        msg.danger(error.message || "Error al manejar el nodo.");
-        console.error(error);
+        const msg = "Error al manejar el nodo.";
+        toastmaster.handleError(msg, error);
     }
 };
 
@@ -234,13 +232,13 @@ const saveProjectListener = () => {
             const nodes = project.toJSON();
             const response = await saveFileToServer(project.file, nodes.nodes);
             if (response) {
-                msg.success('Proyecto guardado.');
+                toastmaster.success('Proyecto guardado.');
             } else {
                 throw new Error("Error al guardar proyecto.");
             }
         } catch (error) {
-            msg.danger(error.message || "Error al guardar proyecto.");
-            console.error(error);
+            const msg = "Error al guardar el proyecto.";
+            toastmaster.handleError(msg, error);
         }
     });
 };
@@ -274,16 +272,12 @@ const saveNodeListener = () => {
         });
 
         const node = project.findChildById(nodeId);
-        console.log(updatedValues);
 
         // Actualiza las propiedades con map
         node.properties.properties = node.properties.properties.map((v, k) => {
             console.log(v, k);
             return { ...v, ...updatedValues[k] }; // Crea un nuevo objeto con las actualizaciones
         });
-
-        console.log(node.properties.properties);
-
     })
 }
 
@@ -292,7 +286,7 @@ const saveNodeListener = () => {
  */
 const nodeProjectListener = () => {
     $$(Constants.CONTENT).on("click", (e) => {
-        console.log('node click');
+        toastmaster.secondary('node click');
         const nodeLink = e.target.closest('.node-link-container');
         if (nodeLink) {
             handleProjectTree(nodeLink);

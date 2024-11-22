@@ -1,5 +1,5 @@
 // helpers.js
-import { serverOperation } from '../../src/index.js';
+import { serverOperation, toastmaster } from '../../src/index.js';
 import { $$ } from './selector.js';
 
 
@@ -27,9 +27,7 @@ export class preloader {
             });
             setTimeout(() => {
                 this.preloader.addClass('hidden');
-                if (window.msg) {
-                    msg.secondary("preloader finalizado...", true); // TODO: Validar si `msg` está definido.
-                }
+                    toastmaster.secondary("preloader finalizado...", true);
             }, 500);
         }, 600);
     }

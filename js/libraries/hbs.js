@@ -1,7 +1,7 @@
-import { get_data } from '../../src/index.js';
+import { get_data, toastmaster } from '../../src/index.js';
 
 export const RegisterHelpers = () => {
-	msg.info("registering helpers...")
+	toastmaster.info("registering helpers...")
 
 	/**
 	 * @helper Handlebars.registerHelper("when")
@@ -73,9 +73,8 @@ export const RegisterHelpers = () => {
 			// Si no hay bloque "else", devuelve una cadena vacía
 			return '';
 		} catch (error) {
-			// Capturar y registrar cualquier error que ocurra durante la evaluación
-			console.error(`Error en helper "when": ${error.message}`);
-
+			const msg = "Se produjo un error en el helper 'when'. Por favor, inténtalo de nuevo.";
+			toastmaster.handleError(msg, error);
 			// Renderizar el bloque "else" en caso de error o devolver cadena vacía si no está definido
 			return typeof options.inverse === 'function' ? options.inverse(this) : '';
 		}
@@ -124,7 +123,7 @@ export const RegisterHelpers = () => {
 }
 
 export const RegisterPartials = async () => {
-	msg.info("registering partials...");
+	toastmaster.info("registering partials...");
 
 	const url = 'ignitionApp.php';
 	const data = {
@@ -146,11 +145,12 @@ export const RegisterPartials = async () => {
 			// Compilar la plantilla antes de registrarla en Handlebars
 			const compiledTemplate = Handlebars.compile(t);
 			Handlebars.registerPartial(name, compiledTemplate);
-			msg.secondary(`Partial ${name} registrado.`, true);
+			toastmaster.secondary(`Partial ${name} registrado.`, true);
 		}
 
 	} catch (error) {
-		console.error(`Error registrando partials: ${error.message}`);
+		const msg = `Error registrando partials: ${error.message}`;
+		toastmaster.handleError(msg, error);
 	}
-	msg.info("partials registered and compiled.");
+	toastmaster.info("partials registered and compiled.");
 };
