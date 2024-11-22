@@ -11,7 +11,8 @@
   overflow: hidden;
   transition: transform 0.3s ease, box-shadow 0.3s ease;
 
-  &:hover {
+  // Aplica el efecto glow solo si tiene la clase `card-glow`
+  &.card-glow:hover {
     transform: translateY(-4px);
     box-shadow: 0 6px 15px $color-shadow, 0 0 10px $color-accent;
   }
@@ -56,7 +57,7 @@
 
       &:hover {
         color: $color-accent;
-        @include glow-animation($color-accent); // Aplica la animación de brillo
+        @include glow-animation($color-accent);
       }
     }
   }
