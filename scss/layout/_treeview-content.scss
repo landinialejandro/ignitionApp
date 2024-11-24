@@ -2,9 +2,10 @@
 @use 'sass:math';
 
 .treeview-content {
-  padding: $spacing-sm;
+  padding: $spacing-xs;
   overflow-y: auto;
   display: block;
+
 
   .node-list {
     .node-item {
@@ -34,16 +35,44 @@
           align-items: center;
           color: $color-text;
           text-decoration: none;
-          font-size: 0.9rem;
+          font-size: $font-size-small;
           cursor: pointer;
+          flex-grow: 1; // Permite que ocupe todo el espacio disponible
+          overflow: hidden; // Evita que el contenido desborde
+          position: relative; // Necesario para los efectos internos
 
           &:hover {
             color: $color-accent;
           }
 
           .node-text {
-            flex-grow: 1;
+            flex-grow: 1; // Asegura que el texto ocupe el máximo espacio posible
             color: $color-text;
+            overflow: hidden; // Evita desbordes
+            text-overflow: ellipsis; // Trunca texto visualmente
+            white-space: nowrap; // Evita saltos de línea
+            position: relative;
+
+            // Máscara para el efecto de desvanecimiento
+            -webkit-mask-image: linear-gradient(to right,
+                rgba(0, 0, 0, 1),
+                rgba(0, 0, 0, 0) 95%);
+            -webkit-mask-repeat: no-repeat;
+            -webkit-mask-size: 100% 100%;
+            mask-image: linear-gradient(to right,
+                rgba(0, 0, 0, 1),
+                rgba(0, 0, 0, 0) 95%);
+            mask-repeat: no-repeat;
+            mask-size: 100% 100%;
+
+            &:hover {
+              -webkit-mask-image: linear-gradient(to right,
+                  rgba(0, 0, 0, 1),
+                  rgba(0, 0, 0, 0) 98%);
+              mask-image: linear-gradient(to right,
+                  rgba(0, 0, 0, 1),
+                  rgba(0, 0, 0, 0) 98%);
+            }
           }
         }
 
@@ -51,7 +80,7 @@
           display: flex;
           align-items: center;
           background-color: transparent;
-          border-radius: 3px;
+          @include rounded(3px);
           padding: 0.2rem 0.4rem;
           opacity: 0.6;
           @include transition(background-color, opacity);
@@ -62,8 +91,7 @@
           }
 
           .button-collapse,
-          .button-add-child,
-          .button-delete-node {
+          .button-tool {
             background: none;
             border: none;
             width: 1.5rem;
@@ -78,14 +106,12 @@
             &:hover {
               background-color: lighten($color-secondary, 20%);
               color: $color-accent;
-              border-radius: 50%;
+              @include rounded(50%);
             }
           }
 
-          .button-collapse .node-collapse,
-          .button-add-child .node-add,
-          .button-delete-node .node-delete {
-            font-size: 0.8rem;
+          .button-tool {
+            font-size: $font-size-small;
           }
 
           .button-collapse .node-collapse {
@@ -96,21 +122,19 @@
           .button-collapse.expanded .node-collapse {
             transform: rotate(90deg); // Rotación cuando está expandido
           }
-
         }
 
         &.active {
           color: $color-accent;
           font-weight: $font-weight-bold;
-          background: linear-gradient(to right, rgba(187, 134, 252, 0.1), rgba(187, 134, 252, 0.2));
+          background: linear-gradient(to right,
+             rgba(187, 134, 252, 0.1),
+             rgba(187, 134, 252, 0.2));
           border-left: 4px solid $color-accent;
           box-shadow: inset 0 0 10px rgba(187, 134, 252, 0.1);
-
-          // Agregar animación específica al activarse
           @include transition(background, border-left, box-shadow);
         }
       }
-
 
       .node-submenu {
         overflow: hidden;
@@ -123,7 +147,7 @@
 
         .node-item .node-link {
           color: $color-text-muted;
-          font-size: 0.85rem;
+          font-size: $font-size-small;
 
           &:hover {
             color: $color-accent;

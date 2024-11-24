@@ -18,6 +18,7 @@ const Constants = Object.freeze({
     CONTENT: '.content-body', // Contenedor del contenido principal
     CONTENT_PRELOADER: '.content-body-preloader', // Preloader dentro del contenido
     CONTENT_TITLE: '.content-title', // Título principal del contenido
+    LINK_CONTAINER: '.link-container', // Contenedor de enlaces
 });
 
 export default Constants;

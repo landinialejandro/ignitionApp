@@ -24,4 +24,4 @@ export class preloader {
 
 // Alias para operaciones específicas
 export const getDirCollectionJson = (folder) => serverOperation('get_node', folder);
-export const actionsServer = (data) => serverOperation('action', data.id, data);
+export const actionsServer = (data) => serverOperation(data.operation, data.id, data);

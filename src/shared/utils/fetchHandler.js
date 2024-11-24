@@ -94,8 +94,8 @@ export const saveFileToServer = async (fileName, content, extraData = {}, callba
  * @returns {Promise<Object>} - Respuesta del servidor.
  */
 export const serverOperation = async (operation, folder, extraData = {}) => {
-    if (!operation || !folder) {
-        throw new Error("Los parámetros 'operation' y 'folder' son obligatorios.");
+    if (!operation ) {
+        throw new Error("El parámetro 'operation' es obligatorio.");
     }
 
     return get_data({

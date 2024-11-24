@@ -2,7 +2,7 @@
 @use 'sass:math';
 
 .sidebar-content {
-  padding: $spacing-sm;
+  padding: $spacing-xs;
   height: calc(100vh - $header-height - ($footer-height * 2));
   overflow-y: auto;
   display: block;
@@ -12,12 +12,11 @@
       margin-bottom: math.div($spacing-xs, 2);
       list-style: none;
 
-      // scss/components/_nav.scss
       .nav-link-container {
         display: flex;
         align-items: center;
-        justify-content: space-between; // Alinea .nav-link y .tools-box en extremos
-        padding: $spacing-xs;
+        justify-content: space-between;
+        padding: math.div($spacing-xs, 2);
         @include rounded(3px);
         background-color: transparent;
         @include transition(background-color, color, border-left);
@@ -37,6 +36,7 @@
           color: $color-text;
           text-decoration: none;
           font-size: $font-size-small;
+          cursor: pointer;
           flex-grow: 1; // Permite que ocupe todo el espacio disponible
           overflow: hidden; // Evita que el contenido desborde
           position: relative; // Necesario para los efectos internos
@@ -107,7 +107,6 @@
               background-color: lighten($color-secondary, 20%);
               color: $color-accent;
               @include rounded(50%);
-              ;
             }
           }
 
@@ -137,14 +136,13 @@
         }
       }
 
-      // Submenús multinivel con efecto de persiana
       .nav-submenu {
         overflow: hidden;
         max-height: 0;
         opacity: 0;
         padding-left: $spacing-sm;
         border-left: 2px solid $color-hover;
-        margin-top: $spacing-xs;
+        // margin-top: $spacing-xs;
         transition: max-height 0.4s ease, opacity 0.3s ease;
 
         .nav-item .nav-link {
@@ -157,7 +155,6 @@
         }
       }
 
-      // Mostrar submenú con animación cuando nav-item está expandido
       &.expanded>.nav-submenu {
         max-height: 2500px;
         opacity: 1;

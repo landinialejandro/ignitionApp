@@ -59,23 +59,7 @@ const initializeSidebar = async () => {
 const registerEventListeners = () => {
     toastmaster.secondary("Registrando eventos globales", true);
     registerNavigationListeners();
-
-    const actions = [
-        { name: "delete", operation: (data) => processNodeAction(data, 'delete_node') },
-        { name: "add-file", operation: (data) => processNodeAction(data, 'create_node', 'file') },
-        { name: "add-folder", operation: (data) => processNodeAction(data, 'create_node', 'folder') },
-    ];
-
-    actions.forEach(({ name, operation }) => {
-        registerButtonAction(`button-${name}`, (button, e) => {
-            const link = button.closest('.nav-link-container');
-            const data = $$(link).allData();
-            data.action = name;
-            operation(data);
-        });
-    });
-
-    // TODO: Consolidar el registro dinámico de acciones para reducir duplicación
+    toolsBoxListener();
 };
 
 /**
@@ -91,9 +75,56 @@ const registerNavigationListeners = () => {
             await loadContent(data);
         }
     });
-
-    // TODO: Agregar soporte para nuevos tipos de enlaces si es necesario en el futuro
 };
+
+/**
+ * Registra los listeners para los botones de la barra de herramientas que actúan sobre nodos.
+ * Los botones se identifican por sus IDs (`button-delete`, `button-add-file`, `button-add-folder`).
+ * Cada botón tiene una función asociada que recibe como parámetro el objeto `data` que contiene la
+ * información del nodo sobre el que se actúa.
+ * La función `operation` se encarga de delegar la acción adecuada en función del botón que se ha
+ * seleccionado y de los datos del nodo.
+ */
+const toolsBoxListener = () => {
+    actionCallbacks.forEach(({ name, operation }) => {
+        // registerButtonAction se encarga de registrar la función asociada al botón correspondiente es callback que proviene de layout.js
+        registerButtonAction(`button-${name}`, async (button, e) => {
+            const link = button.closest('.nav-link-container');
+            const data = $$(link).allData();
+            data.action = name;
+            operation(data);
+            await initializeSidebar();
+        });
+    });
+}
+
+const actionCallbacks = [
+    {
+        name: "delete", 
+        operation: (data) => {
+            data.operation = 'delete_node';
+            data.id = data.url;
+            if (confirm('¿Eliminar este nodo?'))
+                return actionsServer(data);
+            else
+                toastmaster.danger('Operación cancelada.');
+        }
+    },
+    {
+        name: "add-file", 
+        operation: (data) => {
+            data.type = 'file';
+            createNode(data);
+        }
+    },
+    {
+        name: "add-folder", 
+        operation: (data) => {
+            data.type = 'folder';
+            createNode(data)
+        }
+    },
+];
 
 /**
  * Maneja acciones como crear o eliminar nodos en el servidor y actualiza la interfaz.
@@ -101,31 +132,20 @@ const registerNavigationListeners = () => {
  * @param {string} operation - Tipo de operación a realizar (e.g., 'create_node', 'delete_node').
  * @param {string|null} type - Tipo de recurso (e.g., 'file', 'folder').
  */
-const processNodeAction = async (data, operation, type = null) => {
-    data.operation = operation;
+const createNode = async (data) => {
 
-    if (operation === 'create_node') {
-        data.type = type;
+    data.operation = 'create_node';
+    const name = getUserInput(`Ingrese el nombre del ${data.type}:`, validateGenericInput);
 
-        const name = getUserInput(`Ingrese el nombre del ${type}:`, validateGenericInput);
-
-        if (name) {
-            const sanitized = sanitizeInput(name, true, true); // Reemplazar espacios y convertir a minúsculas
-            toastmaster.secondary(`Dato ingresado: ${sanitized}`);
-            data.text = `${data.url}/${sanitized}`;
-        } else {
-            toastmaster.danger('Operación cancelada o entrada inválida.');
-        }
+    if (name) {
+        const sanitized = sanitizeInput(name, true); // Reemplazar espacios y convertir a minúsculas
+        sanitized !== name && toastmaster.warning('Espacios en blanco reemplazados por "_"');
+        toastmaster.secondary(`Dato ingresado: ${sanitized}`);
+        data.text = `${data.url}/${sanitized}`;
+    } else {
+        toastmaster.danger('Operación cancelada o entrada inválida.');
     }
-
-    if (operation === 'delete_node') {
-        data.id = data.url;
-    }
-
     await actionsServer(data);
-    await initializeSidebar();
-
-    // TODO: Dividir esta función en sub-funciones para operaciones específicas si crece en complejidad
 };
 
 /** --- Carga Dinámica de Contenido --- **/
@@ -141,7 +161,7 @@ const loadContent = async ({ type, name, url }) => {
     }
 
     const contentPreloader = new preloader(Constants.CONTENT_PRELOADER);
-    const content = $$(Constants.CONTENT);
+    const container = $$(Constants.CONTENT);
 
     contentPreloader.show();
     if (type !== "system" && type !== "folder") {
@@ -150,7 +170,7 @@ const loadContent = async ({ type, name, url }) => {
 
     try {
         const loadFunction = loadHandlers[type] || loadHandlers.default;
-        await loadFunction(url, content);
+        await loadFunction(url, container);
     } catch (error) {
         handleError(`Error al cargar el tipo de contenido '${type}'`, error);
     } finally {
@@ -162,9 +182,9 @@ const loadContent = async ({ type, name, url }) => {
  * Métodos para manejar tipos específicos de contenido en la aplicación.
  */
 const loadHandlers = {
-    async content(url, content) {
+    async content(url, container) {
         const contentHtml = await get_data({ url, isJson: false });
-        content.html(contentHtml);
+        container.html(contentHtml);
         toastmaster.info(`Cargando contenido: ${url}`);
     },
     page(url, content) {

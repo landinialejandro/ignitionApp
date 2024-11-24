@@ -236,7 +236,7 @@ const handleProjectTree = async (node) => {
  */
 const addEventsListener = () => {
     saveProjectListener();
-    buttonsToolListener();
+    toolsBoxListener();
     nodeProjectListener();
     contextMenuListener();
     saveNodeListener();
@@ -333,7 +333,7 @@ const contextMenuListener = () => {
     });
 };
 
-const buttonsToolListener = () => {
+const toolsBoxListener = () => {
     $$(Constants.CONTENT).on("click", '.button-delete-node', (e) => {
         const link = e.target.closest('.node-link-container');
         if (link) {

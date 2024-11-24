@@ -14,8 +14,7 @@
             {{#each a_attr}} {{@key}}="{{this}}" {{/each}}>
             {{> component_i context="nav"}}
             {{#if caption}}
-            {{!-- Truncado a 20 caracteres --}}
-            <span title="{{caption}}">{{truncate caption 20}}</span>
+            <span class="node-text" title="{{caption}}">{{caption}}</span>
             {{/if}}
             {{#if badge}}
             <span class="nav-badge badge text-bg-{{badge.color}} me-3">
@@ -24,15 +23,15 @@
             {{/if}}
         </a>
         {{#when type 'noteq' 'settingItem'}}
-        <div class="tools-box">
-            <button class="button-add-child" aria-label="Agregar nodo hijo">
+        <div id="{{id}}" class="tools-box">
+            <button class="button-tool button-add-child" aria-label="Agregar nodo hijo">
                 <i class="bi bi-plus-circle node-add"></i>
             </button>
-            <button id="{{id}}" class="button-delete-node" aria-label="Eliminar nodo">
+            <button  class="button-tool button-delete-node" aria-label="Eliminar nodo">
                 <i class="bi bi-trash node-delete"></i>
             </button>
             {{#if children}}
-            <button class="button-collapse expanded"
+            <button class="button-tool button-collapse expanded"
                 aria-label="Expandir/Contraer">
                 <i class="bi bi-chevron-right node-collapse"></i>
             </button>
