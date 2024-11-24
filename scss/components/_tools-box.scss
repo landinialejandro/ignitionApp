@@ -1,0 +1,52 @@
+@use 'sass:math';
+
+// Estilos específicos de .tools-box
+.tools-box {
+  display: flex;
+  align-items: center;
+  background-color: transparent;
+  @include rounded(3px);
+  padding: 0.2rem 0.4rem;
+  opacity: 0.6;
+  @include transition(background-color, opacity);
+
+  &:hover {
+    background-color: $color-background;
+    opacity: 1;
+  }
+
+  .button-collapse,
+  .button-tool {
+    background: none;
+    border: none;
+    width: 1.5rem;
+    height: 1.5rem;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: $color-text-muted;
+    @include transition(background-color, color, border-radius);
+
+    &:hover {
+      background-color: lighten($color-secondary, 20%);
+      color: $color-accent;
+      @include rounded(50%);
+    }
+  }
+
+  .button-tool {
+    font-size: $font-size-small;
+  }
+
+  .button-collapse .menu-collapse,
+  .button-collapse .node-collapse {
+    transform: rotate(0deg);
+    transition: transform 0.3s ease-in-out;
+  }
+
+  .button-collapse.expanded .menu-collapse,
+  .button-collapse.expanded .node-collapse {
+    transform: rotate(90deg);
+  }
+}

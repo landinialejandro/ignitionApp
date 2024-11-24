@@ -8,14 +8,24 @@ $color-secondary: #3a3a55;
 
 // Color claro para texto sobre fondo oscuro
 $color-accent: #bb86fc;
+$color-accent-rgba-light: rgba(187, 134, 252, 0.1); // Transparencia del 10%
+$color-accent-rgba-lighter: rgba(187, 134, 252, 0.2); // Transparencia del 20%
+$color-accent-rgba-hover-start: rgba(187, 134, 252, 0.15); // Hover - Transparencia 15%
 $color-text: #e0e0e0;
 $color-text-muted: #b0b0b0;
 $color-text-light: #f5f5f5;
+$color-accent-rgba-hover-end: rgba(187, 134, 252, 0.25); // Hover - Transparencia 25%
+
 
 // Colores adicionales para hover, focus y sombras
 $color-shadow: rgba(0, 0, 0, 0.3);
+$color-shadow-light: rgba(187, 134, 252, 0.1); // Sombra base
+$color-shadow-hover: rgba(187, 134, 252, 0.15); // Sombra para hover
 $color-hover: lighten($color-background, 10%);
 $color-focus: darken($color-background, 10%);
+$color-black: rgba(0, 0, 0, 1);
+$color-black-transparent: rgba(0, 0, 0, 0);
+
 
 // Colores para bordes de alerta brillantes y modernos
 $color-primary-border: #3a7bd5;

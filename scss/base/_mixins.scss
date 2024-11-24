@@ -1,23 +1,49 @@
 // _mixins.scss
 @mixin shadow($color: $color-shadow, $blur: 10px) {
-    box-shadow: 0 4px $blur $color;
-  }
-  
-  @mixin rounded($radius: 8px) {
-    border-radius: $radius;
-  }
-  
-  @mixin transition($property: all, $duration: 0.3s, $ease: ease-in-out) {
-    transition: $property $duration $ease;
-  }
-  
-  @mixin respond($breakpoint) {
-    @if $breakpoint == 'small' {
-      @media (max-width: 600px) { @content; }
-    } @else if $breakpoint == 'medium' {
-      @media (max-width: 900px) { @content; }
-    } @else if $breakpoint == 'large' {
-      @media (max-width: 1200px) { @content; }
+  box-shadow: 0 4px $blur $color;
+}
+
+@mixin rounded($radius: 8px) {
+  border-radius: $radius;
+}
+
+@mixin transition($property: all, $duration: 0.3s, $ease: ease-in-out) {
+  transition: $property $duration $ease;
+}
+
+@mixin respond($breakpoint) {
+  @if $breakpoint =='small' {
+    @media (max-width: 600px) {
+      @content;
     }
   }
-  
+
+  @else if $breakpoint =='medium' {
+    @media (max-width: 900px) {
+      @content;
+    }
+  }
+
+  @else if $breakpoint =='large' {
+    @media (max-width: 1200px) {
+      @content;
+    }
+  }
+}
+
+@mixin mask-image-gradient($fade-end-percentage: 95%) {
+  -webkit-mask-image: linear-gradient(to right, $color-black, $color-black-transparent #{$fade-end-percentage});
+  mask-image: linear-gradient(to right, $color-black, $color-black-transparent #{$fade-end-percentage});
+}
+
+@mixin text-fade($fade-end-percentage: 95%) {
+
+  @include mask-image-gradient($fade-end-percentage);
+  // WebKit (Chrome, Safari)
+  -webkit-mask-repeat: no-repeat;
+  -webkit-mask-size: 100% 100%;
+
+  // Estándar (Firefox, navegadores modernos)
+  mask-repeat: no-repeat;
+  mask-size: 100% 100%;
+}
