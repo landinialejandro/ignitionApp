@@ -1,6 +1,6 @@
 // * file: src/shared/utils/getUserInput.js
 
-import  toastmaster  from '../../core/ToastMaster/toastMaster.js';
+import  toastmaster  from '../../core/ToastMaster/ToastMaster.js';
 
 /**
  * Procesa un texto para sanitizarlo según las reglas especificadas.

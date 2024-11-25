@@ -2,7 +2,7 @@
  * @typedef {import('../../../js/types/NodeOptions.js').NodeOptions} NodeOptions
  */
 
-import { uniqueId } from './utils/uniqueId.js';
+import { uniqueId } from '../../commons/utils/uniqueId.js';
 import { generateUniqueCaption } from './utils/generateUniqueCaption.js';
 import { validateNode } from './utils/validationHelpers.js';
 import { findInChildren, findParentInChildren } from './utils/treeSearchHelpers.js';

@@ -51,7 +51,7 @@
  * toastmaster.handleError('Error en función', new Error('Error simulado'));
  * toastmaster.echo('Mensaje simple en consola');
  */
-class Toastmaster {
+class ToastMaster {
     /**
      * Constructor de Toastmaster
      * Implementa un patrón Singleton que asegura una única instancia.
@@ -64,8 +64,8 @@ class Toastmaster {
      * @param {Array} [options.logStore=[]] - Almacén inicial para registros de logs.
      */
     constructor(options = {}) {
-        if (Toastmaster.instance) {
-            return Toastmaster.instance; // Retorna la instancia existente (Singleton)
+        if (ToastMaster.instance) {
+            return ToastMaster.instance; // Retorna la instancia existente (Singleton)
         }
 
         this.isSwalAvailable = typeof Swal !== 'undefined'; // Verifica si SweetAlert2 está disponible
@@ -85,7 +85,7 @@ class Toastmaster {
         this.messageTypes = this.#initializeMessageTypes(options.messageTypes);
         this.logStore = options.logStore || []; // Donde almacenar logs si se necesita persistencia
 
-        Toastmaster.instance = this; // Guarda la instancia única
+        ToastMaster.instance = this; // Guarda la instancia única
     }
 
     // Métodos públicos
@@ -217,5 +217,5 @@ class Toastmaster {
 }
 
 // Exportar una instancia única
-const toastmaster = new Toastmaster();
+const toastmaster = new ToastMaster();
 export default toastmaster;
