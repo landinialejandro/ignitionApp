@@ -3,7 +3,8 @@ import { actionsServer, getDirCollectionJson, preloader } from './libraries/help
 import { $$ } from './libraries/selector.js';
 import { initializeProject } from './project.js';
 import { registerButtonAction } from './layout.js';
-import { renderTemplateToContainer, checkContainerAvailability, get_data, Constants, toastmaster, getUserInput, sanitizeInput, validateGenericInput } from '../src/index.js';
+import { renderTemplateToContainer, checkContainerAvailability, get_data, Constants,  getUserInput, sanitizeInput, validateGenericInput } from '../src/index.js';
+import { toastmaster } from '../src/core/index.js';
 
 // Configuración inicial
 toastmaster.success("Iniciando app.js", true);

@@ -2,143 +2,128 @@
 
 import { initializeApp } from "./app.js";
 
-// Este archivo contiene la lógica para manejar el sidebar (barra lateral), el treeview (vista en árbol),
-// y los botones dentro de .tools-box que realizan distintas acciones. 
-// Los botones en tools-box se manejan mediante callbacks para mayor flexibilidad.
-// El botón .button-collapse tiene lógica específica para expandir/contraer elementos y no usa callbacks.
-
-// Objeto para registrar callbacks asociados a las acciones de los botones
+// Registro de callbacks para acciones de botones en tools-box
 const buttonActionCallbacks = {};
 
 /**
- * Función para registrar acciones específicas de botones en tools-box.
- * Permite que otros módulos definan el comportamiento de los botones.
- * @param {string} actionClass - Clase específica del botón (sin el prefijo `button-`).
- * @param {function} callback - Función que se ejecutará cuando se haga clic en el botón.
+ * Registra acciones específicas de botones en tools-box.
+ * @param {string} actionClass - Clase del botón (sin el prefijo `button-`).
+ * @param {function} callback - Función a ejecutar al hacer clic en el botón.
  */
 export const registerButtonAction = (actionClass, callback) => {
   buttonActionCallbacks[actionClass] = callback;
 };
 
 /**
- * Manejo genérico de botones dentro de .tools-box que tengan la clase .button-tool.
- * Identifica la acción específica a través de la clase del botón y ejecuta el callback registrado.
- * @param {MouseEvent} event - Evento de clic capturado.
+ * Manejo genérico de botones con clase .button-tool.
+ * Ejecuta los callbacks registrados según la clase específica del botón.
  */
 const handleButtonToolClick = (event) => {
   const button = event.target.closest(".button-tool");
   if (button) {
-    // Evitar comportamiento predeterminado y propagación del evento
     event.preventDefault();
     event.stopPropagation();
 
-    // Identificar la acción específica según la clase (e.g., `button-delete-file`)
-    const actionClass = Array.from(button.classList)
-      .find((cls) => cls.startsWith("button-") && cls !== "button-tool");
+    const actionClass = Array.from(button.classList).find(
+      (cls) => cls.startsWith("button-") && cls !== "button-tool"
+    );
 
     if (actionClass && buttonActionCallbacks[actionClass]) {
-      // Ejecutar el callback registrado para esta acción
-      buttonActionCallbacks[actionClass](button, event);
+      requestAnimationFrame(() => {
+        buttonActionCallbacks[actionClass](button, event);
+      });
     }
   }
 };
 
-
 /**
- * Función para alternar clases en un elemento.
- * @param {HTMLElement} element - Elemento DOM al que se aplicará la clase.
- * @param {string} className - Clase que se alternará.
- * @param {boolean} [force] - Si se especifica, fuerza la acción (agregar o quitar).
+ * Alterna clases en un elemento con la opción de forzar acción.
+ * @param {HTMLElement} element - Elemento DOM.
+ * @param {string} className - Clase a alternar.
+ * @param {boolean} [force] - Fuerza agregar o quitar la clase.
  */
 const toggleClass = (element, className, force) => {
-  if (force !== undefined) {
-    element.classList.toggle(className, force);
-  } else {
-    element.classList.toggle(className);
-  }
+  element.classList.toggle(className, force);
 };
 
-// Inicializa la lógica del layout una vez que el DOM está listo
+// Inicialización de la lógica del layout
 const initializeLayout = () => {
-  // Selección de elementos clave
   const sidebar = document.querySelector(".sidebar");
   const toggleButton = document.querySelector(".sidebar-toggle");
+  let resizeTimeout;
 
   /**
-   * Ajusta el estado del sidebar dependiendo del tamaño de la ventana.
-   * Si el ancho es menor a 600px, el sidebar se colapsa automáticamente.
+   * Ajusta el estado del sidebar según el ancho de la ventana.
+   * Usa debounce para limitar recalculos.
    */
   const handleResize = () => {
     if (sidebar) {
-      if (window.innerWidth < 600) {
-        sidebar.classList.add("collapsed");
-        sidebar.classList.remove("expanded");
-      } else {
-        sidebar.classList.remove("collapsed");
-        sidebar.classList.add("expanded");
-      }
+      const isSmallScreen = window.innerWidth < 600;
+      sidebar.classList.toggle("collapsed", isSmallScreen);
+      sidebar.classList.toggle("expanded", !isSmallScreen);
     }
   };
 
-  // Inicializa el estado del sidebar basado en el tamaño de la ventana
-  handleResize();
+  const debouncedHandleResize = () => {
+    clearTimeout(resizeTimeout);
+    resizeTimeout = setTimeout(handleResize, 100);
+  };
 
-  // Eventos globales
+  handleResize(); // Estado inicial del sidebar
+  window.addEventListener("resize", debouncedHandleResize);
+
   if (toggleButton) {
     toggleButton.addEventListener("click", () => {
-      toggleClass(sidebar, "collapsed");
-      toggleClass(sidebar, "expanded");
+      requestAnimationFrame(() => {
+        toggleClass(sidebar, "collapsed");
+        toggleClass(sidebar, "expanded");
+      });
     });
   }
-  window.addEventListener("resize", handleResize);
 
-  // Delegación para manejar clics en botones dentro de .tools-box (excepto button-collapse)
-  document.body.addEventListener("click", (event) => {
-    const collapseButton = event.target.closest(".button-collapse");
-    if (!collapseButton) {
-      handleButtonToolClick(event);
-    }
-  });
-
-  // Manejo de botones .button-collapse para expandir/contraer elementos
+  // Delegación para manejar botones en tools-box y botones de colapso
   document.body.addEventListener("click", (event) => {
     const collapseButton = event.target.closest(".button-collapse");
     const navContainer = event.target.closest(".nav-link-container");
     const nodeContainer = event.target.closest(".node-link-container");
 
-    // Manejar el botón collapse en nav-list o node-list
     if (collapseButton) {
       const parentItem = collapseButton.closest(".nav-item, .node-item");
       if (parentItem) {
         const isExpanded = parentItem.classList.contains("expanded");
-        toggleClass(parentItem, "expanded", !isExpanded);
-        toggleClass(collapseButton, "expanded", !isExpanded);
+        requestAnimationFrame(() => {
+          toggleClass(parentItem, "expanded", !isExpanded);
+          toggleClass(collapseButton, "expanded", !isExpanded);
+        });
       }
     }
 
-    // Manejar enlaces activos en nav-list
-    if (navContainer && !event.target.closest(".button-collapse")) {
-      document.querySelectorAll(".nav-link-container").forEach((link) => {
-        link.classList.remove("active");
+    if (navContainer) {
+      requestAnimationFrame(() => {
+        document.querySelectorAll(".nav-link-container").forEach((link) =>
+          link.classList.remove("active")
+        );
+        navContainer.classList.add("active");
       });
-      navContainer.classList.add("active");
     }
 
-    // Manejar enlaces activos en node-list
-    if (nodeContainer && !event.target.closest(".button-collapse")) {
-      document.querySelectorAll(".node-link-container").forEach((link) => {
-        link.classList.remove("active");
+    if (nodeContainer) {
+      requestAnimationFrame(() => {
+        document.querySelectorAll(".node-link-container").forEach((link) =>
+          link.classList.remove("active")
+        );
+        nodeContainer.classList.add("active");
       });
-      nodeContainer.classList.add("active");
     }
   });
+
+  document.body.addEventListener("click", handleButtonToolClick);
 };
 
-// Ejecutar la inicialización cuando el DOM esté completamente cargado
+// Inicializa el layout y la aplicación al cargar el DOM
 document.addEventListener("DOMContentLoaded", () => {
   initializeLayout();
   initializeApp();
 });
-// document.addEventListener("DOMContentLoaded", initializeLayout);
 
 export default { registerButtonAction };

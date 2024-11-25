@@ -19,8 +19,12 @@
     <meta name="keywords" content="vanilla JS, dashboard, app development">
 
     <!-- Enlace al archivo principal de estilos CSS -->
+    <link rel="preload" href="css/main.css" as="style" onload="this.rel='stylesheet'">
+    <noscript>
+        <link rel="stylesheet" href="css/main.css">
+    </noscript>
     <link rel="stylesheet" href="dist/bs-icons/bootstrap-icons.min.css">
-    <link rel="stylesheet" href="css/main.css">
+
 </head>
 
 <body>

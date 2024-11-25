@@ -21,7 +21,8 @@ import { getDirCollectionJson } from './libraries/helpers.js';
 import { $$ } from './libraries/selector.js';
 
 import { ContextMenu } from './ContextMenu.js';
-import { NodeForest, renderTemplateToContainer, Constants, toastmaster, getUserInput, validateGenericInput } from '../src/index.js';
+import { NodeForest, renderTemplateToContainer,  toastmaster, getUserInput, validateGenericInput } from '../src/index.js';
+import { Constants } from '../src/index.js';
 import { NodeTypeManager } from './NodeTypeManager.js';
 
 import { registerButtonAction } from './layout.js';
@@ -184,6 +185,7 @@ const addPropertiesToNode = async (typeToAdd, newNodeOptions) => {
 
         for (const [key, fileInfo] of Object.entries(filesContent)) {
             const content = await get_data({ url: fileInfo.url });
+            content.id = project.generateId();
             newNodeOptions.properties.push({
                 ...content
             });
