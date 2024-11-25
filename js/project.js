@@ -1,11 +1,11 @@
 // * file:js/project.js
 
 // ok TODO: falta comandos para agregar file o folder en sidebar
-// TODO: programar el boton borrar del nodo, verificar si puede y debe estar
-// TODO: Programar los botones del tool de los cards
-// TODO: Programar cambiar el caption de los nodos
+// ok TODO: programar el boton borrar del nodo, verificar si puede y debe estar
+// ok TODO: Programar los botones del tool de los cards
+// ok TODO: Programar cambiar el caption de los nodos
+// ok TODO: Ordenar el seting como primer nodo.
 // TODO: cambiar el codigo para guardar ls radios
-// TODO: Ordenar el seting como primer nodo.
 // TODO: cuando hago click en el breadcrum hay que ir al nodo seleccionado
 // TODO: guardar tambien los estados del nodo, abierto o cerrado
 
@@ -95,13 +95,13 @@ const actionCallbacks = {
                 ...baseOptions,
                 type: typeToAdd,
                 caption: `Nuevo ${typeToAdd}`,
+                properties: [],
                 children: []
             };
 
-            // Inicializar nodos de tipo "settings" si corresponde
-            if (typeToAdd === "settings") {
-                await initializeSettingsNode(parentType, newNodeOptions);
-            }
+            // agrega las propiedades de un nuevo nodo
+            await addPropertiesToNode(typeToAdd, newNodeOptions);
+
 
             // Agregar el nodo al proyecto
             const success = project.addChild(nodeId, newNodeOptions);
@@ -164,7 +164,7 @@ const actionCallbacks = {
             } else {
                 toastmaster.danger("No se pudo eliminar el nodo.");
             }
-        }else{
+        } else {
             toastmaster.danger('Operación cancelada.');
         }
     }
@@ -174,24 +174,18 @@ const actionCallbacks = {
  * Inicializa los nodos de configuración ("settings") con archivos de un directorio.
  * tomo cada archivo el directorio y lo agrego al setting como un children.
  * 
- * @param {string} parentType - Tipo del nodo padre.
+ * @param {string} typeToAdd - Tipo del nodo padre.
  * @param {Object} newNodeOptions - Opciones base del nuevo nodo.
  */
-const initializeSettingsNode = async (parentType, newNodeOptions) => {
+const addPropertiesToNode = async (typeToAdd, newNodeOptions) => {
     try {
-        const settingsPath = `settings/${parentType}`;
+        const settingsPath = `settings/${typeToAdd}`;
         const filesContent = await getDirCollectionJson(settingsPath);
 
         for (const [key, fileInfo] of Object.entries(filesContent)) {
             const content = await get_data({ url: fileInfo.url });
-            newNodeOptions.children.push({
-                caption: content.caption || "Elemento de configuración",
-                url: fileInfo.url,
-                type: "settingItem",
-                a_class: fileInfo.a_class,
-                icon: content.icon,
-                children: fileInfo.children || false,
-                properties: content
+            newNodeOptions.properties.push({
+                ...content
             });
         }
 

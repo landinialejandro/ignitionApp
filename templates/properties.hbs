@@ -1,4 +1,5 @@
 {{#each this}}
+{{#each properties}}
 <div class="card margin-bottom">
     <div class="card-header">
         <h3 class="card-title">
@@ -13,16 +14,15 @@
     </div> <!-- /.card-header -->
     <div class="card-body">
 
-        {{#with properties}}
         {{#if (eq type "heading")}}
         {{> component_heading}}
-         <div class="margin-bottom"></div>
+        <div class="margin-bottom"></div>
         {{/if}}
         {{#if properties}}
 
         {{#if usershelper}}
         {{> usershelper}}
-         <div class="margin-bottom"></div>
+        <div class="margin-bottom"></div>
         {{/if}}
         <div class="card card-glow margin-bottom-lg">
             <form id="properties-form" class="card-body" data-id="{{../id}}">
@@ -51,27 +51,18 @@
                 {{/each}}
 
                 {{/if}}
-                <button type="submit" class="button secondary save-node-properties">Guardar</button>
+                <button type="submit"
+                    class="button secondary save-node-properties">Guardar</button>
             </form>
-        </div>
-
-        {{/if}}
-        {{/with}}
-        {{!-- node info --}}
-        <div class="margin-bottom"></div>
-        <div class="card">
-            <div class="card-header">
-                <span class="text-info">
-                    Node info
-                </span>
-            </div>
             <form id="node-info" class="card-body">
+                <div class="margin-bottom"></div>
+                <span class="text-info">
+                    Propertie info
+                </span>
                 <div class="margin-bottom-lg">
                     <div class>
-                        <span class="badge badge-sm badge-info">Id:
-                            {{id}}</span>
                         <span class="badge badge-sm badge-info">Order:
-                            {{properties.order}}</span>
+                            {{order}}</span>
                         <span class="badge badge-sm badge-success">Caption:
                             {{caption}}</span>
                         <span class="badge badge-sm badge-primary">Type:
@@ -81,11 +72,14 @@
                 {{#with icon}}
                 {{> component_input caption=(concat "icon " type) value=value}}
                 {{/with}}
-                <button type="submit" class="button secondary save-node-info">Guardar</button>
+                <button type="submit"
+                    class="button secondary save-node-info">Guardar</button>
             </form>
         </div>
 
-    </div> <!-- /.card-body -->
-</div> <!-- /.card -->
+        {{/if}}
+    </div>
+</div>
 
+{{/each}}
 {{/each}}
