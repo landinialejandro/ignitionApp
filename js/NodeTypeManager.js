@@ -1,3 +1,5 @@
+// * file: src/NodeTypeManager.js
+
 import { get_data } from '../src/index.js';  // Importamos el método para obtener datos de JSON
 
 /**

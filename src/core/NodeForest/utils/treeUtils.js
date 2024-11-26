@@ -4,9 +4,9 @@ export function calculateMaxDepth(node) {
     return 1 + Math.max(...node.children.map(calculateMaxDepth));
 }
 
-export function canAddChildAtDepth(node, nodeTypeManager) {
+export function canAddChildAtDepth(node, typology) {
     const currentDepth = calculateMaxDepth(node);
-    const maxDepthAllowed = nodeTypeManager.getMaxDepth(node.type);
+    const maxDepthAllowed = typology.getMaxDepth(node.type);
     return currentDepth < maxDepthAllowed;
 }
 

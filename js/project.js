@@ -1,15 +1,8 @@
 // * file:js/project.js
 
-// ok TODO: falta comandos para agregar file o folder en sidebar
-// ok TODO: programar el boton borrar del nodo, verificar si puede y debe estar
-// ok TODO: Programar los botones del tool de los cards
-// ok TODO: Programar cambiar el caption de los nodos
-// ok TODO: Ordenar el seting como primer nodo.
 // TODO: cambiar el codigo para guardar ls radios
 // TODO: cuando hago click en el breadcrum hay que ir al nodo seleccionado
 // TODO: guardar tambien los estados del nodo, abierto o cerrado
-
-
 
 /**
  * Este archivo gestiona la lógica principal de un sistema de gestión de nodos y árbol de proyecto.
@@ -23,12 +16,11 @@ import { $$ } from './libraries/selector.js';
 import { ContextMenu } from './ContextMenu.js';
 import { NodeForest, renderTemplateToContainer, toastmaster, getUserInput, validateGenericInput, uniqueId } from '../src/index.js';
 import { Constants } from '../src/index.js';
-import { NodeTypeManager } from './NodeTypeManager.js';
+import { Typology } from '../src/index.js';
 
 import { registerButtonAction } from './layout.js';
 
 // Variables globales necesarias para la gestión del proyecto
-const nodeTypeManager = new NodeTypeManager();
 const project = new NodeForest();
 
 // Instancia única del menú contextual
@@ -38,23 +30,23 @@ let contextMenu = null;
  * Inicializa el proyecto cargando los tipos de nodos y la página de proyecto.
  * 
  * @param {string} url - URL del archivo JSON con los datos del proyecto.
- */
+*/
 export const initializeProject = async (url) => {
     try {
-        await nodeTypeManager.loadFromFile('./settings/types.json');
-        const content = await get_data({ url });
 
+        const typology = new Typology(await get_data({ url: "./settings/types.json" }));
+        const content = await get_data({ url });
         const projectPage = await get_data({ url: "pages/project_page.html", isJson: false });
 
         // Renderizar la estructura base del proyecto
         $$(Constants.CONTENT).html(projectPage);
 
-        project.nodeTypeManager = nodeTypeManager
+        project.typology = typology
         project.container = ".project-container";
         project.file = url;
 
         if (content === null) {
-            const defOptions = project.nodeTypeManager.getType('root');
+            const defOptions = project.typology.getType('root');
             console.warn('El archivo está vacío.');
             const newRoot = {
                 id: defOptions.id || 'root',
@@ -95,15 +87,11 @@ const actionCallbacks = {
                 throw new Error("Nodo padre no encontrado.");
             }
 
-            // Validaciones específicas del tipo de nodo
-            if (typeToAdd === "settings" && project.getChildrenTypes(nodeId).includes(typeToAdd)) {
-                throw new Error("Ya existe un nodo de tipo 'settings' en este nivel.");
-            }
             if (typeToAdd === "root" && project.hasNodeOfType("root")) {
                 throw new Error("Ya existe un nodo de tipo 'root'.");
             }
 
-            const baseOptions = nodeTypeManager.getType(typeToAdd);
+            const baseOptions = project.typology.getType(typeToAdd);
             if (!baseOptions) {
                 throw new Error(`Tipo de nodo ${typeToAdd} no encontrado.`);
             }
@@ -112,10 +100,15 @@ const actionCallbacks = {
             const newNodeOptions = {
                 ...baseOptions,
                 type: typeToAdd,
-                caption: `Nuevo ${typeToAdd}`,
+                caption: project.generateUniqueCaption(`Nuevo ${typeToAdd}`, project.nodes),
                 properties: [],
                 children: []
             };
+
+            // Validaciones específicas del tipo de nodo
+            if (typeToAdd === "table" && project.getListCaptionsByType(project.nodes, "table").includes(newNodeOptions.caption)) {
+                throw new Error("Ya existe una tabla con ese nombre.");
+            }
 
             // agrega las propiedades de un nuevo nodo
             await addPropertiesToNode(typeToAdd, newNodeOptions);
@@ -150,7 +143,7 @@ const actionCallbacks = {
             const nodeOptions = { ...currentNode, caption: sanitizedCaption }; // Clonar el nodo original con el nuevo 
 
             // Validaciones centralizadas
-            const validation = project.validate(parentNode, nodeOptions, nodeTypeManager);
+            const validation = project.validate(parentNode, nodeOptions, typology);
             if (!validation.isValid) {
                 toastmaster.danger(validation.message);
                 return false;
@@ -331,7 +324,7 @@ const nodeProjectListener = () => {
  */
 const contextMenuListener = () => {
     if (!contextMenu) {
-        contextMenu = new ContextMenu('context-menu', 'menu-options', nodeTypeManager, actionCallbacks);
+        contextMenu = new ContextMenu('context-menu', 'menu-options', project.typology, actionCallbacks);
     }
 
     $$(Constants.CONTENT).on("click", '.button-add-child', (e) => {

@@ -27,7 +27,10 @@
     ],
     "id": "root-node",
     "caption": "Nuevo Proyecto",
-    "description": "nodo principal y nombre del proyecto, no se puede borrar, si se puede renombrar"
+    "description": "nodo principal y nombre del proyecto, no se puede borrar, si se puede renombrar",
+    "unique": true,
+    "uniqueWithinParent": true,
+    "required": true
   },
   "group": {
     "maxChildren": 30,
@@ -55,7 +58,10 @@
       "table",
       "settings"
     ],
-    "description": "Agrupa las tablas para dar un formato a la pagina principal"
+    "description": "Agrupa las tablas para dar un formato a la pagina principal",
+    "unique": true,
+    "uniqueWithinParent": false,
+    "required": false
   },
   "table": {
     "maxChildren": 20,
@@ -83,7 +89,10 @@
       "field",
       "settings"
     ],
-    "description": "tabla asociada a un grupo"
+    "description": "tabla asociada a un grupo",
+    "unique": true,
+    "uniqueWithinParent": false,
+    "required": false
   },
   "field": {
     "maxChildren": 1,
@@ -105,34 +114,10 @@
     "validChildren": [
       "settings"
     ],
-    "description": "Campos de una tabla"
-  },
-  "settings": {
-    "maxChildren": 0,
-    "maxDepth": 1,
-    "icon": {
-      "type": "class",
-      "value": "bi bi-gear"
-    },
-    "actions": {
-      "delete": {
-        "label": "Eliminar Settings",
-        "callback": "deleteNode"
-      }
-    },
-    "validChildren": [],
-    "description": "Settings de un nodo"
-  },
-  "settingItem": {
-    "maxChildren": 0,
-    "maxDepth": 1,
-    "icon": {
-      "type": "class",
-      "value": "bi bi-gear"
-    },
-    "actions": {},
-    "validChildren": [],
-    "description": "Propiedades"
+    "description": "Campos de una tabla",
+    "unique": false,
+    "uniqueWithinParent": true,
+    "required": false
   },
   "folder": {
     "maxChildren": 30,
@@ -154,7 +139,10 @@
     "validChildren": [
       "file"
     ],
-    "description": "tipo carpetas"
+    "description": "tipo carpetas",
+    "unique": false,
+    "uniqueWithinParent": true,
+    "required": false
   },
   "file" : {
     "maxChildren": 0,
@@ -175,7 +163,10 @@
     },
     "validChildren": [
     ],
-    "description": "Archivo nuevo, inlcuir extensión"
+    "description": "Archivo nuevo, inlcuir extensión",
+    "unique": false,
+    "uniqueWithinParent": true,
+    "required": false
   }   
 
 }

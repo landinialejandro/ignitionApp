@@ -1,25 +1,24 @@
-/**
- * @typedef {import('../../../js/types/NodeOptions.js').NodeOptions} NodeOptions
- */
+
 
 import { uniqueId } from '../../commons/utils/uniqueId.js';
 import { generateUniqueCaption } from './utils/generateUniqueCaption.js';
 import { validateNode } from './utils/validationHelpers.js';
-import { findInChildren, findParentInChildren } from './utils/treeSearchHelpers.js';
+import { findInChildren, findParentInChildren, traverseAndCollectCaptionsByType } from './utils/treeSearchHelpers.js';
 import { nodeToJSON } from './utils/treeUtils.js';
 import { renderTemplateToContainer } from '../../index.js';
+
 
 export class NodeForest {
     /**
      * @param {string} container - ID del contenedor HTML donde se renderizará el árbol.
-     * @param {NodeTypeManager} nodeTypeManager - Instancia de NodeTypeManager para controlar las validaciones de tipos.
+     * @param {Object} typology - Un objeto que gestiona los tipos de nodos, sus acciones permitidas, iconos y las relaciones entre ellos.
      */
-    constructor(container, nodeTypeManager) {
+    constructor(container, typology) {
         this.container = container;
         this.nodes = [];
         this.template = "templates/treeview.hbs"; // Plantilla predeterminada
         this.file = "";
-        this.nodeTypeManager = nodeTypeManager; // Instancia de NodeTypeManager
+        this.typology = typology; // Instancia de typology
     }
 
     /**
@@ -29,9 +28,9 @@ export class NodeForest {
     setNodes(nodeOptionsArray) {
         if (!nodeOptionsArray || nodeOptionsArray.length === 0) {
             console.warn("No se proporcionó ningún nodo válido. Creando un nodo raíz predeterminado.");
-            const defOptions = this.nodeTypeManager.getType('root');
+            const defOptions = this.typology.getType('root');
             if (!defOptions) {
-                throw new Error("NodeTypeManager no pudo proporcionar un tipo de nodo raíz.");
+                throw new Error("typology no pudo proporcionar un tipo de nodo raíz.");
             }
             const rootOptions = {
                 id: defOptions.id || 'root',
@@ -117,7 +116,7 @@ export class NodeForest {
     }
 
     /**
-    * Agrega un nuevo nodo como hijo de un nodo existente identificado por su ID, con validaciones de NodeTypeManager y reglas específicas.
+    * Agrega un nuevo nodo como hijo de un nodo existente identificado por su ID, con validaciones de typology y reglas específicas.
     * @param {string} parentId - El ID del nodo padre al que se agregará el nuevo nodo.
     * @param {NodeOptions} nodeOptions - Opciones del nodo nuevo.
     * @returns {boolean} - Retorna true si se agregó el nodo, false si no.
@@ -129,19 +128,20 @@ export class NodeForest {
             return false;
         }
 
-        // Generar un caption único
-        nodeOptions.caption = generateUniqueCaption(nodeOptions.caption, parentNode.children);
-    
         // Validaciones centralizadas
-        const validation = validateNode(parentNode, nodeOptions, this.nodeTypeManager);
+        const validation = validateNode(parentNode, nodeOptions, this.typology);
         if (!validation.isValid) {
             console.error(validation.message);
             return false;
         }
-    
+
         const newNode = NodeForest.#createNode(nodeOptions);
         parentNode.children.push(newNode);
         return true;
+    }
+
+    generateUniqueCaption(caption, nodes, sanitize = true) {
+        return generateUniqueCaption(caption, nodes,sanitize);
     }
 
     /**
@@ -151,7 +151,7 @@ export class NodeForest {
      * @returns {boolean} - Retorna true si el nodo fue encontrado y actualizado, false si no.
      */
     updateNode(nodeId, nodeOptions) {
-        
+
         const node = this.findChildById(nodeId);
         if (node) {
             Object.assign(node, nodeOptions);
@@ -172,7 +172,6 @@ export class NodeForest {
                 nodes: this.nodes.map(nodeToJSON)
             };
         }
-
     }
 
     /**
@@ -211,8 +210,12 @@ export class NodeForest {
         return breadcrumb;
     }
 
-    validate(parentNode, nodeOptions, nodeTypeManager) {
-        return validateNode(parentNode, nodeOptions, nodeTypeManager);
+    validate(parentNode, nodeOptions, typology) {
+        return validateNode(parentNode, nodeOptions, typology);
+    }
+
+    getListCaptionsByType(nodes, type) {
+        return traverseAndCollectCaptionsByType(nodes, type);
     }
 
 }

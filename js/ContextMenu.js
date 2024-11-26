@@ -4,21 +4,21 @@
  * @class ContextMenu
  * 
  * La clase `ContextMenu` genera un menú contextual dinámico basado en las configuraciones proporcionadas 
- * por un `nodeTypeManager`. Las acciones disponibles (como agregar, renombrar, eliminar) y los íconos que 
+ * por un `typology`. Las acciones disponibles (como agregar, renombrar, eliminar) y los íconos que 
  * las acompañan están definidos por el tipo de nodo seleccionado. Los ítems del menú incluyen sus correspondientes
  * íconos y ejecutan los callbacks asignados a cada acción, que pueden ser proporcionados externamente.
  * 
  * @param {string} menuId - El ID del elemento HTML que actúa como el menú contextual.
  * @param {string} optionsContainerId - El ID del elemento HTML que contiene las opciones del menú contextual.
- * @param {Object} nodeTypeManager - Un objeto que gestiona los tipos de nodos, sus acciones permitidas, iconos y las relaciones entre ellos.
+ * @param {Object} typology - Un objeto que gestiona los tipos de nodos, sus acciones permitidas, iconos y las relaciones entre ellos.
  * @param {Object} actionCallbacks - Un objeto que contiene los callbacks personalizados para cada acción.
  */
 
 export class ContextMenu {
-    constructor(menuId, optionsContainerId, nodeTypeManager, actionCallbacks = {}) {
+    constructor(menuId, optionsContainerId, typology, actionCallbacks = {}) {
         this.menu = document.getElementById(menuId); // Referencia al menú contextual
         this.optionsContainer = document.getElementById(optionsContainerId); // Contenedor de opciones del menú
-        this.nodeTypeManager = nodeTypeManager; // Objeto que define las reglas de los nodos
+        this.typology = typology; // Objeto que define las reglas de los nodos
         this.actionCallbacks = actionCallbacks; // Callbacks externos para las acciones
         this.#initializeEventListeners(); // Inicializar los eventos de cierre del menú
     }
@@ -74,7 +74,7 @@ export class ContextMenu {
 
         this.optionsContainer.innerHTML = ''; // Limpiar las opciones previas
 
-        const nodeConfig = this.nodeTypeManager.getType(nodeType); // Obtener configuración del nodo
+        const nodeConfig = this.typology.getType(nodeType); // Obtener configuración del nodo
         if (!nodeConfig || !nodeConfig.actions || Object.keys(nodeConfig.actions).length === 0) {
             console.warn(`No se encontraron configuraciones válidas para el nodo de tipo '${nodeType}'.`);
             this.hide(); // Ocultar si no hay acciones válidas

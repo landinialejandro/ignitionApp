@@ -12,7 +12,7 @@ const mainPreloader = new preloader(Constants.PRELOADER_ID);
 
 // Inicialización principal
 export const initializeApp = async () => {
-    mainPreloader.show();
+    // mainPreloader.show();
     try {
         RegisterHelpers();
         await RegisterPartials();
