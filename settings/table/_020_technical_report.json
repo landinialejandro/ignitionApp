@@ -1,20 +1,20 @@
 {
-  "caption": "Technical report",
-  "usershelper": {
-      "caption": "Datos de seguimiento, mas adelante esta opción se puede utilizar para crear el ayuda del sistema.",
-      "class": "alert alert-info"
-  },
-  "properties": [
-      {
-          "caption": "Technical report",
-          "placeholder": "Tech report",
-          "value": ""
-      }
-  ],
-  "type": "textarea-group",
-  "icon": {
-      "value": "bi bi-journal-bookmark",
-      "type": "class"
-  },
-  "order": 20
+    "caption": "Technical report",
+    "usershelper": {
+        "caption": "Datos de seguimiento, mas adelante esta opción se puede utilizar para crear el ayuda del sistema.",
+        "class": "alert alert-info"
+    },
+    "properties": [
+        {
+            "caption": "Technical report",
+            "placeholder": "Tech report",
+            "value": ""
+        }
+    ],
+    "type": "textarea-group",
+    "icon": {
+        "value": "bi bi-journal-bookmark",
+        "type": "class"
+    },
+    "order": 20
 }

@@ -1,66 +1,57 @@
-{{#each this}}
-{{#each properties}}
 <div class="card margin-bottom">
     <div class="card-header">
         <h3 class="card-title">
             {{> component_i context="card"}}
             {{caption}} <!-- Título de la tarjeta -->
         </h3>
-        <div class="card-tools">
-            <button type="button" class="tool-button">
-                <i class="bi bi-plus-lg"></i>
+        <div class="tools-box">
+            <button class="button-tool button-collapse expanded"
+                aria-label="Expandir/Contraer">
+                <i class="bi bi-chevron-right card-collapse"></i>
             </button>
-        </div> <!-- /.card-tools -->
-    </div> <!-- /.card-header -->
+        </div>
+    </div>
     <div class="card-body">
-
-        {{#if (eq type "heading")}}
-        {{> component_heading}}
-        <div class="margin-bottom"></div>
-        {{/if}}
-        {{#if properties}}
-
         {{#if usershelper}}
-        {{> usershelper}}
+        <div class="{{usershelper.class}}">
+            {{usershelper.caption}}
+        </div>
         <div class="margin-bottom"></div>
         {{/if}}
+
         <div class="card card-glow margin-bottom-lg">
-            <form id="properties-form" class="card-body" data-id="{{../id}}">
+            <form id="properties-form-{{id}}" class="card-body"
+                data-id="{{../id}}">
                 {{#if (eq type "input-group")}}
-                {{!-- Input Group --}}
                 {{#each properties}}
                 {{> component_input id=../../id}}
                 {{/each}}
 
                 {{else if (eq type "textarea-group")}}
-                {{!-- Textarea Group --}}
                 {{#each properties}}
                 {{> component_textarea id=../../id}}
                 {{/each}}
 
                 {{else if (eq type "checkbox-group")}}
-                {{!-- Checkbox Group --}}
                 {{#each properties}}
                 {{> component_checkbox id=../../id}}
                 {{/each}}
 
                 {{else if (eq type "radio-group")}}
-                {{!-- Radio Group --}}
                 {{#each properties}}
                 {{> component_radio id=../../id}}
                 {{/each}}
-
                 {{/if}}
                 <button type="submit"
                     class="button secondary save-node-properties">Guardar</button>
             </form>
-            <form id="node-info" class="card-body">
+        </div>
+        <div class="card card-glow margin-bottom-lg">
+            <div id="node-info-{{../id}}" class="card-body">
                 <div class="margin-bottom"></div>
-                <span class="text-info">
-                    Propertie info
-                </span>
+                <span class="text-info">Propertie info</span>
                 <div class="margin-bottom-lg">
-                    <div class>
+                    <div>
                         <span class="badge badge-sm badge-info">Order:
                             {{order}}</span>
                         <span class="badge badge-sm badge-success">Caption:
@@ -74,12 +65,7 @@
                 {{/with}}
                 <button type="submit"
                     class="button secondary save-node-info">Guardar</button>
-            </form>
+            </div>
         </div>
-
-        {{/if}}
     </div>
 </div>
-
-{{/each}}
-{{/each}}

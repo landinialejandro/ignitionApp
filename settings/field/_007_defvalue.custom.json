@@ -1,16 +1,18 @@
 {
     "caption": "Custom default value",
-    "properties": {
-        "placeholder": "Your custom string o value",
-        "caption": ""
-    },
-    "type":"field-settings",
+    "properties": [
+        {
+            "placeholder": "Your custom string o value",
+            "value": ""
+        }
+    ],
+    "type": "input-group",
     "icon": {
-    "value": "bi bi-journal-bookmark",
-    "type": "class"
-  },
+        "value": "bi bi-journal-bookmark",
+        "type": "class"
+    },
     "li_attr": {
         "type": "captions"
     },
-    "order":7
+    "order": 7
 }

@@ -1,0 +1,38 @@
+{{! recursive_properties.hbs }}
+{{#each this}}
+<div class="node" data-id="{{id}}">
+
+    <!-- Renderiza el nodo -->
+    <div class="card margin-bottom">
+        <div class="card-header">
+            <h3 class="card-title">
+                {{> component_i context="card"}}
+                {{caption}}
+            </h3>
+            <div class="tools-box">
+                <button class="button-tool button-collapse expanded"
+                    aria-label="Expandir/Contraer">
+                    <i class="bi bi-chevron-right card-collapse"></i>
+                </button>
+            </div>
+        </div>
+        <div class="card-body">
+            <!-- Renderiza propiedades -->
+            {{#if properties}}
+            <div class="properties">
+                {{#each properties}}
+                {{> properties}} <!-- Parcial para renderizar propiedades -->
+                {{/each}}
+            </div>
+            {{/if}}
+
+            <!-- Procesa los hijos de forma recursiva -->
+            {{#if children}}
+            <div class="children">
+                {{> recursive_properties children}} <!-- Llamada recursiva -->
+            </div>
+            {{/if}}
+        </div>
+    </div>
+</div>
+{{/each}}

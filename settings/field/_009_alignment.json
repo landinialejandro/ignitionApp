@@ -1,19 +1,18 @@
 {
     "caption": "Alignment",
-    "properties": {
-        "caption":"Left",
+    "properties": [{
+        "caption": "Left",
         "option": true,
         "options": [
             "Left",
             "Right",
             "Center"
-        ],
-        "type":"html-control"
-    },
+        ]
+    }],
     "type": "field-settings",
     "icon": {
-    "value": "bi bi-wrench-adjustable-circle",
-    "type": "class"
-  },
+        "value": "bi bi-wrench-adjustable-circle",
+        "type": "class"
+    },
     "order": 9
 }

@@ -86,9 +86,10 @@ const initializeLayout = () => {
     const collapseButton = event.target.closest(".button-collapse");
     const navContainer = event.target.closest(".nav-link-container");
     const nodeContainer = event.target.closest(".node-link-container");
+    const cardContainer = event.target.closest(".card-header");
 
     if (collapseButton) {
-      const parentItem = collapseButton.closest(".nav-item, .node-item");
+      const parentItem = collapseButton.closest(".nav-item, .node-item, .card");
       if (parentItem) {
         const isExpanded = parentItem.classList.contains("expanded");
         requestAnimationFrame(() => {
@@ -115,6 +116,7 @@ const initializeLayout = () => {
         nodeContainer.classList.add("active");
       });
     }
+
   });
 
   document.body.addEventListener("click", handleButtonToolClick);

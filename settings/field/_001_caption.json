@@ -3,22 +3,21 @@
     "properties": {
         "properties": [
             {
-                "id": "en",
+                "caption": "en",
                 "placeholder": "Caption Field",
                 "usershelper": "This value is used to identify the title of the field in the database, it appears in the detail form and in the table view",
-                "caption": ""
+                "value": ""
             },
             {
-                "id": "es",
+                "caption": "es",
                 "default": true,
                 "placeholder": "Subtitulo en español",
                 "usershelper": "Identifica el título en español",
-                "caption": ""
+                "value": ""
             }
-        ],
-        "type": "html-control"
+        ]
     },
-    "type": "field-settings",
+    "type": "input-group",
     "icon": {
         "value": "bi bi-type",
         "type": "class"

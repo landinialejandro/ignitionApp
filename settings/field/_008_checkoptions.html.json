@@ -1,25 +1,51 @@
 {
     "caption": "Check options value",
-    "properties": {
-        "check": true,
-        "options": [
-            {"caption":"Read only", "checked":false},
-            {"caption":"Required", "checked":false},
-            {"caption":"Rich (HTML) area", "checked":false},
-            {"caption":"Unique", "checked":false},
-            {"caption":"Show column sum", "checked":false},
-            {"caption":"Text area", "checked":false},
-            {"caption":"Do not filter", "checked":false},
-            {"caption":"Check box", "checked":false},
-            {"caption":"Hide in table view", "checked":false},
-            {"caption":"Hide detal view", "checked":false}
-        ],
-        "type":"html-control"
-    },
-    "type": "field-settings",
+    "properties": [
+        {
+            "caption": "Read only",
+            "checked": false
+        },
+        {
+            "caption": "Required",
+            "checked": false
+        },
+        {
+            "caption": "Rich (HTML) area",
+            "checked": false
+        },
+        {
+            "caption": "Unique",
+            "checked": false
+        },
+        {
+            "caption": "Show column sum",
+            "checked": false
+        },
+        {
+            "caption": "Text area",
+            "checked": false
+        },
+        {
+            "caption": "Do not filter",
+            "checked": false
+        },
+        {
+            "caption": "Check box",
+            "checked": false
+        },
+        {
+            "caption": "Hide in table view",
+            "checked": false
+        },
+        {
+            "caption": "Hide detal view",
+            "checked": false
+        }
+    ],
+    "type": "checkbox-group",
     "icon": {
-    "value": "bi bi-wrench-adjustable-circle",
-    "type": "class"
-  },
+        "value": "bi bi-wrench-adjustable-circle",
+        "type": "class"
+    },
     "order": 8
 }

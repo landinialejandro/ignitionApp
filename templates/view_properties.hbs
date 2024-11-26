@@ -1,0 +1,42 @@
+{{#each this}}
+{{log this}} <!-- Para depurar -->
+<div class="node" data-id="{{id}}" data-type="{{type}}">
+    <div class="card margin-bottom">
+        <div class="card-header">
+            <h3 class="card-title">
+                {{> component_i context="card"}}
+                {{caption}}
+            </h3>
+            <div class="tools-box">
+                <button class="button-tool button-collapse expanded"
+                    aria-label="Expandir/Contraer">
+                    <i class="bi bi-chevron-right card-collapse"></i>
+                </button>
+            </div>
+        </div>
+        <div class="card-body">
+            {{#if properties}}
+            <div class="properties">
+                {{#each properties}}
+                {{> properties}}
+                <!-- Renderiza las propiedades con un parcial -->
+                {{/each}}
+            </div>
+            {{/if}}
+
+            {{#if icon}}
+            <div class="icon">
+                <i class="{{icon.value}}" title="{{icon.type}}"></i>
+            </div>
+            {{/if}}
+        </div>
+    </div>
+
+    {{#if children}}
+    <div class="children">
+        {{> recursive_properties children}}
+        <!-- Llama al mismo parcial de forma recursiva -->
+    </div>
+    {{/if}}
+</div>
+{{/each}}

@@ -1,10 +1,13 @@
 {
     "caption": "sql to create table",
-    "properties": {
+    "properties": [{
         "placeholder": "create table sql",
-        "caption": "create table if not exists `{{databaseName}}`.`{{tableName}}` ( {{fieldsDefinitions}} ) CHARSET {{charset}}"
+        "value": "create table if not exists `{{databaseName}}`.`{{tableName}}` ( {{fieldsDefinitions}} ) CHARSET {{charset}}"
+    }],
+    "type": "input-group",
+    "icon": {
+        "value": "bi bi-type",
+        "type": "class"
     },
-    "type": "tbl-setting",
-    "icon": "fa fa-database",
-    "order": 30
+    "order": 30                                                                     
 }

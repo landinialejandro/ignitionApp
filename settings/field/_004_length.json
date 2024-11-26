@@ -1,16 +1,18 @@
 {
     "caption": "Lenght",
-    "properties": {
-        "placeholder": "Lenght string o value",
-        "caption": ""
-    },
-    "type":"field-settings",
+    "properties": [
+        {
+            "placeholder": "Lenght string o value",
+            "value": ""
+        }
+    ],
+    "type": "input-group",
     "icon": {
-    "value": "bi bi-journal-bookmark",
-    "type": "class"
-  },
+        "value": "bi bi-journal-bookmark",
+        "type": "class"
+    },
     "li_attr": {
         "type": "integer"
     },
-    "order":4
+    "order": 4
 }

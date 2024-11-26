@@ -1,25 +1,43 @@
 {
     "caption": "System default value",
-    "properties": {
-        "caption":"",
-        "option": true,
-        "options": [
-            "Create by user Name",
-            "Creation Date",
-            "Creation Time",
-            "Creation TimeStamp",
-            "Edited by user Name",
-            "Edition Date",
-            "Edition Time",
-            "Edition TimeStamp"
-        ],
-        "type":"html-control"
-
-    },
-    "type": "field-settings",
+    "properties": [
+        {
+            "caption": "Create by user Name",
+            "checked": false
+        },
+        {
+            "caption": "Creation Date",
+            "checked": false
+        },
+        {
+            "caption": "Creation Time",
+            "checked": false
+        },
+        {
+            "caption": "Creation TimeStamp",
+            "checked": false
+        },
+        {
+            "caption": "Edited by user Name",
+            "checked": false
+        },
+        {
+            "caption": "Edition Date",
+            "checked": false
+        },
+        {
+            "caption": "Edition Time",
+            "checked": false
+        },
+        {
+            "caption": "Edition TimeStamp",
+            "checked": false
+        }
+    ],
+    "type": "radio-group",
     "icon": {
-    "value": "bi bi-wrench-adjustable-circle",
-    "type": "class"
-  },
+        "value": "bi bi-wrench-adjustable-circle",
+        "type": "class"
+    },
     "order": 7
 }

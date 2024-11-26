@@ -1,16 +1,18 @@
 {
     "caption": "Max character in table view",
-    "properties": {
-        "placeholder": "Max character in table view value",
-        "caption": ""
-    },
-    "type":"field-settings",
+    "properties": [
+        {
+            "placeholder": "Max character in table view value",
+            "value": ""
+        }
+    ],
+    "type": "input-group",
     "icon": {
-    "value": "bi bi-journal-bookmark",
-    "type": "class"
-  },
+        "value": "bi bi-journal-bookmark",
+        "type": "class"
+    },
     "li_attr": {
         "type": "integer"
     },
-    "order":5
+    "order": 5
 }

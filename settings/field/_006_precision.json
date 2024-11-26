@@ -1,17 +1,19 @@
 {
     "caption": "Precision",
-    "properties": {
-        "placeholder": "Presicion value",
-        "usershelper": "Set the presicion value",
-        "caption": ""
-    },
-    "type":"field-settings",
+    "properties": [
+        {
+            "placeholder": "Presicion value",
+            "usershelper": "Set the presicion value",
+            "value": ""
+        }
+    ],
+    "type": "input-group",
     "icon": {
-    "value": "bi bi-journal-bookmark",
-    "type": "class"
-  },
+        "value": "bi bi-journal-bookmark",
+        "type": "class"
+    },
     "li_attr": {
         "type": "integer"
     },
-    "order":6
+    "order": 6
 }

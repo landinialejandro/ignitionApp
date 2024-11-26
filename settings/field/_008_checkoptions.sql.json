@@ -1,16 +1,13 @@
 {
     "caption": "Database options value",
-    "properties": {
-        "check": true,
-        "options": [
+    "properties": [
             {"caption":"Primary key", "checked":false},
             {"caption":"Zero fill", "checked":false},
             {"caption":"Auto increment", "checked":false},
             {"caption":"Unique", "checked":false},
             {"caption":"Unsigned", "checked":false},
             {"caption":"Binary", "checked":false}
-        ]
-    },
+        ],
     "type": "field-settings",
     "icon": {
     "value": "bi bi-wrench-adjustable-circle",

@@ -1,38 +1,103 @@
 {
     "caption": "Data Type",
-    "properties": {
-        "caption":"",
-        "option": true,
-        "options": [
-            "Tiny Integer",
-            "Small Integer",
-            "Medium Integer",
-            "Integer",
-            "Big Integer",
-            "Float",
-            "Double",
-            "Decimal",
-            "Date",
-            "DateTime",
-            "Time",
-            "Time Stamp",
-            "Year",
-            "Char",
-            "VarChar",
-            "Tiny Blob",
-            "Tiny Text",
-            "captions",
-            "BLOB",
-            "Medium BLOB",
-            "Medium Text",
-            "Long BLOB",
-            "Long Text"
-        ]
-    },
-    "type": "field-settings",
+    "properties": [
+        {
+            "caption": "Tiny Integer",
+            "checked": false
+        },
+        {
+            "caption": "Small Integer",
+            "checked": false
+        },
+        {
+            "caption": "Medium Integer",
+            "checked": false
+        },
+        {
+            "caption": "Integer",
+            "checked": false
+        },
+        {
+            "caption": "Big Integer",
+            "checked": false
+        },
+        {
+            "caption": "Float",
+            "checked": false
+        },
+        {
+            "caption": "Double",
+            "checked": false
+        },
+        {
+            "caption": "Decimal",
+            "checked": false
+        },
+        {
+            "caption": "Date",
+            "checked": false
+        },
+        {
+            "caption": "DateTime",
+            "checked": false
+        },
+        {
+            "caption": "Time",
+            "checked": false
+        },
+        {
+            "caption": "Time Stamp",
+            "checked": false
+        },
+        {
+            "caption": "Year",
+            "checked": false
+        },
+        {
+            "caption": "Char",
+            "checked": false
+        },
+        {
+            "caption": "VarChar",
+            "checked": false
+        },
+        {
+            "caption": "Tiny Blob",
+            "checked": false
+        },
+        {
+            "caption": "Tiny Text",
+            "checked": false
+        },
+        {
+            "caption": "captions",
+            "checked": false
+        },
+        {
+            "caption": "BLOB",
+            "checked": false
+        },
+        {
+            "caption": "Medium BLOB",
+            "checked": false
+        },
+        {
+            "caption": "Medium Text",
+            "checked": false
+        },
+        {
+            "caption": "Long BLOB",
+            "checked": false
+        },
+        {
+            "caption": "Long Text",
+            "checked": false
+        }
+    ],
+    "type": "radio-group",
     "icon": {
-    "value": "bi bi-wrench-adjustable-circle",
-    "type": "class"
-  },
+        "value": "bi bi-wrench-adjustable-circle",
+        "type": "class"
+    },
     "order": 3
 }
