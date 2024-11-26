@@ -19,11 +19,6 @@
         "label": "Agregar nuevo grupo",
         "callback": "addNewNode",
         "typeToAdd": "group"
-      },
-      "SettingsAdd": {
-        "label": "Agregar propiedades",
-        "callback": "addNewNode",
-        "typeToAdd": "settings"
       }
     },
     "validChildren": [
@@ -54,11 +49,6 @@
         "label": "Agregar nueva tabla",
         "callback": "addNewNode",
         "typeToAdd": "table"
-      },
-      "SettingsAdd": {
-        "label": "Agregar propiedades",
-        "callback": "addNewNode",
-        "typeToAdd": "settings"
       }
     },
     "validChildren": [
@@ -87,11 +77,6 @@
         "label": "Agregar nuevo campo",
         "callback": "addNewNode",
         "typeToAdd": "field"
-      },
-      "SettingsAdd": {
-        "label": "Agregar propiedades",
-        "callback": "addNewNode",
-        "typeToAdd": "settings"
       }
     },
     "validChildren": [
@@ -115,11 +100,6 @@
       "delete": {
         "label": "Eliminar campo",
         "callback": "deleteNode"
-      },
-      "SettingsAdd": {
-        "label": "Agregar propiedades",
-        "callback": "addNewNode",
-        "typeToAdd": "settings"
       }
     },
     "validChildren": [

@@ -12,7 +12,7 @@ import Constants from '../configs/constants.js';
  * @param {string} [responseType='text'] - Tipo de respuesta esperada ('text', 'json', 'blob', etc.).
  * @returns {Promise<any>} - Respuesta de la petición.
  */
-const fetchHandler = async ({ url, method = 'GET', body = null, isJson = true, callback = null, responseType = 'text' }) => {
+const fetchHandler = async ({ url, method = 'GET', body = null, isJson = true, callback = null }) => {
     if (!url) throw new Error("La URL es obligatoria.");
 
     const headers = { "X-Requested-With": "XMLHttpRequest" };
@@ -28,9 +28,15 @@ const fetchHandler = async ({ url, method = 'GET', body = null, isJson = true, c
             throw new Error(`HTTP Error ${response.status}: ${await response.text()}`);
         }
 
-        const rawData = await response[responseType]();
-        const parsedData = isJson && responseType === 'text' ? JSON.parse(rawData) : rawData;
+        const rawData = await response.text();
 
+        // Manejo de respuestas vacías
+        if (isJson && (!rawData || rawData.trim() === '')) {
+            console.warn("Respuesta vacía.");
+            return null;
+        }
+
+        const parsedData = isJson ? JSON.parse(rawData) : rawData;
         callback?.(parsedData);
         return parsedData;
     } catch (error) {
@@ -40,8 +46,8 @@ const fetchHandler = async ({ url, method = 'GET', body = null, isJson = true, c
 };
 
 // Función para simplificar peticiones
-export const get_data = ({ url, data = null, method = null, isJson = true, callback = null }) =>
-    fetchHandler({
+export const get_data = async ({ url, data = null, method = null, isJson = true, callback = null }) => {
+    const response = await fetchHandler({
         url,
         method: method || (data ? "POST" : "GET"),
         body: data,
@@ -49,6 +55,14 @@ export const get_data = ({ url, data = null, method = null, isJson = true, callb
         callback,
     });
 
+    // Manejar respuestas vacías
+    if (!response) {
+        console.warn(`Archivo vacío o sin datos: ${url}`);
+        return null; // O cualquier valor predeterminado
+    }
+
+    return response;
+};
 /**
  * Guarda contenido en un archivo en el servidor utilizando una llamada HTTP.
  * @param {string} fileName - Nombre del archivo que se desea guardar.

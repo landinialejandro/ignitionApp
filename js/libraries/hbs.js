@@ -121,36 +121,45 @@ export const RegisterHelpers = () => {
 
 
 }
-
 export const RegisterPartials = async () => {
-	toastmaster.info("registering partials...");
+	toastmaster.info("Registering partials...");
 
 	const url = 'ignitionApp.php';
 	const data = {
 		id: 'templates/partials',
-		operation: 'get_node'
+		operation: 'get_node',
 	};
 
 	try {
-		// Llamada a la función `get_data` para obtener los datos
+		// Obtén los datos iniciales de los archivos
 		const filesContent = await get_data({ url, data });
 
-		for (const [key, fileInfo] of Object.entries(filesContent)) {
-			//console.log(`Fetching template from: ${fileInfo.url}`); // Verificar URL
+		// Genera todas las promesas para cargar el contenido de los archivos en paralelo
+		const partialsPromises = Object.entries(filesContent).map(async ([key, fileInfo]) => {
+			const fileContent = await get_data({ url: fileInfo.url, isJson: false });
 
-			const t = await get_data({ url: fileInfo.url, isJson: false });
-			let indicePunto = fileInfo.caption.indexOf('.');
-			let name = indicePunto !== -1 ? fileInfo.caption.substring(0, indicePunto).toLowerCase() : fileInfo.caption.toLowerCase();
+			// Genera el nombre del partial
+			const indicePunto = fileInfo.caption.indexOf('.');
+			const name = indicePunto !== -1
+				? fileInfo.caption.substring(0, indicePunto).toLowerCase()
+				: fileInfo.caption.toLowerCase();
 
-			// Compilar la plantilla antes de registrarla en Handlebars
-			const compiledTemplate = Handlebars.compile(t);
+			// Compila y registra el partial en Handlebars
+			const compiledTemplate = Handlebars.compile(fileContent);
 			Handlebars.registerPartial(name, compiledTemplate);
+
+			// Muestra el mensaje de registro para este partial
 			toastmaster.secondary(`Partial ${name} registrado.`, true);
-		}
+		});
+
+		// Espera a que todas las promesas terminen
+		await Promise.all(partialsPromises);
 
 	} catch (error) {
 		const msg = `Error registrando partials: ${error.message}`;
 		toastmaster.handleError(msg, error);
 	}
-	toastmaster.info("partials registered and compiled.");
+
+	toastmaster.info("Partials registered and compiled.");
 };
+

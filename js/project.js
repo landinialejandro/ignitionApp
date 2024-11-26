@@ -21,7 +21,7 @@ import { getDirCollectionJson } from './libraries/helpers.js';
 import { $$ } from './libraries/selector.js';
 
 import { ContextMenu } from './ContextMenu.js';
-import { NodeForest, renderTemplateToContainer,  toastmaster, getUserInput, validateGenericInput } from '../src/index.js';
+import { NodeForest, renderTemplateToContainer, toastmaster, getUserInput, validateGenericInput, uniqueId } from '../src/index.js';
 import { Constants } from '../src/index.js';
 import { NodeTypeManager } from './NodeTypeManager.js';
 
@@ -43,6 +43,7 @@ export const initializeProject = async (url) => {
     try {
         await nodeTypeManager.loadFromFile('./settings/types.json');
         const content = await get_data({ url });
+
         const projectPage = await get_data({ url: "pages/project_page.html", isJson: false });
 
         // Renderizar la estructura base del proyecto
@@ -51,7 +52,23 @@ export const initializeProject = async (url) => {
         project.nodeTypeManager = nodeTypeManager
         project.container = ".project-container";
         project.file = url;
-        project.setNodes(content);
+
+        if (content === null) {
+            const defOptions = project.nodeTypeManager.getType('root');
+            console.warn('El archivo está vacío.');
+            const newRoot = {
+                id: defOptions.id || 'root',
+                caption: defOptions.caption || 'New Project',
+                type: 'root',
+                properties: [],
+                children: [],
+                icon: defOptions.icon || ""
+            };
+            addPropertiesToNode("root", newRoot);
+            project.setNodes([newRoot]);
+        } else {
+            project.setNodes(content);
+        }
 
         await project.render();
 
@@ -185,9 +202,9 @@ const addPropertiesToNode = async (typeToAdd, newNodeOptions) => {
 
         for (const [key, fileInfo] of Object.entries(filesContent)) {
             const content = await get_data({ url: fileInfo.url });
-            content.id = project.generateId();
+            const id = uniqueId();
             newNodeOptions.properties.push({
-                ...content
+                id, ...content
             });
         }
 
@@ -208,9 +225,7 @@ const handleProjectTree = async (node) => {
         const { id } = $$(node).allData();
         const selected = project.findChildById(id);
 
-        if (!selected) {
-            throw new Error("Nodo no encontrado.");
-        }
+        if (!selected) throw new Error("Nodo no encontrado.");
 
         $$('.node-link-container').removeClass('active')
         $$(`#${id}`).addClass('active')
