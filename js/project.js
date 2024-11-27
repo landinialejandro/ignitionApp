@@ -70,7 +70,16 @@ export const initializeProject = async (url) => {
     }
 };
 
-export const toolsBoxListenerProject = (buttonId, callback) => {
+
+/**
+ * Registra los listeners para los botones de la barra de herramientas que actúan sobre nodos.
+ * Los botones se identifican por sus IDs (`button-delete-node`, `button-options-node`, `button-save-project`).
+ * Cada botón tiene una función asociada que recibe como parámetro el objeto `data` que contiene la
+ * información del nodo sobre el que se actúa.
+ * La función `operation` se encarga de delegar la acción adecuada en función del botón que se ha
+ * seleccionado y de los datos del nodo.
+ */
+export const toolsBoxListenerProject = () => {
 
     registerButtonAction('button-delete-node', (button, e) => {
         const link = button.closest('.node-link-container');
