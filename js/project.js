@@ -33,16 +33,15 @@ let contextMenu = null;
 */
 export const initializeProject = async (url) => {
     try {
-
-        const typology = new Typology(await get_data({ url: "./settings/types.json" }));
-        const content = await get_data({ url });
-        const projectPage = await get_data({ url: "pages/project_page.html", isJson: false });
+        const typology = new Typology(await get_data({ url: "./settings/types.json" })); //obtengo los type
+        const content = await get_data({ url }); // obtengo los json
+        const projectPage = await get_data({ url: "pages/project_page.html", isJson: false }); //cargo la pagina del base del proyecto un contendore con dos card en columns
 
         // Renderizar la estructura base del proyecto
-        $$(Constants.CONTENT).html(projectPage);
+        $$(Constants.CONTENT).html(projectPage); //cargo en html el proyecto base
 
         project.typology = typology
-        project.container = ".project-container";
+        project.container = ".project-container"; // le digo al project dóinde debe poner el reendirazdo, es un content/body del card
         project.file = url;
 
         if (content === null) {
@@ -62,14 +61,40 @@ export const initializeProject = async (url) => {
             project.setNodes(content);
         }
 
-        await project.render();
+        await project.render(); // reenderiza
 
-        addEventsListener();
+        addEventsListener(); // cargo los listeners
     } catch (error) {
         const msg = "Error al inicializar el proyecto.";
         toastmaster.handleError(msg, error);
     }
 };
+
+export const toolsBoxListenerProject = (buttonId, callback) => {
+
+    registerButtonAction('button-delete-node', (button, e) => {
+        const link = button.closest('.node-link-container');
+        if (link) {
+            const data = $$(link).allData();
+            actionCallbacks.deleteNode(data.type, link, data.id);
+        }
+    });
+
+    registerButtonAction('button-options-node', (button, e) => {
+        const link = button.closest('.node-link-container');
+        if (link) {
+            if (!contextMenu) {
+                contextMenu = new ContextMenu('context-menu', 'menu-options', project.typology, actionCallbacks);
+            }
+            contextMenu.show(e, link);
+        }
+    });
+
+    registerButtonAction('button-save-project', (button, e) => {
+        saveProject();
+    })
+
+}
 
 /**
  * Callbacks personalizados para acciones en el árbol de nodos.
@@ -239,31 +264,26 @@ const handleProjectTree = async (node) => {
  * Agrega los listeners principales del proyecto.
  */
 const addEventsListener = () => {
-    saveProjectListener();
-    toolsBoxListener();
     nodeProjectListener();
-    contextMenuListener();
     saveNodeListener();
 };
 
 /**
  * Listener para guardar el proyecto.
  */
-const saveProjectListener = () => {
-    $$('.save-project-btn').on('click', async () => {
-        try {
-            const nodes = project.toJSON();
-            const response = await saveFileToServer(project.file, nodes.nodes);
-            if (response) {
-                toastmaster.success('Proyecto guardado.');
-            } else {
-                throw new Error("Error al guardar proyecto.");
-            }
-        } catch (error) {
-            const msg = "Error al guardar el proyecto.";
-            toastmaster.handleError(msg, error);
+const saveProject = async () => {
+    try {
+        const nodes = project.toJSON();
+        const response = await saveFileToServer(project.file, nodes.nodes);
+        if (response) {
+            toastmaster.success('Proyecto guardado.');
+        } else {
+            throw new Error("Error al guardar proyecto.");
         }
-    });
+    } catch (error) {
+        const msg = "Error al guardar el proyecto.";
+        toastmaster.handleError(msg, error);
+    }
 };
 
 const saveNodeListener = () => {
@@ -308,43 +328,15 @@ const saveNodeListener = () => {
  * Listener para manejar clics en nodos del árbol.
  */
 const nodeProjectListener = () => {
-    $$(Constants.CONTENT).on("click", ".node-link", (e) => {
+    // Delegar eventos al contenedor estático
+    $$(".node-link").on("click", function (e) {
+        e.preventDefault();
+        e.stopPropagation();
+
         const nodeLink = e.target.closest('.node-link-container');
-        if (nodeLink) {
-            e.preventDefault();
-            e.stopPropagation();
-            toastmaster.secondary('node click');
-            handleProjectTree(nodeLink);
-        }
+        if (!nodeLink) return;
+
+        toastmaster.secondary('node click');
+        handleProjectTree(nodeLink);
     });
 };
-
-/**
- * Listener para mostrar el menú contextual.
- */
-const contextMenuListener = () => {
-    if (!contextMenu) {
-        contextMenu = new ContextMenu('context-menu', 'menu-options', project.typology, actionCallbacks);
-    }
-
-    $$(Constants.CONTENT).on("click", '.button-add-child', (e) => {
-        const link = e.target.closest('.node-link-container');
-        if (link) {
-            e.preventDefault();
-            e.stopPropagation();
-            contextMenu.show(e, link);
-        }
-    });
-};
-
-const toolsBoxListener = () => {
-    $$(Constants.CONTENT).on("click", '.button-delete-node', (e) => {
-        const link = e.target.closest('.node-link-container');
-        if (link) {
-            e.preventDefault();
-            e.stopPropagation();
-            const data = $$(link).allData();
-            actionCallbacks.deleteNode(data.type, link, data.id);
-        }
-    });
-}

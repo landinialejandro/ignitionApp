@@ -1,7 +1,7 @@
 import { RegisterHelpers, RegisterPartials } from './libraries/hbs.js';
 import { actionsServer, getDirCollectionJson, preloader } from './libraries/helpers.js';
 import { $$ } from './libraries/selector.js';
-import { initializeProject } from './project.js';
+import { initializeProject, toolsBoxListenerProject } from './project.js';
 import { registerButtonAction } from './layout.js';
 import { renderTemplateToContainer, checkContainerAvailability, get_data, Constants,  getUserInput, sanitizeInput, validateGenericInput } from '../src/index.js';
 import { toastmaster } from '../src/core/index.js';
@@ -60,7 +60,8 @@ const initializeSidebar = async () => {
 const registerEventListeners = () => {
     toastmaster.secondary("Registrando eventos globales", true);
     registerNavigationListeners();
-    toolsBoxListener();
+    toolsBoxListenerApp();
+    toolsBoxListenerProject();
 };
 
 /**
@@ -86,7 +87,7 @@ const registerNavigationListeners = () => {
  * La función `operation` se encarga de delegar la acción adecuada en función del botón que se ha
  * seleccionado y de los datos del nodo.
  */
-const toolsBoxListener = () => {
+const toolsBoxListenerApp = () => {
     actionCallbacks.forEach(({ name, operation }) => {
         // registerButtonAction se encarga de registrar la función asociada al botón correspondiente es callback que proviene de layout.js
         registerButtonAction(`button-${name}`, async (button, e) => {
