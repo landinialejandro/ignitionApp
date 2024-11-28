@@ -19,6 +19,8 @@ import { Constants } from '../src/index.js';
 import { Typology } from '../src/index.js';
 
 import { registerButtonAction } from './layout.js';
+import { chopTree } from '../src/core/ChopTree/chopTree.js';
+
 
 // Variables globales necesarias para la gestión del proyecto
 const project = new NodeForest();
@@ -174,7 +176,7 @@ const actionCallbacks = {
 
         if (currentNode.type === "root" & !parentNode) {
             toastmaster.danger("Se renombra el nodo raíz.");
-            parentNode = {...currentNode};  
+            parentNode = { ...currentNode };
         }
 
         if (newName) {
@@ -292,6 +294,8 @@ const saveProject = async () => {
         const response = await saveFileToServer(project.file, nodes.nodes);
         if (response) {
             toastmaster.success('Proyecto guardado.');
+            const choptree = chopTree(project.nodes);
+            console.log(choptree);
         } else {
             throw new Error("Error al guardar proyecto.");
         }
