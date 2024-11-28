@@ -46,10 +46,18 @@
                     class="button secondary save-node-properties">Guardar</button>
             </form>
         </div>
-        <div class="card card-glow margin-bottom-lg expanded">
-            <form id="propertie-info-{{id}}" class="card-body"  data-id="{{id}}">
-                <div class="margin-bottom"></div>
-                <span class="text-info">Propertie info</span>
+        <div class="card margin-bottom-lg">
+            <div class="card-header-minimal">
+                <span class="card-title">Propertie info</span>
+                <div class="tools-box">
+                    <button class="button-tool button-collapse"
+                        aria-label="Expandir/Contraer">
+                        <i class="bi bi-chevron-right card-collapse"></i>
+                    </button>
+                </div>
+            </div>
+            <form id="propertie-info-{{id}}" class="card-body" data-id="{{id}}">
+                <span class="text-info"></span>
                 <div class="margin-bottom-lg">
                     <div>
                         <span class="badge badge-sm badge-info">Order:

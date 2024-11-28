@@ -1,7 +1,8 @@
 {
-  "caption": "Select you charset value",
+  "caption": "Charset value",
+  "group": "Database Configuration",
   "usershelper": {
-    "caption": "You can add your own charset in _xxx_charsets.json file",
+    "caption": "Select the charset you want to use. You can add your own charset in _xxx_charsets.json file",
     "class": "text-warning"
   },
   "properties": [

@@ -1,5 +1,6 @@
 {
     "caption": "Date Separator",
+    "group": "Localization",
     "usershelper": {
         "caption": "Change to your own date separator, puede cambiar su propio separador de fecha",
         "class": "alert alert-info"

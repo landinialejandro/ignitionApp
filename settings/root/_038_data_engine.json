@@ -1,0 +1,16 @@
+{
+    "caption": "Database Engine",
+    "group": "Database Configuration",
+    "properties": [
+        {
+            "caption": "InnoDB",
+            "value": true
+        },
+        {
+            "caption": "MyISAM",
+            "value": false
+        }
+    ],
+    "type": "radio-group",
+    "order": 38
+}

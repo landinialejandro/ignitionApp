@@ -1,0 +1,27 @@
+{
+    "caption": "Security Configuration",
+    "group": "Security",
+    "usershelper": {
+        "caption": "Define basic security settings for the application.",
+        "class": "alert alert-warning"
+    },
+    "properties": [
+        {
+            "caption": "Max Login Attempts",
+            "placeholder": "Enter max login attempts",
+            "value": 5,
+            "type": "number"
+        },
+        {
+            "caption": "Enable Password Reset",
+            "value": true,
+            "type": "checkbox"
+        }
+    ],
+    "type": "input-group",
+    "icon": {
+        "value": "bi bi-shield-lock",
+        "type": "class"
+    },
+    "order": 36
+}

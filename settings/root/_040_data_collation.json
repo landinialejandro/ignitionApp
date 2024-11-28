@@ -1,0 +1,21 @@
+{
+    "caption": "Database Collation",
+    "group": "Database Configuration",
+    "properties": [
+      {
+        "caption": "utf8_general_ci",
+        "value": true
+      },
+      {
+        "caption": "utf8_unicode_ci",
+        "value": false
+      },
+      {
+        "caption": "utf8_bin",
+        "value": false
+      }
+    ],
+    "type": "radio-group",
+    "order": 40
+  }
+  

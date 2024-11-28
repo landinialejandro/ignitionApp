@@ -1,21 +1,18 @@
-// * file: src/core/ChopTree/chopTree.js
-
 /**
  * ChopTree - Módulo para convertir estructuras de nodos jerárquicos (NodeForest)
- * en esquemas SQL. Este módulo analiza nodos y genera scripts SQL basados en 
- * estructuras como tablas, campos y propiedades específicas.
+ * en una colección de objetos con definiciones SQL por nodo.
  *
  * @module ChopTree
  */
 
 /**
- * Convierte un NodeForest en un script SQL.
+ * Convierte un NodeForest en una colección de objetos con SQL por tabla.
  *
  * @param {Array} nodeForest - Array de nodos jerárquicos (NodeForest).
- * @returns {string} Script SQL generado.
+ * @returns {Array} Colección de objetos con idnode y SQL.
  */
 export function chopTree(nodeForest) {
-    let sqlScript = '';
+    const result = [];
 
     // Buscar el nodo raíz para el nombre de la base de datos
     const rootNode = nodeForest.find(node => node.type === 'root');
@@ -24,16 +21,16 @@ export function chopTree(nodeForest) {
     }
     const databaseName = rootNode.caption;
 
-    // Crear la base de datos
-    sqlScript += `CREATE DATABASE IF NOT EXISTS \`${databaseName}\`;\nUSE \`${databaseName}\`;\n\n`;
+    // SQL para la base de datos
+    const dbSQL = `CREATE DATABASE IF NOT EXISTS \`${databaseName}\`;\nUSE \`${databaseName}\`;\n\n`;
+    result.push({ idnode: rootNode.id, sql: dbSQL });
 
     // Función recursiva para procesar nodos
     function processNodes(nodeList) {
-        let tableSQL = '';
         nodeList.forEach(node => {
             if (node.type === 'table') {
                 const tableName = node.caption;
-                tableSQL += `CREATE TABLE IF NOT EXISTS \`${tableName}\` (\n`;
+                let tableSQL = `CREATE TABLE IF NOT EXISTS \`${tableName}\` (\n`;
 
                 // Recoger campos de la tabla
                 const fields = node.children.filter(child => child.type === 'field');
@@ -63,19 +60,20 @@ export function chopTree(nodeForest) {
 
                 tableSQL += fieldDefinitions.join(',\n');
                 tableSQL += `\n);\n\n`;
+
+                // Añadir el SQL de esta tabla al resultado
+                result.push({ idnode: node.id, sql: tableSQL });
             }
 
             // Procesar nodos hijos recursivamente
             if (node.children && node.children.length > 0) {
-                tableSQL += processNodes(node.children);
+                processNodes(node.children);
             }
         });
-        return tableSQL;
     }
 
     // Procesar todos los nodos hijos del nodo raíz
-    sqlScript += processNodes(rootNode.children);
+    processNodes(rootNode.children);
 
-    return sqlScript;
+    return result;
 }
-

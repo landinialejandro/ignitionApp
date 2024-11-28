@@ -1,0 +1,21 @@
+{
+    "caption": "Timezone",
+    "group": "Localization",
+    "properties": [
+      {
+        "caption": "UTC",
+        "value": true
+      },
+      {
+        "caption": "America/New_York",
+        "value": false
+      },
+      {
+        "caption": "Europe/Madrid",
+        "value": false
+      }
+    ],
+    "type": "radio-group",
+    "order": 42
+  }
+  

@@ -1,5 +1,6 @@
 {
   "caption": "Check options value",
+  "group": "General Settings",
   "usershelper": {
     "caption": "You can add your own options in _xxx_checkoptions.json file",
     "class": "text-success"

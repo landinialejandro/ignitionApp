@@ -837,6 +837,17 @@ body {
 .bg-dark .card .card-header > .card-title, .bg-dark .card .card-header > :not(.tools-box):not(i) {
   color: #6a6aab;
 }
+.card .card-header-minimal {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0.25rem 1rem;
+  font-size: 0.875rem;
+  font-weight: 400;
+  line-height: 1.2;
+  background-color: #1a2749;
+  color: #b0b0b0;
+}
 .card .card-body {
   padding: 0.5rem;
   background-color: #1a1a2e;

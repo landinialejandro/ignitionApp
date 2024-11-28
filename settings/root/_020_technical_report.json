@@ -1,5 +1,6 @@
 {
     "caption": "Technical report",
+    "group": "Developer Settings",
     "usershelper": {
         "caption": "Datos de seguimiento, mas adelante esta opción se puede utilizar para crear el ayuda del sistema.",
         "class": "alert alert-info"

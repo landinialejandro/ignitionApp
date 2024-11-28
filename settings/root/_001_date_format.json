@@ -1,5 +1,6 @@
 {
   "caption": "Date order format",
+  "group": "Localization",
   "usershelper": {
     "caption": "Indique el orden en el que aparece la fecha. You can add your own options in _xxx_date_format.json file.",
     "class": "alert alert-info"

@@ -1,0 +1,28 @@
+{
+    "caption": "Application Name",
+    "group": "General Settings",
+    "usershelper": {
+        "caption": "Enter the name of your application.",
+        "class": "alert alert-info"
+    },
+    "properties": [
+        {
+            "caption": "App Name",
+            "placeholder": "Enter application name",
+            "value": "IgnitionApp",
+            "required": true,
+            "maxlength": 50
+        },
+        {
+            "caption": "Description",
+            "placeholder": "Add a short description for your project.",
+            "value": ""
+        }
+    ],
+    "type": "input-group",
+    "icon": {
+        "value": "bi bi-app-indicator",
+        "type": "class"
+    },
+    "order": 0
+}

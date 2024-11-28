@@ -1,5 +1,6 @@
 {
     "caption": "Versioning numbering system",
+    "group": "Developer Settings",
     "usershelpers": {
         "caption": "You can define your versioning number",
         "class": "text-primary"

@@ -1,0 +1,24 @@
+{
+    "caption": "Default Roles",
+    "group": "Security",
+    "usershelper": {
+        "caption": "Define the initial roles available in the application.",
+        "class": "alert alert-warning"
+    },
+    "properties": [
+        {
+            "caption": "Admin",
+            "value": true
+        },
+        {
+            "caption": "User",
+            "value": false
+        }
+    ],
+    "type": "checkbox-group",
+    "icon": {
+        "value": "bi bi-shield-lock",
+        "type": "class"
+    },
+    "order": 34
+}
