@@ -2,6 +2,7 @@
     "caption": "Custom default value",
     "properties": [
         {
+            "caption": "Custom default value",
             "placeholder": "Your custom string o value",
             "value": ""
         }

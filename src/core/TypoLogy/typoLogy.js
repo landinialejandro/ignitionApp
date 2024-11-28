@@ -31,6 +31,31 @@ export class Typology {
     }
 
     /**
+         * Obtener los hijos válidos para un tipo de nodo específico.
+         * 
+         * @param {string} type - El nombre del tipo de nodo.
+         * @returns {string[]} Lista de tipos de nodos válidos como hijos.
+         * @throws {Error} Si el tipo de nodo no existe.
+         */
+    getValidChildren(type) {
+        const nodeType = this.getType(type);
+        return nodeType.validChildren || [];
+    }
+
+    /**
+     * Verificar si un tipo de nodo puede ser hijo de otro tipo.
+     * 
+     * @param {string} parentType - El tipo de nodo padre.
+     * @param {string} childType - El tipo de nodo hijo.
+     * @returns {boolean} True si el nodo hijo es válido para el padre.
+     * @throws {Error} Si el tipo de nodo padre no existe.
+     */
+    isValidChild(parentType, childType) {
+        const validChildren = this.getValidChildren(parentType);
+        return validChildren.includes(childType);
+    }
+
+    /**
      * Validar si un nodo puede tener una cantidad específica de hijos.
      * 
      * @param {string} type - Tipo del nodo.
@@ -66,13 +91,14 @@ export class Typology {
         const currentChildrenCount = treeNode.children?.length || 0;
         if (!this.isValidChildrenCount(type, currentChildrenCount)) return false;
 
-        if (treeNode.children) {
-            for (const child of treeNode.children) {
-                if (!this.validateTreeStructure(child, child.type, currentDepth + 1)) {
-                    return false;
-                }
-            }
-        }
+        // TODO: Validar recursivamente los hijos para ver la profundidad.
+        // if (treeNode.children) {
+        //     for (const child of treeNode.children) {
+        //         if (!this.validateTreeStructure(child, child.type, currentDepth + 1)) {
+        //             return false;
+        //         }
+        //     }
+        // }
         return true;
     }
 

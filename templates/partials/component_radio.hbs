@@ -1,10 +1,11 @@
 <div class="form-radio margin-bottom">
     <input
-        name="{{id}}"
         type="radio"
+        class="form-radio"
+        name="{{id}}"
+        data-name="{{caption}}"
         id="radio-{{@index}}"
-        {{#if checked}}checked{{/if}}
-        data-id="{{id}}">
+        {{#if value}}checked{{/if}}>
     <label for="radio-{{@index}}">
         {{caption}}
     </label>

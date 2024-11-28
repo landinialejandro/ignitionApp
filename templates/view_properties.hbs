@@ -1,7 +1,7 @@
 {{#each this}}
 <div class="node" data-id="{{id}}" data-type="{{type}}">
-    <div class="card margin-bottom">
-        <div class="card-header">
+    <div class="card margin-bottom expanded">
+        <div class="card-header bg-primary">
             <h3 class="card-title">
                 {{> component_i context="card"}}
                 {{caption}}
@@ -17,7 +17,7 @@
             {{#if properties}}
             <div class="properties">
                 {{#each properties}}
-                {{> properties}}
+                {{> properties node_id=../id}}
                 <!-- Renderiza las propiedades con un parcial -->
                 {{/each}}
             </div>

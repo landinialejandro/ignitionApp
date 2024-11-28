@@ -3,31 +3,31 @@
     "properties": [
         {
             "caption": "Enable detail view",
-            "checked": true
+            "value": true
         },
         {
             "caption": "Delete records even if they have children records",
-            "checked": false
+            "value": false
         },
         {
             "caption": "Allow print view",
-            "checked": false
+            "value": false
         },
         {
             "caption": "Display detail view in a separate page",
-            "checked": false
+            "value": false
         },
         {
             "caption": "Hide 'save as copy' when editing records",
-            "checked": false
+            "value": false
         },
         {
             "caption": "Keep action buttons visible scrolling down",
-            "checked": false
+            "value": false
         },
         {
             "caption": "Allow adding new records from homepage",
-            "checked": false
+            "value": false
         }
     ],
     "type": "checkbox-group",

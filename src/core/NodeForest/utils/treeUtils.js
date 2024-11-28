@@ -5,9 +5,12 @@ export function calculateMaxDepth(node) {
 }
 
 export function canAddChildAtDepth(node, typology) {
-    const currentDepth = calculateMaxDepth(node);
-    const maxDepthAllowed = typology.getMaxDepth(node.type);
-    return currentDepth < maxDepthAllowed;
+
+    return typology.validateTreeStructure(node, node.type);
+
+    // const currentDepth = calculateMaxDepth(node);
+    // const maxDepthAllowed = typology.getMaxDepth(node.type);
+    // return currentDepth < maxDepthAllowed;
 }
 
 export function getDepth(node, findParentById) {

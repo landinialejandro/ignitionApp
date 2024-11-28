@@ -1,19 +1,17 @@
 {
     "caption": "Multilingual Description",
-    "properties": {
-        "placeholder": "Description user helper",
-        "properties": [
+    "placeholder": "Description user helper",
+    "properties": [
             {
-                "id": "en",
+                "caption": "en",
                 "value": "",
                 "default": true
             },
             {
-                "id": "es",
+                "caption": "es",
                 "value": ""
             }
-        ]
-    },
+        ],
     "type": "input-group",
     "icon": {
         "value": "bi bi-journal-bookmark",

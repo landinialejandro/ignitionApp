@@ -3,43 +3,43 @@
     "properties": [
         {
             "caption": "Read only",
-            "checked": false
+            "value": false
         },
         {
             "caption": "Required",
-            "checked": false
+            "value": false
         },
         {
             "caption": "Rich (HTML) area",
-            "checked": false
+            "value": false
         },
         {
             "caption": "Unique",
-            "checked": false
+            "value": false
         },
         {
             "caption": "Show column sum",
-            "checked": false
+            "value": false
         },
         {
             "caption": "Text area",
-            "checked": false
+            "value": false
         },
         {
             "caption": "Do not filter",
-            "checked": false
+            "value": false
         },
         {
             "caption": "Check box",
-            "checked": false
+            "value": false
         },
         {
             "caption": "Hide in table view",
-            "checked": false
+            "value": false
         },
         {
             "caption": "Hide detal view",
-            "checked": false
+            "value": false
         }
     ],
     "type": "checkbox-group",

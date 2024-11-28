@@ -1,17 +1,35 @@
 {
-    "caption": "Database options value",
-    "properties": [
-            {"caption":"Primary key", "checked":false},
-            {"caption":"Zero fill", "checked":false},
-            {"caption":"Auto increment", "checked":false},
-            {"caption":"Unique", "checked":false},
-            {"caption":"Unsigned", "checked":false},
-            {"caption":"Binary", "checked":false}
-        ],
-    "type": "field-settings",
-    "icon": {
+  "caption": "Database options value",
+  "properties": [
+    {
+      "caption": "Primary key",
+      "value": false
+    },
+    {
+      "caption": "Zero fill",
+      "value": false
+    },
+    {
+      "caption": "Auto increment",
+      "value": false
+    },
+    {
+      "caption": "Unique",
+      "value": false
+    },
+    {
+      "caption": "Unsigned",
+      "value": false
+    },
+    {
+      "caption": "Binary",
+      "value": false
+    }
+  ],
+  "type": "radio-group",
+  "icon": {
     "value": "bi bi-wrench-adjustable-circle",
     "type": "class"
   },
-    "order": 8
+  "order": 8
 }

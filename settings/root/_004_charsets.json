@@ -7,15 +7,15 @@
   "properties": [
     {
       "caption": "utf8",
-      "checked": true
+      "value": true
     },
     {
       "caption": "utf16",
-      "checked": false
+      "value": false
     },
     {
       "caption": "ascii",
-      "checked": false
+      "value": false
     }
   ],
   "type": "radio-group",

@@ -751,17 +751,60 @@ body {
   box-shadow: 0 6px 15px rgba(0, 0, 0, 0.3), 0 0 10px #bb86fc;
 }
 .card.expanded > .card-body {
+  max-height: 100%;
+  opacity: 1;
+  overflow: visible;
+}
+.card:not(.expanded) > .card-body {
   max-height: 0;
   opacity: 0;
+  overflow: hidden;
 }
 .card .card-header {
   display: flex;
   align-items: center;
+  justify-content: space-between;
   padding: 0.5rem 1rem;
-  border-bottom: 1px solid #2c2c4f;
+  border: 1px solid #2c2c4f;
   background-color: #0f172b;
-  gap: 0.5rem;
-  min-height: 3.5rem;
+  border-radius: 8px 8px 0 0;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+  transition: border-color 0.3s ease, background-color 0.3s ease;
+}
+.card .card-header.bg-primary {
+  border-color: #3a7bd5;
+  background: linear-gradient(to bottom, #090d18, rgba(255, 255, 255, 0.05));
+  color: #e2ecf9;
+}
+.card .card-header.bg-success {
+  border-color: #4CAF92;
+  background: linear-gradient(to bottom, #090d18, rgba(255, 255, 255, 0.05));
+  color: #d9eee8;
+}
+.card .card-header.bg-danger {
+  border-color: #FF5C5C;
+  background: linear-gradient(to bottom, #090d18, rgba(255, 255, 255, 0.05));
+  color: white;
+}
+.card .card-header.bg-warning {
+  border-color: #FFA726;
+  background: linear-gradient(to bottom, #090d18, rgba(255, 255, 255, 0.05));
+  color: #fffaf2;
+}
+.card .card-header.bg-info {
+  border-color: #56CCF2;
+  background: linear-gradient(to bottom, #090d18, rgba(255, 255, 255, 0.05));
+  color: white;
+}
+.card .card-header.bg-light {
+  border-color: #f5f5f5;
+  background: linear-gradient(to bottom, #090d18, rgba(255, 255, 255, 0.05));
+  color: white;
+}
+.card .card-header.bg-dark {
+  border-color: #1a1a2e;
+  background: linear-gradient(to bottom, #090d18, rgba(255, 255, 255, 0.05));
+  color: #6a6aab;
 }
 .card .card-header > .card-title, .card .card-header > :not(.tools-box):not(i) {
   font-size: 1rem;
@@ -773,6 +816,27 @@ body {
   align-items: center;
   gap: 0.5rem;
 }
+.bg-primary .card .card-header > .card-title, .bg-primary .card .card-header > :not(.tools-box):not(i) {
+  color: #e2ecf9;
+}
+.bg-success .card .card-header > .card-title, .bg-success .card .card-header > :not(.tools-box):not(i) {
+  color: #d9eee8;
+}
+.bg-danger .card .card-header > .card-title, .bg-danger .card .card-header > :not(.tools-box):not(i) {
+  color: white;
+}
+.bg-warning .card .card-header > .card-title, .bg-warning .card .card-header > :not(.tools-box):not(i) {
+  color: #fffaf2;
+}
+.bg-info .card .card-header > .card-title, .bg-info .card .card-header > :not(.tools-box):not(i) {
+  color: white;
+}
+.bg-light .card .card-header > .card-title, .bg-light .card .card-header > :not(.tools-box):not(i) {
+  color: white;
+}
+.bg-dark .card .card-header > .card-title, .bg-dark .card .card-header > :not(.tools-box):not(i) {
+  color: #6a6aab;
+}
 .card .card-body {
   padding: 0.5rem;
   background-color: #1a1a2e;
@@ -782,7 +846,7 @@ body {
   line-height: 1.5;
   max-height: 100%;
   opacity: 1;
-  overflow: hidden;
+  overflow: visible;
   transition: max-height 0.3s ease, opacity 0.3s ease;
 }
 

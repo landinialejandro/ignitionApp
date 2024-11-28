@@ -210,8 +210,8 @@ export class NodeForest {
         return breadcrumb;
     }
 
-    validate(parentNode, nodeOptions, typology) {
-        return validateNode(parentNode, nodeOptions, typology);
+    validate(parentNode, nodeOptions) {
+        return validateNode(parentNode, nodeOptions, this.typology);
     }
 
     getListCaptionsByType(nodes, type) {

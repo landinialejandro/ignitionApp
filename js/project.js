@@ -168,8 +168,14 @@ const actionCallbacks = {
      */
     renameNode: (nodeType, anchor, nodeId) => {
         const newName = getUserInput("Ingrese el nuevo nombre:", validateGenericInput);
-        const parentNode = project.findParentById(nodeId);
+        let parentNode = project.findParentById(nodeId);
+
         const currentNode = project.findChildById(nodeId);
+
+        if (currentNode.type === "root" & !parentNode) {
+            toastmaster.danger("Se renombra el nodo raíz.");
+            parentNode = {...currentNode};  
+        }
 
         if (newName) {
             let sanitizedCaption = sanitizeInput(newName, true);
@@ -177,7 +183,7 @@ const actionCallbacks = {
             const nodeOptions = { ...currentNode, caption: sanitizedCaption }; // Clonar el nodo original con el nuevo 
 
             // Validaciones centralizadas
-            const validation = project.validate(parentNode, nodeOptions, typology);
+            const validation = project.validate(parentNode, nodeOptions);
             if (!validation.isValid) {
                 toastmaster.danger(validation.message);
                 return false;
@@ -296,12 +302,12 @@ const saveProject = async () => {
 };
 
 const saveNodeListener = () => {
-    $$(Constants.CONTENT).on('submit', '#properties-form', (e) => {
+    $$(Constants.CONTENT).on('submit', '.card-body', (e) => {
         e.preventDefault();
         // Captura el formulario y el ID del nodo
         const form = e.target;
-        const nodeId = form.getAttribute('data-id');
-
+        const propertieId = form.getAttribute('data-id');
+        const nodeId = e.target.closest('.node').getAttribute('data-id');
         // Recolecta todos los inputs del formulario
         const inputs = form.querySelectorAll("input, textarea, select");
         const updatedValues = [];
@@ -311,8 +317,8 @@ const saveNodeListener = () => {
             if (input.type === "checkbox" || input.type === "radio") {
                 // Incluye todos los checkbox y radios con su estado checked
                 updatedValues.push({
-                    caption: input.name || input.id,
-                    checked: input.checked // true si está marcado, false si no
+                    caption: input.getAttribute('data-name') || input.id,
+                    value: input.checked // true si está marcado, false si no
                 });
             } else {
                 // Procesa otros tipos de input (text, textarea, select)
@@ -323,12 +329,34 @@ const saveNodeListener = () => {
             }
         });
 
+        //console.log(updatedValues);
         const node = project.findChildById(nodeId);
+        //console.log(node);
 
         // Actualiza las propiedades con map
-        node.properties.properties = node.properties.properties.map((v, k) => {
-            toastmaster.echo(v, k);
-            return { ...v, ...updatedValues[k] }; // Crea un nuevo objeto con las actualizaciones
+        node.properties = node.properties.map((v) => {
+            if (v.id === propertieId) {
+                // Actualizar tanto el caption como el icon
+                const newCaption = updatedValues.find((update) => update.caption === "Caption")?.value;
+                const newIcon = updatedValues.find((update) => update.caption === "icon class")?.value;
+
+                return {
+                    ...v,
+                    caption: newCaption || v.caption, // Actualizar caption si existe un nuevo valor
+                    icon: {
+                        ...v.icon,
+                        value: newIcon || v.icon.value // Actualizar icon si existe un nuevo valor
+                    },
+                    properties: v.properties.map((prop) => {
+                        const updatedProp = updatedValues.find((update) => update.caption === prop.caption);
+                        if (updatedProp && updatedProp.value !== prop.value) {
+                            return { ...prop, value: updatedProp.value }; // Actualizar si el value es diferente
+                        }
+                        return prop; // Mantener sin cambios si no se actualiza
+                    }),
+                };
+            }
+            return v; // Mantener sin cambios si no coincide el ID
         });
     })
 }
@@ -338,7 +366,7 @@ const saveNodeListener = () => {
  */
 const nodeProjectListener = () => {
     // Delegar eventos al contenedor estático
-    $$(".node-link").on("click", function (e) {
+    $$(".project-container").on("click", ".node-link", function (e) {
         e.preventDefault();
         e.stopPropagation();
 

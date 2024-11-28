@@ -7,27 +7,27 @@
     "properties": [
       {
         "caption": "Use 24Hs time format",
-        "checked": false,
+        "value": false,
         "usershelper": "Enable this function to show time in 24 Hs format"
       },
       {
         "caption": "Don't enforce MYSQL encoding",
-        "checked": false,
+        "value": false,
         "usershelper": "Enable this option to Don't enforce MYSQL encoding"
       },
       {
         "caption": "Hide the login/menbership system",
-        "checked": false,
+        "value": false,
         "usershelper": "Enable this option to Hide the login/menbership system"
       },
       {
         "caption": "Allow admin access to server status page",
-        "checked": false,
+        "value": false,
         "usershelper": "Enable this option to Allow admin access to server status page"
       },
       {
         "caption": "Show technical documentation page in the admin area",
-        "checked": false,
+        "value": false,
         "usershelper": "Enable this option to Show technical documentation page in the admin area"
       }
     ],

@@ -3,8 +3,9 @@
         type="checkbox"
         class="form-check"
         name="{{caption}}"
+        data-name="{{caption}}"
         id="checkbox-{{@index}}"
-        {{#if checked}}checked{{/if}}>
+        {{#if value}}checked{{/if}}>
     <label for="checkbox-{{@index}}">
         {{caption}}
     </label>

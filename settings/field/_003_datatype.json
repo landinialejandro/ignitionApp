@@ -3,95 +3,95 @@
     "properties": [
         {
             "caption": "Tiny Integer",
-            "checked": false
+            "value": false
         },
         {
             "caption": "Small Integer",
-            "checked": false
+            "value": false
         },
         {
             "caption": "Medium Integer",
-            "checked": false
+            "value": false
         },
         {
             "caption": "Integer",
-            "checked": false
+            "value": false
         },
         {
             "caption": "Big Integer",
-            "checked": false
+            "value": false
         },
         {
             "caption": "Float",
-            "checked": false
+            "value": false
         },
         {
             "caption": "Double",
-            "checked": false
+            "value": false
         },
         {
             "caption": "Decimal",
-            "checked": false
+            "value": false
         },
         {
             "caption": "Date",
-            "checked": false
+            "value": false
         },
         {
             "caption": "DateTime",
-            "checked": false
+            "value": false
         },
         {
             "caption": "Time",
-            "checked": false
+            "value": false
         },
         {
             "caption": "Time Stamp",
-            "checked": false
+            "value": false
         },
         {
             "caption": "Year",
-            "checked": false
+            "value": false
         },
         {
             "caption": "Char",
-            "checked": false
+            "value": false
         },
         {
             "caption": "VarChar",
-            "checked": false
+            "value": false
         },
         {
             "caption": "Tiny Blob",
-            "checked": false
+            "value": false
         },
         {
             "caption": "Tiny Text",
-            "checked": false
+            "value": false
         },
         {
             "caption": "captions",
-            "checked": false
+            "value": false
         },
         {
             "caption": "BLOB",
-            "checked": false
+            "value": false
         },
         {
             "caption": "Medium BLOB",
-            "checked": false
+            "value": false
         },
         {
             "caption": "Medium Text",
-            "checked": false
+            "value": false
         },
         {
             "caption": "Long BLOB",
-            "checked": false
+            "value": false
         },
         {
             "caption": "Long Text",
-            "checked": false
+            "value": false
         }
     ],
     "type": "radio-group",

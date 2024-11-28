@@ -1,7 +1,3 @@
-// scss/components/_card.scss
-
-@use 'sass:math';
-
 .card {
   background-color: $color-background-alt;
   color: $color-text;
@@ -16,33 +12,66 @@
     transform: translateY(-4px);
     box-shadow: 0 6px 15px $color-shadow, 0 0 10px $color-accent;
   }
-  
+
+  // Estado expandido (por defecto)
   &.expanded>.card-body {
+    max-height: 100%; // Altura máxima permitida cuando está expandido
+    opacity: 1;
+    overflow: visible; // Permite contenido visible
+  }
+
+  // Estado colapsado
+  &:not(.expanded)>.card-body {
     max-height: 0;
-    opacity: 0 ;
+    opacity: 0;
+    overflow: hidden; // Oculta el contenido colapsado
   }
 
   .card-header {
     display: flex;
     align-items: center;
+    justify-content: space-between;
     padding: $spacing-xs $spacing-sm;
-    border-bottom: 1px solid $color-hover;
-    background-color: darken($color-background-alt, 5%);
-    gap: $spacing-xs;
-    min-height: calc($header-height * (2/3));
-
-    >.card-title,
-    &> :not(.tools-box):not(i) {
+    border: 1px solid $color-hover; // Borde general con color sutil
+    background-color: darken($color-background-alt, 5%); // Fondo predeterminado oscuro
+    @include rounded($radius: 8px 8px 0 0); // Bordes redondeados solo en la parte superior
+    @include shadow(); // Sombra ligera
+    transition: border-color 0.3s ease, background-color 0.3s ease;
+  
+    // Estilos dinámicos basados en colores temáticos
+    @each $theme, $color in $theme-colors {
+      &.bg-#{$theme} {
+        border-color: $color; // Color del borde
+        background: linear-gradient(
+          to bottom,
+          darken($color-background-alt, 10%),
+          $color-alert-background
+        ); // Fondo degradado
+        color: lighten($color, 40%); // Texto más claro
+      }
+    }
+  
+    // Título del header
+    > .card-title,
+    & > :not(.tools-box):not(i) {
       font-size: 1rem;
       font-weight: $font-weight-bold;
-      color: $color-text;
+      color: $color-text; // Texto por defecto
       margin: 0;
       flex-grow: 1;
       display: flex;
       align-items: center;
       gap: $spacing-xs; // Espacio entre el icono y el texto
+  
+      // Asegurar colores dinámicos
+      @each $theme, $color in $theme-colors {
+        .bg-#{$theme} & {
+          color: lighten($color, 40%);
+        }
+      }
     }
   }
+  
 
   .card-body {
     padding: $spacing-xs;
@@ -51,11 +80,9 @@
     box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.1);
     font-size: 0.9rem;
     line-height: 1.5;
-    max-height: 100%;
+    max-height: 100%; // Ajuste inicial para estado expandido
     opacity: 1;
-    overflow: hidden;
+    overflow: visible;
     transition: max-height 0.3s ease, opacity 0.3s ease;
-
-    
   }
 }

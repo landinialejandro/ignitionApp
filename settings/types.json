@@ -23,7 +23,7 @@
     },
     "validChildren": [
       "group",
-      "settings"
+      "root"
     ],
     "id": "root-node",
     "caption": "Nuevo Proyecto",
@@ -55,8 +55,7 @@
       }
     },
     "validChildren": [
-      "table",
-      "settings"
+      "table"
     ],
     "description": "Agrupa las tablas para dar un formato a la pagina principal",
     "unique": true,
@@ -86,8 +85,7 @@
       }
     },
     "validChildren": [
-      "field",
-      "settings"
+      "field"
     ],
     "description": "tabla asociada a un grupo",
     "unique": true,
@@ -111,9 +109,7 @@
         "callback": "deleteNode"
       }
     },
-    "validChildren": [
-      "settings"
-    ],
+    "validChildren": [],
     "description": "Campos de una tabla",
     "unique": false,
     "uniqueWithinParent": true,
@@ -137,14 +133,15 @@
       }
     },
     "validChildren": [
-      "file"
+      "file",
+      "folder"
     ],
     "description": "tipo carpetas",
     "unique": false,
     "uniqueWithinParent": true,
     "required": false
   },
-  "file" : {
+  "file": {
     "maxChildren": 0,
     "maxDepth": 6,
     "icon": {
@@ -161,12 +158,10 @@
         "callback": "deleteNode"
       }
     },
-    "validChildren": [
-    ],
+    "validChildren": [],
     "description": "Archivo nuevo, inlcuir extensión",
     "unique": false,
     "uniqueWithinParent": true,
     "required": false
-  }   
-
+  }
 }

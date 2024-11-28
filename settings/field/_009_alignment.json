@@ -1,15 +1,20 @@
 {
     "caption": "Alignment",
-    "properties": [{
-        "caption": "Left",
-        "option": true,
-        "options": [
-            "Left",
-            "Right",
-            "Center"
-        ]
-    }],
-    "type": "field-settings",
+    "properties": [
+        {
+            "caption": "Left",
+            "value": false
+        },
+        {
+            "caption": "Center",
+            "value": false
+        },
+        {
+            "caption": "Right",
+            "value": false
+        }
+    ],
+    "type": "radio-group",
     "icon": {
         "value": "bi bi-wrench-adjustable-circle",
         "type": "class"

@@ -1,9 +1,10 @@
 {
     "caption": "Precision",
+    "usershelper": "Set the presicion value",
     "properties": [
         {
+            "caption": "Precision",
             "placeholder": "Presicion value",
-            "usershelper": "Set the presicion value",
             "value": ""
         }
     ],

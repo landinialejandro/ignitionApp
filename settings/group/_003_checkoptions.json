@@ -7,7 +7,7 @@
     "properties": [
         {
             "caption": "Show Only in admin group?",
-            "checked": false
+            "value": false
         }
     ],
     "type": "checkbox-group",

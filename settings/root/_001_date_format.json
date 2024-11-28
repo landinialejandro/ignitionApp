@@ -7,7 +7,7 @@
   "properties": [
     {
       "caption": "Month, Day, Year",
-      "checked": false
+      "value": false
     },
     {
       "caption": "Day, Month, Year",
@@ -15,7 +15,7 @@
     },
     {
       "caption": "Year, Day, Month",
-      "checked": true
+      "value": true
     }
   ],
   "type": "radio-group",

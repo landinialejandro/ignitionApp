@@ -3,8 +3,8 @@
 <div class="node" data-id="{{id}}">
 
     <!-- Renderiza el nodo -->
-    <div class="card margin-bottom">
-        <div class="card-header">
+    <div class="card margin-bottom expanded">
+        <div class="card-header bg-success">
             <h3 class="card-title">
                 {{> component_i context="card"}}
                 {{caption}}
@@ -21,7 +21,7 @@
             {{#if properties}}
             <div class="properties">
                 {{#each properties}}
-                {{> properties}} <!-- Parcial para renderizar propiedades -->
+                {{> properties node_id=../id}} <!-- Parcial para renderizar propiedades -->
                 {{/each}}
             </div>
             {{/if}}

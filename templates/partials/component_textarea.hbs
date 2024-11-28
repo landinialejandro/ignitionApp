@@ -1,10 +1,11 @@
 <div class="form-group margin-bottom">
     <label class="form-label">{{caption}}</label>
     <textarea
+        name="{{caption}}"
         class="form-textarea"
         id="textarea-{{caption}}"
         placeholder="{{placeholder}}"
-        data-id="{{id}}">{{caption}}</textarea>
+        data-id="{{id}}">{{value}}</textarea>
     {{#if usershelper}}
     {{> usershelper}}
     {{/if}}

@@ -3,51 +3,51 @@
     "properties": [
         {
             "caption": "Descendingly",
-            "checked": false
+            "value": false
         },
         {
             "caption": "Show quick search box",
-            "checked": false
+            "value": false
         },
         {
             "caption": "Allow Sorting",
-            "checked": false
+            "value": false
         },
         {
             "caption": "Allow filters",
-            "checked": false
+            "value": false
         },
         {
             "caption": "Allow saving data to CSV files",
-            "checked": false
+            "value": false
         },
         {
             "caption": "Allow print-view",
-            "checked": false
+            "value": false
         },
         {
             "caption": "Allow user to save filters",
-            "checked": false
+            "value": false
         },
         {
             "caption": "Hide link in home page",
-            "checked": false
+            "value": false
         },
         {
             "caption": "Allow mass delete",
-            "checked": false
+            "value": false
         },
         {
             "caption": "Filter before showing table view",
-            "checked": false
+            "value": false
         },
         {
             "caption": "Hide link in navigation menu",
-            "checked": false
+            "value": false
         },
         {
             "caption": "Show record count in home page",
-            "checked": false
+            "value": false
         }
     ],
     "type": "checkbox-group",

@@ -1,5 +1,5 @@
-<div class="card margin-bottom">
-    <div class="card-header">
+<div class="card margin-bottom expanded">
+    <div class="card-header bg-warning">
         <h3 class="card-title">
             {{> component_i context="card"}}
             {{caption}} <!-- Título de la tarjeta -->
@@ -19,35 +19,35 @@
         <div class="margin-bottom"></div>
         {{/if}}
 
-        <div class="card card-glow margin-bottom-lg">
+        <div class="card card-glow margin-bottom-lg expanded">
             <form id="properties-form-{{id}}" class="card-body"
-                data-id="{{../id}}">
+                data-id="{{id}}">
                 {{#if (eq type "input-group")}}
                 {{#each properties}}
-                {{> component_input id=../../id}}
+                {{> component_input id=../id}}
                 {{/each}}
 
                 {{else if (eq type "textarea-group")}}
                 {{#each properties}}
-                {{> component_textarea id=../../id}}
+                {{> component_textarea id=../id}}
                 {{/each}}
 
                 {{else if (eq type "checkbox-group")}}
                 {{#each properties}}
-                {{> component_checkbox id=../../id}}
+                {{> component_checkbox id=../id}}
                 {{/each}}
 
                 {{else if (eq type "radio-group")}}
                 {{#each properties}}
-                {{> component_radio id=../../id}}
+                {{> component_radio id=../id}}
                 {{/each}}
                 {{/if}}
                 <button type="submit"
                     class="button secondary save-node-properties">Guardar</button>
             </form>
         </div>
-        <div class="card card-glow margin-bottom-lg">
-            <div id="node-info-{{../id}}" class="card-body">
+        <div class="card card-glow margin-bottom-lg expanded">
+            <form id="propertie-info-{{id}}" class="card-body"  data-id="{{id}}">
                 <div class="margin-bottom"></div>
                 <span class="text-info">Propertie info</span>
                 <div class="margin-bottom-lg">
@@ -63,9 +63,10 @@
                 {{#with icon}}
                 {{> component_input caption=(concat "icon " type) value=value}}
                 {{/with}}
+                {{> component_input caption="Caption" value=caption}}
                 <button type="submit"
-                    class="button secondary save-node-info">Guardar</button>
-            </div>
+                    class="button secondary save-properties">Guardar</button>
+            </form>
         </div>
     </div>
 </div>

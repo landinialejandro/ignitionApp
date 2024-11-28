@@ -2,6 +2,7 @@
     "caption": "Max character in table view",
     "properties": [
         {
+            "caption": "Max character in table view",
             "placeholder": "Max character in table view value",
             "value": ""
         }

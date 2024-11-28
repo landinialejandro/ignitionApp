@@ -2,6 +2,7 @@
     "caption": "Lenght",
     "properties": [
         {
+            "caption": "Lenght",
             "placeholder": "Lenght string o value",
             "value": ""
         }

@@ -1,7 +1,6 @@
 {
     "caption": "Multilingual Captions",
-    "properties": {
-        "properties": [
+    "properties": [
             {
                 "caption": "en",
                 "placeholder": "Caption Field",
@@ -15,8 +14,7 @@
                 "usershelper": "Identifica el título en español",
                 "value": ""
             }
-        ]
-    },
+        ],
     "type": "input-group",
     "icon": {
         "value": "bi bi-type",

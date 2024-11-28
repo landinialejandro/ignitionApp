@@ -3,35 +3,35 @@
     "properties": [
         {
             "caption": "Create by user Name",
-            "checked": false
+            "value": false
         },
         {
             "caption": "Creation Date",
-            "checked": false
+            "value": false
         },
         {
             "caption": "Creation Time",
-            "checked": false
+            "value": false
         },
         {
             "caption": "Creation TimeStamp",
-            "checked": false
+            "value": false
         },
         {
             "caption": "Edited by user Name",
-            "checked": false
+            "value": false
         },
         {
             "caption": "Edition Date",
-            "checked": false
+            "value": false
         },
         {
             "caption": "Edition Time",
-            "checked": false
+            "value": false
         },
         {
             "caption": "Edition TimeStamp",
-            "checked": false
+            "value": false
         }
     ],
     "type": "radio-group",

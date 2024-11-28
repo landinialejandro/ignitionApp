@@ -3,7 +3,7 @@
     "properties": [
         {
             "caption": "None",
-            "checked": true
+            "value": true
         }
     ],
     "type": "radio-group",
