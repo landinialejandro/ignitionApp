@@ -1,8 +1,6 @@
 {{! recursive_properties.hbs }}
 {{#each this}}
 <div class="node" data-id="{{id}}">
-
-    <!-- Renderiza el nodo -->
     <div class="card margin-bottom expanded">
         <div class="card-header bg-success">
             <h3 class="card-title">
@@ -10,26 +8,21 @@
                 {{caption}}
             </h3>
             <div class="tools-box">
-                <button class="button-tool button-collapse expanded"
-                    aria-label="Expandir/Contraer">
-                    <i class="bi bi-chevron-right card-collapse"></i>
-                </button>
+                {{> button_collapse expanded}}
             </div>
         </div>
         <div class="card-body">
-            <!-- Renderiza propiedades -->
             {{#if properties}}
             <div class="properties">
                 {{#each properties}}
-                {{> properties node_id=../id}} <!-- Parcial para renderizar propiedades -->
+                {{> properties node_id=../id}}
                 {{/each}}
             </div>
             {{/if}}
 
-            <!-- Procesa los hijos de forma recursiva -->
             {{#if children}}
             <div class="children">
-                {{> recursive_properties children}} <!-- Llamada recursiva -->
+                {{> recursive_properties children}}
             </div>
             {{/if}}
         </div>

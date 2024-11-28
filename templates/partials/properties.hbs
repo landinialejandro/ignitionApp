@@ -2,7 +2,7 @@
     <div class="card-header bg-warning">
         <h3 class="card-title">
             {{> component_i context="card"}}
-            {{caption}} <!-- Título de la tarjeta -->
+            {{caption}} propertie
         </h3>
         <div class="tools-box">
             <button class="button-tool button-collapse expanded"
@@ -22,6 +22,7 @@
         <div class="card card-glow margin-bottom-lg expanded">
             <form id="properties-form-{{id}}" class="card-body"
                 data-id="{{id}}">
+                <div class="form-container two-columns" >
                 {{#if (eq type "input-group")}}
                 {{#each properties}}
                 {{> component_input id=../id}}
@@ -42,39 +43,11 @@
                 {{> component_radio id=../id}}
                 {{/each}}
                 {{/if}}
+                </div>
                 <button type="submit"
                     class="button secondary save-node-properties">Guardar</button>
             </form>
         </div>
-        <div class="card margin-bottom-lg">
-            <div class="card-header-minimal">
-                <span class="card-title">Propertie info</span>
-                <div class="tools-box">
-                    <button class="button-tool button-collapse"
-                        aria-label="Expandir/Contraer">
-                        <i class="bi bi-chevron-right card-collapse"></i>
-                    </button>
-                </div>
-            </div>
-            <form id="propertie-info-{{id}}" class="card-body" data-id="{{id}}">
-                <span class="text-info"></span>
-                <div class="margin-bottom-lg">
-                    <div>
-                        <span class="badge badge-sm badge-info">Order:
-                            {{order}}</span>
-                        <span class="badge badge-sm badge-success">Caption:
-                            {{caption}}</span>
-                        <span class="badge badge-sm badge-primary">Type:
-                            {{type}}</span>
-                    </div>
-                </div>
-                {{#with icon}}
-                {{> component_input caption=(concat "icon " type) value=value}}
-                {{/with}}
-                {{> component_input caption="Caption" value=caption}}
-                <button type="submit"
-                    class="button secondary save-properties">Guardar</button>
-            </form>
-        </div>
+        {{> card_propertie_info}}
     </div>
 </div>

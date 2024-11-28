@@ -31,10 +31,7 @@
                 <i class="bi bi-trash node-delete"></i>
             </button>
             {{#if children}}
-            <button class="button-tool button-collapse expanded"
-                aria-label="Expandir/Contraer">
-                <i class="bi bi-chevron-right node-collapse"></i>
-            </button>
+            {{> button_collapse expanded}}
             {{/if}}
         </div>
         {{/when}}

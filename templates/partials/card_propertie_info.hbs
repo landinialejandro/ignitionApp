@@ -1,0 +1,31 @@
+<div class="card margin-bottom-lg">
+    <div class="card-header-minimal">
+        <span class="card-title">{{caption}} propertie info</span>
+        <div class="tools-box">
+            {{>button_collapse}}
+        </div>
+    </div>
+    <form id="propertie-info-{{id}}" class="card-body" data-id="{{id}}">
+        <span class="text-info"></span>
+        <div class="margin-bottom-lg">
+            <div>
+                <span class="badge badge-sm badge-warning">Grupo:
+                    {{group}}</span>
+                <span class="badge badge-sm badge-info">Order:
+                    {{order}}</span>
+                <span class="badge badge-sm badge-success">Caption:
+                    {{caption}}</span>
+                <span class="badge badge-sm badge-primary">Type:
+                    {{type}}</span>
+                <span class="badge badge-sm badge-danger">ID:
+                    {{id}}</span>
+            </div>
+        </div>
+        {{#with icon}}
+        {{> component_input caption=(concat "icon " type) value=value}}
+        {{/with}}
+        {{> component_input caption="Caption" value=caption}}
+        <button type="submit"
+            class="button secondary save-properties">Guardar</button>
+    </form>
+</div>
