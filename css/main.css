@@ -79,7 +79,7 @@ body {
     box-shadow: 0 0 5px #bb86fc;
   }
 }
-@media (max-width: 600px) {
+@media (max-width: 900px) {
   .sidebar {
     width: 4rem;
     position: flex;
@@ -227,7 +227,7 @@ body {
 .sidebar.collapsed .sidebar-footer .user-content {
   display: none;
 }
-@media (max-width: 600px) {
+@media (max-width: 900px) {
   .sidebar.expanded {
     width: 16rem;
   }
@@ -914,7 +914,7 @@ body {
 .col-container.cols-4.layout-1-1-2 .col:nth-child(3) {
   flex: 1 1 calc(50% - 16px);
 }
-@media (max-width: 900px) {
+@media (max-width: 1200px) {
   .col-container.cols-2 .col {
     flex: 1 1 calc(100% - 16px);
   }
@@ -925,7 +925,7 @@ body {
     flex: 1 1 calc(50% - 16px);
   }
 }
-@media (max-width: 600px) {
+@media (max-width: 900px) {
   .col-container.cols-3 .col, .col-container.cols-4 .col {
     flex: 1 1 calc(100% - 16px);
   }
@@ -1016,6 +1016,47 @@ body {
   display: block;
 }
 
+.form-container {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  padding: 16px;
+  color: #e0e0e0;
+}
+
+/* Aplicar dos columnas si hay más de 3 elementos */
+.form-container:has(.form-group:nth-child(4)).two-columns,
+.form-container:has(.form-check:nth-child(4)).two-columns,
+.form-container:has(.form-radio:nth-child(4)).two-columns {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  -moz-column-gap: 16px;
+       column-gap: 16px;
+  row-gap: 8px;
+}
+@media (max-width: 2500px) {
+  .form-container:has(.form-group:nth-child(4)).two-columns,
+  .form-container:has(.form-check:nth-child(4)).two-columns,
+  .form-container:has(.form-radio:nth-child(4)).two-columns {
+    grid-template-columns: 1fr 1fr 1fr; /* Tres columnas en pantallas grandes */
+  }
+}
+@media (max-width: 1200px) {
+  .form-container:has(.form-group:nth-child(4)).two-columns,
+  .form-container:has(.form-check:nth-child(4)).two-columns,
+  .form-container:has(.form-radio:nth-child(4)).two-columns {
+    grid-template-columns: 1fr 1fr; /* Dos columnas en pantallas medianas */
+  }
+}
+@media (max-width: 900px) {
+  .form-container:has(.form-group:nth-child(4)).two-columns,
+  .form-container:has(.form-check:nth-child(4)).two-columns,
+  .form-container:has(.form-radio:nth-child(4)).two-columns {
+    grid-template-columns: 1fr; /* Una sola columna en pantallas pequeñas */
+  }
+}
+
+/* Estilos de elementos individuales */
 .form-group {
   display: flex;
   flex-direction: column;
@@ -1030,7 +1071,6 @@ body {
 .form-group .form-help {
   font-size: 0.75rem;
   color: #b0b0b0;
-  margin-top: 0.5rem;
 }
 .form-group .form-input,
 .form-group .form-textarea {
