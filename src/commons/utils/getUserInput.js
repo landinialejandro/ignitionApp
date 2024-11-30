@@ -37,7 +37,7 @@ export const validateGenericInput = (input) => {
 /**
  * Solicita un dato al usuario con validación opcional.
  * @param {string} promptMessage - Mensaje a mostrar al usuario.
- * @param {function} validateFn - Función de validación opcional.
+ * @param {function} validateFn - Función de validación opcional. tipo callback
  * @returns {string|null} - Entrada válida del usuario o null si se cancela.
  */
 export const getUserInput = (promptMessage, validateFn = null) => {
@@ -75,3 +75,5 @@ export const getUserInput = (promptMessage, validateFn = null) => {
 // } else {
 //     console.log('Operación cancelada o entrada inválida.');
 // }
+
+

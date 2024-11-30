@@ -10,7 +10,8 @@
             "placeholder": "/",
             "caption": "Separator",
             "usershelper": "Write a date saparator to use",
-            "value":""
+            "value":"",
+            "required": true
         }
     ],
     "type": "input-group",

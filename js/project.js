@@ -9,7 +9,7 @@
  * Incluye inicialización, manejo de eventos, acciones en los nodos y renderizado dinámico.
  */
 
-import { get_data, sanitizeInput, saveFileToServer } from '../src/index.js';
+import { get_data, sanitizeInput, saveFileToServer, validateErrorsForm } from '../src/index.js';
 import { getDirCollectionJson } from './libraries/helpers.js';
 import { $$ } from './libraries/selector.js';
 
@@ -20,6 +20,10 @@ import { Typology } from '../src/index.js';
 
 import { registerButtonAction } from './layout.js';
 import { chopTree } from '../src/core/ChopTree/chopTree.js';
+import { validateProperties } from '../src/core/Validate/validate.js';
+
+import { procesInputForm } from '../src/index.js';
+
 
 
 // Variables globales necesarias para la gestión del proyecto
@@ -313,55 +317,48 @@ const saveNodeListener = () => {
         const propertieId = form.getAttribute('data-id');
         const nodeId = e.target.closest('.node').getAttribute('data-id');
         // Recolecta todos los inputs del formulario
-        const inputs = form.querySelectorAll("input, textarea, select");
-        const updatedValues = [];
 
-        // Procesa todos los inputs
-        inputs.forEach(input => {
-            if (input.type === "checkbox" || input.type === "radio") {
-                // Incluye todos los checkbox y radios con su estado checked
-                updatedValues.push({
-                    caption: input.getAttribute('data-name') || input.id,
-                    value: input.checked // true si está marcado, false si no
-                });
-            } else {
-                // Procesa otros tipos de input (text, textarea, select)
-                updatedValues.push({
-                    caption: input.name || input.id,
-                    value: input.value
-                });
-            }
-        });
+        const updatedValues = procesInputForm(form);
 
-        //console.log(updatedValues);
         const node = project.findChildById(nodeId);
-        //console.log(node);
 
-        // Actualiza las propiedades con map
-        node.properties = node.properties.map((v) => {
-            if (v.id === propertieId) {
-                // Actualizar tanto el caption como el icon
-                const newCaption = updatedValues.find((update) => update.caption === "Caption")?.value;
-                const newIcon = updatedValues.find((update) => update.caption === "icon class")?.value;
+        const prop = node.properties.find((p) => p.id === propertieId); // busca la propiedad que se está editando
 
-                return {
-                    ...v,
-                    caption: newCaption || v.caption, // Actualizar caption si existe un nuevo valor
-                    icon: {
-                        ...v.icon,
-                        value: newIcon || v.icon.value // Actualizar icon si existe un nuevo valor
-                    },
-                    properties: v.properties.map((prop) => {
-                        const updatedProp = updatedValues.find((update) => update.caption === prop.caption);
-                        if (updatedProp && updatedProp.value !== prop.value) {
-                            return { ...prop, value: updatedProp.value }; // Actualizar si el value es diferente
-                        }
-                        return prop; // Mantener sin cambios si no se actualiza
-                    }),
-                };
-            }
-            return v; // Mantener sin cambios si no coincide el ID
-        });
+        console.log(prop.properties);
+        console.log(updatedValues);
+
+        const errors = validateProperties(prop.properties, updatedValues);
+
+        if (!validateErrorsForm(form, errors)) {
+            // Actualiza las propiedades con map
+            node.properties = node.properties.map((v) => {
+                if (v.id === propertieId) {
+                    // Actualizar tanto el caption como el icon
+                    const newCaption = updatedValues.find((update) => update.caption === "Caption")?.value;
+                    const newIcon = updatedValues.find((update) => update.caption === "icon class")?.value;
+
+                    return {
+                        ...v,
+                        caption: newCaption || v.caption, // Actualizar caption si existe un nuevo valor
+                        icon: {
+                            ...v.icon,
+                            value: newIcon || v.icon.value // Actualizar icon si existe un nuevo valor
+                        },
+                        properties: v.properties.map((prop) => {
+                            const updatedProp = updatedValues.find((update) => update.caption === prop.caption);
+                            if (updatedProp && updatedProp.value !== prop.value) {
+                                return { ...prop, value: updatedProp.value }; // Actualizar si el value es diferente
+                            }
+                            return prop; // Mantener sin cambios si no se actualiza
+                        }),
+                    };
+                }
+                return v; // Mantener sin cambios si no coincide el ID
+            });
+            toastmaster.success('Se han realizado cambios.');
+        } else {
+            toastmaster.danger('No se han realizado cambios.');
+        }
     })
 }
 

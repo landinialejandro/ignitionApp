@@ -1016,27 +1016,6 @@ body {
   display: block;
 }
 
-.form-container {
-  display: flex;
-  flex-direction: column;
-  gap: 8px;
-  padding: 16px;
-  color: #e0e0e0;
-}
-
-.form-container:has(.form-group:nth-child(4)),
-.form-container:has(.form-check:nth-child(4)),
-.form-container:has(.form-radio:nth-child(4)) {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  /* Dos columnas */
-  -moz-column-gap: 16px;
-       column-gap: 16px;
-  /* Espaciado horizontal entre columnas */
-  row-gap: 8px;
-  /* Espaciado vertical entre filas */
-}
-
 .form-group {
   display: flex;
   flex-direction: column;
@@ -1078,6 +1057,22 @@ body {
 .form-group .form-textarea {
   min-height: 80px;
   resize: vertical;
+}
+.form-group.error .form-input,
+.form-group.error .form-textarea {
+  border-color: #FF5C5C;
+  box-shadow: 0 0 5px rgba(255, 92, 92, 0.5);
+}
+.form-group.error .form-label {
+  color: #FF5C5C;
+}
+.form-group.error .form-help {
+  color: #FF5C5C;
+}
+.form-group.error .error-message {
+  font-size: 0.75rem;
+  color: #FF5C5C;
+  margin-top: 0.5rem;
 }
 .form-group .form-check,
 .form-group .form-radio {

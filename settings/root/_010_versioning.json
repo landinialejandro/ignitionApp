@@ -22,7 +22,9 @@
             "caption": "Build",
             "usershelper": "Build counter",
             "placeholder": "Build number counter",
-            "value": "0"
+            "value": "0",
+            "usershelpers":"automatic increment"
+            
         },
         {
             "caption": "Release",

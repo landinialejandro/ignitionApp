@@ -1,27 +1,4 @@
-// scss/components/_form.scss
-
-.form-container {
-  display: flex;
-  flex-direction: column;
-  gap: $spacing-sm; // Espacio entre elementos del formulario
-  padding: $spacing-md;
-  // background-color: $color-background-alt;
-  color: $color-text;
-  // @include rounded();
-  // @include shadow();
-}
-
-.form-container:has(.form-group:nth-child(4)),
-.form-container:has(.form-check:nth-child(4)),
-.form-container:has(.form-radio:nth-child(4)) {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  /* Dos columnas */
-  column-gap: $spacing-md;
-  /* Espaciado horizontal entre columnas */
-  row-gap: $spacing-sm;
-  /* Espaciado vertical entre filas */
-}
+// * file: scss/components/_form.scss
 
 .form-group {
   display: flex;
@@ -29,18 +6,21 @@
   gap: $spacing-xs;
   position: relative;
 
+  // Etiqueta del campo
   .form-label {
     font-size: 0.875rem;
     color: $color-text-muted;
     font-weight: $font-weight-normal;
   }
 
+  // Mensaje de ayuda
   .form-help {
     font-size: 0.75rem;
     color: $color-text-muted;
     margin-top: $spacing-xs;
   }
 
+  // Entrada y textarea
   .form-input,
   .form-textarea {
     background-color: $color-background;
@@ -61,9 +41,35 @@
     }
   }
 
+  // Textarea específico
   .form-textarea {
     min-height: 80px;
     resize: vertical; // Permitir ajuste vertical
+  }
+
+  // Estilo para errores
+  &.error {
+
+    .form-input,
+    .form-textarea {
+      border-color: $color-danger-border; // Color rojo para el borde
+      box-shadow: 0 0 5px rgba($color-danger-border, 0.5); // Resaltar con sombra
+    }
+
+    .form-label {
+      color: $color-danger-border; // Color rojo para el label
+    }
+
+    .form-help {
+      color: $color-danger-border; // Mensaje de ayuda en rojo
+    }
+
+    // Mensaje de error adicional
+    .error-message {
+      font-size: 0.75rem;
+      color: $color-danger-border;
+      margin-top: $spacing-xs;
+    }
   }
 
   .form-check,
