@@ -58,7 +58,7 @@ const initializeLayout = () => {
    */
   const handleResize = () => {
     if (sidebar) {
-      const isSmallScreen = window.innerWidth < 600;
+      const isSmallScreen = window.innerWidth < 1200;
       sidebar.classList.toggle("collapsed", isSmallScreen);
       sidebar.classList.toggle("expanded", !isSmallScreen);
     }

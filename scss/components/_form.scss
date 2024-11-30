@@ -1,26 +1,54 @@
-// * file: scss/components/_form.scss
+.form-container {
+  display: flex;
+  flex-direction: column;
+  gap: $spacing-sm; // Espacio entre elementos del formulario
+  padding: $spacing-md;
+  color: $color-text;
 
+}
+
+/* Aplicar dos columnas si hay más de 3 elementos */
+.form-container:has(.form-group:nth-child(4)),
+.form-container:has(.form-check:nth-child(4)),
+.form-container:has(.form-radio:nth-child(4)) {
+  &.two-columns {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    column-gap: $spacing-md;
+    row-gap: $spacing-sm;
+
+    @include respond('large') {
+      grid-template-columns: 1fr 1fr 1fr; /* Tres columnas en pantallas grandes */
+    }
+
+    @include respond('medium') {
+      grid-template-columns: 1fr 1fr; /* Dos columnas en pantallas medianas */
+    }
+
+    @include respond('small') {
+      grid-template-columns: 1fr; /* Una sola columna en pantallas pequeñas */
+    }
+  }
+}
+
+/* Estilos de elementos individuales */
 .form-group {
   display: flex;
   flex-direction: column;
   gap: $spacing-xs;
   position: relative;
 
-  // Etiqueta del campo
   .form-label {
     font-size: 0.875rem;
     color: $color-text-muted;
     font-weight: $font-weight-normal;
   }
 
-  // Mensaje de ayuda
   .form-help {
     font-size: 0.75rem;
     color: $color-text-muted;
-    margin-top: $spacing-xs;
   }
 
-  // Entrada y textarea
   .form-input,
   .form-textarea {
     background-color: $color-background;
@@ -41,30 +69,26 @@
     }
   }
 
-  // Textarea específico
   .form-textarea {
     min-height: 80px;
     resize: vertical; // Permitir ajuste vertical
   }
 
-  // Estilo para errores
   &.error {
-
     .form-input,
     .form-textarea {
-      border-color: $color-danger-border; // Color rojo para el borde
-      box-shadow: 0 0 5px rgba($color-danger-border, 0.5); // Resaltar con sombra
+      border-color: $color-danger-border;
+      box-shadow: 0 0 5px rgba($color-danger-border, 0.5);
     }
 
     .form-label {
-      color: $color-danger-border; // Color rojo para el label
+      color: $color-danger-border;
     }
 
     .form-help {
-      color: $color-danger-border; // Mensaje de ayuda en rojo
+      color: $color-danger-border;
     }
 
-    // Mensaje de error adicional
     .error-message {
       font-size: 0.75rem;
       color: $color-danger-border;
@@ -79,7 +103,7 @@
     gap: $spacing-xs;
 
     input {
-      accent-color: $color-accent; // Color del check y radio
+      accent-color: $color-accent;
       width: 1rem;
       height: 1rem;
       cursor: pointer;
