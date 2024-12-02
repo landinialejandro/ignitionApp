@@ -1,6 +1,6 @@
 // * file:js/project.js
 
-// TODO: guardar tambien los estados del nodo, abierto o cerrado
+// TODO: guardar tambien los estados del nodo, abierto o cerrado, se define un callback en layout para renderizarlos dinamicamente
 
 /**
  * Este archivo gestiona la lógica principal de un sistema de gestión de nodos y árbol de proyecto.
@@ -73,7 +73,6 @@ export const initializeProject = async (url) => {
         toastmaster.handleError(msg, error);
     }
 };
-
 
 /**
  * Registra los listeners para los botones de la barra de herramientas que actúan sobre nodos.
