@@ -171,6 +171,10 @@ export class NodeForest {
                 file: this.file,
                 nodes: this.nodes.map(nodeToJSON)
             };
+        }else {
+            return {
+                nodes: null
+            };
         }
     }
 

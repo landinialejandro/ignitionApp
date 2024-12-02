@@ -1,4 +1,4 @@
-// * src/shared/utils/renderTemplateToContainer.js
+// * file:js/commons/utils/renderTemplateToContainer.js
 
 import { get_data } from '../../index.js';
 import { $$ } from "../../../js/libraries/selector.js";

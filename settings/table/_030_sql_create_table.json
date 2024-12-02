@@ -1,13 +1,17 @@
 {
-    "caption": "sql to create table",
-    "properties": [{
-        "placeholder": "create table sql",
-        "value": "create table if not exists `{{databaseName}}`.`{{tableName}}` ( {{fieldsDefinitions}} ) CHARSET {{charset}}"
-    }],
-    "type": "input-group",
+    "id": "generated-sql",
+    "caption": "Generated SQL",
+    "properties": [
+        {
+            "caption": "SQL Script",
+            "placeholder": "create table sql",
+            "value": "create table if not exists `{{databaseName}}`.`{{tableName}}` ( {{fieldsDefinitions}} ) CHARSET {{charset}}"
+        }
+    ],
+    "type": "textarea-group",
     "icon": {
         "value": "bi bi-type",
         "type": "class"
     },
-    "order": 30                                                                     
+    "order": 30
 }

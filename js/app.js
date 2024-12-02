@@ -158,7 +158,7 @@ const createNode = async (data) => {
  */
 const loadContent = async ({ type, name, url }) => {
     if (!url || !type) {
-        handleError("Parámetros incompletos para la carga de contenido", new Error("URL o tipo no definidos"));
+        toastmaster.handleError("Parámetros incompletos para la carga de contenido", new Error("URL o tipo no definidos"));
         return;
     }
 
@@ -174,7 +174,7 @@ const loadContent = async ({ type, name, url }) => {
         const loadFunction = loadHandlers[type] || loadHandlers.default;
         await loadFunction(url, container);
     } catch (error) {
-        handleError(`Error al cargar el tipo de contenido '${type}'`, error);
+        toastmaster.handleError(`Error al cargar el tipo de contenido '${type}'`, error);
     } finally {
         contentPreloader.hide();
     }

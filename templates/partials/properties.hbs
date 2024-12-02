@@ -15,7 +15,7 @@
         </div>
         <div class="margin-bottom"></div>
         {{/if}}
-
+        {{#when type 'noteq' 'heading'}}
         <div class="card card-glow margin-bottom-lg expanded">
             <form id="properties-form-{{id}}" class="card-body"
                 data-id="{{id}}">
@@ -48,5 +48,6 @@
             </form>
         </div>
         {{> card_propertie_info}}
+        {{/when}}
     </div>
 </div>

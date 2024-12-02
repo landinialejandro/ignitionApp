@@ -79,16 +79,16 @@ export const saveFileToServer = async (fileName, content, extraData = {}, callba
         throw new Error("El nombre del archivo debe ser una cadena no vacía.");
     }
 
-    // Validar que el contenido sea serializable
-    if (typeof content !== 'string' && typeof content !== 'object') {
-        throw new Error("El contenido debe ser un string o un objeto serializable.");
+    // Validar que el contenido sea serializable o null/vacío
+    if (content !== null && content !== '' && (typeof content !== 'string' && typeof content !== 'object')) {
+        throw new Error("El contenido debe ser un string, un objeto serializable, null o vacío.");
     }
 
     const data = {
         operation: "save_file",
         type: "json",
         id: fileName,
-        content: typeof content === 'string' ? content : JSON.stringify(content),
+        content: content === null || content === '' ? '' : (typeof content === 'string' ? content : JSON.stringify(content)),
         ...extraData, // Merge con extraData
     };
 

@@ -6,9 +6,6 @@
         data-name="{{caption}}"
         data-type="{{type}}"
         data-id="{{id}}"
-        {{#if (eq type 'settingItem')}}
-        style="padding: 0.1rem;"
-        {{/if}}
     >
         <a class="node-link {{#if active}}active{{/if}} {{a_class}}"
             {{#each a_attr}} {{@key}}="{{this}}" {{/each}}>
@@ -22,11 +19,15 @@
             </span>
             {{/if}}
         </a>
-        {{#when type 'noteq' 'settingItem'}}
         <div id="{{id}}" class="tools-box">
-            <button class="button-tool button-options-node" aria-label="Agregar nodo hijo">
+            <button class="button-tool button-options-node" aria-label="Context Menú">
+                <i class="bi bi-three-dots"></i>
+            </button>
+            {{#when type 'noteq' 'field'}}
+            <button class="button-tool button-add-child-node" aria-label="Agregar nodo hijo">
                 <i class="bi bi-plus-circle node-add"></i>
             </button>
+            {{/when}}
             <button  class="button-tool button-delete-node" aria-label="Eliminar nodo">
                 <i class="bi bi-trash node-delete"></i>
             </button>
@@ -34,7 +35,6 @@
             {{> button_collapse expanded}}
             {{/if}}
         </div>
-        {{/when}}
     </div>
 
     {{#if children}}

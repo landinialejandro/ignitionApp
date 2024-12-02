@@ -1,23 +1,23 @@
 {
-    "caption": "Generated SQL",
-    "group": "Developer Settings",
-    "usershelper": {
-      "caption": "This property stores the SQL generated for the database. It is updated automatically.",
-      "class": "alert alert-info"
-    },
-    "properties": [
-      {
-        "caption": "SQL Script",
-        "placeholder": "Generated SQL will appear here after execution.",
-        "value": "",
-        "readonly": true
-      }
-    ],
-    "type": "textarea-group",
-    "icon": {
-      "value": "bi bi-file-code",
-      "type": "class"
-    },
-    "order": 50
-  }
-  
+  "id": "generated-sql",
+  "caption": "Generated SQL",
+  "group": "Developer Settings",
+  "usershelper": {
+    "caption": "This property stores the SQL generated for the database. It is updated automatically.",
+    "class": "alert alert-info"
+  },
+  "properties": [
+    {
+      "caption": "SQL Script",
+      "placeholder": "Generated SQL will appear here after execution.",
+      "value": "",
+      "readonly": true
+    }
+  ],
+  "type": "textarea-group",
+  "icon": {
+    "value": "bi bi-file-code",
+    "type": "class"
+  },
+  "order": 50
+}

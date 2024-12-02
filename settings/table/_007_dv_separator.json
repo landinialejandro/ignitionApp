@@ -2,5 +2,9 @@
     "caption":"Detail view settings",
     "type": "heading",
     "order": 7,
-    "class": "text-info border-info"
+    "class": "text-info border-info",
+    "icon": {
+        "value": "bi bi-input-cursor-text",
+        "type": "class"
+    }
 }

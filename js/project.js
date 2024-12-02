@@ -1,7 +1,5 @@
 // * file:js/project.js
 
-// TODO: cambiar el codigo para guardar ls radios
-// TODO: cuando hago click en el breadcrum hay que ir al nodo seleccionado
 // TODO: guardar tambien los estados del nodo, abierto o cerrado
 
 /**
@@ -9,21 +7,21 @@
  * Incluye inicialización, manejo de eventos, acciones en los nodos y renderizado dinámico.
  */
 
-import { get_data, sanitizeInput, saveFileToServer, validateErrorsForm } from '../src/index.js';
+import { registerButtonAction } from './layout.js';
 import { getDirCollectionJson } from './libraries/helpers.js';
 import { $$ } from './libraries/selector.js';
-
 import { ContextMenu } from './ContextMenu.js';
-import { NodeForest, renderTemplateToContainer, toastmaster, getUserInput, validateGenericInput, uniqueId } from '../src/index.js';
-import { Constants } from '../src/index.js';
-import { Typology } from '../src/index.js';
 
-import { registerButtonAction } from './layout.js';
-import { chopTree } from '../src/core/ChopTree/chopTree.js';
-import { validateProperties } from '../src/core/Validate/validate.js';
+import { get_data, sanitizeInput, saveFileToServer, validateErrorsForm } from '../src/commons/index.js';
+import { getUserInput, validateGenericInput, uniqueId } from '../src/commons/index.js';
+import { renderTemplateToContainer, procesInputForm } from '../src/commons/index.js';
+import { Constants } from '../src/commons/index.js';
 
-import { procesInputForm } from '../src/index.js';
-
+import { Typology } from '../src/core/index.js';
+import { toastmaster } from '../src/core/index.js';
+import { NodeForest } from '../src/core/index.js';
+import { chopTree } from '../src/core/index.js';
+import { validateProperties } from '../src/core/index.js';
 
 
 // Variables globales necesarias para la gestión del proyecto
@@ -105,10 +103,74 @@ export const toolsBoxListenerProject = () => {
         }
     });
 
+    registerButtonAction('button-add-child-node', (button, e) => {
+        const link = button.closest('.node-link-container');
+        if (link) {
+            const data = $$(link).allData();
+            const typeToAdd = project.typology.getType(data.type);
+            actionCallbacks.addNewNode(data.type, link, data.id, typeToAdd.actions.add?.typeToAdd);
+        }
+    });
+
     registerButtonAction('button-save-project', (button, e) => {
         saveProject();
     })
 
+    registerButtonAction('button-magic', (button, e) => {
+        console.log('magic!');
+
+        const { id, type } = getDataFromActiveLink();
+
+        const rootNode = project.findChildById('root-node');
+        if (!rootNode) {
+            toastmaster.danger('Nodo no encontrado.');
+            return;
+        }
+
+        const lastBuild = getValueByPropertyIDAndCaption(rootNode, 'versioning', 'Build');
+
+        setValueByPropertyIDAndCaption(rootNode, 'versioning', 'Build', parseInt(lastBuild) + 1);
+
+        console.log(lastBuild);
+
+
+        const choptree = chopTree(project.nodes);
+
+        choptree.forEach(objeto => {
+            const nodo = project.findChildById(objeto.idnode);
+            if (nodo) {
+                setValueByPropertyIDAndCaption(nodo, 'generated-sql', 'SQL Script', objeto.sql);
+            }
+        });
+
+        console.log(choptree);
+        project.render();
+
+        if (id) handleProjectTree(id);
+    })
+
+}
+
+
+function getValueByPropertyIDAndCaption(node, propertyID, caption) {
+    const property = node.properties.find(p => p.id === propertyID);
+    if (property) {
+        const innerProperty = property.properties.find(p => p.caption === caption);
+        if (innerProperty) {
+            return innerProperty.value;
+        }
+    }
+    return null;
+}
+
+function setValueByPropertyIDAndCaption(node, propertyID, caption, value) {
+    const property = node.properties.find(p => p.id === propertyID);
+    if (property) {
+        const innerProperty = property.properties.find(p => p.caption === caption);
+        if (innerProperty) {
+            innerProperty.value = value;
+        }
+    }
 }
 
 /**
@@ -259,18 +321,15 @@ const addPropertiesToNode = async (typeToAdd, newNodeOptions) => {
  * 
  * @param {HTMLElement} node - Nodo que fue clickeado.
  */
-const handleProjectTree = async (node) => {
+const handleProjectTree = async (id) => {
     try {
-        const { id } = $$(node).allData();
+
         const selected = project.findChildById(id);
 
         if (!selected) throw new Error("Nodo no encontrado.");
 
-        $$('.node-link-container').removeClass('active')
-        $$(`#${id}`).addClass('active')
-
-        const breadcrumb = Handlebars.partials['breadcrumb'](project.getBreadcrumb(id));
-        $$('.breadcrumb').html(breadcrumb);
+        activeLink(id);
+        renderBreadcrumb(id);
 
         if (selected.properties) {
             await renderTemplateToContainer("templates/view_properties.hbs", selected, ".editor-container");
@@ -281,12 +340,37 @@ const handleProjectTree = async (node) => {
     }
 };
 
+const renderBreadcrumb = (nodeId) => {
+    const breadcrumb = Handlebars.partials['breadcrumb'](project.getBreadcrumb(nodeId));
+    $$('.breadcrumb').html(breadcrumb);
+}
+
+const activeLink = (nodeId) => {
+    $$('.node-link-container').removeClass('active')
+    setTimeout(() => {
+        const selectedNode = $$(`#${nodeId}`);
+
+        if (selectedNode) {
+            selectedNode.addClass('active')
+            selectedNode.scrollIntoView({ block: 'center', behavior: 'smooth' });
+        }
+    }, 100);
+}
+
+const getDataFromActiveLink = () => {
+    const activeLink = $$('.node-link-container.active');
+    const { id, type } = activeLink.allData();
+    return { id, type };
+}
+
+
 /**
  * Agrega los listeners principales del proyecto.
  */
 const addEventsListener = () => {
     nodeProjectListener();
     saveNodeListener();
+    breadcrumbListener();
 };
 
 /**
@@ -298,8 +382,6 @@ const saveProject = async () => {
         const response = await saveFileToServer(project.file, nodes.nodes);
         if (response) {
             toastmaster.success('Proyecto guardado.');
-            const choptree = chopTree(project.nodes);
-            console.log(choptree);
         } else {
             throw new Error("Error al guardar proyecto.");
         }
@@ -310,57 +392,67 @@ const saveProject = async () => {
 };
 
 const saveNodeListener = () => {
-    $$(Constants.CONTENT).on('submit', '.card-body', (e) => {
-        e.preventDefault();
-        // Captura el formulario y el ID del nodo
-        const form = e.target;
-        const propertieId = form.getAttribute('data-id');
-        const nodeId = e.target.closest('.node').getAttribute('data-id');
-        // Recolecta todos los inputs del formulario
+    $$('.editor-container').on('submit', '.card-body', (event) => {
+        event.preventDefault();
+
+        const form = event.target;
+        const { id: propertieId } = form.dataset;
+        const { id: nodeId } = form.closest('.node').dataset;
 
         const updatedValues = procesInputForm(form);
+        const updatedValuesObj = Object.fromEntries(updatedValues.map((item) => [item.caption, item.value]));
+
+        console.log(updatedValues);
+        console.log(updatedValuesObj);
 
         const node = project.findChildById(nodeId);
+        if (!node) {
+            toastmaster.danger('Nodo no encontrado.');
+            return;
+        }
 
-        const prop = node.properties.find((p) => p.id === propertieId); // busca la propiedad que se está editando
+        const nodeProperties = node.properties;
+        const propIndex = nodeProperties.findIndex((p) => p.id === propertieId);
 
-        console.log(prop.properties);
-        console.log(updatedValues);
+        if (propIndex === -1) {
+            toastmaster.danger('Propiedad no encontrada.');
+            return;
+        }
+
+        const prop = nodeProperties[propIndex];
 
         const errors = validateProperties(prop.properties, updatedValues);
 
         if (!validateErrorsForm(form, errors)) {
-            // Actualiza las propiedades con map
-            node.properties = node.properties.map((v) => {
-                if (v.id === propertieId) {
-                    // Actualizar tanto el caption como el icon
-                    const newCaption = updatedValues.find((update) => update.caption === "Caption")?.value;
-                    const newIcon = updatedValues.find((update) => update.caption === "icon class")?.value;
+            updateNodeProperties(node, propIndex, updatedValuesObj);
 
-                    return {
-                        ...v,
-                        caption: newCaption || v.caption, // Actualizar caption si existe un nuevo valor
-                        icon: {
-                            ...v.icon,
-                            value: newIcon || v.icon.value // Actualizar icon si existe un nuevo valor
-                        },
-                        properties: v.properties.map((prop) => {
-                            const updatedProp = updatedValues.find((update) => update.caption === prop.caption);
-                            if (updatedProp && updatedProp.value !== prop.value) {
-                                return { ...prop, value: updatedProp.value }; // Actualizar si el value es diferente
-                            }
-                            return prop; // Mantener sin cambios si no se actualiza
-                        }),
-                    };
-                }
-                return v; // Mantener sin cambios si no coincide el ID
-            });
             toastmaster.success('Se han realizado cambios.');
+            console.log(node.properties);
+            project.render();
         } else {
             toastmaster.danger('No se han realizado cambios.');
         }
-    })
-}
+    });
+};
+
+const updateNodeProperties = (node, propIndex, updatedValuesObj) => {
+    const prop = node.properties[propIndex];
+    const newCaption = updatedValuesObj["Caption"];
+    const newIcon = updatedValuesObj["icon class"];
+
+    node.properties[propIndex] = {
+        ...prop,
+        caption: newCaption || prop.caption,
+        icon: {
+            ...prop.icon,
+            value: newIcon || prop.icon.value
+        },
+        properties: prop.properties.map((p) => {
+            return p.caption in updatedValuesObj ? { ...p, value: updatedValuesObj[p.caption] } : p;
+        })
+    };
+};
+
 
 /**
  * Listener para manejar clics en nodos del árbol.
@@ -375,6 +467,20 @@ const nodeProjectListener = () => {
         if (!nodeLink) return;
 
         toastmaster.secondary('node click');
-        handleProjectTree(nodeLink);
+        const { id } = $$(nodeLink).allData();
+        handleProjectTree(id);
+    });
+};
+
+const breadcrumbListener = () => {
+    $$('.breadcrumb').on('click', '.breadcrumb-item', function (e) {
+        e.preventDefault();
+        e.stopPropagation();
+
+        const breadcrumbLink = e.target.closest('.breadcrumb-link');
+        if (!breadcrumbLink) return;
+
+        const { id } = $$(breadcrumbLink).allData();
+        handleProjectTree(id);
     });
 };

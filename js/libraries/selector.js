@@ -2,7 +2,18 @@
  * selector.js
  * 
  * Proporciona una función `$$(...)` para seleccionar y manipular elementos del DOM con una API similar a jQuery.
- * Métodos disponibles: html, text, css, addClass, removeClass, remove, on, off, allData.
+ * 
+ * Métodos disponibles:
+ * - html(content?): Obtiene o establece el contenido HTML.
+ * - text(content?): Obtiene o establece el contenido de texto.
+ * - css(propertyOrObject, value?): Aplica estilos en línea.
+ * - addClass(className): Agrega una clase a los elementos.
+ * - removeClass(className): Remueve una clase de los elementos.
+ * - remove(): Elimina los elementos seleccionados del DOM.
+ * - on(eventType, selectorOrHandler, handler?): Agrega manejadores de eventos.
+ * - off(eventType, handler?): Remueve manejadores de eventos.
+ * - allData(): Obtiene los atributos de datos (`data-*`) de los elementos.
+ * - scrollIntoView(options?): Desplaza los elementos seleccionados a la vista.
  */
 
 export const $$ = (input) => {
@@ -19,41 +30,31 @@ export const $$ = (input) => {
     const api = {
         elements,
 
-        // Métodos básicos
-
         html(content) {
             if (content !== undefined) {
-                elements.forEach((element) => {
-                    element.innerHTML = content;
-                });
+                elements.forEach((element) => element.innerHTML = content);
                 return this;
             } else {
-                return elements[0]?.innerHTML || null; // TODO: Retornar null si no hay elementos.
+                return elements[0]?.innerHTML || null;
             }
         },
 
         text(content) {
             if (content !== undefined) {
-                elements.forEach((element) => {
-                    element.textContent = content;
-                });
+                elements.forEach((element) => element.textContent = content);
                 return this;
             } else {
-                return elements[0]?.textContent || null; // TODO: Retornar null si no hay elementos.
+                return elements[0]?.textContent || null;
             }
         },
 
         css(propertyOrObject, value) {
             if (typeof propertyOrObject === "object") {
                 Object.entries(propertyOrObject).forEach(([key, val]) => {
-                    elements.forEach((element) => {
-                        element.style[key] = val ?? ''; // TODO: Manejar valores null/undefined explícitamente.
-                    });
+                    elements.forEach((element) => element.style[key] = val ?? '');
                 });
             } else if (typeof propertyOrObject === "string" && value !== undefined) {
-                elements.forEach((element) => {
-                    element.style[propertyOrObject] = value;
-                });
+                elements.forEach((element) => element.style[propertyOrObject] = value);
             } else {
                 console.error('Property and value must be provided, or an object with styles.');
             }
@@ -65,9 +66,7 @@ export const $$ = (input) => {
                 console.error('Class name must be provided.');
                 return this;
             }
-            elements.forEach((element) => {
-                element.classList.add(className);
-            });
+            elements.forEach((element) => element.classList.add(className));
             return this;
         },
 
@@ -76,20 +75,14 @@ export const $$ = (input) => {
                 console.error('Class name must be provided.');
                 return this;
             }
-            elements.forEach((element) => {
-                element.classList.remove(className);
-            });
+            elements.forEach((element) => element.classList.remove(className));
             return this;
         },
 
         remove() {
-            elements.forEach((element) => {
-                element.remove();
-            });
+            elements.forEach((element) => element.remove());
             return this;
         },
-
-        // Gestión de eventos
 
         on(eventType, selectorOrHandler, handler) {
             const isDelegation = typeof selectorOrHandler === 'string';
@@ -120,7 +113,6 @@ export const $$ = (input) => {
 
                 element.addEventListener(eventType, delegatedHandler);
 
-                // Guardar referencia para usar en "off"
                 element._eventListeners = element._eventListeners || {};
                 element._eventListeners[eventType] = element._eventListeners[eventType] || [];
                 element._eventListeners[eventType].push(delegatedHandler);
@@ -140,36 +132,41 @@ export const $$ = (input) => {
                 if (!listeners) return;
 
                 if (handler) {
-                    // Eliminar un handler específico
                     const index = listeners.indexOf(handler);
                     if (index !== -1) {
                         element.removeEventListener(eventType, handler);
                         listeners.splice(index, 1);
                     }
                 } else {
-                    // Eliminar todos los handlers para el evento
-                    listeners.forEach((listener) => {
-                        element.removeEventListener(eventType, listener);
-                    });
+                    listeners.forEach((listener) => element.removeEventListener(eventType, listener));
                     listeners.length = 0;
                 }
             });
 
-            return this; // TODO: Implementar offAll si se necesita eliminar todos los eventos.
+            return this;
         },
-
-        // Gestión de datos
 
         allData() {
             if (!elements.length) {
-                return []; // Devuelve un array vacío si no hay elementos seleccionados
+                return [];
             }
             if (elements.length === 1) {
-                // Si solo hay un elemento, devolver su dataset como objeto
                 return { ...elements[0].dataset };
             }
-            // Si hay múltiples elementos, devolver un array de datasets
             return Array.from(elements).map((element) => ({ ...element.dataset }));
+        },
+
+        scrollIntoView(options) {
+            if (!elements.length) {
+                console.warn('No elements available for scrollIntoView.');
+                return this;
+            }
+
+            elements.forEach((element) => {
+                element.scrollIntoView(options);
+            });
+
+            return this;
         },
     };
 
