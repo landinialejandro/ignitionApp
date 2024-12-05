@@ -53,7 +53,7 @@ export const initializeProject = async (url) => {
             console.warn('El archivo está vacío.');
             const newRoot = {
                 id: defOptions.id || 'root',
-                caption: defOptions.caption || 'New Project',
+                caption: defOptions.caption || 'New_Project',
                 type: 'root',
                 properties: [],
                 children: [],
@@ -65,7 +65,7 @@ export const initializeProject = async (url) => {
             project.setNodes(content);
         }
 
-        await project.render(); // reenderiza
+        await projectRender(); // reenderiza
 
         addEventsListener(); // cargo los listeners
     } catch (error) {
@@ -112,7 +112,12 @@ export const toolsBoxListenerProject = () => {
     });
 
     registerButtonAction('button-save-project', (button, e) => {
-        saveProject();
+        projectSave();
+    })
+
+    registerButtonAction('button-refresh', (button, e) => {
+        console.log('refresh!');
+        projectRender();
     })
 
     registerButtonAction('button-magic', (button, e) => {
@@ -122,7 +127,7 @@ export const toolsBoxListenerProject = () => {
 
         const rootNode = project.findChildById('root-node');
         if (!rootNode) {
-            toastmaster.danger('Nodo no encontrado.');
+            toastmaster.danger('Root no encontrado.');
             return;
         }
 
@@ -143,7 +148,7 @@ export const toolsBoxListenerProject = () => {
         });
 
         console.log(choptree);
-        project.render();
+        projectRender();
 
         if (id) handleProjectTree(id);
     })
@@ -219,7 +224,7 @@ const actionCallbacks = {
             const success = project.addChild(nodeId, newNodeOptions);
 
             if (success) {
-                await project.render();
+                await projectRender();
                 toastmaster.success(`Nodo ${typeToAdd} agregado exitosamente.`);
             } else {
                 throw new Error("No se pudo agregar el nodo.");
@@ -259,7 +264,7 @@ const actionCallbacks = {
             const updated = project.updateNode(nodeId, nodeOptions);
             if (updated) {
                 toastmaster.success(`Nodo renombrado a ${newName}.`);
-                project.render();
+                projectRender();
             } else {
                 toastmaster.danger("No se pudo renombrar el nodo.");
             }
@@ -277,7 +282,7 @@ const actionCallbacks = {
             const currentNode = project.findChildById(nodeId);
             const deleted = project.removeNode(nodeId);
             if (deleted) {
-                project.render();
+                projectRender();
                 toastmaster.success(`Nodo ${currentNode.caption} del tipo ${currentNode.type} eliminado.`);
             } else {
                 toastmaster.danger("No se pudo eliminar el nodo.");
@@ -375,7 +380,7 @@ const addEventsListener = () => {
 /**
  * Listener para guardar el proyecto.
  */
-const saveProject = async () => {
+const projectSave = async () => {
     try {
         const nodes = project.toJSON();
         const response = await saveFileToServer(project.file, nodes.nodes);
@@ -389,6 +394,10 @@ const saveProject = async () => {
         toastmaster.handleError(msg, error);
     }
 };
+
+export const projectRender = async() => {
+    await project.render();
+}
 
 const saveNodeListener = () => {
     $$('.editor-container').on('submit', '.card-body', (event) => {
@@ -427,7 +436,7 @@ const saveNodeListener = () => {
 
             toastmaster.success('Se han realizado cambios.');
             console.log(node.properties);
-            project.render();
+            projectRender();
         } else {
             toastmaster.danger('No se han realizado cambios.');
         }
