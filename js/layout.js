@@ -14,10 +14,11 @@ export const registerButtonAction = (actionClass, callback) => {
   buttonActionCallbacks[actionClass] = callback;
 };
 
+// Registro de callbacks para acciones del boton collapse en cualquier contexto
 const collapseActionCallbacks = {};
 
 export const registerCollapseAction = (contextClass, callback) => {
-    collapseActionCallbacks[contextClass] = callback;
+  collapseActionCallbacks[contextClass] = callback;
 };
 
 /**
@@ -98,21 +99,21 @@ const initializeLayout = () => {
       const parentItem = collapseButton.closest(".nav-item, .node-item, .card");
       if (parentItem) {
         const contextClass = Array.from(parentItem.classList).find(cls =>
-            Object.keys(collapseActionCallbacks).includes(cls)
+          Object.keys(collapseActionCallbacks).includes(cls)
         );
 
         if (contextClass && collapseActionCallbacks[contextClass]) {
-            // Comportamiento personalizado si hay callback registrado
-            collapseActionCallbacks[contextClass](parentItem, collapseButton);
+          // Comportamiento personalizado si hay callback registrado
+          collapseActionCallbacks[contextClass](parentItem, collapseButton);
         } else {
-            // Comportamiento genérico si no hay callback registrado
-            const isExpanded = parentItem.classList.contains("expanded");
-            requestAnimationFrame(() => {
-                toggleClass(parentItem, "expanded", !isExpanded);
-                toggleClass(collapseButton, "expanded", !isExpanded);
-            });
+          // Comportamiento genérico si no hay callback registrado
+          const isExpanded = parentItem.classList.contains("expanded");
+          requestAnimationFrame(() => {
+            toggleClass(parentItem, "expanded", !isExpanded);
+            toggleClass(collapseButton, "expanded", !isExpanded);
+          });
         }
-    }
+      }
     }
 
     if (navContainer) {

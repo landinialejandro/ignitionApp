@@ -39,11 +39,17 @@
  */
 
 
+// Archivo: src/core/ToastMaster/toastMaster.js
+
 /**
- * Clase Toastmaster
+ * Clase ToastMaster
  * -----------------
- * Clase para gestionar mensajes, errores y registros en la consola, integrando SweetAlert2 para notificaciones visuales
- * y la consola para un manejo más técnico. Incluye funcionalidad para registrar acciones y filtrar logs.
+ * Clase principal para gestionar mensajes, errores y logs, integrada con `ToastNotifier` para reemplazar SweetAlert2.
+ * Modulariza las responsabilidades en:
+ * - Mensajería (info, warning, success, danger).
+ * - Manejo de errores.
+ * - Registro de acciones/logs.
+ * Incluye soporte para configuraciones avanzadas, callbacks y manejo de entornos (desarrollo/producción).
  *
  * @example
  * import toastmaster from './core/ToastMaster/toastMaster';
@@ -51,59 +57,81 @@
  * toastmaster.handleError('Error en función', new Error('Error simulado'));
  * toastmaster.echo('Mensaje simple en consola');
  */
+import { ToastNotifier } from '../ToastNotifier/toastNotifier.js';
+
+const isDevelopment = window.location.hostname === 'localhost';
+
 class ToastMaster {
     /**
-     * Constructor de Toastmaster
-     * Implementa un patrón Singleton que asegura una única instancia.
+     * Constructor de ToastMaster.
+     * Implementa un patrón Singleton y configura las opciones iniciales para el manejo de mensajes y logs.
      * 
-     * @param {Object} [options={}] - Configuración inicial para mensajes y almacenamiento de logs.
-     * @param {boolean} [options.toast=true] - Habilita los mensajes tipo toast con SweetAlert2.
-     * @param {boolean} [options.silent=false] - Si es true, suprime advertencias si SweetAlert2 no está disponible.
-     * @param {Object} [options.swalOptions] - Configuración personalizada para SweetAlert2.
-     * @param {Object} [options.messageTypes] - Configuración personalizada de tipos de mensaje.
-     * @param {Array} [options.logStore=[]] - Almacén inicial para registros de logs.
+     * @param {Object} [options={}] - Configuración inicial.
+     * @param {boolean} [options.silent=false] - Si es true, desactiva los mensajes en modo silencioso.
+     * @param {Object} [options.messageTypes] - Tipos de mensajes personalizados.
+     * @param {Array} [options.logStore=[]] - Almacén inicial para logs.
      */
     constructor(options = {}) {
+        // Modo silencioso según opciones o entorno detectado
+        this.silentMode = false;//options.silent !== undefined ? options.silent : !isDevelopment;
+
+        // Inicializa ToastNotifier con configuraciones opcionales
+        this.notifier = new ToastNotifier(options.notifierOptions || {});
+
+        // Inicializa el almacén de logs, asegurando que sea un arreglo
+        this.logStore = Array.isArray(options.logStore) ? options.logStore : [];
+
+        // Configura tipos de mensajes personalizados
+        this.messageTypes = this.#initializeMessageTypes(
+            typeof options.messageTypes === 'object' ? options.messageTypes : {}
+        );
+
+        // Sistema de eventos
+        this.eventListeners = {
+            logRegistered: [],
+        };
+
+        // Configuración del Singleton
         if (ToastMaster.instance) {
-            return ToastMaster.instance; // Retorna la instancia existente (Singleton)
+            return ToastMaster.instance; // Retorna la instancia existente
         }
-
-        this.isSwalAvailable = typeof Swal !== 'undefined'; // Verifica si SweetAlert2 está disponible
-
-        if (this.isSwalAvailable) {
-            this.Toast = Swal.mixin({
-                toast: options.toast ?? true,
-                position: 'top-end',
-                showConfirmButton: false,
-                timerProgressBar: true,
-                ...options.swalOptions,
-            });
-        } else if (!options.silent) {
-            console.warn('SweetAlert2 no está disponible. Los mensajes se mostrarán solo en la consola.');
-        }
-
-        this.messageTypes = this.#initializeMessageTypes(options.messageTypes);
-        this.logStore = options.logStore || []; // Donde almacenar logs si se necesita persistencia
-
-        ToastMaster.instance = this; // Guarda la instancia única
+        ToastMaster.instance = this;
     }
 
     // Métodos públicos
+
     /**
      * Muestra un mensaje informativo.
-     * 
      * @param {string} msg - Mensaje a mostrar.
-     * @param {boolean} [disableToast=false] - Si es true, no muestra el toast.
+     * @param {boolean} [disableToast=false] - Si es true, no muestra el toast visual.
      */
     info(msg, disableToast = false) {
         this.#showMessage(msg, 'info', disableToast);
     }
 
     /**
-     * Muestra un mensaje de advertencia.
-     * 
+     * Muestra un mensaje de éxito.
      * @param {string} msg - Mensaje a mostrar.
-     * @param {boolean} [disableToast=false] - Si es true, no muestra el toast.
+     * @param {boolean} [disableToast=false] - Si es true, no muestra el toast visual.
+     */
+    success(msg, disableToast = false) {
+        this.#showMessage(msg, 'success', disableToast);
+    }
+
+    /**
+         * Muestra un mensaje genérico.
+         * 
+         * @param {string} msg - Mensaje a mostrar.
+         * @param {boolean} [disableToast=false] - Si es true, no muestra el toast.
+         */
+    secondary(msg, disableToast = false) {
+        this.#showMessage(msg, 'secondary', disableToast);
+    }
+
+    /**
+     * Muestra un mensaje de advertencia.
+     * @param {string} msg - Mensaje a mostrar.
+     * @param {boolean} [disableToast=false] - Si es true, no muestra el toast visual.
      */
     warning(msg, disableToast = false) {
         this.#showMessage(msg, 'warning', disableToast);
@@ -111,40 +139,18 @@ class ToastMaster {
 
     /**
      * Muestra un mensaje de error.
-     * 
      * @param {string} msg - Mensaje a mostrar.
-     * @param {boolean} [disableToast=false] - Si es true, no muestra el toast.
+     * @param {boolean} [disableToast=false] - Si es true, no muestra el toast visual.
      */
     danger(msg, disableToast = false) {
         this.#showMessage(msg, 'danger', disableToast);
     }
 
     /**
-     * Muestra un mensaje genérico.
-     * 
-     * @param {string} msg - Mensaje a mostrar.
-     * @param {boolean} [disableToast=false] - Si es true, no muestra el toast.
-     */
-    secondary(msg, disableToast = false) {
-        this.#showMessage(msg, 'secondary', disableToast);
-    }
-
-    /**
-     * Muestra un mensaje de éxito.
-     * 
-     * @param {string} msg - Mensaje a mostrar.
-     * @param {boolean} [disableToast=false] - Si es true, no muestra el toast.
-     */
-    success(msg, disableToast = false) {
-        this.#showMessage(msg, 'success', disableToast);
-    }
-
-    /**
-     * Maneja errores, registrándolos en la consola y mostrando mensajes descriptivos.
-     * 
+     * Maneja errores, registrándolos en la consola y mostrando un mensaje descriptivo.
      * @param {string} message - Mensaje descriptivo del error.
      * @param {Error} [error] - Objeto de error capturado.
-     * @param {boolean} [disableToast=false] - Si es true, no muestra el toast.
+     * @param {boolean} [disableToast=false] - Si es true, no muestra el toast visual.
      */
     handleError(message, error, disableToast = false) {
         if (error instanceof Error) {
@@ -158,61 +164,107 @@ class ToastMaster {
 
     /**
      * Registro simple, equivalente a `console.log`.
-     * 
      * @param  {...any} args - Argumentos a registrar en la consola.
      */
     echo(...args) {
         console.log(...args);
     }
 
+    /**
+     * Filtra los logs almacenados en base a criterios.
+     * 
+     * @param {Object} criteria - Criterios de filtrado.
+     * @param {string} [criteria.type] - Tipo de log (info, error, warning, etc.).
+     * @param {string} [criteria.from] - Fecha de inicio (ISO 8601).
+     * @param {string} [criteria.to] - Fecha de fin (ISO 8601).
+     * @returns {Array} - Logs filtrados.
+     */
+    filterLogs(criteria) {
+        const { type, from, to } = criteria;
+        return this.logStore.filter(log => {
+            const matchesType = type ? log.type === type : true;
+            const matchesDate = from || to
+                ? new Date(log.timestamp) >= new Date(from) &&
+                new Date(log.timestamp) <= new Date(to)
+                : true;
+            return matchesType && matchesDate;
+        });
+    }
+
+    /**
+     * Agrega un callback que se ejecuta al registrar un nuevo log.
+     * @param {Function} callback - Función callback.
+     */
+    onLogRegistered(callback) {
+        if (typeof callback === 'function') {
+            this.eventListeners.logRegistered.push(callback);
+        }
+    }
+
+    /**
+     * Activa los eventos registrados.
+     * @private
+     * @param {string} eventName - Nombre del evento.
+     * @param {any} data - Datos asociados al evento.
+     */
+    #triggerEvent(eventName, data) {
+        (this.eventListeners[eventName] || []).forEach(callback => callback(data));
+    }
+
     // Métodos privados
+
     /**
      * Inicializa los tipos de mensaje con configuraciones personalizadas.
-     * 
      * @private
-     * @param {Object} customMessageTypes - Configuración personalizada.
+     * @param {Object} customMessageTypes - Configuración personalizada de tipos.
      * @returns {Object} - Tipos de mensajes finales.
      */
     #initializeMessageTypes(customMessageTypes) {
         const defaultMessageTypes = {
-            success: { style: 'background: green; color: white', icon: 'info', timer: 2500, consoleIcon: ' 🟢' },
-            info: { style: 'background: white; color: green', icon: 'info', timer: 2000, consoleIcon: ' \u2139' },
-            warning: { style: 'background: yellow; color: blue', icon: 'warning', timer: 3000, consoleIcon: ' ⚠️' },
-            danger: { style: 'background: red; color: white', icon: 'error', timer: 4000, consoleIcon: ' ❌' },
+            success: { style: 'background: green; color: white', icon: 'check-circle', timer: 2500, consoleIcon: ' 🟢' },
+            info: { style: 'background: white; color: green', icon: 'info-circle', timer: 2000, consoleIcon: ' \u2139' },
+            warning: { style: 'background: yellow; color: blue', icon: 'exclamation-triangle', timer: 3000, consoleIcon: ' ⚠️' },
+            danger: { style: 'background: red; color: white', icon: 'times-circle', timer: 4000, consoleIcon: ' ❌' },
             secondary: { style: 'background: grey; color: black', icon: 'question', timer: 2500, consoleIcon: ' 🛈' },
+
         };
 
         return { ...defaultMessageTypes, ...customMessageTypes };
     }
 
     /**
-     * Muestra mensajes utilizando SweetAlert2 (si está disponible) y la consola.
-     * 
+     * Muestra un mensaje utilizando ToastNotifier.
      * @private
      * @param {string} msg - Mensaje a mostrar.
-     * @param {string} type - Tipo de mensaje (info, warning, etc.).
-     * @param {boolean} disableToast - Si es true, no muestra el toast.
+     * @param {string} type - Tipo de mensaje (info, success, warning, danger).
+     * @param {boolean} disableToast - Si es true, no muestra el toast visual.
      */
-    #showMessage(msg, type, disableToast) {
-        if (typeof msg !== 'string') {
-            console.error('El mensaje debe ser una cadena de texto.');
-            return;
-        }
+    #showMessage(msg, type, disableToast = false) {
+        if (this.silentMode) return; // No hace nada si el modo silencioso está activado
 
         const config = this.messageTypes[type];
-
         if (!config) {
             console.error(`Tipo de mensaje no soportado: ${type}`);
             return;
         }
 
-        const { style, icon, timer, consoleIcon } = config;
+        const { timer, style, consoleIcon } = config;
 
-        if (this.isSwalAvailable && !disableToast) {
-            this.Toast.fire({ icon, title: msg, timer });
+        if (!disableToast) {
+            this.notifier.fire(msg, type, { timer });
         }
-
         console.log(`%c${consoleIcon} ${msg}`, style);
+        this.#registerLog({ type, message: msg, timestamp: new Date() });
+    }
+
+    /**
+     * Registra un log en el almacén.
+     * @private
+     * @param {Object} logEntry - Entrada de log.
+     */
+    #registerLog(logEntry) {
+        this.logStore.push(logEntry);
+        this.#triggerEvent('logRegistered', logEntry);
     }
 }
 

@@ -1,0 +1,52 @@
+// file: css/toastNotifier/_toastNotifier.scss
+
+#toast-notifier-container {
+    font-family: Arial, sans-serif;
+
+    > div {
+        animation: fadeIn 0.3s ease, fadeOut 0.3s ease 3s;
+        padding: 10px 15px;
+        border-radius: 5px;
+        font-size: 14px;
+        color: white;
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+        opacity: 0;
+        transition: opacity 0.3s ease;
+
+        &.success {
+            background-color: green;
+        }
+
+        &.warning {
+            background-color: orange;
+        }
+
+        &.danger {
+            background-color: red;
+        }
+
+        &.info {
+            background-color: blue;
+        }
+    }
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(-10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes fadeOut {
+    from {
+        opacity: 1;
+    }
+    to {
+        opacity: 0;
+    }
+}

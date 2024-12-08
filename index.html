@@ -19,10 +19,9 @@
     <meta name="keywords" content="vanilla JS, dashboard, app development">
 
     <!-- Enlace al archivo principal de estilos CSS -->
-    <link rel="preload" href="css/main.css" as="style" onload="this.rel='stylesheet'">
-    <noscript>
-        <link rel="stylesheet" href="css/main.css">
-    </noscript>
+    <link rel="stylesheet" href="css/main.css">
+    <link rel="stylesheet" href="css/toastMaster.css">
+    <link rel="stylesheet" href="css/toastNotifier.css">
     <link rel="stylesheet" href="dist/bs-icons/bootstrap-icons.min.css">
 
 </head>
@@ -86,7 +85,7 @@
             <section class="content">
                 <!-- content-header: Encabezado con título, campo de búsqueda y breadcrumb -->
                 <header class="content-header">
-                    <h2 class="content-title">Dashboard</h2>
+                    <h2 class="content-title">Home</h2>
 
                     <!-- Campo de búsqueda -->
                     <form class="search-form" role="search" aria-label="Buscar">
@@ -98,9 +97,7 @@
                     <!-- Breadcrumb -->
                     <nav aria-label="breadcrumb">
                         <ol class="breadcrumb">
-                            <li class="breadcrumb-item"><a href="#">Inicio</a></li>
-                            <li class="breadcrumb-item"><a href="#">Sección</a></li>
-                            <li class="breadcrumb-item active" aria-current="page">Actual</li>
+                            <li class="breadcrumb-item active" aria-current="page">Home</li>
                         </ol>
                     </nav>
                 </header>

@@ -87,18 +87,6 @@ const registerNavigationListeners = () => {
  * La función `operation` se encarga de delegar la acción adecuada en función del botón que se ha
  * seleccionado y de los datos del nodo.
  */
-const toolsBoxListenerApp = () => {
-    actionCallbacks.forEach(({ name, operation }) => {
-        // registerButtonAction se encarga de registrar la función asociada al botón correspondiente es callback que proviene de layout.js
-        registerButtonAction(`button-${name}`, async (button, e) => {
-            const link = button.closest('.nav-link-container');
-            const data = $$(link).allData();
-            data.action = name;
-            operation(data);
-            await initializeSidebar();
-        });
-    });
-}
 
 const actionCallbacks = [
     {
@@ -128,6 +116,19 @@ const actionCallbacks = [
     },
 ];
 
+const toolsBoxListenerApp = () => {
+    actionCallbacks.forEach(({ name, operation }) => {
+        // registerButtonAction se encarga de registrar la función asociada al botón correspondiente es callback que proviene de layout.js
+        registerButtonAction(`button-${name}`, async (button, e) => {
+            const link = button.closest('.nav-link-container');
+            const data = $$(link).allData();
+            data.action = name;
+            operation(data);
+            await initializeSidebar();
+        });
+    });
+}
+
 /**
  * Maneja acciones como crear o eliminar nodos en el servidor y actualiza la interfaz.
  * @param {Object} data - Datos relacionados con la acción.
@@ -144,10 +145,10 @@ const createNode = async (data) => {
         sanitized !== name && toastmaster.warning('Espacios en blanco reemplazados por "_"');
         toastmaster.secondary(`Dato ingresado: ${sanitized}`);
         data.text = `${data.url}/${sanitized}`;
+        await actionsServer(data);
     } else {
         toastmaster.danger('Operación cancelada o entrada inválida.');
     }
-    await actionsServer(data);
 };
 
 /** --- Carga Dinámica de Contenido --- **/
