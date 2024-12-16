@@ -183,7 +183,7 @@ export class NodeForest {
      * @returns {Promise<void>} - Realiza la operación de renderizado.
      */
     async render() {
-        await renderTemplateToContainer(this.template, this.toJSON(), this.container);
+        await renderTemplateToContainer(this.template, [this.toJSON()], this.container);
     }
 
     /**
