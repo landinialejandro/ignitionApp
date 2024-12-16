@@ -5,6 +5,7 @@ import { initializeProject, toolsBoxListenerProject } from './project.js';
 import { registerButtonAction } from './layout.js';
 import { renderTemplateToContainer, checkContainerAvailability, get_data, Constants,  getUserInput, sanitizeInput, validateGenericInput } from '../src/index.js';
 import { toastmaster } from '../src/core/index.js';
+import { handleError } from '../src/commons/utils/handleError.js';
 
 // Configuración inicial
 toastmaster.success("Iniciando app.js", true);
@@ -19,7 +20,7 @@ export const initializeApp = async () => {
         await initializeSidebar();
         registerEventListeners();
     } catch (error) {
-        toastmaster.handleError("Error al inicializar la aplicación", error);
+        handleError("Error al inicializar la aplicación", error);
     } finally {
         mainPreloader.hide();
     }
@@ -159,7 +160,7 @@ const createNode = async (data) => {
  */
 const loadContent = async ({ type, name, url }) => {
     if (!url || !type) {
-        toastmaster.handleError("Parámetros incompletos para la carga de contenido", new Error("URL o tipo no definidos"));
+        handleError("Parámetros incompletos para la carga de contenido", new Error("URL o tipo no definidos"));
         return;
     }
 
@@ -175,7 +176,7 @@ const loadContent = async ({ type, name, url }) => {
         const loadFunction = loadHandlers[type] || loadHandlers.default;
         await loadFunction(url, container);
     } catch (error) {
-        toastmaster.handleError(`Error al cargar el tipo de contenido '${type}'`, error);
+        handleError(`Error al cargar el tipo de contenido '${type}'`, error);
     } finally {
         contentPreloader.hide();
     }

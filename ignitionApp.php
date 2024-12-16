@@ -1,44 +1,68 @@
 <?php
+// file: ignitionApp.php
 
 require_once('class_fs.php');
 
-// Leer y decodificar el cuerpo de la solicitud JSON
-$body = trim(file_get_contents("php://input"));
-$decoded = json_decode($body, true) ?? [];
-
-// Valores predeterminados para la solicitud
-$defaults = [
-    'operation' => "test",
-    'id' => "",
-    'folder' => "",
-    'text' => "",
-    'content' => "",
-    'type' => "",
-    'parent' => "",
+// Configuración de claves API y permisos
+$API_KEYS = [
+    'cliente1_key' => ['create_node', 'get_node'], // Cliente 1 puede crear y obtener nodos
+    'cliente2_key' => ['get_node'],               // Cliente 2 solo puede obtener nodos
 ];
 
-// Mezclar los datos recibidos con los valores predeterminados
-$request = array_merge($defaults, $_REQUEST, $decoded);
+// Secreto compartido para validar JWT (opcional para el futuro)
+$SECRET = 'mi_secreto_compartido';
 
-try {
-    validarDatos($request); // Aplicamos validación
-    enviarRespuesta(200, realizarOperacion($request));
-} catch (InvalidArgumentException $e) {
-    enviarRespuesta(400, ['error' => $e->getMessage()]);
-} catch (Exception $e) {
-    enviarRespuesta(500, ['error' => $e->getMessage()]);
+/**
+ * Valida la clave API y verifica los permisos para una operación específica.
+ */
+function validarClaveAPI($apiKey, $operation, $keys) {
+    if (!isset($keys[$apiKey])) {
+        throw new InvalidArgumentException("Clave API no válida.");
+    }
+
+    $permisos = $keys[$apiKey];
+    if (!in_array($operation, $permisos)) {
+        throw new InvalidArgumentException("Permiso insuficiente para realizar la operación: $operation.");
+    }
+
+    return true; // Clave y permisos válidos
 }
 
-//////////////////////////////////////////////////////////////////////
-//////////////////////////////////////////////////////////////////////
-//////////////////////////////////////////////////////////////////////
+/**
+ * Valida un token JWT (implementación futura).
+ */
+function validarJWT($token, $secret, $requiredPermission) {
+    // TODO: Implementar lógica JWT cuando sea necesario.
+    throw new Exception("Validación JWT aún no implementada.");
+}
+
+/**
+ * Procesa las solicitudes HTTP y valida el esquema de autenticación.
+ */
+function procesarAutenticacion($request, $keys, $secret) {
+    // Verifica si se usa una clave API
+    $apiKey = $_SERVER['HTTP_X_API_KEY'] ?? $request['apiKey'] ?? null;
+    if ($apiKey) {
+        validarClaveAPI($apiKey, $request['operation'], $keys);
+        return;
+    }
+
+    // Verifica si se usa un token JWT
+    $authHeader = $_SERVER['HTTP_AUTHORIZATION'] ?? '';
+    if (strpos($authHeader, 'Bearer ') === 0) {
+        $jwt = substr($authHeader, 7);
+        validarJWT($jwt, $secret, $request['operation']);
+        return;
+    }
+
+    // Ningún esquema de autenticación válido proporcionado
+    throw new InvalidArgumentException("No se proporcionó un esquema de autenticación válido.");
+}
 
 /**
  * Realiza la operación solicitada sobre el sistema de archivos.
  */
-function realizarOperacion($request)
-{
-    // Desestructurar los valores del request
+function realizarOperacion($request) {
     [
         'operation' => $operation,
         'id' => $id,
@@ -82,14 +106,11 @@ function realizarOperacion($request)
 /**
  * Valida los datos recibidos en el request.
  */
-function validarDatos($request)
-{
-    // Validamos que la operación sea una cadena no vacía
+function validarDatos($request) {
     if (!isset($request['operation']) || !is_string($request['operation'])) {
         throw new InvalidArgumentException("La operación es requerida y debe ser una cadena.");
     }
 
-    // Validamos que 'id' y 'folder' sean cadenas
     if (isset($request['id']) && !is_string($request['id'])) {
         throw new InvalidArgumentException("El campo 'id' debe ser una cadena.");
     }
@@ -98,19 +119,15 @@ function validarDatos($request)
         throw new InvalidArgumentException("El campo 'folder' debe ser una cadena.");
     }
 
-    // Validamos que 'type' sea cadena
     if (isset($request['type']) && !is_string($request['type'])) {
         throw new InvalidArgumentException("El campo 'type' debe ser una cadena.");
     }
-
-    // Si hubiera más campos críticos, añadir más validaciones aquí...
 }
 
 /**
  * Obtiene configuraciones específicas en formato JSON.
  */
-function obtenerConfiguracionJson($fs, $text, $settingsDir, $id)
-{
+function obtenerConfiguracionJson($fs, $text, $settingsDir, $id) {
     switch ($text) {
         case 'field-settings':
             return get_children($settingsDir . "field");
@@ -135,8 +152,7 @@ function obtenerConfiguracionJson($fs, $text, $settingsDir, $id)
 /**
  * Obtiene los elementos hijos de un directorio específico.
  */
-function get_children($dir, $sort = true)
-{
+function get_children($dir, $sort = true) {
     $fs = new fs($dir);
     $files = array_diff(scandir($dir), ['.', '..']);
     $result = [];
@@ -160,11 +176,33 @@ function get_children($dir, $sort = true)
 /**
  * Envía una respuesta HTTP en formato JSON.
  */
-function enviarRespuesta($status, $data)
-{
+function enviarRespuesta($status, $data) {
     http_response_code($status);
     header('Content-Type: application/json; charset=utf-8');
-    // Codificación mejorada para manejar caracteres Unicode correctamente
-    echo json_encode(array_values($data), JSON_UNESCAPED_UNICODE);
+    echo json_encode($data, JSON_UNESCAPED_UNICODE);
     exit;
+}
+
+// Leer y procesar la solicitud
+$body = trim(file_get_contents("php://input"));
+$decoded = json_decode($body, true) ?? [];
+$defaults = [
+    'operation' => "test",
+    'id' => "",
+    'folder' => "",
+    'text' => "",
+    'content' => "",
+    'type' => "",
+    'parent' => "",
+];
+$request = array_merge($defaults, $_REQUEST, $decoded);
+
+try {
+    validarDatos($request);
+    procesarAutenticacion($request, $API_KEYS, $SECRET);
+    enviarRespuesta(200, realizarOperacion($request));
+} catch (InvalidArgumentException $e) {
+    enviarRespuesta(403, ['error' => $e->getMessage()]);
+} catch (Exception $e) {
+    enviarRespuesta(500, ['error' => $e->getMessage()]);
 }

@@ -1,3 +1,4 @@
+// * file: src/shared/configs/constants.js
 const isDev = true; // Configurado como true para desarrollo
 
 const Constants = Object.freeze({
@@ -6,6 +7,7 @@ const Constants = Object.freeze({
 
     // Endpoint de API
     API_ENDPOINT: isDev ? 'ignitionApp.php' : 'https://example.com/ignitionApp.php',
+    API_KEY: 'cliente1_key',
 
     // Configuración de la aplicación
     TIMEOUT: 5000, // Tiempo máximo para las solicitudes HTTP (ms)

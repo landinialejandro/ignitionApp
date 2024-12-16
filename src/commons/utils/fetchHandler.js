@@ -1,43 +1,106 @@
-// * file: src/shared/utils/fetchHandler.js
-import Constants from '../configs/constants.js';
+import Constants from '../configs/constants.js'; // Importa las constantes
 
 /**
- * Maneja peticiones HTTP de forma genérica.
- * @param {Object} config - Configuración de la petición.
- * @param {string} config.url - URL de la petición.
- * @param {string} config.method - Método HTTP.
+ * Genera un token de autorización basado en HMAC.
+ * Preparado para su uso en autenticación futura.
+ * @param {string} url - URL solicitada.
+ * @param {string} secret - Secreto compartido con el servidor.
+ * @param {string[]} [permissions=[]] - Permisos asignados al cliente.
+ * @returns {Promise<string>} - Token firmado.
+ */
+async function generateAuthToken(url, secret, permissions = []) {
+    const timestamp = Date.now(); // Genera un timestamp
+    const permissionsStr = permissions.join(','); // Convierte permisos a una cadena
+    const data = `${url}|${timestamp}|${permissionsStr}`;
+    const encoder = new TextEncoder();
+
+    // Convierte el secreto y los datos en bytes
+    const keyData = encoder.encode(secret);
+    const dataToHash = encoder.encode(data);
+
+    // Importa el secreto como clave de HMAC
+    const cryptoKey = await crypto.subtle.importKey(
+        'raw',
+        keyData,
+        { name: 'HMAC', hash: 'SHA-256' },
+        false,
+        ['sign']
+    );
+
+    // Firma los datos con HMAC
+    const signature = await crypto.subtle.sign('HMAC', cryptoKey, dataToHash);
+    const signatureHex = Array.from(new Uint8Array(signature))
+        .map((b) => b.toString(16).padStart(2, '0'))
+        .join('');
+
+    return `${data}|${signatureHex}`;
+}
+
+/**
+ * Realiza una solicitud HTTP segura utilizando la clave API o token JWT.
+ * @param {string} url - URL de la API (relativa o absoluta).
+ * @param {Object} options - Opciones de la solicitud (método, cuerpo, etc.).
+ * @param {string} apiKey - Clave API del cliente.
+ * @param {string} token - Token JWT del cliente.
+ * @returns {Promise<Response>} - Respuesta de la solicitud.
+ */
+async function secureFetch(url, options = {}, apiKey = Constants.API_KEY, token = null) {
+    const headers = options.headers || {};
+
+    // Añade la clave API o el token JWT al encabezado
+    if (apiKey) {
+        headers['X-API-Key'] = apiKey;
+    }
+
+    if (token) {
+        headers['Authorization'] = `Bearer ${token}`;
+    }
+
+    return fetch(url, { ...options, headers });
+}
+
+/**
+ * Realiza una solicitud HTTP genérica con manejo integrado de claves API.
+ * @param {Object} config - Configuración de la solicitud.
+ * @param {string} config.url - URL de la API (relativa o absoluta).
+ * @param {string} config.method - Método HTTP (GET, POST, etc.).
  * @param {Object|string|null} config.body - Cuerpo de la solicitud.
  * @param {boolean} config.isJson - Indica si la respuesta será JSON.
- * @param {Function|null} callback - Función opcional a ejecutar después de la respuesta.
- * @param {string} [responseType='text'] - Tipo de respuesta esperada ('text', 'json', 'blob', etc.).
- * @returns {Promise<any>} - Respuesta de la petición.
+ * @param {Function} config.callback - Función opcional a ejecutar después de la respuesta.
+ * @returns {Promise<any>} - Respuesta procesada de la solicitud.
  */
-const fetchHandler = async ({ url, method = 'GET', body = null, isJson = true, callback = null }) => {
+const fetchHandler = async ({
+    url,
+    method = 'GET',
+    body = null,
+    isJson = true,
+    callback = () => {},
+}) => {
     if (!url) throw new Error("La URL es obligatoria.");
 
-    const headers = { "X-Requested-With": "XMLHttpRequest" };
+    // Construir las cabeceras
+    const headers = { 
+        "X-Requested-With": "XMLHttpRequest",
+        "X-API-Key": Constants.API_KEY, // Clave API centralizada
+    };
+
     if (method !== "GET" && body && isJson) {
         headers["Content-Type"] = "application/json";
-        body = JSON.stringify(body);
+        body = JSON.stringify(body); // Serializar el cuerpo como JSON
     }
 
     try {
         const response = await fetch(url, { method, headers, body });
 
         if (!response.ok) {
-            throw new Error(`HTTP Error ${response.status}: ${await response.text()}`);
+            const errorText = await response.text();
+            throw new Error(`HTTP Error ${response.status}: ${errorText}`);
         }
 
         const rawData = await response.text();
-
-        // Manejo de respuestas vacías
-        if (isJson && (!rawData || rawData.trim() === '')) {
-            console.warn("Respuesta vacía.");
-            return null;
-        }
-
         const parsedData = isJson ? JSON.parse(rawData) : rawData;
-        callback?.(parsedData);
+
+        callback(parsedData);
         return parsedData;
     } catch (error) {
         console.error("Error en fetchHandler:", error);
@@ -45,75 +108,79 @@ const fetchHandler = async ({ url, method = 'GET', body = null, isJson = true, c
     }
 };
 
-// Función para simplificar peticiones
-export const get_data = async ({ url, data = null, method = null, isJson = true, callback = null }) => {
-    const response = await fetchHandler({
+/**
+ * Simplifica las solicitudes HTTP con integración de claves API.
+ * @param {Object} config - Configuración de la solicitud.
+ * @returns {Promise<any>} - Respuesta procesada de la API.
+ */
+export const get_data = async ({ url, data = null, method = null, isJson = true, callback = () => {} }) => {
+    // const fullUrl = `${Constants.URL}/${Constants.API_ENDPOINT}`; // Construir URL completa
+    return fetchHandler({
         url,
         method: method || (data ? "POST" : "GET"),
         body: data,
         isJson,
         callback,
     });
-
-    // Manejar respuestas vacías
-    if (!response) {
-        console.warn(`Archivo vacío o sin datos: ${url}`);
-        return null; // O cualquier valor predeterminado
-    }
-
-    return response;
 };
+
 /**
- * Guarda contenido en un archivo en el servidor utilizando una llamada HTTP.
- * @param {string} fileName - Nombre del archivo que se desea guardar.
- * @param {Object|string} content - Contenido a guardar en el archivo.
- * @param {Object} extraData - Datos adicionales que se enviarán con el contenido.
- * @param {Function|null} callback - Función opcional a ejecutar después de la respuesta.
+ * Guarda contenido en el servidor utilizando la clave API centralizada.
+ * @param {string} fileName - Nombre del archivo a guardar.
+ * @param {Object|string} content - Contenido a guardar.
+ * @param {Object} extraData - Datos adicionales para la operación.
+ * @param {Function} callback - Función opcional a ejecutar después de la respuesta.
  * @returns {Promise<Object>} - Respuesta del servidor.
  */
-export const saveFileToServer = async (fileName, content, extraData = {}, callback = null) => {
+export const saveFileToServer = async (fileName, content, extraData = {}, callback = () => {}) => {
     console.info("Guardando archivo en el servidor...");
-    
-    // Validar que el nombre del archivo es una cadena válida
-    if (typeof fileName !== 'string' || fileName.trim() === '') {
-        throw new Error("El nombre del archivo debe ser una cadena no vacía.");
-    }
-
-    // Validar que el contenido sea serializable o null/vacío
-    if (content !== null && content !== '' && (typeof content !== 'string' && typeof content !== 'object')) {
-        throw new Error("El contenido debe ser un string, un objeto serializable, null o vacío.");
-    }
 
     const data = {
         operation: "save_file",
-        type: "json",
         id: fileName,
-        content: content === null || content === '' ? '' : (typeof content === 'string' ? content : JSON.stringify(content)),
-        ...extraData, // Merge con extraData
+        content: content === null || content === '' ? '' : JSON.stringify(content),
+        ...extraData,
     };
 
     return get_data({
         url: Constants.API_ENDPOINT,
         data,
-        callback
+        callback,
     });
 };
 
-
 /**
- * Realiza una operación genérica con el servidor.
- * @param {string} operation - Tipo de operación (e.g., 'get_node').
- * @param {string} folder - Carpeta o identificador de la operación.
- * @param {Object} extraData - Datos adicionales para la operación.
+ * Realiza operaciones genéricas en el servidor.
+ * @param {string} operation - Operación a realizar.
+ * @param {string} folder - Carpeta o identificador.
+ * @param {Object} extraData - Datos adicionales.
  * @returns {Promise<Object>} - Respuesta del servidor.
  */
 export const serverOperation = async (operation, folder, extraData = {}) => {
-    if (!operation ) {
-        throw new Error("El parámetro 'operation' es obligatorio.");
-    }
-
     return get_data({
         url: Constants.API_ENDPOINT,
         data: { operation, id: folder, ...extraData },
     });
+};
+
+/**
+ * Realiza un inicio de sesión en el servidor (futuro).
+ * @param {string} username - Nombre de usuario.
+ * @param {string} password - Contraseña del usuario.
+ * @returns {Promise<string>} - Token JWT del usuario.
+ */
+export const login = async (username, password) => {
+    const response = await fetchHandler({
+        url: `${Constants.URL}/login`,
+        method: 'POST',
+        body: { username, password },
+        isJson: true,
+    });
+
+    if (response && response.token) {
+        console.info('Login exitoso:', response);
+        return response.token;
+    }
+
+    throw new Error('Error en el inicio de sesión.');
 };

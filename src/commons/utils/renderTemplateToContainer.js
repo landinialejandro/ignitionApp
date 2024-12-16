@@ -14,7 +14,7 @@ import { $$ } from "../../../js/libraries/selector.js";
 export const renderTemplateToContainer = async (templatePath, data, container) => {
     try {
         // Asegurarse de que los datos sean un array o convertirlos
-        const normalizedData = Array.isArray(data) ? data : [data];
+        const normalizedData = data//Array.isArray(data) ? data : [data];
 
         // Obtener el contenido de la plantilla desde la URL
         const templateData = await get_data({ url: templatePath, isJson: false });

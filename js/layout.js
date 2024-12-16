@@ -66,8 +66,8 @@ const initializeLayout = () => {
   const handleResize = () => {
     if (sidebar) {
       const isSmallScreen = window.innerWidth < 1200;
-      sidebar.classList.toggle("collapsed", isSmallScreen);
-      sidebar.classList.toggle("expanded", !isSmallScreen);
+      toggleClass(sidebar, "collapsed", isSmallScreen);
+      toggleClass(sidebar, "expanded", !isSmallScreen);
     }
   };
 
@@ -93,7 +93,6 @@ const initializeLayout = () => {
     const collapseButton = event.target.closest(".button-collapse");
     const navContainer = event.target.closest(".nav-link-container");
     const nodeContainer = event.target.closest(".node-link-container");
-    const cardContainer = event.target.closest(".card-header");
 
     if (collapseButton) {
       const parentItem = collapseButton.closest(".nav-item, .node-item, .card");
