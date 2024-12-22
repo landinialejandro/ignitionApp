@@ -336,7 +336,7 @@ const handleProjectTree = async (id) => {
         renderBreadcrumb(id);
 
         if (selected.properties) {
-            await renderTemplateToContainer("templates/view_properties.hbs", selected, ".editor-container");
+            await renderTemplateToContainer("templates/view_properties.hbs", [selected], ".editor-container");
         }
     } catch (error) {
         const msg = "Error al manejar el nodo.";

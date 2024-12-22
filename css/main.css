@@ -172,9 +172,6 @@ body {
   font-size: 0.9rem;
   width: 180px;
 }
-.content-header .search-form .search-input::-moz-placeholder {
-  color: #b0b0b0;
-}
 .content-header .search-form .search-input::placeholder {
   color: #b0b0b0;
 }
@@ -998,7 +995,6 @@ body {
   margin-top: 0.5rem;
   padding: 0.5rem 0;
   z-index: 1000;
-  width: -moz-max-content;
   width: max-content;
 }
 .dropdown .dropdown-menu .dropdown-item {
@@ -1030,8 +1026,7 @@ body {
 .form-container:has(.form-radio:nth-child(4)).two-columns {
   display: grid;
   grid-template-columns: 1fr 1fr;
-  -moz-column-gap: 16px;
-       column-gap: 16px;
+  column-gap: 16px;
   row-gap: 8px;
 }
 @media (max-width: 2500px) {
@@ -1086,9 +1081,6 @@ body {
 .form-group .form-textarea:focus {
   border-color: #bb86fc;
   box-shadow: 0 0 5px rgba(187, 134, 252, 0.5);
-}
-.form-group .form-input::-moz-placeholder, .form-group .form-textarea::-moz-placeholder {
-  color: #b0b0b0;
 }
 .form-group .form-input::placeholder,
 .form-group .form-textarea::placeholder {

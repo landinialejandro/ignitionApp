@@ -221,11 +221,11 @@ class ToastMaster {
      */
     #initializeMessageTypes(customMessageTypes) {
         const defaultMessageTypes = {
-            success: { style: 'background: green; color: white', icon: 'check-circle', timer: 2500, consoleIcon: ' 🟢' },
-            info: { style: 'background: white; color: green', icon: 'info-circle', timer: 2000, consoleIcon: ' \u2139' },
-            warning: { style: 'background: yellow; color: blue', icon: 'exclamation-triangle', timer: 3000, consoleIcon: ' ⚠️' },
-            danger: { style: 'background: red; color: white', icon: 'times-circle', timer: 4000, consoleIcon: ' ❌' },
-            secondary: { style: 'background: grey; color: black', icon: 'question', timer: 2500, consoleIcon: ' 🛈' },
+            success: { style: 'background: green; color: white', icon: 'check-circle', timer: 4500, consoleIcon: ' 🟢' },
+            info: { style: 'background: white; color: green', icon: 'info-circle', timer: 4000, consoleIcon: ' \u2139' },
+            warning: { style: 'background: yellow; color: blue', icon: 'exclamation-triangle', timer: 6000, consoleIcon: ' ⚠️' },
+            danger: { style: 'background: red; color: white', icon: 'times-circle', timer: 8000, consoleIcon: ' ❌' },
+            secondary: { style: 'background: grey; color: black', icon: 'question', timer: 4500, consoleIcon: ' 🛈' },
 
         };
 

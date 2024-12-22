@@ -1,32 +1,53 @@
-// file: css/toastNotifier/_toastNotifier.scss
+// * file: scss/toastNotifier/toastNotifier.scss
+
+@use 'sass:map';
+@use '../base/colors' as *;
+@use '../base/variables' as *;
+@use '../base/mixins' as *;
 
 #toast-notifier-container {
-    font-family: Arial, sans-serif;
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    z-index: 9999;
+    display: flex;
+    flex-direction: column;
+    gap: $spacing-sm;
 
-    > div {
-        animation: fadeIn 0.3s ease, fadeOut 0.3s ease 3s;
-        padding: 10px 15px;
-        border-radius: 5px;
-        font-size: 14px;
-        color: white;
-        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+    .toast {
+        padding: $spacing-sm;
+        @include rounded();
+        background-color: rgba($color-black, 0.5); /* Fondo menos transparente */
+        border: 1px solid transparent;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+        display: flex;
+        align-items: center;
+        gap: $spacing-xs;
+        transition: box-shadow 0.3s ease, transform 0.3s ease;
         opacity: 0;
-        transition: opacity 0.3s ease;
+        animation: fadeIn 0.3s ease, fadeOut 0.3s ease 16s;
+        max-width: 300px;
 
-        &.success {
-            background-color: green;
+        @each $name, $color in $theme-colors {
+            &-#{$name} {
+                border-color: $color;
+                color: $color;
+                background-color: rgba($color, 0.4); /* Ajuste de transparencia en colores de alerta */
+            }
         }
 
-        &.warning {
-            background-color: orange;
+        &:hover {
+            box-shadow: 0 0 12px lighten($color-shadow, 20%);
+            transform: translateY(-2px);
         }
 
-        &.danger {
-            background-color: red;
+        .toast-icon {
+            font-size: 1.2rem;
         }
 
-        &.info {
-            background-color: blue;
+        .toast-text {
+            font-size: 0.9rem;
+            font-weight: $font-weight-normal;
         }
     }
 }

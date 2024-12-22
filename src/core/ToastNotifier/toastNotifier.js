@@ -10,19 +10,19 @@ export class ToastNotifier {
     fire(message, type = 'info', options = {}) {
         const notification = document.createElement('div');
         notification.textContent = message;
-        console.log("fire");
         // Agregar clases dinámicas
-        notification.classList.add(type);
+        notification.classList.add('toast');
+        notification.classList.add(`toast-${type}`);
 
         this.container.appendChild(notification);
 
         // Mostrar notificación
         setTimeout(() => (notification.style.opacity = '1'), 10);
 
-        const duration = options.timer || 3000;
+        const duration = options.timer || 6000;
         setTimeout(() => {
             notification.style.opacity = '0';
-            setTimeout(() => this.container.removeChild(notification), 300);
+            setTimeout(() => this.container.removeChild(notification), 600);
         }, duration);
     }
 }

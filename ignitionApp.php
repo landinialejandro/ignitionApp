@@ -5,7 +5,7 @@ require_once('class_fs.php');
 
 // Configuración de claves API y permisos
 $API_KEYS = [
-    'cliente1_key' => ['create_node', 'get_node'], // Cliente 1 puede crear y obtener nodos
+    'cliente1_key' => ['create_node', 'get_node', 'save_file'], // Cliente 1 puede crear y obtener nodos
     'cliente2_key' => ['get_node'],               // Cliente 2 solo puede obtener nodos
 ];
 

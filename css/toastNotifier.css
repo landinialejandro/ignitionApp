@@ -1,27 +1,71 @@
 #toast-notifier-container {
-  font-family: Arial, sans-serif;
+  position: fixed;
+  top: 20px;
+  right: 20px;
+  z-index: 9999;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
 }
-#toast-notifier-container > div {
-  animation: fadeIn 0.3s ease, fadeOut 0.3s ease 3s;
-  padding: 10px 15px;
-  border-radius: 5px;
-  font-size: 14px;
-  color: white;
-  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+#toast-notifier-container .toast {
+  padding: 1rem;
+  border-radius: 8px;
+  background-color: rgba(0, 0, 0, 0.5); /* Fondo menos transparente */
+  border: 1px solid transparent;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  transition: box-shadow 0.3s ease, transform 0.3s ease;
   opacity: 0;
-  transition: opacity 0.3s ease;
+  animation: fadeIn 0.3s ease, fadeOut 0.3s ease 16s;
+  max-width: 300px;
 }
-#toast-notifier-container > div.success {
-  background-color: green;
+#toast-notifier-container .toast-primary {
+  border-color: #3a7bd5;
+  color: #3a7bd5;
+  background-color: rgba(58, 123, 213, 0.4); /* Ajuste de transparencia en colores de alerta */
 }
-#toast-notifier-container > div.warning {
-  background-color: orange;
+#toast-notifier-container .toast-success {
+  border-color: #4CAF92;
+  color: #4CAF92;
+  background-color: rgba(76, 175, 146, 0.4); /* Ajuste de transparencia en colores de alerta */
 }
-#toast-notifier-container > div.danger {
-  background-color: red;
+#toast-notifier-container .toast-danger {
+  border-color: #FF5C5C;
+  color: #FF5C5C;
+  background-color: rgba(255, 92, 92, 0.4); /* Ajuste de transparencia en colores de alerta */
 }
-#toast-notifier-container > div.info {
-  background-color: blue;
+#toast-notifier-container .toast-warning {
+  border-color: #FFA726;
+  color: #FFA726;
+  background-color: rgba(255, 167, 38, 0.4); /* Ajuste de transparencia en colores de alerta */
+}
+#toast-notifier-container .toast-info {
+  border-color: #56CCF2;
+  color: #56CCF2;
+  background-color: rgba(86, 204, 242, 0.4); /* Ajuste de transparencia en colores de alerta */
+}
+#toast-notifier-container .toast-light {
+  border-color: #f5f5f5;
+  color: #f5f5f5;
+  background-color: rgba(245, 245, 245, 0.4); /* Ajuste de transparencia en colores de alerta */
+}
+#toast-notifier-container .toast-dark {
+  border-color: #1a1a2e;
+  color: #1a1a2e;
+  background-color: rgba(26, 26, 46, 0.4); /* Ajuste de transparencia en colores de alerta */
+}
+#toast-notifier-container .toast:hover {
+  box-shadow: 0 0 12px rgba(51, 51, 51, 0.3);
+  transform: translateY(-2px);
+}
+#toast-notifier-container .toast .toast-icon {
+  font-size: 1.2rem;
+}
+#toast-notifier-container .toast .toast-text {
+  font-size: 0.9rem;
+  font-weight: 400;
 }
 
 @keyframes fadeIn {

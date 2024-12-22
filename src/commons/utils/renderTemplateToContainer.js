@@ -13,8 +13,6 @@ import { $$ } from "../../../js/libraries/selector.js";
  */
 export const renderTemplateToContainer = async (templatePath, data, container) => {
     try {
-        // Asegurarse de que los datos sean un array o convertirlos
-        const normalizedData = data//Array.isArray(data) ? data : [data];
 
         // Obtener el contenido de la plantilla desde la URL
         const templateData = await get_data({ url: templatePath, isJson: false });
@@ -26,7 +24,7 @@ export const renderTemplateToContainer = async (templatePath, data, container) =
 
         // Compilar la plantilla con los datos normalizados
         const compiledTemplate = Handlebars.compile(templateData);
-        const html = compiledTemplate( normalizedData );
+        const html = compiledTemplate( data );
 
         // Insertar el HTML en el contenedor especificado
         $$(container).html(html);
