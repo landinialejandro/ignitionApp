@@ -1,0 +1,63 @@
+// * file: scss/components/_code.scss
+// Variables específicas para el código
+$code-background: darken($color-background, 10%);
+$code-border: lighten($color-background-alt, 10%);
+$code-color: #e6e6e6;
+$code-highlight: darken($color-background-alt, 20%);
+$code-scrollbar: lighten($color-background-alt, 20%);
+
+.code-container {
+  background: $code-background;
+  color: $code-color;
+  padding: 1rem;
+  margin: 1rem 0;
+  border: 1px solid $code-border;
+  @include rounded();
+  @include shadow();
+  font-family: 'Fira Code', monospace;
+  font-size: 0.9rem;
+  line-height: 1.5;
+
+  pre {
+    margin: 0;
+    overflow-x: auto;
+    max-height: 500px;
+  }
+
+  code {
+    display: block;
+    background: transparent;
+    color: inherit;
+
+    // Highlighted Line
+    .highlight {
+      background-color: $code-highlight;
+    }
+  }
+
+  // Scrollbar Style
+  ::-webkit-scrollbar {
+    height: 6px;
+    background: $code-background;
+  }
+
+  ::-webkit-scrollbar-thumb {
+    background: $code-scrollbar;
+    border-radius: 3px;
+  }
+}
+
+// Syntax Highlighting
+.code-container .keyword {
+  color: #ff79c6; // Pink
+  font-weight: bold;
+}
+
+.code-container .string {
+  color: #f1fa8c; // Yellow
+}
+
+.code-container .comment {
+  color: #6272a4; // Muted Blue
+  font-style: italic;
+}

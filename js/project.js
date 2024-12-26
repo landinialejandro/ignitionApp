@@ -367,7 +367,6 @@ const getDataFromActiveLink = () => {
     return { id, type };
 }
 
-
 /**
  * Agrega los listeners principales del proyecto.
  */
@@ -410,9 +409,6 @@ const saveNodeListener = () => {
         const updatedValues = procesInputForm(form);
         const updatedValuesObj = Object.fromEntries(updatedValues.map((item) => [item.caption, item.value]));
 
-        console.log(updatedValues);
-        console.log(updatedValuesObj);
-
         const node = project.findChildById(nodeId);
         if (!node) {
             toastmaster.danger('Nodo no encontrado.');
@@ -435,7 +431,6 @@ const saveNodeListener = () => {
             updateNodeProperties(node, propIndex, updatedValuesObj);
 
             toastmaster.success('Se han realizado cambios.');
-            console.log(node.properties);
             projectRender();
         } else {
             toastmaster.danger('No se han realizado cambios.');

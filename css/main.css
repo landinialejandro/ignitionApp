@@ -734,6 +734,54 @@ body {
   background-color: #252537;
 }
 
+.code-container {
+  background: #08080d;
+  color: #e6e6e6;
+  padding: 1rem;
+  margin: 1rem 0;
+  border: 1px solid #233564;
+  border-radius: 8px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+  font-family: "Fira Code", monospace;
+  font-size: 0.9rem;
+  line-height: 1.5;
+}
+.code-container pre {
+  margin: 0;
+  overflow-x: auto;
+  max-height: 500px;
+}
+.code-container code {
+  display: block;
+  background: transparent;
+  color: inherit;
+}
+.code-container code .highlight {
+  background-color: black;
+}
+.code-container ::-webkit-scrollbar {
+  height: 6px;
+  background: #08080d;
+}
+.code-container ::-webkit-scrollbar-thumb {
+  background: #314989;
+  border-radius: 3px;
+}
+
+.code-container .keyword {
+  color: #ff79c6;
+  font-weight: bold;
+}
+
+.code-container .string {
+  color: #f1fa8c;
+}
+
+.code-container .comment {
+  color: #6272a4;
+  font-style: italic;
+}
+
 .card {
   background-color: #16213e;
   color: #e0e0e0;
@@ -842,7 +890,7 @@ body {
   font-size: 0.875rem;
   font-weight: 400;
   line-height: 1.2;
-  background-color: #1a2749;
+  background-color: #121b33;
   color: #b0b0b0;
 }
 .card .card-body {

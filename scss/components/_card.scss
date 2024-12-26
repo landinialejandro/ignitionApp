@@ -79,7 +79,7 @@
     font-size: $font-size-small ;
     font-weight: $font-weight-normal;
     line-height: 1.2;
-    background-color: lighten($color-background-alt, 3%);
+    background-color: darken($color-background-alt, 3%);
     color: $color-text-muted;
 
   }
