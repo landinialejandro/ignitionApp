@@ -1,7 +1,7 @@
 // * file:js/commons/utils/renderTemplateToContainer.js
 
-import { get_data } from '../../index.js';
 import { $$ } from "../../../js/libraries/selector.js";
+import { getFileContent } from '../../../js/libraries/helpers.js';
 
 /**
  * Renderiza una plantilla de Handlebars con los datos proporcionados y la inserta en un contenedor HTML.
@@ -15,7 +15,7 @@ export const renderTemplateToContainer = async (templatePath, data, container) =
     try {
 
         // Obtener el contenido de la plantilla desde la URL
-        const templateData = await get_data({ url: templatePath, isJson: false });
+        const templateData = await getFileContent(templatePath);
 
         // Verificar si Handlebars está disponible
         if (typeof Handlebars === "undefined") {

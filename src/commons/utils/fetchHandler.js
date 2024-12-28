@@ -74,12 +74,12 @@ const fetchHandler = async ({
     method = 'GET',
     body = null,
     isJson = true,
-    callback = () => {},
+    callback = () => { },
 }) => {
     if (!url) throw new Error("La URL es obligatoria.");
 
     // Construir las cabeceras
-    const headers = { 
+    const headers = {
         "X-Requested-With": "XMLHttpRequest",
         "X-API-Key": Constants.API_KEY, // Clave API centralizada
     };
@@ -113,8 +113,7 @@ const fetchHandler = async ({
  * @param {Object} config - Configuración de la solicitud.
  * @returns {Promise<any>} - Respuesta procesada de la API.
  */
-export const get_data = async ({ url, data = null, method = null, isJson = true, callback = () => {} }) => {
-    // const fullUrl = `${Constants.URL}/${Constants.API_ENDPOINT}`; // Construir URL completa
+export const get_data = async ({ url, data = null, method = null, isJson = true, callback = () => { } }) => {
     return fetchHandler({
         url,
         method: method || (data ? "POST" : "GET"),
@@ -125,41 +124,48 @@ export const get_data = async ({ url, data = null, method = null, isJson = true,
 };
 
 /**
- * Guarda contenido en el servidor utilizando la clave API centralizada.
+ * Guarda contenido en el servidor.
  * @param {string} fileName - Nombre del archivo a guardar.
  * @param {Object|string} content - Contenido a guardar.
  * @param {Object} extraData - Datos adicionales para la operación.
  * @param {Function} callback - Función opcional a ejecutar después de la respuesta.
  * @returns {Promise<Object>} - Respuesta del servidor.
  */
-export const saveFileToServer = async (fileName, content, extraData = {}, callback = () => {}) => {
+export const saveFileToServer = async (fileName, content, extraData = {}, callback = () => { }) => {
     console.info("Guardando archivo en el servidor...");
 
     const data = {
-        operation: "save_file",
-        id: fileName,
         content: content === null || content === '' ? '' : JSON.stringify(content),
         ...extraData,
     };
 
-    return get_data({
-        url: Constants.API_ENDPOINT,
-        data,
-        callback,
-    });
+    try {
+        const response = await serverOperation("save_file", fileName, data);
+
+        // Ejecutar el callback si se proporciona
+        if (typeof callback === "function") {
+            callback(response);
+        }
+
+        return response;
+    } catch (error) {
+        console.error("Error al guardar el archivo:", error);
+        throw error;
+    }
 };
+
 
 /**
  * Realiza operaciones genéricas en el servidor.
  * @param {string} operation - Operación a realizar.
- * @param {string} folder - Carpeta o identificador.
+ * @param {string} id - Carpeta, archivo o identificador.
  * @param {Object} extraData - Datos adicionales.
  * @returns {Promise<Object>} - Respuesta del servidor.
  */
-export const serverOperation = async (operation, folder, extraData = {}) => {
-    return get_data({
+export const serverOperation = async (operation, id, extraData = {}) => {
+    return await get_data({
         url: Constants.API_ENDPOINT,
-        data: { operation, id: folder, ...extraData },
+        data: { operation, id, ...extraData },
     });
 };
 

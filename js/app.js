@@ -1,9 +1,9 @@
 import { RegisterHelpers, RegisterPartials } from './libraries/hbs.js';
-import { actionsServer, getDirCollectionJson, preloader } from './libraries/helpers.js';
+import { actionsServer, getDirCollectionJson, getFileContent, getJsonData, preloader } from './libraries/helpers.js';
 import { $$ } from './libraries/selector.js';
 import { initializeProject, toolsBoxListenerProject } from './project.js';
 import { registerButtonAction } from './layout.js';
-import { renderTemplateToContainer, checkContainerAvailability, get_data, Constants,  getUserInput, sanitizeInput, validateGenericInput } from '../src/index.js';
+import { renderTemplateToContainer, checkContainerAvailability,  Constants, getUserInput, sanitizeInput, validateGenericInput } from '../src/index.js';
 import { toastmaster } from '../src/core/index.js';
 import { handleError } from '../src/commons/utils/handleError.js';
 
@@ -33,8 +33,8 @@ export const initializeApp = async () => {
  */
 const initializeSidebar = async () => {
     const [settings, navSidebar, projects, appSettings] = await Promise.all([
-        get_data({ url: "settings/settings.json" }),
-        get_data({ url: "settings/nav_sidebar.json" }),
+        getJsonData("settings/settings.json"),
+        getJsonData("settings/nav_sidebar.json"),
         getDirCollectionJson("projects"),
         getDirCollectionJson("settings")
     ]);
@@ -91,7 +91,7 @@ const registerNavigationListeners = () => {
 
 const actionCallbacks = [
     {
-        name: "delete", 
+        name: "delete",
         operation: (data) => {
             data.operation = 'delete_node';
             data.id = data.url;
@@ -102,14 +102,14 @@ const actionCallbacks = [
         }
     },
     {
-        name: "add-file", 
+        name: "add-file",
         operation: (data) => {
             data.type = 'file';
             createNode(data);
         }
     },
     {
-        name: "add-folder", 
+        name: "add-folder",
         operation: (data) => {
             data.type = 'folder';
             createNode(data)
@@ -187,7 +187,7 @@ const loadContent = async ({ type, name, url }) => {
  */
 const loadHandlers = {
     async content(url, container) {
-        const contentHtml = await get_data({ url, isJson: false });
+        const contentHtml = await getFileContent(url);
         container.html(contentHtml);
         toastmaster.info(`Cargando contenido: ${url}`);
     },

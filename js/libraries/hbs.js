@@ -1,4 +1,5 @@
-import { get_data, toastmaster } from '../../src/index.js';
+import { toastmaster } from '../../src/index.js';
+import { getDirCollectionJson, getFileContent } from './helpers.js';
 
 export const RegisterHelpers = () => {
 	toastmaster.info("registering helpers...")
@@ -122,21 +123,15 @@ export const RegisterHelpers = () => {
 
 }
 export const RegisterPartials = async () => {
-	toastmaster.info("Registering partials...");
-
-	const url = 'ignitionApp.php';
-	const data = {
-		id: 'templates/partials',
-		operation: 'get_node',
-	};
+	toastmaster.info("Registering partials!...");
 
 	try {
 		// Obtén los datos iniciales de los archivos
-		const filesContent = await get_data({ url, data });
+		const filesContent = await getDirCollectionJson('templates/partials');
 
 		// Genera todas las promesas para cargar el contenido de los archivos en paralelo
 		const partialsPromises = Object.entries(filesContent).map(async ([key, fileInfo]) => {
-			const fileContent = await get_data({ url: fileInfo.url, isJson: false });
+			const fileContent = await getFileContent(fileInfo.url);
 
 			// Genera el nombre del partial
 			const indicePunto = fileInfo.caption.indexOf('.');

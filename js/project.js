@@ -8,11 +8,11 @@
  */
 
 import { registerButtonAction } from './layout.js';
-import { getDirCollectionJson } from './libraries/helpers.js';
+import { getDirCollectionJson, getFileContent, getJsonData } from './libraries/helpers.js';
 import { $$ } from './libraries/selector.js';
 import { ContextMenu } from './ContextMenu.js';
 
-import { get_data, sanitizeInput, saveFileToServer, validateErrorsForm } from '../src/commons/index.js';
+import { sanitizeInput, saveFileToServer, validateErrorsForm } from '../src/commons/index.js';
 import { getUserInput, validateGenericInput, uniqueId } from '../src/commons/index.js';
 import { renderTemplateToContainer, procesInputForm } from '../src/commons/index.js';
 import { Constants } from '../src/commons/index.js';
@@ -37,9 +37,9 @@ let contextMenu = null;
 */
 export const initializeProject = async (url) => {
     try {
-        const typology = new Typology(await get_data({ url: "./settings/types.json" })); //obtengo los type
-        const content = await get_data({ url }); // obtengo los json
-        const projectPage = await get_data({ url: "pages/project_page.html", isJson: false }); //cargo la pagina del base del proyecto un contendore con dos card en columns
+        const typology = new Typology(await getJsonData("./settings/types.json")); //obtengo los type
+        const content = await getJsonData(url); // obtengo los json
+        const projectPage = await getFileContent("pages/project_page.html"); //cargo la pagina del base del proyecto un contendore con dos card en columns
 
         // Renderizar la estructura base del proyecto
         $$(Constants.CONTENT).html(projectPage); //cargo en html el proyecto base
@@ -303,10 +303,14 @@ const actionCallbacks = {
 const addPropertiesToNode = async (typeToAdd, newNodeOptions) => {
     try {
         const settingsPath = `settings/${typeToAdd}`;
-        const filesContent = await getDirCollectionJson(settingsPath);
+        const filesContent =  getDirCollectionJson(settingsPath);
 
         for (const [key, fileInfo] of Object.entries(filesContent)) {
-            const content = await get_data({ url: fileInfo.url });
+            if (!fileInfo.url ) {
+                console.warn(`Archivo ${key} sin URL.`);
+                continue;
+            }
+            const content = await getJsonData(fileInfo.url);
             const id = uniqueId();
             newNodeOptions.properties.push({
                 id, ...content
