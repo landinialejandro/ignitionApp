@@ -1,0 +1,19 @@
+// * file: scss/components/_modal-container.scss
+.modal-container {
+    display: none; // Oculto por defecto
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.6);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+  
+    &.active {
+      display: flex; // Mostrar cuando esté activo
+    }
+  }
+  

@@ -791,6 +791,16 @@ body {
   overflow: hidden;
   transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
+.card.modal-card {
+  max-width: 90%;
+  width: 500px;
+  height: auto;
+  transform: scale(0.9);
+  transition: transform 0.3s ease;
+}
+.card.modal-card.active {
+  transform: scale(1);
+}
 .card.card-glow:hover {
   transform: translateY(-4px);
   box-shadow: 0 6px 15px rgba(0, 0, 0, 0.3), 0 0 10px #bb86fc;
@@ -802,6 +812,7 @@ body {
 }
 .card:not(.expanded) > .card-body {
   max-height: 0;
+  padding: 0;
   opacity: 0;
   overflow: hidden;
 }
@@ -900,7 +911,7 @@ body {
   box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.1);
   font-size: 0.9rem;
   line-height: 1.5;
-  max-height: 100%;
+  height: 100%;
   opacity: 1;
   overflow: visible;
   transition: max-height 0.3s ease, opacity 0.3s ease;
@@ -1329,69 +1340,21 @@ body {
   transition: max-height 0.3s ease, opacity 0.3s ease, padding 0.3s ease;
 }
 
-.modal-backdrop {
-  background-color: rgba(0, 0, 0, 0.7);
+.modal-container {
+  display: none;
   position: fixed;
   top: 0;
   left: 0;
-  width: 100vw;
-  height: 100vh;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.6);
   display: flex;
-  align-items: center;
   justify-content: center;
+  align-items: center;
   z-index: 1000;
 }
-
-.modal {
-  background-color: rgba(22, 33, 62, 0.95);
-  color: #e0e0e0;
-  width: 90%;
-  max-width: 500px;
-  padding: 16px;
-  position: relative;
-  border-radius: 8px;
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
-  transition: transform 0.3s ease, opacity 0.3s ease;
-  transform: scale(0.95);
-  opacity: 0;
-}
-.modal.active {
-  transform: scale(1);
-  opacity: 1;
-}
-.modal .modal-header {
+.modal-container.active {
   display: flex;
-  align-items: center;
-  justify-content: space-between;
-  padding-bottom: 0.5rem;
-  border-bottom: 1px solid #2c2c4f;
-}
-.modal .modal-header .modal-title {
-  font-size: 1.25rem;
-  font-weight: 700;
-  color: #bb86fc;
-}
-.modal .modal-header .modal-close {
-  background: transparent;
-  border: none;
-  color: #bb86fc;
-  font-size: 1.5rem;
-  cursor: pointer;
-  transition: color 0.3s ease-in-out;
-}
-.modal .modal-header .modal-close:hover {
-  color: #d7b8fd;
-}
-.modal .modal-body {
-  padding: 8px 0;
-  color: #e0e0e0;
-}
-.modal .modal-footer {
-  display: flex;
-  justify-content: flex-end;
-  gap: 0.5rem;
-  border-top: 1px solid #2c2c4f;
-  padding-top: 0.5rem;
 }
 
 .preloader {

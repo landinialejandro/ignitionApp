@@ -120,11 +120,18 @@ export const toolsBoxListenerProject = () => {
         projectRender();
     })
 
+    registerButtonAction('button-info', (button, e) => {
+        console.log('info!');
+        const { id, type } = getDataFromActiveLink();
+        
+    })
+
     registerButtonAction('button-magic', (button, e) => {
         console.log('magic!');
 
         const { id, type } = getDataFromActiveLink();
 
+        //TODO: Verificar en typology cual es el id de root
         const rootNode = project.findChildById('root-node');
         if (!rootNode) {
             toastmaster.danger('Root no encontrado.');
@@ -154,7 +161,6 @@ export const toolsBoxListenerProject = () => {
     })
 
 }
-
 
 function getValueByPropertyIDAndCaption(node, propertyID, caption) {
     const property = node.properties.find(p => p.id === propertyID);
