@@ -52,7 +52,7 @@
 
     >.card-title,
     &> :not(.tools-box):not(i) {
-      font-size: 1rem;
+      font-size: $font-size-base;
       font-weight: $font-weight-bold;
       color: $color-text;
       margin: 0;

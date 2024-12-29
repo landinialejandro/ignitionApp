@@ -1,0 +1,94 @@
+// * file: components/_ignition-fold.scss
+
+.ignition-fold-container {
+    display: flex;
+    flex-direction: column;
+    @include rounded(8px);
+    overflow: hidden; // Asegura que las esquinas redondeadas sean visibles
+    box-shadow: 0 4px 10px $color-shadow;
+    margin: $spacing-md 0; // Espacio mínimo arriba y abajo
+}
+
+.ignition-fold-item {
+    background-color: $color-background-alt;
+    color: $color-text;
+    position: relative;
+    overflow: hidden;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+
+    // Remover los bordes de los items para evitar conflictos visuales
+    &:not(:last-child) {
+        border-bottom: 1px solid $color-hover;
+    }
+
+    // Efecto hover para items individuales
+    &:hover {
+        box-shadow: 0 4px 10px $color-shadow;
+    }
+
+    &.expanded>.ignition-fold-body {
+        max-height: 100%;
+        padding: $spacing-xs; // Mantener padding cuando está expandido
+        opacity: 1;
+        overflow: visible;
+    }
+
+    &:not(.expanded)>.ignition-fold-body {
+        max-height: 0;
+        padding: 0; // Quitar padding solo al colapsar
+        opacity: 0;
+        overflow: hidden;
+    }
+
+    .ignition-fold-header {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: $spacing-xs;
+        background-color: darken($color-background-alt, 5%);
+        border-bottom: 1px solid $color-hover; // Borde por defecto
+        transition: background-color 0.3s ease, color 0.3s ease, border-bottom 0.3s ease;
+
+        // Estilos para colores temáticos
+        @each $theme, $color in $theme-colors {
+            &.bg-#{$theme} {
+                border-color: $color;
+                background: linear-gradient(to bottom,
+                        darken($color-background-alt, 10%),
+                        $color-alert-background );
+                color: lighten($color, 40%);
+            }
+        }
+
+        >.ignition-fold-title,
+        &> :not(.tools-box):not(i) {
+            font-size: $font-size-small;
+            font-weight: $font-weight-normal;
+            color: $color-text;
+            margin: 0;
+            flex-grow: 1;
+            display: flex;
+            align-items: center;
+            gap: $spacing-xs;
+
+            // Asegurar colores dinámicos
+            @each $theme, $color in $theme-colors {
+                .bg-#{$theme} & {
+                    color: lighten($color, 40%);
+                }
+            }
+        }
+    }
+
+    .ignition-fold-body {
+        background-color: $color-background;
+        color: $color-text;
+        box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.1);
+        font-size: 0.9rem;
+        line-height: 1.5;
+        max-height: 100%;
+        opacity: 1;
+        overflow: visible;
+        transition: max-height 0.3s ease, opacity 0.3s ease, padding 0.3s ease;
+    }
+}

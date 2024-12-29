@@ -1,4 +1,6 @@
-<button class="button-tool button-collapse {{#if expanded}}expanded{{/if}}"
+<button
+    class="button-tool button-collapse {{#if expanded}}expanded{{/if}}"
+    aria-expanded="{{#if expanded}}true{{else}}false{{/if}}"
     aria-label="Expandir/Contraer">
     <i class="bi bi-chevron-right node-collapse"></i>
 </button>

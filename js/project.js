@@ -407,6 +407,7 @@ const saveNodeListener = () => {
         event.preventDefault();
 
         const form = event.target;
+        console.log(form);
         const { id: propertieId } = form.dataset;
         const { id: nodeId } = form.closest('.node').dataset;
 
@@ -418,7 +419,7 @@ const saveNodeListener = () => {
             toastmaster.danger('Nodo no encontrado.');
             return;
         }
-
+        console.log(node);
         const nodeProperties = node.properties;
         const propIndex = nodeProperties.findIndex((p) => p.id === propertieId);
 

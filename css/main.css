@@ -1208,6 +1208,127 @@ body {
   stroke: currentColor;
 }
 
+.ignition-fold-container {
+  display: flex;
+  flex-direction: column;
+  border-radius: 8px;
+  overflow: hidden;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+  margin: 16px 0;
+}
+
+.ignition-fold-item {
+  background-color: #16213e;
+  color: #e0e0e0;
+  position: relative;
+  overflow: hidden;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+.ignition-fold-item:not(:last-child) {
+  border-bottom: 1px solid #2c2c4f;
+}
+.ignition-fold-item:hover {
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+}
+.ignition-fold-item.expanded > .ignition-fold-body {
+  max-height: 100%;
+  padding: 0.5rem;
+  opacity: 1;
+  overflow: visible;
+}
+.ignition-fold-item:not(.expanded) > .ignition-fold-body {
+  max-height: 0;
+  padding: 0;
+  opacity: 0;
+  overflow: hidden;
+}
+.ignition-fold-item .ignition-fold-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0.5rem;
+  background-color: #0f172b;
+  border-bottom: 1px solid #2c2c4f;
+  transition: background-color 0.3s ease, color 0.3s ease, border-bottom 0.3s ease;
+}
+.ignition-fold-item .ignition-fold-header.bg-primary {
+  border-color: #3a7bd5;
+  background: linear-gradient(to bottom, #090d18, rgba(255, 255, 255, 0.05));
+  color: #e2ecf9;
+}
+.ignition-fold-item .ignition-fold-header.bg-success {
+  border-color: #4CAF92;
+  background: linear-gradient(to bottom, #090d18, rgba(255, 255, 255, 0.05));
+  color: #d9eee8;
+}
+.ignition-fold-item .ignition-fold-header.bg-danger {
+  border-color: #FF5C5C;
+  background: linear-gradient(to bottom, #090d18, rgba(255, 255, 255, 0.05));
+  color: white;
+}
+.ignition-fold-item .ignition-fold-header.bg-warning {
+  border-color: #FFA726;
+  background: linear-gradient(to bottom, #090d18, rgba(255, 255, 255, 0.05));
+  color: #fffaf2;
+}
+.ignition-fold-item .ignition-fold-header.bg-info {
+  border-color: #56CCF2;
+  background: linear-gradient(to bottom, #090d18, rgba(255, 255, 255, 0.05));
+  color: white;
+}
+.ignition-fold-item .ignition-fold-header.bg-light {
+  border-color: #f5f5f5;
+  background: linear-gradient(to bottom, #090d18, rgba(255, 255, 255, 0.05));
+  color: white;
+}
+.ignition-fold-item .ignition-fold-header.bg-dark {
+  border-color: #1a1a2e;
+  background: linear-gradient(to bottom, #090d18, rgba(255, 255, 255, 0.05));
+  color: #6a6aab;
+}
+.ignition-fold-item .ignition-fold-header > .ignition-fold-title, .ignition-fold-item .ignition-fold-header > :not(.tools-box):not(i) {
+  font-size: 0.875rem;
+  font-weight: 400;
+  color: #e0e0e0;
+  margin: 0;
+  flex-grow: 1;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+.bg-primary .ignition-fold-item .ignition-fold-header > .ignition-fold-title, .bg-primary .ignition-fold-item .ignition-fold-header > :not(.tools-box):not(i) {
+  color: #e2ecf9;
+}
+.bg-success .ignition-fold-item .ignition-fold-header > .ignition-fold-title, .bg-success .ignition-fold-item .ignition-fold-header > :not(.tools-box):not(i) {
+  color: #d9eee8;
+}
+.bg-danger .ignition-fold-item .ignition-fold-header > .ignition-fold-title, .bg-danger .ignition-fold-item .ignition-fold-header > :not(.tools-box):not(i) {
+  color: white;
+}
+.bg-warning .ignition-fold-item .ignition-fold-header > .ignition-fold-title, .bg-warning .ignition-fold-item .ignition-fold-header > :not(.tools-box):not(i) {
+  color: #fffaf2;
+}
+.bg-info .ignition-fold-item .ignition-fold-header > .ignition-fold-title, .bg-info .ignition-fold-item .ignition-fold-header > :not(.tools-box):not(i) {
+  color: white;
+}
+.bg-light .ignition-fold-item .ignition-fold-header > .ignition-fold-title, .bg-light .ignition-fold-item .ignition-fold-header > :not(.tools-box):not(i) {
+  color: white;
+}
+.bg-dark .ignition-fold-item .ignition-fold-header > .ignition-fold-title, .bg-dark .ignition-fold-item .ignition-fold-header > :not(.tools-box):not(i) {
+  color: #6a6aab;
+}
+.ignition-fold-item .ignition-fold-body {
+  background-color: #1a1a2e;
+  color: #e0e0e0;
+  box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.1);
+  font-size: 0.9rem;
+  line-height: 1.5;
+  max-height: 100%;
+  opacity: 1;
+  overflow: visible;
+  transition: max-height 0.3s ease, opacity 0.3s ease, padding 0.3s ease;
+}
+
 .modal-backdrop {
   background-color: rgba(0, 0, 0, 0.7);
   position: fixed;

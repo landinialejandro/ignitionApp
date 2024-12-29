@@ -1,6 +1,6 @@
-<div class="card margin-bottom expanded">
-    <div class="card-header bg-warning">
-        <h3 class="card-title">
+<div class="ignition-fold-item expanded">
+    <div class="ignition-fold-header bg-warning">
+        <h3 class="ignition-fold-title">
             {{> component_i context="card"}}
             {{caption}} propertie
         </h3>
@@ -8,7 +8,7 @@
             {{> button_collapse expanded=true}}
         </div>
     </div>
-    <div class="card-body">
+    <div class="ignition-fold-body">
         {{#if usershelper}}
         <div class="{{usershelper.class}}">
             {{usershelper.caption}}
@@ -47,7 +47,7 @@
                 </button>
             </form>
         </div>
-        {{> card_propertie_info}}
+        {{!-- {{> card_propertie_info}} --}}
         {{/when}}
     </div>
 </div>

@@ -93,9 +93,10 @@ const initializeLayout = () => {
     const collapseButton = event.target.closest(".button-collapse");
     const navContainer = event.target.closest(".nav-link-container");
     const nodeContainer = event.target.closest(".node-link-container");
+    const foldItemContainer = event.target.closest(".ignition-fold-item");
 
     if (collapseButton) {
-      const parentItem = collapseButton.closest(".nav-item, .node-item, .card");
+      const parentItem = collapseButton.closest(".nav-item, .node-item, .card, .ignition-fold-item");
       if (parentItem) {
         const contextClass = Array.from(parentItem.classList).find(cls =>
           Object.keys(collapseActionCallbacks).includes(cls)
