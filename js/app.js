@@ -1,9 +1,9 @@
 import { RegisterHelpers, RegisterPartials } from './libraries/hbs.js';
-import { actionsServer, getDirCollectionJson, getFileContent, getJsonData, preloader } from './libraries/helpers.js';
+import { getDirCollectionJson, getFileContent, getJsonData, preloader } from './libraries/helpers.js';
 import { $$ } from './libraries/selector.js';
 import { initializeProject, toolsBoxListenerProject } from './project.js';
 import { registerButtonAction } from './layout.js';
-import { renderTemplateToContainer, checkContainerAvailability,  Constants, getUserInput, sanitizeInput, validateGenericInput } from '../src/index.js';
+import { renderTemplateToContainer, checkContainerAvailability, Constants, getUserInput, sanitizeInput, validateGenericInput, serverOperation } from '../src/index.js';
 import { toastmaster } from '../src/core/index.js';
 import { handleError } from '../src/commons/utils/handleError.js';
 
@@ -38,6 +38,7 @@ const initializeSidebar = async () => {
         getDirCollectionJson("projects"),
         getDirCollectionJson("settings")
     ]);
+
 
     const versionText = `${settings.version || "0.0.0"} - ${settings.release || "bad file"}`;
     toastmaster.info(`Versión: ${versionText}`);
@@ -93,10 +94,8 @@ const actionCallbacks = [
     {
         name: "delete",
         operation: (data) => {
-            data.operation = 'delete_node';
-            data.id = data.url;
             if (confirm('¿Eliminar este nodo?'))
-                return actionsServer(data);
+                return serverOperation('delete_node', data.url, data);
             else
                 toastmaster.danger('Operación cancelada.');
         }
@@ -138,7 +137,6 @@ const toolsBoxListenerApp = () => {
  */
 const createNode = async (data) => {
 
-    data.operation = 'create_node';
     const name = getUserInput(`Ingrese el nombre del ${data.type}:`, validateGenericInput);
 
     if (name) {
@@ -146,7 +144,8 @@ const createNode = async (data) => {
         sanitized !== name && toastmaster.warning('Espacios en blanco reemplazados por "_"');
         toastmaster.secondary(`Dato ingresado: ${sanitized}`);
         data.text = `${data.url}/${sanitized}`;
-        await actionsServer(data);
+        console.log(data);
+        await serverOperation('create_node',"#",data);
     } else {
         toastmaster.danger('Operación cancelada o entrada inválida.');
     }

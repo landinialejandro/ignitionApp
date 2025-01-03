@@ -94,11 +94,12 @@ const fetchHandler = async ({
 
         if (!response.ok) {
             const errorText = await response.text();
-            throw new Error(`HTTP Error ${response.status}: ${errorText}`);
+            const jsonError= JSON.parse(errorText);
+            throw new Error(`HTTP Error ${response.status}: ${jsonError.error}`);
         }
 
         const rawData = await response.text();
-        const parsedData = isJson ? JSON.parse(rawData) : rawData;
+        const parsedData = isJson && rawData !== '' && rawData !== null ? JSON.parse(rawData) : rawData;
 
         callback(parsedData);
         return parsedData;
@@ -106,21 +107,6 @@ const fetchHandler = async ({
         console.error("Error en fetchHandler:", error);
         throw error;
     }
-};
-
-/**
- * Simplifica las solicitudes HTTP con integración de claves API.
- * @param {Object} config - Configuración de la solicitud.
- * @returns {Promise<any>} - Respuesta procesada de la API.
- */
-export const get_data = async ({ url, data = null, method = null, isJson = true, callback = () => { } }) => {
-    return fetchHandler({
-        url,
-        method: method || (data ? "POST" : "GET"),
-        body: data,
-        isJson,
-        callback,
-    });
 };
 
 /**
@@ -163,9 +149,10 @@ export const saveFileToServer = async (fileName, content, extraData = {}, callba
  * @returns {Promise<Object>} - Respuesta del servidor.
  */
 export const serverOperation = async (operation, id, extraData = {}) => {
-    return await get_data({
+    return fetchHandler({
         url: Constants.API_ENDPOINT,
-        data: { operation, id, ...extraData },
+        method: "POST",
+        body: { operation, id, ...extraData },
     });
 };
 

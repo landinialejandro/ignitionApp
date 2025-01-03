@@ -5,7 +5,7 @@ require_once('class_fs.php');
 
 // Configuración de claves API y permisos
 $API_KEYS = [
-    'cliente1_key' => ['create_node', 'get_node', 'save_file'], // Cliente 1 puede crear y obtener nodos
+    'cliente1_key' => ['create_node', 'get_node', 'save_file', 'get_content', '!rename_node', 'delete_node', '!move_node', '!copy_node'], // Cliente 1 puede crear y obtener nodos
     'cliente2_key' => ['get_node'],               // Cliente 2 solo puede obtener nodos
 ];
 
@@ -73,13 +73,13 @@ function realizarOperacion($request) {
         'parent' => $parent,
     ] = $request;
 
-    $id = $id && $id !== '#' ? $id : '/';
-    $settingsDir = dirname(__FILE__) . "/settings/";
+    $id = $id && $id !== '#' ? $id : DIRECTORY_SEPARATOR;
+    $settingsDir = dirname(__FILE__) . DIRECTORY_SEPARATOR . "settings" . DIRECTORY_SEPARATOR;
     $fs = new fs($folder);
 
     switch ($operation) {
         case 'get_node':
-            return $fs->lst($id, $id === '/');
+            return $fs->lst($id, $id === DIRECTORY_SEPARATOR);
         case 'get_content':
             return $fs->data($id);
         case 'create_node':
@@ -89,9 +89,9 @@ function realizarOperacion($request) {
         case 'delete_node':
             return $fs->remove($id);
         case 'move_node':
-            return $fs->move($id, $parent ?: '/');
+            return $fs->move($id, $parent ?: DIRECTORY_SEPARATOR);
         case 'copy_node':
-            return $fs->copy($id, $parent ?: '/');
+            return $fs->copy($id, $parent ?: DIRECTORY_SEPARATOR);
         case 'save_file':
             return $fs->create($id, null, false, $content);
         case 'get_json':
