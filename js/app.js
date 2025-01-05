@@ -144,7 +144,6 @@ const createNode = async (data) => {
         sanitized !== name && toastmaster.warning('Espacios en blanco reemplazados por "_"');
         toastmaster.secondary(`Dato ingresado: ${sanitized}`);
         data.text = `${data.url}/${sanitized}`;
-        console.log(data);
         await serverOperation('create_node',"#",data);
     } else {
         toastmaster.danger('Operación cancelada o entrada inválida.');

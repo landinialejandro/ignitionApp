@@ -26,21 +26,20 @@ export class preloader {
 export const getDirCollectionJson = (folder) => serverOperation('get_node', folder);
 export const actionsServer = (data) => serverOperation(data.operation, data.id, data);
 export const getJsonData = async (url) => {
-  try {
-    const response = await getFileContent(url);
-    return response ? JSON.parse(response) : {};
-  } catch (error) {
-    console.error('Error al parsear JSON:', error);
-    return {};
-  }
+  const content = await getFileContent(url);
+  return content ? JSON.parse(content) : null;
 };
 
 export const getFileContent = async (url) => {
   try {
-    const response = await serverOperation("get_content", url, {});
-    return response?.content ?? null;
+    const response = await serverOperation('get_content', url, {});
+    if (!response?.content) {
+      console.warn(`No se encontró contenido en la URL: ${url}`);
+      return null;
+    }
+    return response.content;
   } catch (error) {
-    console.error('Error al recibir contenido:', error);
+    console.error('Error al recibir contenido:', error.message);
     return null;
   }
 };

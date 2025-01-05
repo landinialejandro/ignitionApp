@@ -40,7 +40,6 @@ export const initializeProject = async (url) => {
         const typology = new Typology(await getJsonData("./settings/types.json")); //obtengo los type
         const content = await getJsonData(url); // obtengo los json
         const projectPage = await getFileContent("pages/project_page.html"); //cargo la pagina del base del proyecto un contendore con dos card en columns
-
         // Renderizar la estructura base del proyecto
         $$(Constants.CONTENT).html(projectPage); //cargo en html el proyecto base
 
@@ -309,7 +308,7 @@ const actionCallbacks = {
 const addPropertiesToNode = async (typeToAdd, newNodeOptions) => {
     try {
         const settingsPath = `settings/${typeToAdd}`;
-        const filesContent =  getDirCollectionJson(settingsPath);
+        const filesContent =  await getDirCollectionJson(settingsPath);
 
         for (const [key, fileInfo] of Object.entries(filesContent)) {
             if (!fileInfo.url ) {
