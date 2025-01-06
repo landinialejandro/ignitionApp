@@ -36,6 +36,19 @@
     <div class="preloader" aria-label="Cargando aplicación">
         <div class="spinner"></div>
     </div>
+    <!-- Modal container generico para cargar dinamicamente información-->
+    <div class="modal-container" >
+        <div class="card expanded">
+            <div class="card-header" >
+                <div class="tools-box" >
+                    <button class=" button-tool button-close-modal" aria-label="Cerrar modal"><i class="bi bi-x"></i></button>   
+                </div>
+            </div>
+            <div class="card-body" >
+                <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Illo corporis, ipsam sit ex culpa porro non, voluptatem cupiditate, optio quam expedita aliquid architecto excepturi autem blanditiis! At aspernatur commodi beatae!</p>
+            </div>
+        </div>
+    </div>
 
     <!-- Contenedor principal de toda la aplicación -->
     <div class="app-wrapper">
@@ -76,7 +89,9 @@
                         </div>
                         <h2 class="user-name">Alejandro</h2> <!-- Nombre del usuario -->
                     </div>
-                    <button class="settings-button" aria-label="Abrir configuración"><i class="bi bi-gear"></i></button>
+                    <div class="tools-box">
+                        <button class="button-tool button-user-settings button-modal-container" aria-label="Abrir configuración"><i class="bi bi-gear"></i></button>
+                    </div>
                     <!-- Botón para abrir configuración -->
                 </footer>
             </aside>

@@ -35,10 +35,15 @@ const handleButtonToolClick = (event) => {
       (cls) => cls.startsWith("button-") && cls !== "button-tool"
     );
 
+    console.log(`${actionClass} clicked`);
+    
     if (actionClass && buttonActionCallbacks[actionClass]) {
+      console.log(`${actionClass} action fired`);
       requestAnimationFrame(() => {
         buttonActionCallbacks[actionClass](button, event);
       });
+    }else{
+      console.log(`${actionClass} unregistered action`);
     }
   }
 };
@@ -94,6 +99,7 @@ const initializeLayout = () => {
     const navContainer = event.target.closest(".nav-link-container");
     const nodeContainer = event.target.closest(".node-link-container");
     const foldItemContainer = event.target.closest(".ignition-fold-item");
+    const modalContainer = event.target.closest(".button-close-modal");
 
     if (collapseButton) {
       const parentItem = collapseButton.closest(".nav-item, .node-item, .card, .ignition-fold-item");
@@ -131,6 +137,16 @@ const initializeLayout = () => {
           link.classList.remove("active")
         );
         nodeContainer.classList.add("active");
+      });
+    }
+
+    if (modalContainer) {
+      console.log('closing modal container');
+      requestAnimationFrame(() => {
+        document.querySelectorAll(".modal-container").forEach((link) =>
+          link.classList.remove("active")
+        );
+        // modalContainer.classList.add("active");
       });
     }
 

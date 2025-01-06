@@ -126,6 +126,24 @@ const toolsBoxListenerApp = () => {
             operation(data);
             await initializeSidebar();
         });
+
+        registerButtonAction('button-user-settings', async (button, e) => {
+            console.log('open settings');
+            await renderTemplateToContainer('templates/user_form.hbs', {}, '.modal-container');
+            document.querySelector('.modal-container').classList.toggle('active');
+            
+            const togglePassword = document.getElementById('togglePassword');
+            const password = document.getElementById('password');
+            const passwordIcon = document.getElementById('passwordIcon');
+        
+            togglePassword.addEventListener('click', function () {
+                const type = password.getAttribute('type') === 'password' ? 'text' : 'password';
+                password.setAttribute('type', type);
+                passwordIcon.classList.toggle('bi-eye');
+                passwordIcon.classList.toggle('bi-eye-slash');
+            });
+        });
+
     });
 }
 
