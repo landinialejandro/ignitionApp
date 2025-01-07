@@ -130,7 +130,8 @@ const toolsBoxListenerApp = () => {
         registerButtonAction('button-user-settings', async (button, e) => {
             console.log('open settings');
             await renderTemplateToContainer('templates/user_form.hbs', {}, '.modal-container');
-            document.querySelector('.modal-container').classList.toggle('active');
+            document.querySelector('.modal-container').classList.add('active');
+            document.querySelector('.modal-container').classList.remove('fade-out');
             
             const togglePassword = document.getElementById('togglePassword');
             const password = document.getElementById('password');
