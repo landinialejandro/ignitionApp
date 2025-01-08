@@ -9,7 +9,7 @@ import toastmaster from '../../core/ToastMaster/ToastMaster.js';
  * @param {boolean} toLowerCase - Si es true, convierte el texto a minúsculas.
  * @returns {string} - Texto procesado.
  */
-const sanitizeInput = (input, replaceSpaces = false, toLowerCase = false) => {
+export const sanitizeInput = (input, replaceSpaces = false, toLowerCase = false) => {
     let sanitized = input.trim();
 
     if (replaceSpaces) {
