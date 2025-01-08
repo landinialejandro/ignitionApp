@@ -1,6 +1,6 @@
 // * file: src/shared/utils/getUserInput.js
 
-import  toastmaster  from '../../core/ToastMaster/ToastMaster.js';
+import toastmaster from '../../core/ToastMaster/ToastMaster.js';
 
 /**
  * Procesa un texto para sanitizarlo según las reglas especificadas.
@@ -9,15 +9,17 @@ import  toastmaster  from '../../core/ToastMaster/ToastMaster.js';
  * @param {boolean} toLowerCase - Si es true, convierte el texto a minúsculas.
  * @returns {string} - Texto procesado.
  */
-export const sanitizeInput = (input, replaceSpaces = false, toLowerCase = false) => {
+const sanitizeInput = (input, replaceSpaces = false, toLowerCase = false) => {
     let sanitized = input.trim();
 
     if (replaceSpaces) {
         sanitized = sanitized.replace(/\s+/g, '_');
+        toastmaster.warning('Espacios en blanco reemplazados por "_"');
     }
 
     if (toLowerCase) {
         sanitized = sanitized.toLowerCase();
+        toastmaster.warning('Texto convertido a minúsculas');
     }
 
     return sanitized;
@@ -28,8 +30,8 @@ export const sanitizeInput = (input, replaceSpaces = false, toLowerCase = false)
  * @param {string} input - Texto a validar.
  * @returns {boolean} - True si es válido, False si no.
  */
-export const validateGenericInput = (input) => {
-    const invalidChars = /[<>:"/\\|?*]/; // Caracteres problemáticos
+const validateGenericInput = (input) => {
+    const invalidChars = /[<>:"/\\|?*\[\]]/; // Caracteres problemáticos
     const maxLength = 255; // Longitud máxima
     return !invalidChars.test(input) && input.length <= maxLength;
 };
@@ -40,7 +42,7 @@ export const validateGenericInput = (input) => {
  * @param {function} validateFn - Función de validación opcional. tipo callback
  * @returns {string|null} - Entrada válida del usuario o null si se cancela.
  */
-export const getUserInput = (promptMessage, validateFn = null) => {
+export const getUserInput = (promptMessage, validateFn = true, replaceSpaces = false, toLowerCase = false) => {
     try {
         const userInput = prompt(promptMessage);
 
@@ -49,31 +51,17 @@ export const getUserInput = (promptMessage, validateFn = null) => {
             return null;
         }
 
-        const trimmedInput = userInput.trim();
-
         // Validación personalizada
-        if (validateFn && !validateFn(trimmedInput)) {
+        if (validateFn && !validateGenericInput(trimmedInput)) {
             toastmaster.warning(`Entrada inválida: no cumple los criterios.`);
             return null;
         }
 
-        return trimmedInput;
+        return sanitizeInput(trimmedInput, replaceSpaces, toLowerCase);
+
     } catch (error) {
         console.error(`Error al solicitar entrada:`, error);
         toastmaster.error(`Se produjo un error al procesar la entrada.`);
         return null;
     }
 };
-
-// ** Ejemplo de uso **
-// const type = 'archivo'; // Puede ser dinámico
-// const name = getUserInput(`Ingrese el nombre del ${type}:`, validateGenericInput);
-
-// if (name) {
-//     const sanitized = sanitizeInput(name, true, true); // Reemplazar espacios y convertir a minúsculas
-//     console.log(`Nombre procesado: ${sanitized}`);
-// } else {
-//     console.log('Operación cancelada o entrada inválida.');
-// }
-
-

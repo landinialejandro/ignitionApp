@@ -12,8 +12,8 @@ import { getDirCollectionJson, getFileContent, getJsonData } from './libraries/h
 import { $$ } from './libraries/selector.js';
 import { ContextMenu } from './ContextMenu.js';
 
-import { sanitizeInput, saveFileToServer, validateErrorsForm } from '../src/commons/index.js';
-import { getUserInput, validateGenericInput, uniqueId } from '../src/commons/index.js';
+import { saveFileToServer, validateErrorsForm } from '../src/commons/index.js';
+import { getUserInput, uniqueId } from '../src/commons/index.js';
 import { renderTemplateToContainer, procesInputForm } from '../src/commons/index.js';
 import { Constants } from '../src/commons/index.js';
 
@@ -122,7 +122,6 @@ export const toolsBoxListenerProject = () => {
     registerButtonAction('button-info', (button, e) => {
         console.log('info!');
         const { id, type } = getDataFromActiveLink();
-        
     })
 
     registerButtonAction('button-magic', (button, e) => {
@@ -244,7 +243,7 @@ const actionCallbacks = {
      * Renombra un nodo del árbol.
      */
     renameNode: (nodeType, anchor, nodeId) => {
-        const newName = getUserInput("Ingrese el nuevo nombre:", validateGenericInput);
+        const newName = getUserInput("Ingrese el nuevo nombre:", true, true);
         let parentNode = project.findParentById(nodeId);
 
         const currentNode = project.findChildById(nodeId);
@@ -255,9 +254,8 @@ const actionCallbacks = {
         }
 
         if (newName) {
-            let sanitizedCaption = sanitizeInput(newName, true);
 
-            const nodeOptions = { ...currentNode, caption: sanitizedCaption }; // Clonar el nodo original con el nuevo 
+            const nodeOptions = { ...currentNode, caption: newName }; // Clonar el nodo original con el nuevo 
 
             // Validaciones centralizadas
             const validation = project.validate(parentNode, nodeOptions);
@@ -308,10 +306,10 @@ const actionCallbacks = {
 const addPropertiesToNode = async (typeToAdd, newNodeOptions) => {
     try {
         const settingsPath = `settings/${typeToAdd}`;
-        const filesContent =  await getDirCollectionJson(settingsPath);
+        const filesContent = await getDirCollectionJson(settingsPath);
 
         for (const [key, fileInfo] of Object.entries(filesContent)) {
-            if (!fileInfo.url ) {
+            if (!fileInfo.url) {
                 console.warn(`Archivo ${key} sin URL.`);
                 continue;
             }
@@ -403,7 +401,7 @@ const projectSave = async () => {
     }
 };
 
-export const projectRender = async() => {
+export const projectRender = async () => {
     await project.render();
 }
 

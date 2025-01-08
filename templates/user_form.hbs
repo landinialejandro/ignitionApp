@@ -1,71 +1,90 @@
 <div class="card expanded">
 
-    <div class="card-header">
-        <h3 class="card-title">User Information Form</h3>
-        <div class="tools-box">
-            <button class=" button-tool button-close-modal"
-                aria-label="Cerrar modal">
-                <i class="bi bi-x"></i>
-            </button>
-        </div>
+  <div class="card-header">
+    <h3 class="card-title">User Information Form</h3>
+    <div class="tools-box">
+      <button class="button-tool button-close-modal" aria-label="Cerrar modal">
+        <i class="bi bi-x"></i>
+      </button>
     </div>
-    <div class="card-body">
-        <form id="userForm" class="form-container">
-            <!-- Nombre -->
-            <div class="form-group">
-                <label class="form-label" for="nombre">First Name</label>
-                <input type="text" id="nombre" name="nombre"
-                    class="form-input" placeholder="Enter your first name"
-                    required>
-            </div>
-
-            <!-- Apellido -->
-            <div class="form-group">
-                <label for="apellido">Last Name</label>
-                <input type="text" id="apellido" name="apellido"
-                    class="form-input" placeholder="Enter your last name"
-                    required>
-            </div>
-
-            <!-- Email -->
-            <div class="form-group">
-                <label for="email">Email</label>
-                <input type="email" id="email" name="email"
-                    class="form-input" placeholder="Enter your email"
-                    required>
-            </div>
-
-            <!-- Contraseña -->
-            <div class="form-group">
-                <label for="password">Password</label>
-                <div class="password-wrapper">
-                    <input type="password" id="password" name="password"
-                        class="form-input"
-                        placeholder="Enter your password" required>
-                    <button type="button" id="togglePassword"
-                        class="button secondary"
-                        aria-label="Show/Hide Password">
-                        <i class="bi bi-eye" id="passwordIcon"></i>
-                    </button>
-                </div>
-            </div>
-
-            <!-- Rol -->
-            <div class="form-group">
-                <label for="role">Role</label>
-                <select id="role" name="role" class="form-input" required>
-                    <option value>Select a role</option>
-                    <option value="admin">Admin</option>
-                    <option value="editor">Editor</option>
-                    <option value="viewer">Viewer</option>
-                </select>
-            </div>
-
-            <!-- Botón de envío -->
-            <div class="form-actions">
-                <button type="submit"
-                    class="button outlined">Submit</button>
-            </div>
-        </form>
+  </div>
+  <form id="userForm card-body" class="form-container">
+    <!-- Nombre -->
+    <div class="form-group">
+      <label class="form-label" for="nombre">First Name</label>
+      <input
+        type="text"
+        id="nombre"
+        name="nombre"
+        class="form-input"
+        placeholder="Enter your first name"
+        required
+      />
     </div>
+
+    <!-- Apellido -->
+    <div class="form-group">
+      <label for="apellido">Last Name</label>
+      <input
+        type="text"
+        id="apellido"
+        name="apellido"
+        class="form-input"
+        placeholder="Enter your last name"
+        required
+      />
+    </div>
+
+    <!-- Email -->
+    <div class="form-group">
+      <label for="email">Email</label>
+      <input
+        type="email"
+        id="email"
+        name="email"
+        class="form-input"
+        placeholder="Enter your email"
+        required
+      />
+    </div>
+
+    <!-- Contraseña -->
+    <div class="form-group">
+      <label for="password">Password</label>
+      <div class="password-wrapper">
+        <input
+          type="password"
+          id="password"
+          name="password"
+          class="form-input"
+          placeholder="Enter your password"
+          required
+        />
+        <button
+          type="button"
+          id="togglePassword"
+          class="button secondary"
+          aria-label="Show/Hide Password"
+        >
+          <i class="bi bi-eye" id="passwordIcon"></i>
+        </button>
+      </div>
+    </div>
+
+    <!-- Rol -->
+    <div class="form-group">
+      <label for="role">Role</label>
+      <select id="role" name="role" class="form-input" required>
+        <option value>Select a role</option>
+        <option value="admin">Admin</option>
+        <option value="editor">Editor</option>
+        <option value="viewer">Viewer</option>
+      </select>
+    </div>
+
+    <!-- Botón de envío -->
+    <div class="form-actions">
+      <button type="submit" class="button outlined">Submit</button>
+    </div>
+  </form>
 </div>

@@ -1,9 +1,9 @@
-import { RegisterHelpers, RegisterPartials } from './libraries/hbs.js';
+import { initializeHandlebars } from './libraries/hbs.js';
 import { getDirCollectionJson, getFileContent, getJsonData, preloader } from './libraries/helpers.js';
 import { $$ } from './libraries/selector.js';
 import { initializeProject, toolsBoxListenerProject } from './project.js';
 import { registerButtonAction } from './layout.js';
-import { renderTemplateToContainer, checkContainerAvailability, Constants, getUserInput, sanitizeInput, validateGenericInput, serverOperation } from '../src/index.js';
+import { renderTemplateToContainer, checkContainerAvailability, Constants, getUserInput, serverOperation } from '../src/index.js';
 import { toastmaster } from '../src/core/index.js';
 import { handleError } from '../src/commons/utils/handleError.js';
 
@@ -13,10 +13,8 @@ const mainPreloader = new preloader(Constants.PRELOADER_ID);
 
 // Inicialización principal
 export const initializeApp = async () => {
-    // mainPreloader.show();
     try {
-        RegisterHelpers();
-        await RegisterPartials();
+        await initializeHandlebars();
         await initializeSidebar();
         registerEventListeners();
     } catch (error) {
@@ -25,8 +23,6 @@ export const initializeApp = async () => {
         mainPreloader.hide();
     }
 };
-
-/** --- Inicialización del Sidebar y Contenido --- **/
 
 /**
  * Inicializa y renderiza el contenido del sidebar con datos de configuración y navegación.
@@ -53,8 +49,6 @@ const initializeSidebar = async () => {
 
     // TODO: Centralizar el manejo de actualizaciones en el DOM para evitar duplicación
 };
-
-/** --- Manejo de Acciones y Eventos --- **/
 
 /**
  * Registra todos los listeners necesarios al inicializar la aplicación.
@@ -128,23 +122,12 @@ const toolsBoxListenerApp = () => {
         });
 
         registerButtonAction('button-user-settings', async (button, e) => {
-            console.log('open settings');
             await renderTemplateToContainer('templates/user_form.hbs', {}, '.modal-container');
             document.querySelector('.modal-container').classList.add('active');
             document.querySelector('.modal-container').classList.remove('fade-out');
-            
-            const togglePassword = document.getElementById('togglePassword');
-            const password = document.getElementById('password');
-            const passwordIcon = document.getElementById('passwordIcon');
-        
-            togglePassword.addEventListener('click', function () {
-                const type = password.getAttribute('type') === 'password' ? 'text' : 'password';
-                password.setAttribute('type', type);
-                passwordIcon.classList.toggle('bi-eye');
-                passwordIcon.classList.toggle('bi-eye-slash');
-            });
-        });
 
+            formUserControl();
+        });
     });
 }
 
@@ -156,20 +139,16 @@ const toolsBoxListenerApp = () => {
  */
 const createNode = async (data) => {
 
-    const name = getUserInput(`Ingrese el nombre del ${data.type}:`, validateGenericInput);
+    const name = getUserInput(`Ingrese el nombre del ${data.type}:`, true, true);
 
     if (name) {
-        const sanitized = sanitizeInput(name, true); // Reemplazar espacios y convertir a minúsculas
-        sanitized !== name && toastmaster.warning('Espacios en blanco reemplazados por "_"');
-        toastmaster.secondary(`Dato ingresado: ${sanitized}`);
-        data.text = `${data.url}/${sanitized}`;
-        await serverOperation('create_node',"#",data);
+        toastmaster.secondary(`Dato ingresado: ${name}`);
+        data.text = `${data.url}/${name}`;
+        await serverOperation('create_node', "#", data);
     } else {
         toastmaster.danger('Operación cancelada o entrada inválida.');
     }
 };
-
-/** --- Carga Dinámica de Contenido --- **/
 
 /**
  * Carga contenido dinámico según el tipo de enlace seleccionado.
@@ -224,3 +203,17 @@ const loadHandlers = {
         toastmaster.warning("Tipo de enlace no soportado.");
     }
 };
+
+const formUserControl = () => {
+
+    const togglePassword = document.getElementById('togglePassword');
+    const password = document.getElementById('password');
+    const passwordIcon = document.getElementById('passwordIcon');
+
+    togglePassword.addEventListener('click', function () {
+        const type = password.getAttribute('type') === 'password' ? 'text' : 'password';
+        password.setAttribute('type', type);
+        passwordIcon.classList.toggle('bi-eye');
+        passwordIcon.classList.toggle('bi-eye-slash');
+    });
+}

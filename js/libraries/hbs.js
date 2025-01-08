@@ -1,7 +1,7 @@
 import { toastmaster } from '../../src/index.js';
 import { getDirCollectionJson, getFileContent } from './helpers.js';
 
-export const RegisterHelpers = () => {
+ const RegisterHelpers = () => {
 	toastmaster.info("registering helpers...")
 
 	/**
@@ -122,7 +122,7 @@ export const RegisterHelpers = () => {
 
 
 }
-export const RegisterPartials = async () => {
+ const RegisterPartials = async () => {
 	toastmaster.info("Registering partials!...");
 
 	try {
@@ -158,3 +158,8 @@ export const RegisterPartials = async () => {
 	toastmaster.info("Partials registered and compiled.");
 };
 
+export const initializeHandlebars = async() => {
+	toastmaster.info("Initializing Handlebars...");
+	RegisterHelpers();
+	await RegisterPartials();
+}
