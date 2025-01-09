@@ -41,7 +41,7 @@ const initializeSidebar = async () => {
     $$(Constants.VERSION_CONTENT).html(versionText);
 
     await renderTemplateToContainer("templates/nav_bar.hbs", navSidebar, Constants.SIDEBAR_CONTENT);
-
+    console.log(projects);
     checkContainerAvailability(['projects-list', 'settings-list'], async (projectsContainer, settingsContainer) => {
         await renderTemplateToContainer("templates/nav_bar.hbs", projects, '#projects-list');
         await renderTemplateToContainer("templates/nav_bar.hbs", appSettings, '#settings-list');
@@ -123,8 +123,7 @@ const toolsBoxListenerApp = () => {
 
         registerButtonAction('button-user-settings', async (button, e) => {
             await renderTemplateToContainer('templates/user_form.hbs', {}, '.modal-container');
-            document.querySelector('.modal-container').classList.add('active');
-            document.querySelector('.modal-container').classList.remove('fade-out');
+            document.querySelector('.modal-container').classList.toggle('active');
 
             formUserControl();
         });

@@ -13,12 +13,22 @@
   // Estado colapsado
   &.collapsed {
     width: $sidebar-min-width;
-    .sidebar-content .nav-text {
+    .sidebar-content .nav-text, .sidebar-content .badge, .sidebar-content .tools-box {
       display: none; // Oculta el texto en modo colapsado
+    }
+
+    .sidebar-brand{
+        justify-content: center;
+        padding: 0;
     }
 
     .sidebar-brand .brand-content {
       display: none; // Oculta el nombre de la aplicación en modo colapsado
+    }
+
+    .sidebar-footer {
+      justify-content: center;
+      padding: 0;
     }
 
     .sidebar-footer .user-content {

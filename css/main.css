@@ -218,11 +218,19 @@ body {
 .sidebar.collapsed {
   width: 4rem;
 }
-.sidebar.collapsed .sidebar-content .nav-text {
+.sidebar.collapsed .sidebar-content .nav-text, .sidebar.collapsed .sidebar-content .badge, .sidebar.collapsed .sidebar-content .tools-box {
   display: none;
+}
+.sidebar.collapsed .sidebar-brand {
+  justify-content: center;
+  padding: 0;
 }
 .sidebar.collapsed .sidebar-brand .brand-content {
   display: none;
+}
+.sidebar.collapsed .sidebar-footer {
+  justify-content: center;
+  padding: 0;
 }
 .sidebar.collapsed .sidebar-footer .user-content {
   display: none;
