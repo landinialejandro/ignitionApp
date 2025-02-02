@@ -13,7 +13,8 @@ import { $$ } from './libraries/selector.js';
 import { ContextMenu } from './ContextMenu.js';
 
 import { saveFileToServer, validateErrorsForm } from '../src/commons/index.js';
-import { getUserInput, uniqueId } from '../src/commons/index.js';
+import { getUserInput } from '../src/commons/index.js';
+
 import { renderTemplateToContainer, procesInputForm } from '../src/commons/index.js';
 import { Constants } from '../src/commons/index.js';
 
@@ -22,6 +23,8 @@ import { toastmaster } from '../src/core/index.js';
 import { NodeForest } from '../src/core/index.js';
 import { chopTree } from '../src/core/index.js';
 import { validateProperties } from '../src/core/index.js';
+
+import uniqueId from "../node_modules/@landini/unique-id/unique-id.js";
 
 
 // Variables globales necesarias para la gestión del proyecto

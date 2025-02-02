@@ -1,11 +1,11 @@
-// * src/utils/domObserver.js
+// * file: src/shared/utils/checkContainerAvailability.js
 
 /**
  * Verifica si todos los contenedores están disponibles en el DOM.
  * @param {string[]} containerIds - IDs de los contenedores a buscar.
  * @returns {boolean} - True si todos los contenedores están disponibles, false en caso contrario.
  */
-export const areAllContainersAvailable = (containerIds) => 
+const areAllContainersAvailable = (containerIds) => 
     containerIds.every(id => document.getElementById(id) !== null);
 
 /**

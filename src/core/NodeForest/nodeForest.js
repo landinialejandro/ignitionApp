@@ -1,11 +1,12 @@
 
 
-import { uniqueId } from '../../commons/utils/uniqueId.js';
 import { generateUniqueCaption } from './utils/generateUniqueCaption.js';
 import { validateNode } from './utils/validationHelpers.js';
 import { findInChildren, findParentInChildren, traverseAndCollectCaptionsByType } from './utils/treeSearchHelpers.js';
 import { nodeToJSON } from './utils/treeUtils.js';
 import { renderTemplateToContainer } from '../../index.js';
+
+import uniqueId from "../../../node_modules/@landini/unique-id/unique-id.js";
 
 
 export class NodeForest {

@@ -1,0 +1,30 @@
+{
+  "name": "ignitionapp",
+  "author": "Landini, DA <alejandro@landini.com.ar>",
+  "license": "ISC",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/landinialejandro/....git"
+  },
+  "type": "module",
+  "version": "0.1.0",
+  "description": "Generado automáticamente",
+  "main": "index.js",
+  "scripts": {
+    "generate:package": "node ../monorepo/scripts/generatePackage.js"
+  },
+  "release": {
+    "current": {
+      "version": "0.1.0",
+      "date": "YYY-MM-DD"
+    },
+    "previous": {
+      "version": "0.0.0",
+      "date": "YYY-MM-DD"
+    },
+    "type": "egg"
+  },
+  "dependencies": {
+    "@landini": "file:node_modules/@landini"
+  }
+}
