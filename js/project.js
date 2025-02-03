@@ -24,7 +24,8 @@ import { NodeForest } from '../src/core/index.js';
 import { chopTree } from '../src/core/index.js';
 import { validateProperties } from '../src/core/index.js';
 
-import uniqueId from "../node_modules/@landini/unique-id/unique-id.js";
+import uniqueId from '../node_modules/@landini/unique-id/unique-id.js';
+
 
 
 // Variables globales necesarias para la gestión del proyecto

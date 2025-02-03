@@ -6,7 +6,8 @@ import { findInChildren, findParentInChildren, traverseAndCollectCaptionsByType 
 import { nodeToJSON } from './utils/treeUtils.js';
 import { renderTemplateToContainer } from '../../index.js';
 
-import uniqueId from "../../../node_modules/@landini/unique-id/unique-id.js";
+import uniqueId from '../../../node_modules/@landini/unique-id/unique-id.js';
+
 
 
 export class NodeForest {

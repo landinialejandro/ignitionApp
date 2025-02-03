@@ -25,6 +25,6 @@
     "type": "egg"
   },
   "dependencies": {
-    "@landini": "file:node_modules/@landini"
+    "@landini/unique-id": "file:../monorepo/packages/unique-id"
   }
 }
